@@ -15,63 +15,63 @@ import org.palladiosimulator.blockchainsystems.doublespending.simulation.termina
 
 public class DoubleSpendingAttackSimulationRound {
 
-	private final SimulationClock _clock;
-	private final SimulationMonitor _monitor;
-	private final EventCoordinatorImpl _eventCoordinator;
-	private final TraceEventLoggerContainerImpl _traceEventLoggerContainer;
-	
-	private final SimulationContextImpl _context;
-	
-	private final Set<TraceEventLogOutput> _logOutputs;
-	
-	private final BlockchainSystem _blockchainSystem;
-	
-	public DoubleSpendingAttackSimulationRound(
-			BlockchainSystem blockchainSystem,
-			Set<TraceEventLogOutput> logOutputs,
-			long maxBlockchainLength) {
-		_clock = new SimulationClock();
-		_monitor = new SimulationMonitor(new LongestChainExceededMaxLengthCondition(maxBlockchainLength));
-		_eventCoordinator = new EventCoordinatorImpl(_clock, _monitor);
-		_traceEventLoggerContainer = new TraceEventLoggerContainerImpl();
-		
-		_context = new SimulationContextImpl(
-				_eventCoordinator,
-				_clock,
-				_traceEventLoggerContainer);
-		
-		_logOutputs = logOutputs;
-		_blockchainSystem = blockchainSystem;
-		
-		_traceEventLoggerContainer.addSubscriber(_monitor);
-		_logOutputs.forEach(x -> _traceEventLoggerContainer.addSubscriber(x));
-	}
-	
-	public SimulationRoundResult run() {
-		//Initialize log outputs
-		_logOutputs.forEach(x -> x.initialize());
-		
-		//Initialize simulation monitor
-		_monitor.initializeNodes(_blockchainSystem.getNodes());
+    private final SimulationClock _clock;
+    private final SimulationMonitor _monitor;
+    private final EventCoordinatorImpl _eventCoordinator;
+    private final TraceEventLoggerContainerImpl _traceEventLoggerContainer;
 
-		// Initialize blockchain system
-		_blockchainSystem.initialize(_context);
+    private final SimulationContextImpl _context;
 
-		// Start processing events - processing will stop if termination condition is met
-		_eventCoordinator.processEvents();
-		
-		// Clean up the blockchain system
-		_blockchainSystem.cleanup();
+    private final Set<TraceEventLogOutput> _logOutputs;
 
-		// Clean up the log ouptputs
-		_logOutputs.forEach(x -> x.cleanUp());
-		
+    private final BlockchainSystem _blockchainSystem;
 
-		Set<SimulationWinnerVoter> winnerVoters = _monitor.getWinnerVoters();
-		return SimulationRoundResult.create(
-				winnerVoters
-					.stream()
-					.map(x -> x.getWinnerVote())
-					.collect(Collectors.toSet()));
-	}
+    public DoubleSpendingAttackSimulationRound(
+            BlockchainSystem blockchainSystem,
+            Set<TraceEventLogOutput> logOutputs,
+            long maxBlockchainLength) {
+        _clock = new SimulationClock();
+        _monitor = new SimulationMonitor(new LongestChainExceededMaxLengthCondition(maxBlockchainLength));
+        _eventCoordinator = new EventCoordinatorImpl(_clock, _monitor);
+        _traceEventLoggerContainer = new TraceEventLoggerContainerImpl();
+
+        _context = new SimulationContextImpl(
+                _eventCoordinator,
+                _clock,
+                _traceEventLoggerContainer);
+
+        _logOutputs = logOutputs;
+        _blockchainSystem = blockchainSystem;
+
+        _traceEventLoggerContainer.addSubscriber(_monitor);
+        _logOutputs.forEach(_traceEventLoggerContainer::addSubscriber);
+    }
+
+    public SimulationRoundResult run() {
+        //Initialize log outputs
+        _logOutputs.forEach(TraceEventLogOutput::initialize);
+
+        //Initialize simulation monitor
+        _monitor.initializeNodes(_blockchainSystem.getNodes());
+
+        // Initialize blockchain system
+        _blockchainSystem.initialize(_context);
+
+        // Start processing events - processing will stop if termination condition is met
+        _eventCoordinator.processEvents();
+
+        // Clean up the blockchain system
+        _blockchainSystem.cleanup();
+
+        // Clean up the log ouptputs
+        _logOutputs.forEach(TraceEventLogOutput::cleanUp);
+
+
+        Set<SimulationWinnerVoter> winnerVoters = _monitor.getWinnerVoters();
+        return SimulationRoundResult.create(
+                winnerVoters
+                        .stream()
+                        .map(SimulationWinnerVoter::getWinnerVote)
+                        .collect(Collectors.toSet()));
+    }
 }

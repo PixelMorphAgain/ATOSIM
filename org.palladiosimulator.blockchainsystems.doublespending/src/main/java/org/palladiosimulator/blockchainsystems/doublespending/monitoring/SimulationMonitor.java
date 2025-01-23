@@ -2,6 +2,7 @@ package org.palladiosimulator.blockchainsystems.doublespending.monitoring;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,102 +24,102 @@ import org.palladiosimulator.blockchainsystems.doublespending.util.TagUtils;
 
 public class SimulationMonitor implements TraceEventSubscriber, TerminationCondition {
 
-	private final HashMap<String, HonestNodeTerminationState> _honestNodeTerminationStates;
-	private final HashMap<String, MaliciousNodeTerminationState> _maliciousNodeTerminationStates;
-	private final HashMap<String, NodeTerminationState> _allNodeTerminationStates;
-	
-	private final HashSet<Block> _forkedBlocks;
-	
-	private final LongestChainExceededMaxLengthCondition _maxBlockchainLengthCondition;
-	
-	public SimulationMonitor(LongestChainExceededMaxLengthCondition maxBlockchainLengthCondition) {
-		_maxBlockchainLengthCondition = maxBlockchainLengthCondition;
-		
-		_honestNodeTerminationStates = new HashMap<String, HonestNodeTerminationState>();
-		_maliciousNodeTerminationStates = new HashMap<String, MaliciousNodeTerminationState>();
-		_allNodeTerminationStates = new HashMap<String, NodeTerminationState>();
-	
-		_forkedBlocks = new HashSet<Block>();
-	}
-	
-	public void initializeNodes(Set<BlockchainSystemNode> nodes) {
-		nodes.stream().forEach(node -> {
-			if (TagUtils.isMalicioiusNode(node)) {
-				MaliciousNodeTerminationState terminationState = new MaliciousNodeTerminationState(node);
-				_maliciousNodeTerminationStates.put(node.getId(), terminationState);
-				_allNodeTerminationStates.put(node.getId(), terminationState);
-			} else {
-				HonestNodeTerminationState terminationState = new HonestNodeTerminationState(node);
-				_honestNodeTerminationStates.put(node.getId(), terminationState);
-				_allNodeTerminationStates.put(node.getId(), terminationState);
-			}
-		});
-	}
-	
-	@Override
-	public void onTraceEventOccured(TraceEvent event, TraceEventLogOrigin logOrigin) {
-		if (event.getEventType() == BlockMinedTraceEvent.EVENT_TYPE) {
-			BlockMinedTraceEvent blockMinedTraceEvent = (BlockMinedTraceEvent)event;
-			
-			if (AttackerUtils.isBlockABlockForkedBlock(blockMinedTraceEvent.block())) {
-				_forkedBlocks.add(blockMinedTraceEvent.block());
-			}
-			
-		} else if (event.getEventType() == BlockAppendedTraceEvent.EVENT_TYPE) {
-			BlockAppendedTraceEvent blockAppendedTraceEvent = (BlockAppendedTraceEvent)event;
-			
-			_maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition());
-		}
-		
-		NodeTerminationState terminationState = _allNodeTerminationStates.get(logOrigin.getId());
-		if (terminationState != null) {
-			terminationState.onTraceEventOccured(event);
-		}
-	}
+    private final HashMap<String, HonestNodeTerminationState> _honestNodeTerminationStates;
+    private final HashMap<String, MaliciousNodeTerminationState> _maliciousNodeTerminationStates;
+    private final HashMap<String, NodeTerminationState> _allNodeTerminationStates;
 
-	@Override
-	public boolean shouldTerminate() {
-		// Check if attackers have published all of their blocks
-		if (didAllMaliciousNodesReachFinalPhase()) {
-			// Require honest nodes to receive all forked blocks
-			if (didAllHonestNodesReceiveAllForkedBlocks()) {
-				// Check if all honest nodes have a single longest chain with distance x to the
-				// next longest chain
-				if (doAllHonestNodesHaveALongestChainWithDistance(2)) {
-					return true;
-				}
-			}
-		}
+    private final HashSet<Block> _forkedBlocks;
 
-		return _maxBlockchainLengthCondition.hasLengthExceeded();
-	}
-	
-	public Set<SimulationWinnerVoter> getWinnerVoters() {
-		return _allNodeTerminationStates
-				.values()
-				.stream()
-				.map(x -> (SimulationWinnerVoter)x)
-				.collect(Collectors.toUnmodifiableSet());
-	}
+    private final LongestChainExceededMaxLengthCondition _maxBlockchainLengthCondition;
 
-	private boolean didAllMaliciousNodesReachFinalPhase() {
-		return _maliciousNodeTerminationStates
-				.values()
-				.stream()
-				.anyMatch(x -> x.hasReachedFinalPhase());
-	}
-	
-	private boolean didAllHonestNodesReceiveAllForkedBlocks() {
-		return _honestNodeTerminationStates
-				.values()
-				.stream()
-				.allMatch(x -> x.hasReceivedAllForkedBlocks(_forkedBlocks));
-	}
-	
-	private boolean doAllHonestNodesHaveALongestChainWithDistance(int distance) {
-		return _honestNodeTerminationStates
-				.values()
-				.stream()
-				.allMatch(x -> x.hasLongestChainWithDistance(distance));
-	}
+    public SimulationMonitor(LongestChainExceededMaxLengthCondition maxBlockchainLengthCondition) {
+        _maxBlockchainLengthCondition = maxBlockchainLengthCondition;
+
+        _honestNodeTerminationStates = new HashMap<String, HonestNodeTerminationState>();
+        _maliciousNodeTerminationStates = new HashMap<String, MaliciousNodeTerminationState>();
+        _allNodeTerminationStates = new HashMap<String, NodeTerminationState>();
+
+        _forkedBlocks = new HashSet<Block>();
+    }
+
+    public void initializeNodes(Set<BlockchainSystemNode> nodes) {
+        nodes.stream().forEach(node -> {
+            if (TagUtils.isMaliciousNode(node)) {
+                MaliciousNodeTerminationState terminationState = new MaliciousNodeTerminationState(node);
+                _maliciousNodeTerminationStates.put(node.getId(), terminationState);
+                _allNodeTerminationStates.put(node.getId(), terminationState);
+            } else {
+                HonestNodeTerminationState terminationState = new HonestNodeTerminationState(node);
+                _honestNodeTerminationStates.put(node.getId(), terminationState);
+                _allNodeTerminationStates.put(node.getId(), terminationState);
+            }
+        });
+    }
+
+    @Override
+    public void onTraceEventOccurred(TraceEvent event, TraceEventLogOrigin logOrigin) {
+        if (Objects.equals(event.getEventType(), BlockMinedTraceEvent.EVENT_TYPE)) {
+            BlockMinedTraceEvent blockMinedTraceEvent = (BlockMinedTraceEvent) event;
+
+            if (AttackerUtils.isBlockABlockForkedBlock(blockMinedTraceEvent.block())) {
+                _forkedBlocks.add(blockMinedTraceEvent.block());
+            }
+
+        } else if (Objects.equals(event.getEventType(), BlockAppendedTraceEvent.EVENT_TYPE)) {
+            BlockAppendedTraceEvent blockAppendedTraceEvent = (BlockAppendedTraceEvent) event;
+
+            _maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition());
+        }
+
+        NodeTerminationState terminationState = _allNodeTerminationStates.get(logOrigin.getId());
+        if (terminationState != null) {
+            terminationState.onTraceEventOccurred(event);
+        }
+    }
+
+    @Override
+    public boolean shouldTerminate() {
+        // Check if attackers have published all of their blocks
+        if (didAllMaliciousNodesReachFinalPhase()) {
+            // Require honest nodes to receive all forked blocks
+            if (didAllHonestNodesReceiveAllForkedBlocks()) {
+                // Check if all honest nodes have a single longest chain with distance x to the
+                // next longest chain
+                if (doAllHonestNodesHaveALongestChainWithDistance(2)) {
+                    return true;
+                }
+            }
+        }
+
+        return _maxBlockchainLengthCondition.hasLengthExceeded();
+    }
+
+    public Set<SimulationWinnerVoter> getWinnerVoters() {
+        return _allNodeTerminationStates
+                .values()
+                .stream()
+                .map(x -> (SimulationWinnerVoter) x)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    private boolean didAllMaliciousNodesReachFinalPhase() {
+        return _maliciousNodeTerminationStates
+                .values()
+                .stream()
+                .anyMatch(MaliciousNodeTerminationState::hasReachedFinalPhase);
+    }
+
+    private boolean didAllHonestNodesReceiveAllForkedBlocks() {
+        return _honestNodeTerminationStates
+                .values()
+                .stream()
+                .allMatch(x -> x.hasReceivedAllForkedBlocks(_forkedBlocks));
+    }
+
+    private boolean doAllHonestNodesHaveALongestChainWithDistance(int distance) {
+        return _honestNodeTerminationStates
+                .values()
+                .stream()
+                .allMatch(x -> x.hasLongestChainWithDistance(distance));
+    }
 }

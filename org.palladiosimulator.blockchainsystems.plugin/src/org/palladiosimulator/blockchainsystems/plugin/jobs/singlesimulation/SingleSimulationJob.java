@@ -15,43 +15,43 @@ import org.palladiosimulator.blockchainsystems.plugin.results.SimulationResultSu
 
 public class SingleSimulationJob extends Job {
 
-private final ILaunchConfiguration _configuration;
-	
-	public SingleSimulationJob(ILaunchConfiguration configuration) {
-		super("Single Simulation Job");
-		_configuration = configuration;
-	}
+    private final ILaunchConfiguration _configuration;
 
-	@Override
-	protected IStatus run(IProgressMonitor arg0) {
-		SingleDoubleSpendingAttackSimulation simulation;
-		try {
-			simulation = new SingleDoubleSpendingAttackSimulation(
-					InitializationUtils.createBlockchainSystemFactory(_configuration),
-					InitializationUtils.createLogOuputProviderFromConfig(_configuration),
-					new SimulationRoundInterpretationImpl(),
-					InitializationUtils.getMaximumAllowdBlockchainLengthFromConfig(_configuration));
-		} catch (NumberFormatException | CoreException e) {
-			e.printStackTrace();
-			return Status.OK_STATUS;
-		}
-		
-		InterpretedResult result = simulation.run();
-		
-		SimulationResultSummary summary = new SimulationResultSummary(
-				"Single Simulation",
-				(long) (result == InterpretedResult.AttackerWon ? 1 : 0),
-				(long) (result == InterpretedResult.SystemWon ? 1 : 0),
-				(long) (result == InterpretedResult.Unambiguous ? 1 : 0),
-				null);
-		
-		try {
-			SummaryUtils.saveResultSummary(summary, _configuration);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		
-		return Status.OK_STATUS;
-	}
+    public SingleSimulationJob(ILaunchConfiguration configuration) {
+        super("Single Simulation Job");
+        _configuration = configuration;
+    }
+
+    @Override
+    protected IStatus run(IProgressMonitor arg0) {
+        SingleDoubleSpendingAttackSimulation simulation;
+        try {
+            simulation = new SingleDoubleSpendingAttackSimulation(
+                    InitializationUtils.createBlockchainSystemFactory(_configuration),
+                    InitializationUtils.createLogOutputProviderFromConfig(_configuration),
+                    new SimulationRoundInterpretationImpl(),
+                    InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(_configuration));
+        } catch (NumberFormatException | CoreException e) {
+            e.printStackTrace();
+            return Status.OK_STATUS;
+        }
+
+        InterpretedResult result = simulation.run();
+
+        SimulationResultSummary summary = new SimulationResultSummary(
+                "Single Simulation",
+                (long) (result == InterpretedResult.AttackerWon ? 1 : 0),
+                (long) (result == InterpretedResult.SystemWon ? 1 : 0),
+                (long) (result == InterpretedResult.Unambiguous ? 1 : 0),
+                null);
+
+        try {
+            SummaryUtils.saveResultSummary(summary, _configuration);
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+
+        return Status.OK_STATUS;
+    }
 
 }

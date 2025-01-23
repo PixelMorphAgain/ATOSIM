@@ -6,68 +6,68 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 public class WaitingForFirstHonestBlockPhase implements DoubleSpendingAttackPhase {
 
-	private final MaliciousNodesIdProvider _maliciousNodesIdProvider;
-	private final DSAttackBlockStorage _attackBlockStorage;
-	private DoubleSpendingAttackPhase _nextPhase;
-	
-	public WaitingForFirstHonestBlockPhase(MaliciousNodesIdProvider maliciousNodesIdProvider) {
-		_maliciousNodesIdProvider = maliciousNodesIdProvider;
-		_attackBlockStorage = new DSAttackBlockStorage();
-		_nextPhase = this;
-	}
-	
-	@Override
-	public void onBlockReceived(Block block, BlockchainSystemNodeContext context) {
-		if (AttackerUtils.isMaliciousBlock(block)) {
-			_attackBlockStorage.addBlock(block);
-		} else {
-			context.getBlockValidator().validateBlock(block);	
-		}
-	}
+    private final MaliciousNodesIdProvider _maliciousNodesIdProvider;
+    private final DSAttackBlockStorage _attackBlockStorage;
+    private DoubleSpendingAttackPhase _nextPhase;
 
-	@Override
-	public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
-		// Should not be called since in this phase there are no blocks mined
-	}
+    public WaitingForFirstHonestBlockPhase(MaliciousNodesIdProvider maliciousNodesIdProvider) {
+        _maliciousNodesIdProvider = maliciousNodesIdProvider;
+        _attackBlockStorage = new DSAttackBlockStorage();
+        _nextPhase = this;
+    }
 
-	@Override
-	public Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
-		// Should not be called since in this phase there are no blocks mined
-		return null;
-	}
+    @Override
+    public void onBlockReceived(Block block, BlockchainSystemNodeContext context) {
+        if (AttackerUtils.isMaliciousBlock(block)) {
+            _attackBlockStorage.addBlock(block);
+        } else {
+            context.getBlockValidator().validateBlock(block);
+        }
+    }
 
-	@Override
-	public void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context) {
-		if (isValid != null && isValid.booleanValue()) {
-			
-			// Append. Since this is the first block it musst be appended as an included block
-			boolean hasBlockchainNewLongestBranch = BehaviorUtils.appendBlockToBlockchain(block, context);
-			
-			context.getBlockPropagationStrategy().distributeBlock(block);
-			
-			if (hasBlockchainNewLongestBranch) {
-				_nextPhase = new MineBlockToOverwritePhase(_attackBlockStorage, _maliciousNodesIdProvider);
-			}
-		}
-	}
+    @Override
+    public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
+        // Should not be called since in this phase there are no blocks mined
+    }
 
-	@Override
-	public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
-		// Should not be called since in this phase there are no blocks mined
-		return null;
-	}
+    @Override
+    public Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
+        // Should not be called since in this phase there are no blocks mined
+        return null;
+    }
 
-	@Override
-	public DoubleSpendingAttackPhase getNextPhase() {
-		return _nextPhase;
-	}
+    @Override
+    public void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context) {
+        if (isValid != null && isValid) {
 
-	@Override
-	public void initialize(BlockchainSystemNodeContext context) {
-	}
+            // Append. Since this is the first block it musst be appended as an included block
+            boolean hasBlockchainNewLongestBranch = BehaviorUtils.appendBlockToBlockchain(block, context);
 
-	@Override
-	public String getPhaseName() {
-		return "WaitingForFirstHonestBlockPhase";
-	}
+            context.getBlockPropagationStrategy().distributeBlock(block);
+
+            if (hasBlockchainNewLongestBranch) {
+                _nextPhase = new MineBlockToOverwritePhase(_attackBlockStorage, _maliciousNodesIdProvider);
+            }
+        }
+    }
+
+    @Override
+    public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
+        // Should not be called since in this phase there are no blocks mined
+        return null;
+    }
+
+    @Override
+    public DoubleSpendingAttackPhase getNextPhase() {
+        return _nextPhase;
+    }
+
+    @Override
+    public void initialize(BlockchainSystemNodeContext context) {
+    }
+
+    @Override
+    public String getPhaseName() {
+        return "WaitingForFirstHonestBlockPhase";
+    }
 }

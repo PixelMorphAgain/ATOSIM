@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
 public class FileExtensionFilter extends ViewerFilter {
-    private String[] extensions;
+    private final String[] extensions;
 
     public FileExtensionFilter(String[] extensions) {
         this.extensions = extensions;
@@ -14,8 +14,7 @@ public class FileExtensionFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-        if (element instanceof IResource) {
-            IResource resource = (IResource) element;
+        if (element instanceof IResource resource) {
             if (resource instanceof IFile) {
                 String fileExtension = resource.getFileExtension();
                 if (fileExtension != null) {

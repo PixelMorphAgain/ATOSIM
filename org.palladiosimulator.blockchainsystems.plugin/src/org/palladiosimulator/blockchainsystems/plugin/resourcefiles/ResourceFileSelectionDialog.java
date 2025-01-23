@@ -24,13 +24,13 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
 
     private String[] extensions;
 
-    private static ITreeContentProvider contentProvider = new ITreeContentProvider() {
+    private static final ITreeContentProvider contentProvider = new ITreeContentProvider() {
         public Object[] getChildren(Object element) {
             if (element instanceof IContainer) {
                 try {
                     return ((IContainer) element).members();
-                }
-                catch (CoreException e) {
+                } catch (CoreException e) {
+                    // TODO: handle exception
                 }
             }
             return null;
@@ -72,7 +72,7 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
         this(Display.getDefault().getActiveShell(), WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider(),
                 contentProvider);
         this.extensions = type;
-        
+
         setTitle(title);
         setMessage(message);
 
@@ -92,9 +92,9 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
          * Refresh projects tree.
          */
         IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-        for (int i = 0; i < projects.length; i++) {
+        for (IProject project : projects) {
             try {
-                projects[i].refreshLocal(IResource.DEPTH_INFINITE, null);
+                project.refreshLocal(IResource.DEPTH_INFINITE, null);
             } catch (CoreException e) {
                 e.printStackTrace();
             }
@@ -103,11 +103,12 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
         try {
             ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_ONE, null);
         } catch (CoreException e) {
+            // TODO: handle exception
         }
         List<IProject> openProjects = new ArrayList<IProject>(projects.length);
-        for (int i = 0; i < projects.length; i++) {
-            if (projects[i].isOpen()) {
-                openProjects.add(projects[i]);
+        for (IProject project : projects) {
+            if (project.isOpen()) {
+                openProjects.add(project);
             }
         }
         return openProjects.toArray();
@@ -117,15 +118,14 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
      * Check file extension
      */
     private boolean checkExtension(String name) {
-        if (name.equals("*")) {
-            return true;
-        }
+        if (name.equals("*")) return true;
 
-        for (int i = 0; i < extensions.length; i++) {
-            if (extensions[i].equals(name)) {
+        for (String extension : extensions) {
+            if (extension.equals(name)) {
                 return true;
             }
         }
+
         return false;
     }
 }

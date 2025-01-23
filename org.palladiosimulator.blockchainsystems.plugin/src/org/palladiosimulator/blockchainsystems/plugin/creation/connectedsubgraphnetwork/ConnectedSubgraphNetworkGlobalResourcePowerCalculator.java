@@ -8,38 +8,37 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.GlobalResourcePow
 
 public class ConnectedSubgraphNetworkGlobalResourcePowerCalculator implements GlobalResourcePowerCalculator {
 
-	private final double _globalResourcePower;
-	
-	public ConnectedSubgraphNetworkGlobalResourcePowerCalculator(ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
-		
-		_globalResourcePower = connectedSubgraphsTopology
-			.getSubgraphs()
-			.stream()
-			.mapToDouble(x -> calculateResourcePowerOfSubgraph(x))
-			.sum();
-	}
-	
-	private double calculateResourcePowerOfSubgraph(SubgraphSpecification subgraph) {
-		double resourcePower = subgraph
-			.getNodeTemplates()
-			.stream()
-			.mapToDouble(x -> getResourcePowerOfAllocation(x.getAllocation()) * x.getNumberOfNodeOccurences())
-			.sum();
-		return resourcePower;
-	}
-	
-	private static double getResourcePowerOfAllocation(NodeAllocation nodeAllocation) {
-		return nodeAllocation
-				.getAllocationContexts()
-				.stream()
-				.filter(y -> y.getAssemblyContext().getEncapsulatedComponent() instanceof MiningProcessComponent)
-				.mapToDouble(y -> y.getResourceContainer().getResourcePower())
-				.sum();
-	}
-	
-	@Override
-	public double calculateGlobalResourcePower() {
-		return _globalResourcePower;
-	}
+    private final double _globalResourcePower;
+
+    public ConnectedSubgraphNetworkGlobalResourcePowerCalculator(ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
+
+        _globalResourcePower = connectedSubgraphsTopology
+                .getSubgraphs()
+                .stream()
+                .mapToDouble(x -> calculateResourcePowerOfSubgraph(x))
+                .sum();
+    }
+
+    private double calculateResourcePowerOfSubgraph(SubgraphSpecification subgraph) {
+        return subgraph
+                .getNodeTemplates()
+                .stream()
+                .mapToDouble(x -> getResourcePowerOfAllocation(x.getAllocation()) * x.getNumberOfNodeOccurences())
+                .sum();
+    }
+
+    private static double getResourcePowerOfAllocation(NodeAllocation nodeAllocation) {
+        return nodeAllocation
+                .getAllocationContexts()
+                .stream()
+                .filter(y -> y.getAssemblyContext().getEncapsulatedComponent() instanceof MiningProcessComponent)
+                .mapToDouble(y -> y.getResourceContainer().getResourcePower())
+                .sum();
+    }
+
+    @Override
+    public double calculateGlobalResourcePower() {
+        return _globalResourcePower;
+    }
 
 }

@@ -4,5 +4,5 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public interface NodeTerminationState extends SimulationWinnerVoter {
 
-	void onTraceEventOccured(TraceEvent traceEvent);
+	void onTraceEventOccurred(TraceEvent traceEvent);
 }

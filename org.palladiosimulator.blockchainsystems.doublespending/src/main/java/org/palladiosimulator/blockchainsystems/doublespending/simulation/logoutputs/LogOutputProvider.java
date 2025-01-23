@@ -6,5 +6,5 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput;
 
 public interface LogOutputProvider {
 
-	Set<TraceEventLogOutput> getLogoutputs();
+    Set<TraceEventLogOutput> getLogOutputs();
 }

@@ -10,46 +10,46 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public class TraceEventLoggerImpl implements TraceEventLogger {
 
-	private static final Comparator<TraceEvent> EVENT_COMPARATOR = ((TraceEvent tev1, TraceEvent tev2) -> Long.compare(tev1.getOccurenceTime(), tev2.getOccurenceTime()));
-	
-	private final TraceEventLogOrigin _logOrigin;
-	private final TreeSet<TraceEvent> _events;
-	private final TraceEventConfiguration _traceEventConfiguration;
-	
-	private BiConsumer<TraceEvent, TraceEventLogOrigin> _traceEventCallback;
-	
-	public TraceEventLoggerImpl(TraceEventLogOrigin logOrigin, TraceEventConfiguration traceEventConfiguration) {
-		_logOrigin = logOrigin;
-		_traceEventConfiguration = traceEventConfiguration;
-		
-		_events = new TreeSet<TraceEvent>(EVENT_COMPARATOR);
-		_traceEventCallback = null;
-	}
-	
-	@Override
-	public TraceEventLogOrigin getLogOrigin() {
-		return _logOrigin;
-	}
+    private static final Comparator<TraceEvent> EVENT_COMPARATOR = ((TraceEvent tev1, TraceEvent tev2) -> Long.compare(tev1.getOccurrenceTime(), tev2.getOccurrenceTime()));
 
-	@Override
-	public void logEvent(TraceEvent traceEvent) {
-		_events.add(traceEvent);
-		
-		notifyTraceEventOccured(traceEvent);
-	}
-	
-	private void notifyTraceEventOccured(TraceEvent traceEvent) {
-		if (_traceEventCallback != null) {
-			_traceEventCallback.accept(traceEvent, _logOrigin);
-		}
-	}
-	
-	public void setTraceEventCalback(BiConsumer<TraceEvent, TraceEventLogOrigin> traceEventCallback) {
-		_traceEventCallback = traceEventCallback;
-	}
+    private final TraceEventLogOrigin _logOrigin;
+    private final TreeSet<TraceEvent> _events;
+    private final TraceEventConfiguration _traceEventConfiguration;
 
-	@Override
-	public boolean isEventTypeEnabled(String eventType) {
-		return _traceEventConfiguration.isEventTypeEnabled(eventType);
-	}
+    private BiConsumer<TraceEvent, TraceEventLogOrigin> _traceEventCallback;
+
+    public TraceEventLoggerImpl(TraceEventLogOrigin logOrigin, TraceEventConfiguration traceEventConfiguration) {
+        _logOrigin = logOrigin;
+        _traceEventConfiguration = traceEventConfiguration;
+
+        _events = new TreeSet<TraceEvent>(EVENT_COMPARATOR);
+        _traceEventCallback = null;
+    }
+
+    @Override
+    public TraceEventLogOrigin getLogOrigin() {
+        return _logOrigin;
+    }
+
+    @Override
+    public void logEvent(TraceEvent traceEvent) {
+        _events.add(traceEvent);
+
+        notifyTraceEventOccured(traceEvent);
+    }
+
+    private void notifyTraceEventOccured(TraceEvent traceEvent) {
+        if (_traceEventCallback != null) {
+            _traceEventCallback.accept(traceEvent, _logOrigin);
+        }
+    }
+
+    public void setTraceEventCalback(BiConsumer<TraceEvent, TraceEventLogOrigin> traceEventCallback) {
+        _traceEventCallback = traceEventCallback;
+    }
+
+    @Override
+    public boolean isEventTypeEnabled(String eventType) {
+        return _traceEventConfiguration.isEventTypeEnabled(eventType);
+    }
 }

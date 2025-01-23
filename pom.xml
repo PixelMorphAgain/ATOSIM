@@ -1,20 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.palladiosimulator.blockchainsystems</groupId>
-  <artifactId>org.palladiosimulator.blockchainsystems</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>org.palladiosimulator.blockchainsystems.core</module>
-  	<module>org.palladiosimulator.blockchainsystems.loggers</module>
-  	<module>
-  		org.palladiosimulator.blockchainsystems.doublespending
-  	</module>
-  	<module>
-		org.palladiosimulator.blockchainsystems.plugin
-	</module>
-  	<module>org.palladiosimulator.blockchainsystems.bscm</module>
-  	<module>org.palladiosimulator.blockchainsystems.bscm.design</module>
-  	<module>org.palladiosimulator.blockchainsystems.plugin.ui</module>
-  </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.palladiosimulator.blockchainsystems</groupId>
+    <artifactId>org.palladiosimulator.blockchainsystems</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>org.palladiosimulator.blockchainsystems.core</module>
+        <module>org.palladiosimulator.blockchainsystems.loggers</module>
+        <module>org.palladiosimulator.blockchainsystems.doublespending</module>
+        <module>org.palladiosimulator.blockchainsystems.plugin</module>
+        <module>org.palladiosimulator.blockchainsystems.bscm</module>
+        <module>org.palladiosimulator.blockchainsystems.bscm.design</module>
+        <module>org.palladiosimulator.blockchainsystems.plugin.ui</module>
+    </modules>
 </project>

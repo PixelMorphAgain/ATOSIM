@@ -1,9 +1,6 @@
 package org.palladiosimulator.blockchainsystems.plugin.creation.connectedsubgraphnetwork;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
@@ -37,134 +34,133 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.MiningProcessFact
 
 public class ConnectedSubgraphNetworkBlockchainSystemFactory implements BlockchainSystemFactory {
 
-	private final ConnectedSubgraphP2PNetworkFactory _p2pNetworkFactory;
-	private final org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem _designBlockchainSystem;
-	private final ConnectedSubgraphsNetworkTopology _connectedSubgraphsTopology;
-	
-	public ConnectedSubgraphNetworkBlockchainSystemFactory(
-			org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem,
-			ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
-		_p2pNetworkFactory = new ConnectedSubgraphP2PNetworkFactory(
-				RandomGenerator.of("Random"),
-				connectedSubgraphsTopology);
-		_designBlockchainSystem = designBlockchainSystem;
-		_connectedSubgraphsTopology = connectedSubgraphsTopology;
-	}
-	
-	@Override
-	public BlockchainSystem createBlockchainSystem() {
-		
-		ConnectedSubgraphNetworkCreationResult networkCreationResult
-			= (ConnectedSubgraphNetworkCreationResult) _p2pNetworkFactory.createP2PNetwork();
-		
-		// Create information provider based on the generated network
-		MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
-				_connectedSubgraphsTopology, 
-				networkCreationResult.nodeIdToNodeTemplateIdMapping());
-		
-		ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver = new ConnectedSubgraphNetworkNodeAllocationResolver(
-				_connectedSubgraphsTopology,
-				networkCreationResult.nodeIdToNodeTemplateIdMapping());
-		ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
-				_connectedSubgraphsTopology);
+    private final ConnectedSubgraphP2PNetworkFactory _p2pNetworkFactory;
+    private final org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem _designBlockchainSystem;
+    private final ConnectedSubgraphsNetworkTopology _connectedSubgraphsTopology;
 
-		// Create factories based on information providers and meta-model
-		BlockFactory blockFactory = createBlockFactory(_designBlockchainSystem);
+    public ConnectedSubgraphNetworkBlockchainSystemFactory(
+            org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem,
+            ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
+        _p2pNetworkFactory = new ConnectedSubgraphP2PNetworkFactory(
+                RandomGenerator.of("Random"),
+                connectedSubgraphsTopology);
+        _designBlockchainSystem = designBlockchainSystem;
+        _connectedSubgraphsTopology = connectedSubgraphsTopology;
+    }
 
-		BlockchainSystemNodeFactory nodeFactory = createBlockchainSystemNodeFactory(
-				maliciousNodesIdProvider,
-				nodeAllocationResolver,
-				globalResourcePowerCalculator,
-				blockFactory);
-		
-		// Create blockchain system based with factories
-		return createBlockchainSystemInstance(
-				networkCreationResult.getCreatedNetwork(),
-				blockFactory,
-				nodeFactory);
-	}
-	
-	private BlockchainSystem createBlockchainSystemInstance(
-			P2PNetwork network,
-			BlockFactory blockFactory,
-			BlockchainSystemNodeFactory nodeFactory) {
-		String blockchainSystemId = UUID.randomUUID().toString();
-		String blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.toString().substring(0, 8);
-		
-		Block genesisBlock = blockFactory.createGenesisBlock();
-		
-		HashSet<BlockchainSystemNode> blockchainSystemNodes = new HashSet<BlockchainSystemNode>();
-		for (NodeP2PNetworkInterface node : network.getNodes()) {
-			BlockchainSystemNode blockchainSystemNode 
-				= nodeFactory.createBlockchainSystemNode(node, genesisBlock);
-			
-			blockchainSystemNodes.add(blockchainSystemNode);
-		}
-		
-		return new BlockchainSystem(
-				blockchainSystemId,
-				blockchainSystemName,
-				network,
-				blockchainSystemNodes);
-	}
-	
-	private BlockchainSystemNodeFactory createBlockchainSystemNodeFactory(
-			MaliciousNodesIdProvider maliciousNodesIdProvider,
-			ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver,
-			ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator,
-			BlockFactory blockFactory) {
-		// Create factories independent of the meta-model information
-				BlockchainFactoryImpl blockchainFactory = new BlockchainFactoryImpl();
-				BlockPropagationStrategyFactoryImpl propagationStrategyFactory = new BlockPropagationStrategyFactoryImpl();
-				OrphanBlockPoolFactoryImpl orphanBlockPoolFactory = new OrphanBlockPoolFactoryImpl();
+    @Override
+    public BlockchainSystem createBlockchainSystem() {
 
-				// Create factories dependent of the meta-model information
-				MiningProcessFactory miningProcessFactory = new MiningProcessFactoryPluginImpl(nodeAllocationResolver,
-						globalResourcePowerCalculator, _designBlockchainSystem.getSpecification());
-				BlockValidatorFactory blockValidatorFactory = new BlockValidatorFactoryPluginImpl(nodeAllocationResolver);
-				BlockchainSystemNodeBehaviorFactory behaviorFactory = new BlockchainSystemNodeBehaviorFactoryPluginImpl(
-						maliciousNodesIdProvider);
-				BlockchainSystemNodeTagProvider tagProvider = new BlockchainSystemNodeTagProviderImpl(maliciousNodesIdProvider);
+        ConnectedSubgraphNetworkCreationResult networkCreationResult
+                = (ConnectedSubgraphNetworkCreationResult) _p2pNetworkFactory.createP2PNetwork();
 
-				return new BlockchainSystemNodeFactory(blockFactory, blockchainFactory,
-						miningProcessFactory, blockValidatorFactory, propagationStrategyFactory, orphanBlockPoolFactory,
-						behaviorFactory, tagProvider);
-	}
-	
-	
-	
-	private static BlockFactoryImpl createBlockFactory(org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem) {
-		BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize());
-		return new BlockFactoryImpl(blockSizeValueProvider);
-	}
-	
+        // Create information provider based on the generated network
+        MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
+                _connectedSubgraphsTopology,
+                networkCreationResult.nodeIdToNodeTemplateIdMapping());
 
-	public static MaliciousNodesIdProvider createMaliciousNodesIdProvider(
-			ConnectedSubgraphsNetworkTopology gcsTopology,
-			HashMap<String, String> nodeIdToNodeTemplateIdMapping) {
-		
-		HashMap<String, SubgraphNodeTemplate> nodeTemplatesByIds = getNodeTemplatesByIds(gcsTopology);
-		
-		Set<String> maliciousNodeIds = nodeIdToNodeTemplateIdMapping
-				.entrySet()
-				.stream()
-				.filter(x -> nodeTemplatesByIds.get(x.getValue()).getAllocation().getNodeSystem().getBehavior().getBehavior() == NodeBehavior.MALICIOUS)
-				.map(x -> x.getKey())
-				.collect(Collectors.toSet());
-		
-		return new MaliciousNodesIdProviderImpl(maliciousNodeIds);
-	}
-	
-	private static HashMap<String, SubgraphNodeTemplate> getNodeTemplatesByIds(ConnectedSubgraphsNetworkTopology gcsTopology) {
-		HashMap<String, SubgraphNodeTemplate> nodeTemplatesByIds = new HashMap<String, SubgraphNodeTemplate>();
-		
-		for (SubgraphSpecification subgraphSpec : gcsTopology.getSubgraphs()) {
-			for (SubgraphNodeTemplate nodeTemplate : subgraphSpec.getNodeTemplates()) {
-				nodeTemplatesByIds.put(nodeTemplate.getId(), nodeTemplate);
-			}
-		}
-		
-		return nodeTemplatesByIds;
-	}
-	
+        ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver = new ConnectedSubgraphNetworkNodeAllocationResolver(
+                _connectedSubgraphsTopology,
+                networkCreationResult.nodeIdToNodeTemplateIdMapping());
+        ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
+                _connectedSubgraphsTopology);
+
+        // Create factories based on information providers and meta-model
+        BlockFactory blockFactory = createBlockFactory(_designBlockchainSystem);
+
+        BlockchainSystemNodeFactory nodeFactory = createBlockchainSystemNodeFactory(
+                maliciousNodesIdProvider,
+                nodeAllocationResolver,
+                globalResourcePowerCalculator,
+                blockFactory);
+
+        // Create blockchain system based with factories
+        return createBlockchainSystemInstance(
+                networkCreationResult.getCreatedNetwork(),
+                blockFactory,
+                nodeFactory);
+    }
+
+    private BlockchainSystem createBlockchainSystemInstance(
+            P2PNetwork network,
+            BlockFactory blockFactory,
+            BlockchainSystemNodeFactory nodeFactory) {
+        String blockchainSystemId = UUID.randomUUID().toString();
+        String blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.substring(0, 8);
+
+        Block genesisBlock = blockFactory.createGenesisBlock();
+
+        HashSet<BlockchainSystemNode> blockchainSystemNodes = new HashSet<BlockchainSystemNode>();
+        for (NodeP2PNetworkInterface node : network.getNodes()) {
+            BlockchainSystemNode blockchainSystemNode
+                    = nodeFactory.createBlockchainSystemNode(node, genesisBlock);
+
+            blockchainSystemNodes.add(blockchainSystemNode);
+        }
+
+        return new BlockchainSystem(
+                blockchainSystemId,
+                blockchainSystemName,
+                network,
+                blockchainSystemNodes);
+    }
+
+    private BlockchainSystemNodeFactory createBlockchainSystemNodeFactory(
+            MaliciousNodesIdProvider maliciousNodesIdProvider,
+            ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver,
+            ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator,
+            BlockFactory blockFactory) {
+        // Create factories independent of the metamodel information
+        BlockchainFactoryImpl blockchainFactory = new BlockchainFactoryImpl();
+        BlockPropagationStrategyFactoryImpl propagationStrategyFactory = new BlockPropagationStrategyFactoryImpl();
+        OrphanBlockPoolFactoryImpl orphanBlockPoolFactory = new OrphanBlockPoolFactoryImpl();
+
+        // Create factories dependent of the meta-model information
+        MiningProcessFactory miningProcessFactory = new MiningProcessFactoryPluginImpl(nodeAllocationResolver,
+                globalResourcePowerCalculator, _designBlockchainSystem.getSpecification());
+        BlockValidatorFactory blockValidatorFactory = new BlockValidatorFactoryPluginImpl(nodeAllocationResolver);
+        BlockchainSystemNodeBehaviorFactory behaviorFactory = new BlockchainSystemNodeBehaviorFactoryPluginImpl(
+                maliciousNodesIdProvider);
+        BlockchainSystemNodeTagProvider tagProvider = new BlockchainSystemNodeTagProviderImpl(maliciousNodesIdProvider);
+
+        return new BlockchainSystemNodeFactory(blockFactory, blockchainFactory,
+                miningProcessFactory, blockValidatorFactory, propagationStrategyFactory, orphanBlockPoolFactory,
+                behaviorFactory, tagProvider);
+    }
+
+
+    private static BlockFactoryImpl createBlockFactory(org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem) {
+        BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize());
+        return new BlockFactoryImpl(blockSizeValueProvider);
+    }
+
+
+    public static MaliciousNodesIdProvider createMaliciousNodesIdProvider(
+            ConnectedSubgraphsNetworkTopology gcsTopology,
+            HashMap<String, String> nodeIdToNodeTemplateIdMapping) {
+
+        HashMap<String, SubgraphNodeTemplate> nodeTemplatesByIds = getNodeTemplatesByIds(gcsTopology);
+
+        Set<String> maliciousNodeIds = nodeIdToNodeTemplateIdMapping
+                .entrySet()
+                .stream()
+                .filter(x -> nodeTemplatesByIds.get(x.getValue()).getAllocation().getNodeSystem().getBehavior().getBehavior() == NodeBehavior.MALICIOUS)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+
+        return new MaliciousNodesIdProviderImpl(maliciousNodeIds);
+    }
+
+    private static HashMap<String, SubgraphNodeTemplate> getNodeTemplatesByIds(ConnectedSubgraphsNetworkTopology gcsTopology) {
+        HashMap<String, SubgraphNodeTemplate> nodeTemplatesByIds = new HashMap<String, SubgraphNodeTemplate>();
+
+        for (SubgraphSpecification subgraphSpec : gcsTopology.getSubgraphs()) {
+            for (SubgraphNodeTemplate nodeTemplate : subgraphSpec.getNodeTemplates()) {
+                nodeTemplatesByIds.put(nodeTemplate.getId(), nodeTemplate);
+            }
+        }
+
+        return nodeTemplatesByIds;
+    }
+
 }

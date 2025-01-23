@@ -34,106 +34,106 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.MiningProcessFact
 
 public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemFactory {
 
-	private final ExplicitTopologyP2PNetworkFactory _networkFactory;
-	private final org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem _designBlockchainSystem;
-	private final ExplicitNetworkTopology _explicitTopology;
-	
-	public ExplicitNetworkBlockchainSystemFactory(
-			org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem,
-			ExplicitNetworkTopology explicitTopology) {
-		_networkFactory = new ExplicitTopologyP2PNetworkFactory(explicitTopology);
-		_designBlockchainSystem = designBlockchainSystem;
-		_explicitTopology = explicitTopology;
-	}
-	
-	@Override
-	public BlockchainSystem createBlockchainSystem() {
-		P2PNetworkCreationResult networkCreationResult = _networkFactory.createP2PNetwork();
-		
-		ExplicitNetworkNodeAllocationResolver nodeAllocationResolver = new ExplicitNetworkNodeAllocationResolver(
-				_explicitTopology);
-		ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ExplicitNetworkGlobalResourcePowerCalculator(
-				_explicitTopology);
-		MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
-				_explicitTopology);
-		
-		BlockFactoryImpl blockFactory = createBlockFactory();
-		
-		BlockchainSystemNodeFactory nodeFactory = createBlockchainSystemNodeFactory(
-				nodeAllocationResolver,
-				globalResourcePowerCalculator,
-				maliciousNodesIdProvider,
-				blockFactory);
-		
-		return createBlockchainSystemInstance(
-				networkCreationResult.getCreatedNetwork(),
-				blockFactory,
-				nodeFactory);
-		
-	}
-	
-	private BlockchainSystem createBlockchainSystemInstance(
-			P2PNetwork network,
-			BlockFactory blockFactory,
-			BlockchainSystemNodeFactory nodeFactory) {
-		String blockchainSystemId = UUID.randomUUID().toString();
-		String blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.toString().substring(0, 8);
-		
-		
-		Block genesisBlock = blockFactory.createGenesisBlock();
-		
-		HashSet<BlockchainSystemNode> blockchainSystemNodes = new HashSet<BlockchainSystemNode>();
-		for (NodeP2PNetworkInterface node : network.getNodes()) {
-			BlockchainSystemNode blockchainSystemNode 
-				= nodeFactory.createBlockchainSystemNode(node, genesisBlock);
-			
-			blockchainSystemNodes.add(blockchainSystemNode);
-		}
-		
-		return new BlockchainSystem(
-				blockchainSystemId,
-				blockchainSystemName,
-				network,
-				blockchainSystemNodes);
-	}
-	
-	private BlockchainSystemNodeFactory createBlockchainSystemNodeFactory(
-			ExplicitNetworkNodeAllocationResolver nodeAllocationResolver,
-			ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator,
-			MaliciousNodesIdProvider maliciousNodesIdProvider,
-			BlockFactory blockFactory) {
-		// Create factories independent of the meta-model information
-				BlockchainFactoryImpl blockchainFactory = new BlockchainFactoryImpl();
-				BlockPropagationStrategyFactoryImpl propagationStrategyFactory = new BlockPropagationStrategyFactoryImpl();
-				OrphanBlockPoolFactoryImpl orphanBlockPoolFactory = new OrphanBlockPoolFactoryImpl();
+    private final ExplicitTopologyP2PNetworkFactory _networkFactory;
+    private final org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem _designBlockchainSystem;
+    private final ExplicitNetworkTopology _explicitTopology;
 
-				// Create factories dependent of the meta-model information
-				
-				MiningProcessFactory miningProcessFactory = new MiningProcessFactoryPluginImpl(nodeAllocationResolver,
-						globalResourcePowerCalculator, _designBlockchainSystem.getSpecification());
-				BlockValidatorFactory blockValidatorFactory = new BlockValidatorFactoryPluginImpl(nodeAllocationResolver);
-				BlockchainSystemNodeBehaviorFactory behaviorFactory = new BlockchainSystemNodeBehaviorFactoryPluginImpl(
-						maliciousNodesIdProvider);
-				BlockchainSystemNodeTagProvider tagProvider = new BlockchainSystemNodeTagProviderImpl(maliciousNodesIdProvider);
+    public ExplicitNetworkBlockchainSystemFactory(
+            org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem,
+            ExplicitNetworkTopology explicitTopology) {
+        _networkFactory = new ExplicitTopologyP2PNetworkFactory(explicitTopology);
+        _designBlockchainSystem = designBlockchainSystem;
+        _explicitTopology = explicitTopology;
+    }
 
-				return new BlockchainSystemNodeFactory(blockFactory, blockchainFactory,
-						miningProcessFactory, blockValidatorFactory, propagationStrategyFactory, orphanBlockPoolFactory,
-						behaviorFactory, tagProvider);
-	}
+    @Override
+    public BlockchainSystem createBlockchainSystem() {
+        P2PNetworkCreationResult networkCreationResult = _networkFactory.createP2PNetwork();
 
-	private static MaliciousNodesIdProvider createMaliciousNodesIdProvider(ExplicitNetworkTopology explicitTopology) {
-		Set<String> maliciousNodeIds = explicitTopology
-				.getNodes()
-				.stream()
-				.filter(x -> x.getAllocation().getNodeSystem().getBehavior().getBehavior() == NodeBehavior.MALICIOUS)
-				.map(x -> x.getId())
-				.collect(Collectors.toSet());
-			return new MaliciousNodesIdProviderImpl(maliciousNodeIds);
-	}
-	
-	public BlockFactoryImpl createBlockFactory() {
-		BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(_designBlockchainSystem.getSpecification().getMeanBlockSize());
-		return new BlockFactoryImpl(blockSizeValueProvider);
-	}
-	
+        ExplicitNetworkNodeAllocationResolver nodeAllocationResolver = new ExplicitNetworkNodeAllocationResolver(
+                _explicitTopology);
+        ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ExplicitNetworkGlobalResourcePowerCalculator(
+                _explicitTopology);
+        MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
+                _explicitTopology);
+
+        BlockFactoryImpl blockFactory = createBlockFactory();
+
+        BlockchainSystemNodeFactory nodeFactory = createBlockchainSystemNodeFactory(
+                nodeAllocationResolver,
+                globalResourcePowerCalculator,
+                maliciousNodesIdProvider,
+                blockFactory);
+
+        return createBlockchainSystemInstance(
+                networkCreationResult.getCreatedNetwork(),
+                blockFactory,
+                nodeFactory);
+
+    }
+
+    private BlockchainSystem createBlockchainSystemInstance(
+            P2PNetwork network,
+            BlockFactory blockFactory,
+            BlockchainSystemNodeFactory nodeFactory) {
+        String blockchainSystemId = UUID.randomUUID().toString();
+        String blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.substring(0, 8);
+
+
+        Block genesisBlock = blockFactory.createGenesisBlock();
+
+        HashSet<BlockchainSystemNode> blockchainSystemNodes = new HashSet<BlockchainSystemNode>();
+        for (NodeP2PNetworkInterface node : network.getNodes()) {
+            BlockchainSystemNode blockchainSystemNode
+                    = nodeFactory.createBlockchainSystemNode(node, genesisBlock);
+
+            blockchainSystemNodes.add(blockchainSystemNode);
+        }
+
+        return new BlockchainSystem(
+                blockchainSystemId,
+                blockchainSystemName,
+                network,
+                blockchainSystemNodes);
+    }
+
+    private BlockchainSystemNodeFactory createBlockchainSystemNodeFactory(
+            ExplicitNetworkNodeAllocationResolver nodeAllocationResolver,
+            ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator,
+            MaliciousNodesIdProvider maliciousNodesIdProvider,
+            BlockFactory blockFactory) {
+        // Create factories independent of the metamodel information
+        BlockchainFactoryImpl blockchainFactory = new BlockchainFactoryImpl();
+        BlockPropagationStrategyFactoryImpl propagationStrategyFactory = new BlockPropagationStrategyFactoryImpl();
+        OrphanBlockPoolFactoryImpl orphanBlockPoolFactory = new OrphanBlockPoolFactoryImpl();
+
+        // Create factories dependent of the metamodel information
+
+        MiningProcessFactory miningProcessFactory = new MiningProcessFactoryPluginImpl(nodeAllocationResolver,
+                globalResourcePowerCalculator, _designBlockchainSystem.getSpecification());
+        BlockValidatorFactory blockValidatorFactory = new BlockValidatorFactoryPluginImpl(nodeAllocationResolver);
+        BlockchainSystemNodeBehaviorFactory behaviorFactory = new BlockchainSystemNodeBehaviorFactoryPluginImpl(
+                maliciousNodesIdProvider);
+        BlockchainSystemNodeTagProvider tagProvider = new BlockchainSystemNodeTagProviderImpl(maliciousNodesIdProvider);
+
+        return new BlockchainSystemNodeFactory(blockFactory, blockchainFactory,
+                miningProcessFactory, blockValidatorFactory, propagationStrategyFactory, orphanBlockPoolFactory,
+                behaviorFactory, tagProvider);
+    }
+
+    private static MaliciousNodesIdProvider createMaliciousNodesIdProvider(ExplicitNetworkTopology explicitTopology) {
+        Set<String> maliciousNodeIds = explicitTopology
+                .getNodes()
+                .stream()
+                .filter(x -> x.getAllocation().getNodeSystem().getBehavior().getBehavior() == NodeBehavior.MALICIOUS)
+                .map(x -> x.getId())
+                .collect(Collectors.toSet());
+        return new MaliciousNodesIdProviderImpl(maliciousNodeIds);
+    }
+
+    public BlockFactoryImpl createBlockFactory() {
+        BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(_designBlockchainSystem.getSpecification().getMeanBlockSize());
+        return new BlockFactoryImpl(blockSizeValueProvider);
+    }
+
 }

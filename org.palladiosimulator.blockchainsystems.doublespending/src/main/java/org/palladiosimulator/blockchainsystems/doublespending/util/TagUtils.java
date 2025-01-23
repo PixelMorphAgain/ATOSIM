@@ -22,7 +22,7 @@ public final class TagUtils {
 		return _maliciousNodeTags;
 	}
 	
-	public static boolean isMalicioiusNode(BlockchainSystemNode node) {
+	public static boolean isMaliciousNode(BlockchainSystemNode node) {
 		return node.hasTag(MALICIOUS_NODE_TAG);
 	}
 }

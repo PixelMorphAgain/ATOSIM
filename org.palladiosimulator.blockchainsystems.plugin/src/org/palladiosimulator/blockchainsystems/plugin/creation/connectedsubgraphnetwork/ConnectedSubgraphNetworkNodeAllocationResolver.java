@@ -11,28 +11,28 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.NodeAllocationRes
 
 public class ConnectedSubgraphNetworkNodeAllocationResolver implements NodeAllocationResolver {
 
-	private final Map<String, SubgraphNodeTemplate> _nodeIdToNodeTemplatesMappings;
-	
-	public ConnectedSubgraphNetworkNodeAllocationResolver(
-			ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology,
-			HashMap<String, String> nodeIdToNodeTemplateIdMapping) {
-		
-		Map<String, SubgraphNodeTemplate> nodeTemplatesByIds = connectedSubgraphsTopology
-			.getSubgraphs()
-			.stream()
-			.flatMap(x -> x.getNodeTemplates().stream())
-			.collect(Collectors.toMap(x -> x.getId(), x -> x));
-		
-		
-		_nodeIdToNodeTemplatesMappings = nodeIdToNodeTemplateIdMapping
-			.entrySet()
-			.stream()
-			.collect(Collectors.toMap(x -> x.getKey(), x -> nodeTemplatesByIds.get(x.getValue())));
-	}
-	
-	@Override
-	public NodeAllocation getNodeAllocation(String nodeId) {
-		return _nodeIdToNodeTemplatesMappings.get(nodeId).getAllocation();
-	}
+    private final Map<String, SubgraphNodeTemplate> _nodeIdToNodeTemplatesMappings;
+
+    public ConnectedSubgraphNetworkNodeAllocationResolver(
+            ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology,
+            HashMap<String, String> nodeIdToNodeTemplateIdMapping) {
+
+        Map<String, SubgraphNodeTemplate> nodeTemplatesByIds = connectedSubgraphsTopology
+                .getSubgraphs()
+                .stream()
+                .flatMap(x -> x.getNodeTemplates().stream())
+                .collect(Collectors.toMap(x -> x.getId(), x -> x));
+
+
+        _nodeIdToNodeTemplatesMappings = nodeIdToNodeTemplateIdMapping
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, x -> nodeTemplatesByIds.get(x.getValue())));
+    }
+
+    @Override
+    public NodeAllocation getNodeAllocation(String nodeId) {
+        return _nodeIdToNodeTemplatesMappings.get(nodeId).getAllocation();
+    }
 
 }

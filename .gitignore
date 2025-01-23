@@ -3,3 +3,8 @@
 
 docker-compose.*
 *.csv
+
+# Other editors
+.idea
+.vscode
+*.iml

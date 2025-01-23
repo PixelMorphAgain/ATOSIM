@@ -15,46 +15,46 @@ import org.palladiosimulator.blockchainsystems.plugin.results.SimulationResultSu
 
 public class MonteCarloSimulationJob extends Job {
 
-	private final ILaunchConfiguration _configuration;
-	
-	public MonteCarloSimulationJob(ILaunchConfiguration configuration) {
-		super("Monte-Carlo Simulation Job");
-		_configuration = configuration;
-	}
+    private final ILaunchConfiguration _configuration;
 
-	@Override
-	protected IStatus run(IProgressMonitor progressMonitor) {
-		
-		MonteCarloDoubleSpendingAttackSimulation simulation;
-		try {
-			simulation = new MonteCarloDoubleSpendingAttackSimulation(
-					InitializationUtils.createBlockchainSystemFactory(_configuration),
-					InitializationUtils.createLogOuputProviderFromConfig(_configuration),
-					new SimulationRoundInterpretationImpl(),
-					new MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
-					InitializationUtils.getMaximumAllowdBlockchainLengthFromConfig(_configuration),
-					InitializationUtils.getNumberOfMonteCarloSimulationRoundsFromConfig(_configuration));
-		} catch (NumberFormatException | CoreException e) {
-			e.printStackTrace();
-			return Status.OK_STATUS;
-		}
-		
-		MonteCarloDoubleSpendingAttackSimulationResult result = simulation.run();
-		
-		SimulationResultSummary summary = new SimulationResultSummary(
-				"Monte-Carlo Simulation",
-				result.attackerWonRounds(),
-				result.systemWonRounds(),
-				result.unambiguousRounds(),
-				result.getAttackSuccessProbability());
-		
-		try {
-			SummaryUtils.saveResultSummary(summary, _configuration);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		
-		return Status.OK_STATUS;
-	}
+    public MonteCarloSimulationJob(ILaunchConfiguration configuration) {
+        super("Monte-Carlo Simulation Job");
+        _configuration = configuration;
+    }
+
+    @Override
+    protected IStatus run(IProgressMonitor progressMonitor) {
+
+        MonteCarloDoubleSpendingAttackSimulation simulation;
+        try {
+            simulation = new MonteCarloDoubleSpendingAttackSimulation(
+                    InitializationUtils.createBlockchainSystemFactory(_configuration),
+                    InitializationUtils.createLogOutputProviderFromConfig(_configuration),
+                    new SimulationRoundInterpretationImpl(),
+                    new MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
+                    InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(_configuration),
+                    InitializationUtils.getNumberOfMonteCarloSimulationRoundsFromConfig(_configuration));
+        } catch (NumberFormatException | CoreException e) {
+            e.printStackTrace();
+            return Status.OK_STATUS;
+        }
+
+        MonteCarloDoubleSpendingAttackSimulationResult result = simulation.run();
+
+        SimulationResultSummary summary = new SimulationResultSummary(
+                "Monte-Carlo Simulation",
+                result.attackerWonRounds(),
+                result.systemWonRounds(),
+                result.unambiguousRounds(),
+                result.getAttackSuccessProbability());
+
+        try {
+            SummaryUtils.saveResultSummary(summary, _configuration);
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }
+
+        return Status.OK_STATUS;
+    }
 
 }

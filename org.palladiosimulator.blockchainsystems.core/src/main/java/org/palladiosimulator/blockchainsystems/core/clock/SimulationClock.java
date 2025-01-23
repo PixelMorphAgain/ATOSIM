@@ -4,20 +4,19 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.SystemCl
 
 public class SimulationClock implements SystemClockControl {
 
-	private long _currentTime;
-	
-	public SimulationClock() {
-		_currentTime = 0;
-	}
-	
-	public void progressClockTo(long newTime) {
-		_currentTime = newTime;
-	}
-	
-	@Override
-	public long getCurrentTime() {
-		
-		return _currentTime;
-	}
+    private long _currentTime;
+
+    public SimulationClock() {
+        _currentTime = 0;
+    }
+
+    public void progressClockTo(long newTime) {
+        _currentTime = newTime;
+    }
+
+    @Override
+    public long getCurrentTime() {
+        return _currentTime;
+    }
 
 }
