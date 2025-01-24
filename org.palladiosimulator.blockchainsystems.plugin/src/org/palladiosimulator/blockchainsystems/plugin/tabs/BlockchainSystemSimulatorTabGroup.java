@@ -10,12 +10,13 @@ public class BlockchainSystemSimulatorTabGroup extends AbstractLaunchConfigurati
 	@Override
 	public void createTabs(ILaunchConfigurationDialog arg0, String arg1) {
 		setTabs(
-				new AbstractLaunchConfigurationTab[] { 
-						new ArchitecturalModelsTab(),
-						new SimulationTypeTab(),
-						new SimulationTerminationTab(),
-						new LoggingTab(),
-						new CommonTab() });		
+			new AbstractLaunchConfigurationTab[] { 
+				new ArchitecturalModelsTab(),
+				new SimulationTypeTab(),
+				new SimulationTerminationTab(),
+				new LoggingTab(),
+				new CommonTab() 
+		});		
 	}
 
 }
