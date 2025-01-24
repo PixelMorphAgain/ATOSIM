@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Loggers
 Bundle-SymbolicName: org.palladiosimulator.blockchainsystems.loggers
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Export-Package: .,
  org.palladiosimulator.blockchainsystems.loggers
 Import-Package: org.palladiosimulator.blockchainsystems.core.behaviors,

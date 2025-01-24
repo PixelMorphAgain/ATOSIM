@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.palladiosimulator.blockchainsystems</groupId>
@@ -6,40 +8,55 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>org.palladiosimulator.blockchainsystems.plugin</artifactId>
+  <packaging>eclipse-plugin</packaging>
 
   <build>
-    <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <version>3.8.1</version>
-        <configuration>
-          <release>19</release>
-        </configuration>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <includeScope>runtime</includeScope>
+              <stripVersion>true</stripVersion>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
-  
+
   <dependencies>
-	<dependency>
-		<groupId>org.palladiosimulator.blockchainsystems</groupId>
-  		<artifactId>
-  			org.palladiosimulator.blockchainsystems.doublespending
-  		</artifactId>
-  		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-	<dependency>
-		<groupId>org.palladiosimulator.blockchainsystems</groupId>
-		<artifactId>
-			org.palladiosimulator.blockchainsystems.loggers
-		</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</dependency>
-      <dependency>
-          <groupId>org.palladiosimulator.blockchainsystems</groupId>
-          <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
-          <scope>compile</scope>
-      </dependency>
+    <dependency>
+      <groupId>org.palladiosimulator.blockchainsystems</groupId>
+      <artifactId>org.palladiosimulator.blockchainsystems.core</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.palladiosimulator.blockchainsystems</groupId>
+      <artifactId>org.palladiosimulator.blockchainsystems.doublespending</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.palladiosimulator.blockchainsystems</groupId>
+      <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.palladiosimulator.blockchainsystems</groupId>
+      <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 </project>

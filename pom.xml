@@ -5,13 +5,49 @@
     <artifactId>org.palladiosimulator.blockchainsystems</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <repositories>
+        <repository>
+            <id>eclipse-platform</id>
+            <url>https://download.eclipse.org/releases/2024-12</url>
+            <layout>p2</layout>
+        </repository>
+        <repository>
+            <id>palladio-simulator</id>
+            <url>https://updatesite.palladio-simulator.com/palladio-build-updatesite/nightly/</url>
+            <layout>p2</layout>
+        </repository>
+    </repositories>
+
+    <properties>
+        <tycho.version>4.0.10</tycho.version>
+        <maven.version>3.13.0</maven.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
+
     <modules>
+        <module>target-platform</module>
         <module>org.palladiosimulator.blockchainsystems.core</module>
         <module>org.palladiosimulator.blockchainsystems.loggers</module>
         <module>org.palladiosimulator.blockchainsystems.doublespending</module>
-        <module>org.palladiosimulator.blockchainsystems.plugin</module>
         <module>org.palladiosimulator.blockchainsystems.bscm</module>
-        <module>org.palladiosimulator.blockchainsystems.bscm.design</module>
-        <module>org.palladiosimulator.blockchainsystems.plugin.ui</module>
+        <module>org.palladiosimulator.blockchainsystems.bscm.edit</module>
+        <module>org.palladiosimulator.blockchainsystems.bscm.editor</module>
+        <module>org.palladiosimulator.blockchainsystems.plugin</module>
+        <!-- <module>org.palladiosimulator.blockchainsystems.bscm.design</module> -->
+        <!-- <module>org.palladiosimulator.blockchainsystems.plugin.ui</module> -->
     </modules>
 </project>

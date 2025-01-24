@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Doublespending
 Bundle-SymbolicName: org.palladiosimulator.blockchainsystems.doublespending
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.0.1.qualifier
 Export-Package: .,
  org.palladiosimulator.blockchainsystems.doublespending.behavior,
  org.palladiosimulator.blockchainsystems.doublespending.monitoring,
