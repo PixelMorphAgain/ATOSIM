@@ -4,15 +4,15 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValuePro
 
 public class LatencyValueProvider implements ValueProvider<Long> {
 
-	private final long _latencyValue;
-	
-	public LatencyValueProvider(long latencyValue) {
-		_latencyValue = latencyValue;
-	}
-	
-	@Override
-	public Long getValue() {
-		return (long) _latencyValue;
-	}
-	
+    private final long _latencyValue;
+
+    public LatencyValueProvider(long latencyValue) {
+        _latencyValue = latencyValue;
+    }
+
+    @Override
+    public Long getValue() {
+        return _latencyValue;
+    }
+
 }

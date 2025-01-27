@@ -6,7 +6,8 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventDis
 public record BlockMinedEvent(
         long occurrenceTime,
         String previousBlockHash,
-        EventDispatchable target) implements Event {
+        EventDispatchable target
+) implements Event {
 
     public static final String EVENT_TYPE = "BlockMinedEvent";
 

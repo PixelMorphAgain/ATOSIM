@@ -15,7 +15,8 @@ public class SingleDoubleSpendingAttackSimulation {
             BlockchainSystemFactory blockchainSystemFactory,
             LogOutputProvider logOutputProvider,
             SimulationRoundInterpretation simulationRoundInterpretation,
-            long maximumBlockchainLength) {
+            long maximumBlockchainLength
+    ) {
         _blockchainSystemFactory = blockchainSystemFactory;
         _logOutputProvider = logOutputProvider;
         _simulationRoundInterpretation = simulationRoundInterpretation;
@@ -30,9 +31,10 @@ public class SingleDoubleSpendingAttackSimulation {
         DoubleSpendingAttackSimulationRound simulationRound = new DoubleSpendingAttackSimulationRound(
                 blockchainSystem,
                 _logOutputProvider.getLogOutputs(),
-                _maximumBlockchainLength);
+                _maximumBlockchainLength
+        );
 
-        //Run simulation
+        // Run simulation
         SimulationRoundResult roundResult = simulationRound.run();
         return _simulationRoundInterpretation.interpretRoundResult(roundResult);
     }

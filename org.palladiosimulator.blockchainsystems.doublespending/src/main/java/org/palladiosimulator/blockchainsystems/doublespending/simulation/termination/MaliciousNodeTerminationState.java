@@ -5,8 +5,6 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode;
 import org.palladiosimulator.blockchainsystems.doublespending.behavior.DSAttackPhaseChangedTraceEvent;
 
-import java.util.Objects;
-
 public class MaliciousNodeTerminationState implements NodeTerminationState {
 
     private final BlockchainSystemNode _node;
@@ -32,16 +30,16 @@ public class MaliciousNodeTerminationState implements NodeTerminationState {
     @Override
     public void onTraceEventOccurred(TraceEvent traceEvent) {
 
-        if (Objects.equals(traceEvent.getEventType(), BlockAppendedTraceEvent.EVENT_TYPE)) {
+        if (traceEvent.getEventType() == BlockAppendedTraceEvent.EVENT_TYPE) {
             BlockAppendedTraceEvent blockAppendedTraceEvent = (BlockAppendedTraceEvent) traceEvent;
 
             _chainLengthExceededCondition.onBlockAppended(blockAppendedTraceEvent.getBlockPosition());
         }
-        if (Objects.equals(traceEvent.getEventType(), DSAttackPhaseChangedTraceEvent.EVENT_TYPE)) {
+        if (traceEvent.getEventType() == DSAttackPhaseChangedTraceEvent.EVENT_TYPE) {
             assert traceEvent instanceof DSAttackPhaseChangedTraceEvent;
             DSAttackPhaseChangedTraceEvent dSAttackPhaseChangedTraceEvent = (DSAttackPhaseChangedTraceEvent) traceEvent;
 
-            if (Objects.equals(dSAttackPhaseChangedTraceEvent.getNewPhase(), "WaitForBlockDistributionPhase")) {
+            if (dSAttackPhaseChangedTraceEvent.getNewPhase() == "WaitForBlockDistributionPhase") {
                 _hasReachedFinalPhase = true;
             }
         }

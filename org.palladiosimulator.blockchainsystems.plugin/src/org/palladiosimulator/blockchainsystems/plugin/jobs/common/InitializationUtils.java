@@ -17,14 +17,16 @@ public final class InitializationUtils {
     private InitializationUtils() {
     }
 
-    public static long getMaximumAllowedBlockchainLengthFromConfig(ILaunchConfiguration configuration) throws NumberFormatException, CoreException {
+    public static long getMaximumAllowedBlockchainLengthFromConfig(ILaunchConfiguration configuration)
+            throws NumberFormatException, CoreException {
         return Long.parseLong(
                 configuration.getAttribute(
                         Attributes.SimulationTermination.MAX_BLOCKCHAIN_LENGTH_ATTRIBUTE,
                         Attributes.SimulationTermination.MAX_BLOCKCHAIN_LENGTH_ATTRIBUTE_DEFAULT));
     }
 
-    public static int getNumberOfMonteCarloSimulationRoundsFromConfig(ILaunchConfiguration configuration) throws NumberFormatException, CoreException {
+    public static int getNumberOfMonteCarloSimulationRoundsFromConfig(ILaunchConfiguration configuration)
+            throws NumberFormatException, CoreException {
         return Integer.parseInt(
                 configuration.getAttribute(
                         Attributes.SimulationType.NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS,
@@ -51,7 +53,8 @@ public final class InitializationUtils {
 
     }
 
-    public static BlockchainSystemFactory createBlockchainSystemFactory(ILaunchConfiguration configuration) throws NumberFormatException, CoreException {
+    public static BlockchainSystemFactory createBlockchainSystemFactory(ILaunchConfiguration configuration)
+            throws NumberFormatException, CoreException {
         BlockchainSystemModelLoader designModelLoader = new BlockchainSystemModelLoader();
 
         BlockchainSystem designBlockchainSystem = designModelLoader.load(
@@ -86,7 +89,8 @@ public final class InitializationUtils {
 
 
     // LogOutputProvider Utils
-    public static LogOutputProviderImpl createLogOutputProviderFromConfig(ILaunchConfiguration configuration) throws NumberFormatException, CoreException {
+    public static LogOutputProviderImpl createLogOutputProviderFromConfig(ILaunchConfiguration configuration)
+            throws NumberFormatException, CoreException {
         return new LogOutputProviderImpl(
                 configuration.getAttribute(
                         Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE,

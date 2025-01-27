@@ -12,44 +12,44 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.OrphanBl
 
 public class OrphanBlockPoolImpl extends BlockchainNodeObject implements OrphanBlockPool {
 
-	private final HashMap<String, Set<Block>> _orphanBlocks;
-	
-	public OrphanBlockPoolImpl() {
-		_orphanBlocks = new HashMap<String, Set<Block>>();
-	}
-	
-	@Override
-	public Set<Block> getBlocksByPreviousBlockHash(String previousBlockHash) {
-		return _orphanBlocks.getOrDefault(previousBlockHash, Collections.emptySet());
-	}
+    private final HashMap<String, Set<Block>> _orphanBlocks;
 
-	@Override
-	public void storeBlock(Block block) {
-		Set<Block> blockSet = _orphanBlocks.getOrDefault(block.getPreviousHash(), null);
-		if (blockSet == null) {
-			blockSet = new HashSet<Block>();
-			_orphanBlocks.put(block.getPreviousHash(), blockSet);
-		}
-		
-		blockSet.add(block);
-		
-		logBlockStoredEvent(block);
-	}
-	
-	private void logBlockStoredEvent(Block block) {
-		if (!getTraceEventLogger().isEventTypeEnabled(BlockStoredInOrphanPoolTraceEvent.EVENT_TYPE)) {
-			return;
-		}
-		
-		BlockStoredInOrphanPoolTraceEvent event = new BlockStoredInOrphanPoolTraceEvent(
-				getSimulationContext().getSystemClock().getCurrentTime(),
-				block);
-		
-		getTraceEventLogger().logEvent(event);
-	}
+    public OrphanBlockPoolImpl() {
+        _orphanBlocks = new HashMap<String, Set<Block>>();
+    }
 
-	@Override
-	public void dispatchEvent(Event event) {
-	}
+    @Override
+    public Set<Block> getBlocksByPreviousBlockHash(String previousBlockHash) {
+        return _orphanBlocks.getOrDefault(previousBlockHash, Collections.emptySet());
+    }
+
+    @Override
+    public void storeBlock(Block block) {
+        Set<Block> blockSet = _orphanBlocks.getOrDefault(block.getPreviousHash(), null);
+        if (blockSet == null) {
+            blockSet = new HashSet<Block>();
+            _orphanBlocks.put(block.getPreviousHash(), blockSet);
+        }
+
+        blockSet.add(block);
+
+        logBlockStoredEvent(block);
+    }
+
+    private void logBlockStoredEvent(Block block) {
+        if (!getTraceEventLogger().isEventTypeEnabled(BlockStoredInOrphanPoolTraceEvent.EVENT_TYPE)) {
+            return;
+        }
+
+        BlockStoredInOrphanPoolTraceEvent event = new BlockStoredInOrphanPoolTraceEvent(
+                getSimulationContext().getSystemClock().getCurrentTime(),
+                block);
+
+        getTraceEventLogger().logEvent(event);
+    }
+
+    @Override
+    public void dispatchEvent(Event event) {
+    }
 
 }

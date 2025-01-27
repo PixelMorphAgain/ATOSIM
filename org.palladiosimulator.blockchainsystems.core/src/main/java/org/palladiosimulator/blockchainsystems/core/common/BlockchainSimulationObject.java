@@ -12,10 +12,10 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
  * of a blockchain system and that are log origins.
  * It provides the necessary fields to hold trace event logger and simulation context
  * and implements their initialization.
- * It also also can be used as a log origin.
+ * It can also be used as a log origin.
  *
  * @author Yannik Sproll
- * @implNote Do not call the initializeLogger method on child classes of this class. The class sets up the correct trace event logger by itself when calling intialize.
+ * @implNote Do not call the initializeLogger method on child classes of this class. The class sets up the correct trace event logger by itself when calling initialize.
  */
 public abstract class BlockchainSimulationObject implements EventDispatchable, Traceable, TraceEventLogOrigin {
 

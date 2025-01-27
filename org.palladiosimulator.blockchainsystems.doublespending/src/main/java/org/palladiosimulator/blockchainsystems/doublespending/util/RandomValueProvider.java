@@ -57,7 +57,8 @@ public class RandomValueProvider<T> {
 
         double deviation = 1.0 - randomValuesSum;
         if (deviation > RANDOM_VALUES_SUM_MAX_DEVIATION) {
-            throw new IllegalArgumentException("The sum of the provided probabilities deviates more than allowed deviation maximum (0.005).");
+            throw new IllegalArgumentException(
+                    "The sum of the provided probabilities deviates more than allowed deviation maximum (0.005).");
         }
 
         TreeMap<Integer, RandomValueProviderItem<T>> items = new TreeMap<Integer, RandomValueProviderItem<T>>();

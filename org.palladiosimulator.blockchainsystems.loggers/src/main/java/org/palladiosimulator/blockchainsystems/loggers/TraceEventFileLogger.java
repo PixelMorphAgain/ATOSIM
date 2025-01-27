@@ -75,7 +75,7 @@ public class TraceEventFileLogger implements TraceEventLogOutput {
 
     @Override
     public void initialize() {
-        Path p = Path.of(_filePath, UUID.randomUUID().toString() + ".txt");
+        Path p = Path.of(_filePath, UUID.randomUUID() + ".txt");
 
         try {
             _outFileWriter = new BufferedWriter(new FileWriter(p.toString()));

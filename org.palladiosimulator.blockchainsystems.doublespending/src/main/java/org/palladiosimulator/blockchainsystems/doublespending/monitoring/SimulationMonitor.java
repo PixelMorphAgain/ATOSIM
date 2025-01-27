@@ -2,7 +2,6 @@ package org.palladiosimulator.blockchainsystems.doublespending.monitoring;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -43,7 +42,7 @@ public class SimulationMonitor implements TraceEventSubscriber, TerminationCondi
     }
 
     public void initializeNodes(Set<BlockchainSystemNode> nodes) {
-        nodes.stream().forEach(node -> {
+        nodes.forEach(node -> {
             if (TagUtils.isMaliciousNode(node)) {
                 MaliciousNodeTerminationState terminationState = new MaliciousNodeTerminationState(node);
                 _maliciousNodeTerminationStates.put(node.getId(), terminationState);
@@ -58,14 +57,14 @@ public class SimulationMonitor implements TraceEventSubscriber, TerminationCondi
 
     @Override
     public void onTraceEventOccurred(TraceEvent event, TraceEventLogOrigin logOrigin) {
-        if (Objects.equals(event.getEventType(), BlockMinedTraceEvent.EVENT_TYPE)) {
+        if (event.getEventType() == BlockMinedTraceEvent.EVENT_TYPE) {
             BlockMinedTraceEvent blockMinedTraceEvent = (BlockMinedTraceEvent) event;
 
             if (AttackerUtils.isBlockABlockForkedBlock(blockMinedTraceEvent.block())) {
                 _forkedBlocks.add(blockMinedTraceEvent.block());
             }
 
-        } else if (Objects.equals(event.getEventType(), BlockAppendedTraceEvent.EVENT_TYPE)) {
+        } else if (event.getEventType() == BlockAppendedTraceEvent.EVENT_TYPE) {
             BlockAppendedTraceEvent blockAppendedTraceEvent = (BlockAppendedTraceEvent) event;
 
             _maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition());

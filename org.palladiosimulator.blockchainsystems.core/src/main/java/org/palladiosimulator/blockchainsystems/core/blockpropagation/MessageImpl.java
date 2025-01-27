@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.core.blockpropagation;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message;
 
 public class MessageImpl implements Message {
-
     private final Object _content;
     private final String _contentType;
     private final int _size;
@@ -11,7 +10,8 @@ public class MessageImpl implements Message {
     public MessageImpl(
             Object content,
             String contentType,
-            int size) {
+            int size
+    ) {
         _content = content;
         _contentType = contentType;
         _size = size;

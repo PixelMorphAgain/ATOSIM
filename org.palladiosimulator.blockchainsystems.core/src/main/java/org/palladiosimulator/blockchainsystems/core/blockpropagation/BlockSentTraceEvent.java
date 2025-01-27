@@ -5,7 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint;
 
 public record BlockSentTraceEvent(
-        long occurenceTime,
+        long occurrenceTime,
         Block sentBlock,
         P2PNetworkEndpoint receivingEndpoint) implements TraceEvent {
 
@@ -13,7 +13,7 @@ public record BlockSentTraceEvent(
 
     @Override
     public long getOccurrenceTime() {
-        return occurenceTime;
+        return occurrenceTime;
     }
 
     public Block getSentBlock() {

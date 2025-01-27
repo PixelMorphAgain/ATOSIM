@@ -8,15 +8,15 @@ import org.palladiosimulator.blockchainsystems.doublespending.util.RandomValuePr
 
 public class RandomValueProviderTests {
 
-	@Test
-	public void TestTwoItems() {
-		HashMap<Integer, Double> values = new HashMap<Integer, Double>();
-		values.put(0, 0.5);
-		values.put(1, 0.5);
-		
-		RandomValueProvider<Integer> randomValueProvider = RandomValueProvider.create(values, RandomGenerator.of("Random"));
-		
-		Integer v1 = randomValueProvider.getValue();
-		Integer v2 = randomValueProvider.getValue();
-	}
+    @Test
+    public void TestTwoItems() {
+        HashMap<Integer, Double> values = new HashMap<Integer, Double>();
+        values.put(0, 0.5);
+        values.put(1, 0.5);
+
+        RandomValueProvider<Integer> randomValueProvider = RandomValueProvider.create(values, RandomGenerator.of("Random"));
+
+        Integer v1 = randomValueProvider.getValue();
+        Integer v2 = randomValueProvider.getValue();
+    }
 }

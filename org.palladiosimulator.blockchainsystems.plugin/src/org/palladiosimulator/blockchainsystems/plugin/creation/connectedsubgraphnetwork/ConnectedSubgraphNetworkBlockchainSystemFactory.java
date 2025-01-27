@@ -59,11 +59,13 @@ public class ConnectedSubgraphNetworkBlockchainSystemFactory implements Blockcha
                 _connectedSubgraphsTopology,
                 networkCreationResult.nodeIdToNodeTemplateIdMapping());
 
-        ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver = new ConnectedSubgraphNetworkNodeAllocationResolver(
-                _connectedSubgraphsTopology,
-                networkCreationResult.nodeIdToNodeTemplateIdMapping());
-        ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
-                _connectedSubgraphsTopology);
+        ConnectedSubgraphNetworkNodeAllocationResolver nodeAllocationResolver =
+                new ConnectedSubgraphNetworkNodeAllocationResolver(
+                        _connectedSubgraphsTopology,
+                        networkCreationResult.nodeIdToNodeTemplateIdMapping());
+        ConnectedSubgraphNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator =
+                new ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
+                        _connectedSubgraphsTopology);
 
         // Create factories based on information providers and meta-model
         BlockFactory blockFactory = createBlockFactory(_designBlockchainSystem);
@@ -129,8 +131,10 @@ public class ConnectedSubgraphNetworkBlockchainSystemFactory implements Blockcha
     }
 
 
-    private static BlockFactoryImpl createBlockFactory(org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem) {
-        BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize());
+    private static BlockFactoryImpl createBlockFactory(
+            org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem) {
+        BlockSizeValueProvider blockSizeValueProvider =
+                new BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize());
         return new BlockFactoryImpl(blockSizeValueProvider);
     }
 
@@ -144,7 +148,8 @@ public class ConnectedSubgraphNetworkBlockchainSystemFactory implements Blockcha
         Set<String> maliciousNodeIds = nodeIdToNodeTemplateIdMapping
                 .entrySet()
                 .stream()
-                .filter(x -> nodeTemplatesByIds.get(x.getValue()).getAllocation().getNodeSystem().getBehavior().getBehavior() == NodeBehavior.MALICIOUS)
+                .filter(x -> nodeTemplatesByIds.get(x.getValue()).getAllocation().getNodeSystem().getBehavior().getBehavior() ==
+                        NodeBehavior.MALICIOUS)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 

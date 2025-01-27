@@ -2,7 +2,6 @@ package org.palladiosimulator.blockchainsystems.doublespending.simulation.termin
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ import org.palladiosimulator.blockchainsystems.doublespending.behavior.AttackerU
 
 public class HonestNodeTerminationState implements NodeTerminationState {
 
-    private BlockchainSystemNode _node;
+    private final BlockchainSystemNode _node;
 
     private final HashMap<String, BTOState> _btoStates;
 
@@ -27,26 +26,28 @@ public class HonestNodeTerminationState implements NodeTerminationState {
 
     @Override
     public void onTraceEventOccurred(TraceEvent traceEvent) {
-        if (Objects.equals(traceEvent.getEventType(), BlockAppendedTraceEvent.EVENT_TYPE)) {
+        if (traceEvent.getEventType() == BlockAppendedTraceEvent.EVENT_TYPE) {
             BlockAppendedTraceEvent blockAppendedTraceEvent = (BlockAppendedTraceEvent) traceEvent;
 
             addBlock(
                     blockAppendedTraceEvent.getAppendedBlock(),
                     blockAppendedTraceEvent.getAppendedBlockType(),
-                    blockAppendedTraceEvent.blockPosition());
+                    blockAppendedTraceEvent.blockPosition()
+            );
 
-        } else if (Objects.equals(traceEvent.getEventType(), BlockTypeChangedTraceEvent.EVENT_TYPE)) {
+        } else if (traceEvent.getEventType() == BlockTypeChangedTraceEvent.EVENT_TYPE) {
             BlockTypeChangedTraceEvent blockTypeChangedTraceEvent = (BlockTypeChangedTraceEvent) traceEvent;
 
             onBlockTypeChanged(
                     blockTypeChangedTraceEvent.getBlock(),
-                    blockTypeChangedTraceEvent.getNewBlockType());
+                    blockTypeChangedTraceEvent.getNewBlockType()
+            );
         }
 
     }
 
     private void addHonestBlock(BlockState blockState) {
-        // Try add block ass successor of BTO
+        // Try to add block as successor of BTO
         BTOState btoState = _btoStates
                 .values()
                 .stream()
@@ -64,7 +65,9 @@ public class HonestNodeTerminationState implements NodeTerminationState {
     public void onBlockTypeChanged(Block block, BlockType newBlockType) {
         if (AttackerUtils.isBlockABlockToOverride(block)) {
 
-            if (!_btoStates.containsKey(block.getHash())) return;
+          if (!_btoStates.containsKey(block.getHash())) {
+            return;
+          }
 
             _btoStates.get(block.getHash()).onBTOBlockTypeChanged(newBlockType);
         }
@@ -80,9 +83,10 @@ public class HonestNodeTerminationState implements NodeTerminationState {
         if (AttackerUtils.isMaliciousBlock(block)
                 && AttackerUtils.isBlockABlockToOverride(block)) {
 
-            if (_btoStates.containsKey(blockState.getBlock().getHash())) {
-                return;
-            }
+          if (_btoStates.containsKey(blockState.getBlock().getHash())) {
+            return;
+          }
+
             // TODO: parametrize
             BTOState btoState = new BTOState(blockState, 3);
             _btoStates.put(blockState.getBlock().getHash(), btoState);
@@ -111,7 +115,6 @@ public class HonestNodeTerminationState implements NodeTerminationState {
         long btoForkLength = selectedBTOState.getNumberOfLongestChainSuccessors() + 1;
         long longestHonestSuccessorChainLength = getLongestSuccessorChainLength(honestSuccessorChains) + 1;
         long longestMaliciousSuccessorChainLength = getLongestSuccessorChainLength(malicoiusSuccessorChains) + 1;
-        ;
 
         if (longestMaliciousSuccessorChainLength > btoForkLength
                 && longestMaliciousSuccessorChainLength > longestHonestSuccessorChainLength) {
@@ -146,11 +149,12 @@ public class HonestNodeTerminationState implements NodeTerminationState {
         long longestHonestSuccessorChainLength = getLongestSuccessorChainLength(honestSuccessorChains) + 1;
         long longestMaliciousSuccessorChainLength = getLongestSuccessorChainLength(malicoiusSuccessorChains) + 1;
 
-        List<Long> longestLengths = List.of(btoForkLength, longestHonestSuccessorChainLength, longestMaliciousSuccessorChainLength)
-                .stream()
-                .sorted()
-                .limit(2)
-                .toList();
+        List<Long> longestLengths =
+                List.of(btoForkLength, longestHonestSuccessorChainLength, longestMaliciousSuccessorChainLength)
+                        .stream()
+                        .sorted()
+                        .limit(2)
+                        .toList();
 
         return Math.abs(longestLengths.get(0) - longestLengths.get(1)) >= distance;
     }
@@ -180,7 +184,8 @@ public class HonestNodeTerminationState implements NodeTerminationState {
         return _btoStates
                 .values()
                 .stream()
-                .min((x1, x2) -> Long.compare(x1.getBTO().getBlock().getBlockMinedTimestamp(), x2.getBTO().getBlock().getBlockMinedTimestamp()))
+                .min((x1, x2) -> Long.compare(x1.getBTO().getBlock().getBlockMinedTimestamp(),
+                        x2.getBTO().getBlock().getBlockMinedTimestamp()))
                 .orElse(null);
     }
 }

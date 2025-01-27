@@ -5,25 +5,25 @@ import org.palladiosimulator.blockchainsystems.doublespending.simulation.MonteCa
 
 public class MonteCarloSimulationProgressMonitorAdapter implements MonteCarloSimulationProgressMonitor {
 
-	private final IProgressMonitor _progressMonitor;
-	
-	public MonteCarloSimulationProgressMonitorAdapter(IProgressMonitor progressMonitor) {
-		_progressMonitor = progressMonitor;
-	}
-	
-	@Override
-	public void onSimulationStarted(long numberOfSimulationRounds) {
-		_progressMonitor.beginTask("Running Monte-Carlo Simulation", (int) numberOfSimulationRounds);
-	}
+    private final IProgressMonitor _progressMonitor;
 
-	@Override
-	public synchronized void  onSimulationRoundFinished()  {
-		_progressMonitor.worked(1);
-	}
+    public MonteCarloSimulationProgressMonitorAdapter(IProgressMonitor progressMonitor) {
+        _progressMonitor = progressMonitor;
+    }
 
-	@Override
-	public void onSimulationFinished() {
-		_progressMonitor.done();
-	}
+    @Override
+    public void onSimulationStarted(long numberOfSimulationRounds) {
+        _progressMonitor.beginTask("Running Monte-Carlo Simulation", (int) numberOfSimulationRounds);
+    }
+
+    @Override
+    public synchronized void onSimulationRoundFinished() {
+        _progressMonitor.worked(1);
+    }
+
+    @Override
+    public void onSimulationFinished() {
+        _progressMonitor.done();
+    }
 
 }

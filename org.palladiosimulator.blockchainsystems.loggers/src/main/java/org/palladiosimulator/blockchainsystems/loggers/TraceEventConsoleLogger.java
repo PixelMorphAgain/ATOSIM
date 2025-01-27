@@ -25,7 +25,7 @@ public class TraceEventConsoleLogger implements TraceEventLogOutput {
 
         traceEvent.formatDetails(_eventFormatBuilder);
 
-        System.out.println(_eventFormatBuilder.toString());
+        System.out.println(_eventFormatBuilder);
 
     }
 

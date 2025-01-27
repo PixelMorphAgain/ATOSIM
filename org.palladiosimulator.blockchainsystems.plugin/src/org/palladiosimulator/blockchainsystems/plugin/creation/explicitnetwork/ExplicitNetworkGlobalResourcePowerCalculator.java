@@ -7,30 +7,30 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.GlobalResourcePow
 
 public class ExplicitNetworkGlobalResourcePowerCalculator implements GlobalResourcePowerCalculator {
 
-	private final ExplicitNetworkTopology _networkTopology;
-	private final double _globalResourcePower;
-	
-	public ExplicitNetworkGlobalResourcePowerCalculator(ExplicitNetworkTopology networkTopology) {
-		_networkTopology = networkTopology;
-		
-		_globalResourcePower = _networkTopology
-			.getNodes()
-			.stream()
-			.mapToDouble(x -> getResourcePowerOfNode(x))
-			.sum();
-	}
-	
-	@Override
-	public double calculateGlobalResourcePower() {
-		return _globalResourcePower;
-	}
+    private final ExplicitNetworkTopology _networkTopology;
+    private final double _globalResourcePower;
 
-	private static double getResourcePowerOfNode(Node node) {
-		return node.getAllocation()
-				.getAllocationContexts()
-				.stream()
-				.filter(y -> y.getAssemblyContext().getEncapsulatedComponent() instanceof MiningProcessComponent)
-				.mapToDouble(y -> y.getResourceContainer().getResourcePower())
-				.sum();
-	}
+    public ExplicitNetworkGlobalResourcePowerCalculator(ExplicitNetworkTopology networkTopology) {
+        _networkTopology = networkTopology;
+
+        _globalResourcePower = _networkTopology
+                .getNodes()
+                .stream()
+                .mapToDouble(x -> getResourcePowerOfNode(x))
+                .sum();
+    }
+
+    @Override
+    public double calculateGlobalResourcePower() {
+        return _globalResourcePower;
+    }
+
+    private static double getResourcePowerOfNode(Node node) {
+        return node.getAllocation()
+                .getAllocationContexts()
+                .stream()
+                .filter(y -> y.getAssemblyContext().getEncapsulatedComponent() instanceof MiningProcessComponent)
+                .mapToDouble(y -> y.getResourceContainer().getResourcePower())
+                .sum();
+    }
 }

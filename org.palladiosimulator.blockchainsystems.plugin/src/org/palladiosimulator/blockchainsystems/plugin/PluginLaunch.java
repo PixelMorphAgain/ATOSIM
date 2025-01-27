@@ -28,7 +28,8 @@ public class PluginLaunch extends LaunchConfigurationDelegate {
     }
 
     // SimulationConfig Util
-    public static SelectedSimulationType getSelectedSimulationTypeFromConfig(ILaunchConfiguration configuration) throws CoreException {
+    public static SelectedSimulationType getSelectedSimulationTypeFromConfig(ILaunchConfiguration configuration)
+            throws CoreException {
         return Enum.valueOf(
                 SelectedSimulationType.class,
                 configuration.getAttribute(

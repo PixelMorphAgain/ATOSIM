@@ -6,15 +6,15 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 public class BlockchainFactoryImpl implements BlockchainFactory {
 
-	@Override
-	public Blockchain createBlockchain(Block genesisBlock, String nodeId) {
-		BlockchainElement genesisBlockchainElement = new BlockchainElement(
-				genesisBlock, 
-				null, 
-				BlockchainElementType.Included,
-				1);
-		
-		return new BlockchainImpl(genesisBlockchainElement);
-	}
+    @Override
+    public Blockchain createBlockchain(Block genesisBlock, String nodeId) {
+        BlockchainElement genesisBlockchainElement = new BlockchainElement(
+                genesisBlock,
+                null,
+                BlockchainElementType.Included,
+                1);
+
+        return new BlockchainImpl(genesisBlockchainElement);
+    }
 
 }

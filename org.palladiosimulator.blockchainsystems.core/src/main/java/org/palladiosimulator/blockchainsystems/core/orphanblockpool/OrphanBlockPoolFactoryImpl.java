@@ -5,9 +5,9 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.OrphanBl
 
 public class OrphanBlockPoolFactoryImpl implements OrphanBlockPoolFactory {
 
-	@Override
-	public OrphanBlockPool createOrphanBlockPool(String nodeId) {
-		return new OrphanBlockPoolImpl();
-	}
+    @Override
+    public OrphanBlockPool createOrphanBlockPool(String nodeId) {
+        return new OrphanBlockPoolImpl();
+    }
 
 }

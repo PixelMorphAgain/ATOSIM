@@ -10,7 +10,8 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public class TraceEventLoggerImpl implements TraceEventLogger {
 
-    private static final Comparator<TraceEvent> EVENT_COMPARATOR = ((TraceEvent tev1, TraceEvent tev2) -> Long.compare(tev1.getOccurrenceTime(), tev2.getOccurrenceTime()));
+    private static final Comparator<TraceEvent> EVENT_COMPARATOR =
+            ((TraceEvent tev1, TraceEvent tev2) -> Long.compare(tev1.getOccurrenceTime(), tev2.getOccurrenceTime()));
 
     private final TraceEventLogOrigin _logOrigin;
     private final TreeSet<TraceEvent> _events;

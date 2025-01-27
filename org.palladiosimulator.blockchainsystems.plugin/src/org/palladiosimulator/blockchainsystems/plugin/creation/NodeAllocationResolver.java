@@ -4,5 +4,5 @@ import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocatio
 
 public interface NodeAllocationResolver {
 
-	NodeAllocation getNodeAllocation(String nodeId);
+    NodeAllocation getNodeAllocation(String nodeId);
 }

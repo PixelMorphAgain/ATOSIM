@@ -5,7 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType;
 
 public record BlockAppendedTraceEvent(
-        long occurenceTime,
+        long occurrenceTime,
         Block appendedBlock,
         long blockPosition,
         Block previousBlock,
@@ -16,7 +16,7 @@ public record BlockAppendedTraceEvent(
 
     @Override
     public long getOccurrenceTime() {
-        return occurenceTime;
+        return occurrenceTime;
     }
 
     public Block getAppendedBlock() {

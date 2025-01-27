@@ -21,7 +21,9 @@ public class BlockToOverrideStorageItem {
     }
 
     public void addBlock(Block block) {
-        if (!Objects.equals(block.getPreviousHash(), _attackOriginBlockHash)) return;
+        if (block.getPreviousHash() != _attackOriginBlockHash) {
+            return;
+        }
         _blocksToOverride.add(block);
     }
 

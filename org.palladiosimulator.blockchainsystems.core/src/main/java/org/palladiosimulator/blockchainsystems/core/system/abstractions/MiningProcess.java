@@ -43,7 +43,7 @@ public interface MiningProcess extends Traceable {
     /**
      * Interrupts the mining of the current process and starts the mining of a new block.
      */
-    void restartMinig();
+    void restartMining();
 
     /**
      * Stops the mining of new blocks.

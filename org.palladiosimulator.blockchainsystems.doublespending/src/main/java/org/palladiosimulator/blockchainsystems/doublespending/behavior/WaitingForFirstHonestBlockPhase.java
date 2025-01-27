@@ -43,7 +43,7 @@ public class WaitingForFirstHonestBlockPhase implements DoubleSpendingAttackPhas
             // Append. Since this is the first block it musst be appended as an included block
             boolean hasBlockchainNewLongestBranch = BehaviorUtils.appendBlockToBlockchain(block, context);
 
-            context.getBlockPropagationStrategy().distributeBlock(block);
+            context.getBlockPropagationStrategy().distribute(block);
 
             if (hasBlockchainNewLongestBranch) {
                 _nextPhase = new MineBlockToOverwritePhase(_attackBlockStorage, _maliciousNodesIdProvider);

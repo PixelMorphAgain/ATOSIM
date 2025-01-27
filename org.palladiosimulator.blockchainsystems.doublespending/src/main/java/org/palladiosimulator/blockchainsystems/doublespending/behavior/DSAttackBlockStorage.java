@@ -35,7 +35,8 @@ public class DSAttackBlockStorage {
                 .stream()
                 .filter(x -> x.getValue().attackOriginBlockHash() == attackOriginBlockHash)
                 // Note that the x1 and x2 are switched in the comparison to achieve reversed sort order
-                .sorted((x1, x2) -> Integer.compare(x2.getValue().attackOriginBlockOffset(), x1.getValue().attackOriginBlockOffset()))
+                .sorted((x1, x2) -> Integer.compare(x2.getValue().attackOriginBlockOffset(),
+                        x1.getValue().attackOriginBlockOffset()))
                 .map(Entry::getKey)
                 .findFirst()
                 .orElse(null);
@@ -52,7 +53,8 @@ public class DSAttackBlockStorage {
         Entry<String, BlockToOverrideStorageItem> entry = _blockToOverrideStorageItems
                 .entrySet()
                 .stream()
-                .min((b1, b2) -> Long.compare(b1.getValue().getFirstMinedBlock().getBlockMinedTimestamp(), b2.getValue().getFirstMinedBlock().getBlockMinedTimestamp()))
+                .min((b1, b2) -> Long.compare(b1.getValue().getFirstMinedBlock().getBlockMinedTimestamp(),
+                        b2.getValue().getFirstMinedBlock().getBlockMinedTimestamp()))
                 .get(); // Call get, because it is assumed that the hashmap is not empty (check in the only method that calls this method)
 
         return entry.getKey();

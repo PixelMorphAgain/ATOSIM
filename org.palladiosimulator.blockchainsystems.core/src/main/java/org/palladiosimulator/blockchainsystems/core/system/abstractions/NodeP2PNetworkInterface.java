@@ -40,5 +40,5 @@ public interface NodeP2PNetworkInterface extends P2PNetworkEndpoint {
      *
      * @param onMessageReceivedCallback the callback to be set
      */
-    public void setOnReceivedCallback(BiConsumer<Message, P2PNetworkEndpoint> onMessageReceivedCallback);
+    void setOnReceivedCallback(BiConsumer<Message, P2PNetworkEndpoint> onMessageReceivedCallback);
 }

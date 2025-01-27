@@ -2,5 +2,5 @@ package org.palladiosimulator.blockchainsystems.doublespending.simulation.termin
 
 public interface SimulationWinnerVoter {
 
-	SimulationWinnerVote getWinnerVote();
+    SimulationWinnerVote getWinnerVote();
 }

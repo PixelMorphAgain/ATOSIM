@@ -17,54 +17,54 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.ThroughputValuePr
 
 public class ExplicitTopologyP2PNetworkFactory implements P2PNetworkFactory {
 
-	private final ExplicitNetworkTopology _topology;
-	
-	public ExplicitTopologyP2PNetworkFactory(ExplicitNetworkTopology topology) {
-		_topology = topology;
-	}
-	
-	@Override
-	public P2PNetworkCreationResult createP2PNetwork() {
-		Graph<P2PNode, P2PLink> networkGraph = new SimpleGraph<P2PNode, P2PLink>(P2PLink.class);
-		
-		
-		HashMap<String, P2PNode> p2pNodeMappings = new HashMap<String, P2PNode>();
-		
-		// Add nodes to the graph
-		for (Node designNode : _topology.getNodes()) {
-			P2PNode nodeImpl = new P2PNode(designNode.getId());
-			
-			p2pNodeMappings.put(designNode.getId(), nodeImpl);
-			networkGraph.addVertex(nodeImpl);
-		}
-		
-		// Add links to the graph
-		for (Link designLink : _topology.getLinks()) {
-			Node firstConnectedDesignNode = designLink.getConnectedNodes().get(0);
-			Node secondConnectedDesignNode = designLink.getConnectedNodes().get(1);
-			
-			P2PNode firstP2PNode = p2pNodeMappings.get(firstConnectedDesignNode.getId());
-			P2PNode secondP2PNode = p2pNodeMappings.get(secondConnectedDesignNode.getId());
-			
-			P2PLink link = new P2PLink(
-					new LatencyValueProvider(designLink.getSpecification().getLatency()),
-					new ThroughputValueProvider(designLink.getSpecification().getThroughput()),
-					firstP2PNode,
-					secondP2PNode);
-			
-			networkGraph.addEdge(
-					firstP2PNode,
-					secondP2PNode,
-					link);
-		}
-		
-		P2PNetworkImpl networkImpl = P2PNetworkImpl.create(networkGraph);
-		
-		// Initialize the nodes with a reference to the network
-		for (P2PNode p2pNode : p2pNodeMappings.values()) {
-			p2pNode.initNetwork(networkImpl);
-		}
-		
-		return new ExplicitP2PNetworkCreationResult(networkImpl);
-	}
+    private final ExplicitNetworkTopology _topology;
+
+    public ExplicitTopologyP2PNetworkFactory(ExplicitNetworkTopology topology) {
+        _topology = topology;
+    }
+
+    @Override
+    public P2PNetworkCreationResult createP2PNetwork() {
+        Graph<P2PNode, P2PLink> networkGraph = new SimpleGraph<P2PNode, P2PLink>(P2PLink.class);
+
+
+        HashMap<String, P2PNode> p2pNodeMappings = new HashMap<String, P2PNode>();
+
+        // Add nodes to the graph
+        for (Node designNode : _topology.getNodes()) {
+            P2PNode nodeImpl = new P2PNode(designNode.getId());
+
+            p2pNodeMappings.put(designNode.getId(), nodeImpl);
+            networkGraph.addVertex(nodeImpl);
+        }
+
+        // Add links to the graph
+        for (Link designLink : _topology.getLinks()) {
+            Node firstConnectedDesignNode = designLink.getConnectedNodes().get(0);
+            Node secondConnectedDesignNode = designLink.getConnectedNodes().get(1);
+
+            P2PNode firstP2PNode = p2pNodeMappings.get(firstConnectedDesignNode.getId());
+            P2PNode secondP2PNode = p2pNodeMappings.get(secondConnectedDesignNode.getId());
+
+            P2PLink link = new P2PLink(
+                    new LatencyValueProvider(designLink.getSpecification().getLatency()),
+                    new ThroughputValueProvider(designLink.getSpecification().getThroughput()),
+                    firstP2PNode,
+                    secondP2PNode);
+
+            networkGraph.addEdge(
+                    firstP2PNode,
+                    secondP2PNode,
+                    link);
+        }
+
+        P2PNetworkImpl networkImpl = P2PNetworkImpl.create(networkGraph);
+
+        // Initialize the nodes with a reference to the network
+        for (P2PNode p2pNode : p2pNodeMappings.values()) {
+            p2pNode.initNetwork(networkImpl);
+        }
+
+        return new ExplicitP2PNetworkCreationResult(networkImpl);
+    }
 }

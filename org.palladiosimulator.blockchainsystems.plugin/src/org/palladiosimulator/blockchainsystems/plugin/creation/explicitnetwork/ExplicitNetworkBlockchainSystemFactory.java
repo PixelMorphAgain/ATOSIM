@@ -52,8 +52,9 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
 
         ExplicitNetworkNodeAllocationResolver nodeAllocationResolver = new ExplicitNetworkNodeAllocationResolver(
                 _explicitTopology);
-        ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ExplicitNetworkGlobalResourcePowerCalculator(
-                _explicitTopology);
+        ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator =
+                new ExplicitNetworkGlobalResourcePowerCalculator(
+                        _explicitTopology);
         MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
                 _explicitTopology);
 
@@ -132,7 +133,8 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
     }
 
     public BlockFactoryImpl createBlockFactory() {
-        BlockSizeValueProvider blockSizeValueProvider = new BlockSizeValueProvider(_designBlockchainSystem.getSpecification().getMeanBlockSize());
+        BlockSizeValueProvider blockSizeValueProvider =
+                new BlockSizeValueProvider(_designBlockchainSystem.getSpecification().getMeanBlockSize());
         return new BlockFactoryImpl(blockSizeValueProvider);
     }
 

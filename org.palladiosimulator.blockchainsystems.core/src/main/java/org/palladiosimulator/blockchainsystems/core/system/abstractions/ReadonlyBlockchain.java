@@ -13,7 +13,7 @@ public interface ReadonlyBlockchain {
     /**
      * Returns a set of the latest blocks of the blockchain.
      * If the blockchain is forked, this set contains more than one block.
-     * Otherwise it contains only one block.
+     * Otherwise, it contains only one block.
      *
      * @return set of the latest blocks in the blockchain
      */
@@ -59,7 +59,7 @@ public interface ReadonlyBlockchain {
 
     /**
      * Returns the block with the specified hash if it is contained in the blockchain.
-     * Otherwise it returns null.
+     * Otherwise, it returns null.
      *
      * @param hash the block identifier hash
      * @return the block with specified hash as identifier
@@ -68,7 +68,7 @@ public interface ReadonlyBlockchain {
 
     /**
      * Returns all successor blocks the immediately follow the block with the specified hash if the block is contained in the blockchain.
-     * Otherwise returns null.
+     * Otherwise, returns null.
      *
      * @param hash the block identifier hash
      * @return set of all immediate successor blocks
@@ -77,7 +77,7 @@ public interface ReadonlyBlockchain {
 
     /**
      * Returns all successor blocks of the block with the specified hash if the block is contained in the blockchain.
-     * Otherwise returns null.
+     * Otherwise, returns null.
      *
      * @param hash the block identifier hash
      * @return set of all successor blocks

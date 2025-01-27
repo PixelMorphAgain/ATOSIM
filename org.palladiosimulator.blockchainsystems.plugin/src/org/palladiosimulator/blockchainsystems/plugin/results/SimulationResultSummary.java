@@ -66,7 +66,9 @@ public class SimulationResultSummary {
 
         for (String line : serializedSummary.lines().toList()) {
             String[] parts = line.split(": ", 2);
-            if (parts.length != 2) continue; // Skip malformed lines
+            if (parts.length != 2) {
+                continue; // Skip malformed lines
+            }
 
             switch (parts[0]) {
                 case "SimulationType":
@@ -86,7 +88,8 @@ public class SimulationResultSummary {
                     break;
             }
         }
-        return new SimulationResultSummary(simulationType, attackerWonRounds, systemWonRounds, unambiguousRounds, attackSuccessProbability);
+        return new SimulationResultSummary(simulationType, attackerWonRounds, systemWonRounds, unambiguousRounds,
+                attackSuccessProbability);
     }
 
     public Long getAttackerWonRounds() {

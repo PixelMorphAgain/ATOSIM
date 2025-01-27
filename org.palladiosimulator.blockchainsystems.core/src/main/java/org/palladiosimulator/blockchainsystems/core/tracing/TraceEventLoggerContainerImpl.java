@@ -44,7 +44,9 @@ public class TraceEventLoggerContainerImpl implements TraceEventLoggerContainer 
 
     @Override
     public void createTraceEventLogger(TraceEventLogOrigin logOrigin) {
-        if (_loggers.containsKey(logOrigin.getId())) return;
+        if (_loggers.containsKey(logOrigin.getId())) {
+            return;
+        }
 
         TraceEventLoggerImpl loggerImpl = new TraceEventLoggerImpl(logOrigin, _traceEventConfiguration);
         loggerImpl.setTraceEventCalback(this::notifySubscribers);

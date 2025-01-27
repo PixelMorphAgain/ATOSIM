@@ -29,7 +29,8 @@ public class DoubleSpendingAttackSimulationRound {
     public DoubleSpendingAttackSimulationRound(
             BlockchainSystem blockchainSystem,
             Set<TraceEventLogOutput> logOutputs,
-            long maxBlockchainLength) {
+            long maxBlockchainLength
+    ) {
         _clock = new SimulationClock();
         _monitor = new SimulationMonitor(new LongestChainExceededMaxLengthCondition(maxBlockchainLength));
         _eventCoordinator = new EventCoordinatorImpl(_clock, _monitor);
@@ -38,7 +39,8 @@ public class DoubleSpendingAttackSimulationRound {
         _context = new SimulationContextImpl(
                 _eventCoordinator,
                 _clock,
-                _traceEventLoggerContainer);
+                _traceEventLoggerContainer
+        );
 
         _logOutputs = logOutputs;
         _blockchainSystem = blockchainSystem;
@@ -48,10 +50,10 @@ public class DoubleSpendingAttackSimulationRound {
     }
 
     public SimulationRoundResult run() {
-        //Initialize log outputs
+        // Initialize log outputs
         _logOutputs.forEach(TraceEventLogOutput::initialize);
 
-        //Initialize simulation monitor
+        // Initialize simulation monitor
         _monitor.initializeNodes(_blockchainSystem.getNodes());
 
         // Initialize blockchain system
@@ -63,7 +65,7 @@ public class DoubleSpendingAttackSimulationRound {
         // Clean up the blockchain system
         _blockchainSystem.cleanup();
 
-        // Clean up the log ouptputs
+        // Clean up the log outputs
         _logOutputs.forEach(TraceEventLogOutput::cleanUp);
 
 

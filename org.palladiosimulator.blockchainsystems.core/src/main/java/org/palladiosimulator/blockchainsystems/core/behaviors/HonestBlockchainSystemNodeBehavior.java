@@ -22,10 +22,10 @@ public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject imp
 
             boolean hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context);
             if (hasNewLongestChain) {
-                context.getMiningProcess().restartMinig();
+                context.getMiningProcess().restartMining();
             }
 
-            context.getBlockPropagationStrategy().distributeBlock(block); // Blocks are distributed too often
+            context.getBlockPropagationStrategy().distribute(block); // Blocks are distributed too often
         }
     }
 
@@ -33,7 +33,7 @@ public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject imp
     public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
         BehaviorUtils.appendBlockToBlockchain(block, context);
 
-        context.getBlockPropagationStrategy().distributeBlock(block);
+        context.getBlockPropagationStrategy().distribute(block);
     }
 
     @Override
@@ -44,7 +44,6 @@ public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject imp
                 context.getId(),
                 blockMinedAt);
     }
-
 
     @Override
     public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {

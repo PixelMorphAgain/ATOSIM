@@ -5,7 +5,8 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 
 public record BlockMinedTraceEvent(
         long occurrenceTime,
-        Block block) implements TraceEvent {
+        Block block
+) implements TraceEvent {
 
     public static final String EVENT_TYPE = "BlockMinedTraceEvent";
 

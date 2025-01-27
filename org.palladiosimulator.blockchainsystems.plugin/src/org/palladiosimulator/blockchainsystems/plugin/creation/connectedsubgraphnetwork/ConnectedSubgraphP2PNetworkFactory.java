@@ -38,7 +38,8 @@ public class ConnectedSubgraphP2PNetworkFactory implements P2PNetworkFactory {
 
         HashMap<String, HashSet<P2PNode>> subgraphIdToSubgraphNodesMapping = new HashMap<String, HashSet<P2PNode>>();
         HashMap<String, HashSet<P2PNode>> subGraphIdToProxyNodesMapping = new HashMap<String, HashSet<P2PNode>>();
-        HashMap<String, SubgraphSpecification> subGraphIdToLinkSpecificationMapping = new HashMap<String, SubgraphSpecification>();
+        HashMap<String, SubgraphSpecification> subGraphIdToLinkSpecificationMapping =
+                new HashMap<String, SubgraphSpecification>();
 
         // Fill mappings and create P2PNode instances
         for (SubgraphSpecification subgraphSpec : _topology.getSubgraphs()) {
@@ -83,7 +84,8 @@ public class ConnectedSubgraphP2PNetworkFactory implements P2PNetworkFactory {
             // Get link specification for subgraph internal links
             LinkSpecification subgraphLinkSpecification = subgraphSpec.getLinkSpecification();
             LatencyValueProvider latencyValueProvider = new LatencyValueProvider(subgraphLinkSpecification.getLatency());
-            ThroughputValueProvider throughputValueProvider = new ThroughputValueProvider(subgraphLinkSpecification.getThroughput());
+            ThroughputValueProvider throughputValueProvider =
+                    new ThroughputValueProvider(subgraphLinkSpecification.getThroughput());
 
             //Create spanning tree in subgraph
             for (int i = 0; i < subgraphNodes.length - 1; i++) {
@@ -144,11 +146,13 @@ public class ConnectedSubgraphP2PNetworkFactory implements P2PNetworkFactory {
             SubgraphSpecification secondSubgraphSpec = subgraphLink.getConnectedSubgraphs().get(1);
 
             P2PNode[] firstSubgraphProxies = subGraphIdToProxyNodesMapping.get(firstSubgraphSpec.getId()).toArray(P2PNode[]::new);
-            P2PNode[] secondSubgraphJProxies = subGraphIdToProxyNodesMapping.get(secondSubgraphSpec.getId()).toArray(P2PNode[]::new);
+            P2PNode[] secondSubgraphJProxies =
+                    subGraphIdToProxyNodesMapping.get(secondSubgraphSpec.getId()).toArray(P2PNode[]::new);
 
             LinkSpecification subgraphLinkSpecification = subgraphLink.getSpecification();
             LatencyValueProvider latencyValueProvider = new LatencyValueProvider(subgraphLinkSpecification.getLatency());
-            ThroughputValueProvider throughputValueProvider = new ThroughputValueProvider(subgraphLinkSpecification.getThroughput());
+            ThroughputValueProvider throughputValueProvider =
+                    new ThroughputValueProvider(subgraphLinkSpecification.getThroughput());
 
 
             for (P2PNode firstSubgraphProxy : firstSubgraphProxies) {

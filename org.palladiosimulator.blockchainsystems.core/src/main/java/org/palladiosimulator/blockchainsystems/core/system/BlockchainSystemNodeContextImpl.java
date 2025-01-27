@@ -1,7 +1,8 @@
 package org.palladiosimulator.blockchainsystems.core.system;
 
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockFactory;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockPropagationStrategy;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext;
@@ -18,7 +19,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.OrphanBl
 public class BlockchainSystemNodeContextImpl implements BlockchainSystemNodeContext {
 
     private final String _id;
-    private final BlockPropagationStrategy _blockPropagationStrategy;
+    private final PropagationStrategy<Block> _blockPropagationStrategy;
     private final NodeP2PNetworkInterface _networkInterface;
     private final MiningProcess _miningProcess;
     private final Blockchain _blockchain;
@@ -28,7 +29,7 @@ public class BlockchainSystemNodeContextImpl implements BlockchainSystemNodeCont
 
     public BlockchainSystemNodeContextImpl(
             String id,
-            BlockPropagationStrategy blockPropagationStrategy,
+            PropagationStrategy<Block> blockPropagationStrategy,
             NodeP2PNetworkInterface networkInterface,
             MiningProcess miningProcess,
             Blockchain blockchain,
@@ -51,7 +52,7 @@ public class BlockchainSystemNodeContextImpl implements BlockchainSystemNodeCont
     }
 
     @Override
-    public BlockPropagationStrategy getBlockPropagationStrategy() {
+    public PropagationStrategy<Block> getBlockPropagationStrategy() {
         return _blockPropagationStrategy;
     }
 

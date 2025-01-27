@@ -47,7 +47,8 @@ public class MonteCarloDoubleSpendingAttackSimulation {
         return new MonteCarloDoubleSpendingAttackSimulationResult(
                 results.stream().filter(x -> x == InterpretedResult.AttackerWon).count(),
                 results.stream().filter(x -> x == InterpretedResult.SystemWon).count(),
-                results.stream().filter(x -> x == InterpretedResult.Unambiguous).count());
+                results.stream().filter(x -> x == InterpretedResult.Unambiguous).count()
+        );
     }
 
     private SimulationRoundResult performSimulationRun() {
@@ -57,7 +58,8 @@ public class MonteCarloDoubleSpendingAttackSimulation {
         DoubleSpendingAttackSimulationRound simulationRound = new DoubleSpendingAttackSimulationRound(
                 blockchainSystem,
                 _logOutputProvider.getLogOutputs(),
-                _maximumBlockchainLength);
+                _maximumBlockchainLength
+        );
 
         //Run simulation
         SimulationRoundResult result = simulationRound.run();

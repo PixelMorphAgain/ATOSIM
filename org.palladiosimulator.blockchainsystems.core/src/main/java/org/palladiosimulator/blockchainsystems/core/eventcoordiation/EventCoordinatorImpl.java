@@ -12,9 +12,10 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.SystemCl
 
 public class EventCoordinatorImpl implements EventCoordinator {
 
-    private static final Comparator<Event> EVENT_TIME_COMPARATOR = ((Event e1, Event e2) -> Long.compare(e1.getOccurrenceTime(), e2.getOccurrenceTime()));
+    private static final Comparator<Event> EVENT_TIME_COMPARATOR =
+            ((Event e1, Event e2) -> Long.compare(e1.getOccurrenceTime(), e2.getOccurrenceTime()));
 
-    private SystemClockControl _clock;
+    private final SystemClockControl _clock;
     private final TreeMap<Long, EffectsTimeSlice> _eventTimeSlices;
     private final HashMap<EventDispatchable, TreeSet<Event>> _eventsPerOrigin;
     private final TerminationCondition _terminationCondition;
@@ -41,14 +42,18 @@ public class EventCoordinatorImpl implements EventCoordinator {
     }
 
     private void purgeProcessedSlices() {
-        if (_eventTimeSlices.isEmpty()) return;
+        if (_eventTimeSlices.isEmpty()) {
+            return;
+        }
 
         Long firstTimestamp = _eventTimeSlices.firstKey();
 
         while (firstTimestamp != null && firstTimestamp <= _clock.getCurrentTime()) {
             removeEventsAt(firstTimestamp);
 
-            if (_eventTimeSlices.isEmpty()) break;
+            if (_eventTimeSlices.isEmpty()) {
+                break;
+            }
 
             firstTimestamp = _eventTimeSlices.firstKey();
         }
@@ -73,7 +78,9 @@ public class EventCoordinatorImpl implements EventCoordinator {
         long eventOccurrenceTime = _clock.getCurrentTime();
         EffectsTimeSlice currentSlice = _eventTimeSlices.get(eventOccurrenceTime);
 
-        if (currentSlice == null) return;
+        if (currentSlice == null) {
+            return;
+        }
 
         for (Event event : currentSlice.getEvents()) {
             dispatchEvent(event);
@@ -81,7 +88,9 @@ public class EventCoordinatorImpl implements EventCoordinator {
     }
 
     private void advanceCurrentTime() {
-        if (_eventTimeSlices.isEmpty()) return;
+        if (_eventTimeSlices.isEmpty()) {
+            return;
+        }
 
         long nextEventTime = _eventTimeSlices.firstKey();
         _clock.progressClockTo(nextEventTime);

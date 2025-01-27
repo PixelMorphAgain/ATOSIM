@@ -61,7 +61,7 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
     /*
      * Validator
      */
-    private ISelectionStatusValidator validator = new ISelectionStatusValidator() {
+    private final ISelectionStatusValidator validator = new ISelectionStatusValidator() {
         public IStatus validate(Object[] selection) {
             return selection.length == 1 && selection[0] instanceof IFile
                     && checkExtension(((IFile) selection[0]).getFileExtension()) ? OK : ERROR;
@@ -118,7 +118,9 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
      * Check file extension
      */
     private boolean checkExtension(String name) {
-        if (name.equals("*")) return true;
+        if (name.equals("*")) {
+            return true;
+        }
 
         for (String extension : extensions) {
             if (extension.equals(name)) {

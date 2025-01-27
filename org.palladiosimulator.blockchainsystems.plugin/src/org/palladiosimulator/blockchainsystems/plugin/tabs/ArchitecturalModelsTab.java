@@ -34,38 +34,38 @@ import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
 
 public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
 
-	private static final String ECLIPSE_PLATFORM_URI_PREFIX = "platform:/resource";
-	
-	private Composite _parent;
-	
-	private Text _topologyFilePathText;
-	private Button _blockchainSystemFileFromFilesystemSelectionButton;
-	private Button _blockchainSystemFileFromWorkspaceSelectionButton;
-	
-	private Text _simulationResultsDirectoryPath;
-	private Button _simulationResultsDirectoryPathFromFilesystemSelectionButton;
-	
-	@Override
-	public void createControl(Composite parent) {
-		_parent = parent;
-		
-		Composite root = new Composite(parent, SWT.BORDER);
+    private static final String ECLIPSE_PLATFORM_URI_PREFIX = "platform:/resource";
+
+    private Composite _parent;
+
+    private Text _topologyFilePathText;
+    private Button _blockchainSystemFileFromFilesystemSelectionButton;
+    private Button _blockchainSystemFileFromWorkspaceSelectionButton;
+
+    private Text _simulationResultsDirectoryPath;
+    private Button _simulationResultsDirectoryPathFromFilesystemSelectionButton;
+
+    @Override
+    public void createControl(Composite parent) {
+        _parent = parent;
+
+        Composite root = new Composite(parent, SWT.BORDER);
         setControl(root);
-        
+
         GridLayoutFactory
-        	.swtDefaults()
-        	.numColumns(1)
-        	.applyTo(root);
-		
+                .swtDefaults()
+                .numColumns(1)
+                .applyTo(root);
+
         createBlockchainSystemFileInputGroup(root);
-	}
-	
-	private void createBlockchainSystemFileInputGroup(Composite parent) {
-		Group group = new Group(parent, SWT.NONE);
-		group.setText("Blockchain System File");
+    }
+
+    private void createBlockchainSystemFileInputGroup(Composite parent) {
+        Group group = new Group(parent, SWT.NONE);
+        group.setText("Blockchain System File");
         group.setLayout(new GridLayout(3, false));
         group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-	
+
         _topologyFilePathText = new Text(group, SWT.BORDER);
         _topologyFilePathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         _topologyFilePathText.addModifyListener(new ModifyListener() {
@@ -74,71 +74,71 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
                 updateLaunchConfigurationDialog();
             }
         });
-        
+
         _blockchainSystemFileFromFilesystemSelectionButton = new Button(group, SWT.PUSH);
         _blockchainSystemFileFromFilesystemSelectionButton.setText("From Filesystem");
         _blockchainSystemFileFromFilesystemSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         _blockchainSystemFileFromFilesystemSelectionButton.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				FileDialog d = new FileDialog(_parent.getShell());
-				String selectedDirectory = d.open();
-				if (selectedDirectory != null) {
-					_topologyFilePathText.setText(selectedDirectory);
-				} else {
-					_topologyFilePathText.setText("");
-				}
-				
-				updateLaunchConfigurationDialog();
-			}
-        	
+            @Override
+            public void handleEvent(Event arg0) {
+                FileDialog d = new FileDialog(_parent.getShell());
+                String selectedDirectory = d.open();
+                if (selectedDirectory != null) {
+                    _topologyFilePathText.setText(selectedDirectory);
+                } else {
+                    _topologyFilePathText.setText("");
+                }
+
+                updateLaunchConfigurationDialog();
+            }
+
         });
-        
-        
+
+
         _blockchainSystemFileFromWorkspaceSelectionButton = new Button(group, SWT.PUSH);
         _blockchainSystemFileFromWorkspaceSelectionButton.setText("From Workspace");
         _blockchainSystemFileFromWorkspaceSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
         _blockchainSystemFileFromWorkspaceSelectionButton.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				
-				
-				ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			            _parent.getShell(),
-			            new WorkbenchLabelProvider(),
-			            new BaseWorkbenchContentProvider()
-			        );
-
-			        // Set the title and message
-			        dialog.setTitle("Select Blockchain System Model File");
-			        dialog.setMessage("Select blockchain system from the workspace:");
-			        String[] fileExtensions = new String[] { "blockchainsystem" };
-			        dialog.addFilter(new FileExtensionFilter(fileExtensions));
+            @Override
+            public void handleEvent(Event arg0) {
 
 
-			        IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
-			        dialog.setInput(workspaceRoot);
+                ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
+                        _parent.getShell(),
+                        new WorkbenchLabelProvider(),
+                        new BaseWorkbenchContentProvider()
+                );
 
-			        if (dialog.open() == Window.OK) {
-			            Object[] result = dialog.getResult();
-			            if (result != null && result.length > 0) {
-			                IResource selectedResource = (IResource) result[0];
-			                
-			                String platformPath = ECLIPSE_PLATFORM_URI_PREFIX + selectedResource.getFullPath();
-			                _topologyFilePathText.setText(platformPath);
-			            }
-			        }
-				updateLaunchConfigurationDialog();
-			}
-        	
+                // Set the title and message
+                dialog.setTitle("Select Blockchain System Model File");
+                dialog.setMessage("Select blockchain system from the workspace:");
+                String[] fileExtensions = new String[] {"blockchainsystem"};
+                dialog.addFilter(new FileExtensionFilter(fileExtensions));
+
+
+                IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+                dialog.setInput(workspaceRoot);
+
+                if (dialog.open() == Window.OK) {
+                    Object[] result = dialog.getResult();
+                    if (result != null && result.length > 0) {
+                        IResource selectedResource = (IResource) result[0];
+
+                        String platformPath = ECLIPSE_PLATFORM_URI_PREFIX + selectedResource.getFullPath();
+                        _topologyFilePathText.setText(platformPath);
+                    }
+                }
+                updateLaunchConfigurationDialog();
+            }
+
         });
-        
-        
+
+
         Group simulationResultDirectoryGroup = new Group(parent, SWT.NONE);
         simulationResultDirectoryGroup.setText("Simulation Results Directory");
         simulationResultDirectoryGroup.setLayout(new GridLayout(3, false));
         simulationResultDirectoryGroup.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-        
+
         _simulationResultsDirectoryPath = new Text(simulationResultDirectoryGroup, SWT.BORDER);
         _simulationResultsDirectoryPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         _simulationResultsDirectoryPath.addModifyListener(new ModifyListener() {
@@ -147,93 +147,94 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
                 updateLaunchConfigurationDialog();
             }
         });
-        
+
         _simulationResultsDirectoryPathFromFilesystemSelectionButton = new Button(simulationResultDirectoryGroup, SWT.PUSH);
         _simulationResultsDirectoryPathFromFilesystemSelectionButton.setText("From Filesystem");
-        _simulationResultsDirectoryPathFromFilesystemSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        _simulationResultsDirectoryPathFromFilesystemSelectionButton.setLayoutData(
+                new GridData(SWT.FILL, SWT.CENTER, false, false));
         _simulationResultsDirectoryPathFromFilesystemSelectionButton.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event arg0) {
-				DirectoryDialog d = new DirectoryDialog (_parent.getShell());
-				String selectedDirectory = d.open();
-				if (selectedDirectory != null) {
-					_simulationResultsDirectoryPath.setText(selectedDirectory);
-				} else {
-					_simulationResultsDirectoryPath.setText("");
-				}
-				
-				updateLaunchConfigurationDialog();
-			}
-        	
+            @Override
+            public void handleEvent(Event arg0) {
+                DirectoryDialog d = new DirectoryDialog(_parent.getShell());
+                String selectedDirectory = d.open();
+                if (selectedDirectory != null) {
+                    _simulationResultsDirectoryPath.setText(selectedDirectory);
+                } else {
+                    _simulationResultsDirectoryPath.setText("");
+                }
+
+                updateLaunchConfigurationDialog();
+            }
+
         });
-	}
-	
-	private boolean isTopologyFilePathTextValid() {
-		String path = _topologyFilePathText.getText();
-		
-		return !ValidationUtils.isStringNullOrEmpty(path);
-	}
-	
-	private boolean isSimulationOutputDirectoryValid() {
-		String path = _simulationResultsDirectoryPath.getText();
-		
-		return !ValidationUtils.isStringNullOrEmpty(path)
-				&& Files.exists(Path.of(path));
-	}
+    }
 
-	@Override
-	public String getName() {
-		return "Architectural Models";
-	}
+    private boolean isTopologyFilePathTextValid() {
+        String path = _topologyFilePathText.getText();
 
-	@Override
-	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {
-			_topologyFilePathText.setText(
-					configuration.getAttribute(
-							Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
-							Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT));
-			_simulationResultsDirectoryPath.setText(
-					configuration.getAttribute(
-							Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
-							Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT));
-		} catch (CoreException e) {
-			_topologyFilePathText.setText(
-					Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
-			_simulationResultsDirectoryPath.setText(
-					Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
-		}
-	}
+        return !ValidationUtils.isStringNullOrEmpty(path);
+    }
 
-	@Override
-	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(
-				Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
-				_topologyFilePathText.getText());
-		configuration.setAttribute(
-				Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
-				_simulationResultsDirectoryPath.getText());
-	}
+    private boolean isSimulationOutputDirectoryValid() {
+        String path = _simulationResultsDirectoryPath.getText();
 
-	@Override
-	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(
-				Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
-				Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
-		configuration.setAttribute(
-				Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
-				Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
-	}
+        return !ValidationUtils.isStringNullOrEmpty(path)
+                && Files.exists(Path.of(path));
+    }
 
-	@Override
+    @Override
+    public String getName() {
+        return "Architectural Models";
+    }
+
+    @Override
+    public void initializeFrom(ILaunchConfiguration configuration) {
+        try {
+            _topologyFilePathText.setText(
+                    configuration.getAttribute(
+                            Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
+                            Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT));
+            _simulationResultsDirectoryPath.setText(
+                    configuration.getAttribute(
+                            Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
+                            Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT));
+        } catch (CoreException e) {
+            _topologyFilePathText.setText(
+                    Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
+            _simulationResultsDirectoryPath.setText(
+                    Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
+        }
+    }
+
+    @Override
+    public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
+                _topologyFilePathText.getText());
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
+                _simulationResultsDirectoryPath.getText());
+    }
+
+    @Override
+    public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
+                Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
+                Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
+    }
+
+    @Override
     public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
         super.activated(workingCopy);
         updateLaunchConfigurationDialog();
     }
-	
-	@Override
+
+    @Override
     public boolean isValid(ILaunchConfiguration launchConfig) {
         return isTopologyFilePathTextValid()
-        		&& isSimulationOutputDirectoryValid();
+                && isSimulationOutputDirectoryValid();
     }
 }

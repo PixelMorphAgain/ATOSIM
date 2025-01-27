@@ -8,19 +8,19 @@ import org.palladiosimulator.blockchainsystems.doublespending.behavior.Malicious
 
 public class BlockchainSystemNodeBehaviorFactoryPluginImpl implements BlockchainSystemNodeBehaviorFactory {
 
-	private final MaliciousNodesIdProvider _maliciousNodesIdProvider;
-	
-	public BlockchainSystemNodeBehaviorFactoryPluginImpl(MaliciousNodesIdProvider maliciousNodesIdProvider) {
-		_maliciousNodesIdProvider = maliciousNodesIdProvider;
-	}
-	
-	@Override
-	public BlockchainSystemNodeBehavior create(String nodeId) {
-		if (_maliciousNodesIdProvider.getMaliciousNodeIds().contains(nodeId)) {
-			return new MaliciousBlockchainSystemNodeBehavior(_maliciousNodesIdProvider);
-		}
-		
-		return new HonestBlockchainSystemNodeBehavior();
-	}
+    private final MaliciousNodesIdProvider _maliciousNodesIdProvider;
+
+    public BlockchainSystemNodeBehaviorFactoryPluginImpl(MaliciousNodesIdProvider maliciousNodesIdProvider) {
+        _maliciousNodesIdProvider = maliciousNodesIdProvider;
+    }
+
+    @Override
+    public BlockchainSystemNodeBehavior create(String nodeId) {
+        if (_maliciousNodesIdProvider.getMaliciousNodeIds().contains(nodeId)) {
+            return new MaliciousBlockchainSystemNodeBehavior(_maliciousNodesIdProvider);
+        }
+
+        return new HonestBlockchainSystemNodeBehavior();
+    }
 
 }

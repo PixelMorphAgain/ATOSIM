@@ -5,19 +5,19 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 public interface DoubleSpendingAttackPhase {
 
-	void initialize(BlockchainSystemNodeContext context);
-	
-	void onBlockReceived(Block block, BlockchainSystemNodeContext context);
-	
-	void onBlockMined(Block block, BlockchainSystemNodeContext context);
-	
-	Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context);
-	
-	void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context);
-	
-	String onPreviousBlockSelection(BlockchainSystemNodeContext context);
-	
-	DoubleSpendingAttackPhase getNextPhase();
-	
-	String getPhaseName();
+    void initialize(BlockchainSystemNodeContext context);
+
+    void onBlockReceived(Block block, BlockchainSystemNodeContext context);
+
+    void onBlockMined(Block block, BlockchainSystemNodeContext context);
+
+    Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context);
+
+    void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context);
+
+    String onPreviousBlockSelection(BlockchainSystemNodeContext context);
+
+    DoubleSpendingAttackPhase getNextPhase();
+
+    String getPhaseName();
 }

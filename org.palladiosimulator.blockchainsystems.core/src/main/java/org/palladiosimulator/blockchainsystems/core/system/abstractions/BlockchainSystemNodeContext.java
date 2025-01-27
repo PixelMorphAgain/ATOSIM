@@ -22,7 +22,7 @@ public interface BlockchainSystemNodeContext {
      *
      * @return the strategy used to propagate blocks
      */
-    BlockPropagationStrategy getBlockPropagationStrategy();
+    PropagationStrategy<Block> getBlockPropagationStrategy();
 
     /**
      * Returns an abstraction of the underlying P2P network.

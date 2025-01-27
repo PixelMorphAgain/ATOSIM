@@ -5,5 +5,5 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public interface TraceEventSubscriber {
 
-	void onTraceEventOccurred(TraceEvent event, TraceEventLogOrigin logOrigin);
+    void onTraceEventOccurred(TraceEvent event, TraceEventLogOrigin logOrigin);
 }

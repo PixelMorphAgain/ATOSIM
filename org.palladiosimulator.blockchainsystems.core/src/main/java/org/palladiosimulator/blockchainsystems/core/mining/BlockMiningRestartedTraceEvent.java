@@ -4,7 +4,8 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public record BlockMiningRestartedTraceEvent(
         long occurrenceTime,
-        String previousBlockHash) implements TraceEvent {
+        String previousBlockHash
+) implements TraceEvent {
 
     public static final String EVENT_TYPE = "BlockMiningRestartedTraceEvent";
 

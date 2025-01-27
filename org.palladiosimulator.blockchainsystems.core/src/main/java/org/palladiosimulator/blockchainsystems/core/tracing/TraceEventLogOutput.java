@@ -2,7 +2,7 @@ package org.palladiosimulator.blockchainsystems.core.tracing;
 
 public interface TraceEventLogOutput extends TraceEventSubscriber {
 
-	void initialize();
+    void initialize();
 
-	void cleanUp();
+    void cleanUp();
 }

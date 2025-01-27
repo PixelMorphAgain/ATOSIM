@@ -6,12 +6,12 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult;
 
 public record ConnectedSubgraphNetworkCreationResult(
-		P2PNetwork createdNetwork,
-		HashMap<String, String> nodeIdToNodeTemplateIdMapping) implements P2PNetworkCreationResult {
+        P2PNetwork createdNetwork,
+        HashMap<String, String> nodeIdToNodeTemplateIdMapping) implements P2PNetworkCreationResult {
 
-	@Override
-	public P2PNetwork getCreatedNetwork() {
-		return createdNetwork;
-	}
+    @Override
+    public P2PNetwork getCreatedNetwork() {
+        return createdNetwork;
+    }
 
 }

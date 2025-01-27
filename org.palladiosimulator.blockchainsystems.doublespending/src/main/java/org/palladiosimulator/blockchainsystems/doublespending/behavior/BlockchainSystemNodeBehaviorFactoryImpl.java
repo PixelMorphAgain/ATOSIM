@@ -6,9 +6,9 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 public class BlockchainSystemNodeBehaviorFactoryImpl implements BlockchainSystemNodeBehaviorFactory {
 
-	@Override
-	public BlockchainSystemNodeBehavior create(String nodeId) {
-		return new HonestBlockchainSystemNodeBehavior();
-	}
+    @Override
+    public BlockchainSystemNodeBehavior create(String nodeId) {
+        return new HonestBlockchainSystemNodeBehavior();
+    }
 
 }

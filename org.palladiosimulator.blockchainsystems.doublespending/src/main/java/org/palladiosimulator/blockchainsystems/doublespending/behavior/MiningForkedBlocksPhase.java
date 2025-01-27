@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.doublespending.behavior;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.HashSet;
@@ -41,7 +40,7 @@ public class MiningForkedBlocksPhase implements DoubleSpendingAttackPhase {
             String nextMiningPreviousBlockHash = _attackBlockStorage.getHashOfLatestForkedBlock();
             if (_currentMiningPreviousBlockHash != nextMiningPreviousBlockHash && nextMiningPreviousBlockHash != null) {
                 _currentMiningPreviousBlockHash = nextMiningPreviousBlockHash;
-                context.getMiningProcess().restartMinig();
+                context.getMiningProcess().restartMining();
             }
 
             _numberOfForkedBlocksMined++;
@@ -151,23 +150,26 @@ public class MiningForkedBlocksPhase implements DoubleSpendingAttackPhase {
     }
 
 
-    private Set<Block> getImmediateSuccessorBlocksToOverride(String blockHash, long blockPosition, BlockchainSystemNodeContext context) {
+    private Set<Block> getImmediateSuccessorBlocksToOverride(String blockHash, long blockPosition,
+                                                             BlockchainSystemNodeContext context) {
         return context.getBlockchain().getBlocksAtPosition(blockPosition + 1)
                 .stream()
-                .filter(x -> Objects.equals(x.getPreviousHash(), blockHash))
+                .filter(x -> x.getPreviousHash() == blockHash)
                 .filter(AttackerUtils::isBlockABlockToOverride)
                 .collect(Collectors.toSet());
     }
 
-    private Set<Block> getImmediateSuccessorForkedBlocks(String blockHash, long blockPosition, BlockchainSystemNodeContext context) {
+    private Set<Block> getImmediateSuccessorForkedBlocks(String blockHash, long blockPosition,
+                                                         BlockchainSystemNodeContext context) {
         return context.getBlockchain().getBlocksAtPosition(blockPosition + 1)
                 .stream()
-                .filter(x -> Objects.equals(x.getPreviousHash(), blockHash))
+                .filter(x -> x.getPreviousHash() == blockHash)
                 .filter(AttackerUtils::isBlockABlockForkedBlock)
                 .collect(Collectors.toSet());
     }
 
-    private long getLongestSuccessorChainLength(Set<String> startingBlockHashes, long blocksPosition, BlockchainSystemNodeContext context) {
+    private long getLongestSuccessorChainLength(Set<String> startingBlockHashes, long blocksPosition,
+                                                BlockchainSystemNodeContext context) {
         long counter = blocksPosition + 1;
 
         Set<String> iterationBlockHashes = startingBlockHashes;

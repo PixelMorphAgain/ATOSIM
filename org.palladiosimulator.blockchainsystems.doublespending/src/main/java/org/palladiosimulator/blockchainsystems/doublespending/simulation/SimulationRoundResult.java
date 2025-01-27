@@ -11,7 +11,8 @@ public class SimulationRoundResult {
     private final int _numberOfSystemWonVotes;
     private final int _numberOfBTONotIncludedVotes;
 
-    public SimulationRoundResult(int numberOfAbsentedVotes, int numberOfAttackerWonVotes, int numberOfSystemWonVotes, int numberOfBTONotIncludedVotes) {
+    public SimulationRoundResult(int numberOfAbsentedVotes, int numberOfAttackerWonVotes, int numberOfSystemWonVotes,
+                                 int numberOfBTONotIncludedVotes) {
         _numberOfAbsentedVotes = numberOfAbsentedVotes;
         _numberOfAttackerWonVotes = numberOfAttackerWonVotes;
         _numberOfSystemWonVotes = numberOfSystemWonVotes;

@@ -9,18 +9,18 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.NodeAllocationRes
 
 public class ExplicitNetworkNodeAllocationResolver implements NodeAllocationResolver {
 
-	private final HashMap<String, Node> _nodeIdToNodeMappings;
-	
-	public ExplicitNetworkNodeAllocationResolver(ExplicitNetworkTopology networkTopology) {
-		_nodeIdToNodeMappings = new HashMap<String, Node>();
-		
-		for (Node node : networkTopology.getNodes()) {
-			_nodeIdToNodeMappings.put(node.getId(), node);
-		}
-	}
-	
-	@Override
-	public NodeAllocation getNodeAllocation(String nodeId) {
-		return _nodeIdToNodeMappings.get(nodeId).getAllocation();
-	}
+    private final HashMap<String, Node> _nodeIdToNodeMappings;
+
+    public ExplicitNetworkNodeAllocationResolver(ExplicitNetworkTopology networkTopology) {
+        _nodeIdToNodeMappings = new HashMap<String, Node>();
+
+        for (Node node : networkTopology.getNodes()) {
+            _nodeIdToNodeMappings.put(node.getId(), node);
+        }
+    }
+
+    @Override
+    public NodeAllocation getNodeAllocation(String nodeId) {
+        return _nodeIdToNodeMappings.get(nodeId).getAllocation();
+    }
 }
