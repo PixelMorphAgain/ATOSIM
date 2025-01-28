@@ -17,4 +17,5 @@ module org.palladiosimulator.blockchainsystems.core {
     exports org.palladiosimulator.blockchainsystems.core.stochasticprocess;
 
     requires org.jgrapht.core;
+    requires kotlin.stdlib;
 }

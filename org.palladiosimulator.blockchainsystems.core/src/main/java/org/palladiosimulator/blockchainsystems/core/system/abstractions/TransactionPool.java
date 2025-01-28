@@ -12,12 +12,12 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceabl
  */
 public interface TransactionPool extends Traceable {
 
-  Transaction getTransactionById(String previousBlockHash);
+  Transaction getTransactionById(String txId);
 
   /**
-   * Stores the specified block in the orphan block pool.
+   * Stores the specified transaction in the pool.
    *
-   * @param block the block to store in the orphan block pool
+   * @param
    */
-  void storeBlock(Block block);
+  void storeTransaction(Transaction transaction);
 }
