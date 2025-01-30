@@ -18,6 +18,14 @@ public interface BlockchainSystemNodeContext {
 
     /**
      * Returns an abstraction of the strategy used by the blockchain system node
+     * to propagate the transactions through the network.
+     *
+     * @return the strategy used to propagate transactions
+     */
+    PropagationStrategy<Transaction> getTransactionPropagationStrategy();
+
+    /**
+     * Returns an abstraction of the strategy used by the blockchain system node
      * to propagate the blocks through the network.
      *
      * @return the strategy used to propagate blocks
@@ -69,4 +77,19 @@ public interface BlockchainSystemNodeContext {
      * @return block validator abstraction
      */
     BlockValidator getBlockValidator();
+
+    /**
+     * Returns an abstraction of the transaction factory used by the blockchain system node
+     * to create transactions.
+     *
+     * @return transaction factory abstraction
+     */
+    TransactionFactory getTransactionFactory();
+
+    /**
+     * Returns an abstraction of the transaction mem-pool used by the blockchain system node
+     *
+     * @return transaction pool abstraction
+     */
+    TransactionPool getTransactionPool();
 }

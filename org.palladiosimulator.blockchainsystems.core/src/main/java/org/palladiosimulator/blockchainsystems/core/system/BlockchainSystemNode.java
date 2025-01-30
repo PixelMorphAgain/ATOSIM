@@ -6,16 +6,7 @@ import java.util.Set;
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainSimulationObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockFactory;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeBehavior;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.OrphanBlockPool;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.ReadonlyBlockchain;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.*;
 
 /**
  * The {@code BlockchainSystemNode} class represents a blockchain system node.
@@ -28,6 +19,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Readonly
  */
 public class BlockchainSystemNode extends BlockchainSimulationObject implements Taggable {
 
+    private final PropagationStrategy<Transaction> _transactionPropagationStrategy;
     private final PropagationStrategy<Block> _blockPropagationStrategy;
     private final NodeP2PNetworkInterface _networkInterface;
     private final MiningProcess _miningProcess;
@@ -35,6 +27,8 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
     private final BlockValidator _blockValidator;
     private final OrphanBlockPool _orphanBlockPool;
     private final BlockFactory _blockFactory;
+    private final TransactionFactory _transactionFactory;
+    private final TransactionPool _transactionPool;
 
     private final BlockchainSystemNodeBehavior _behavior;
 
@@ -45,6 +39,7 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
     public BlockchainSystemNode(
             String id,
             String name,
+            PropagationStrategy<Transaction> transactionPropagationStrategy,
             PropagationStrategy<Block> blockPropagationStrategy,
             NodeP2PNetworkInterface networkInterface,
             MiningProcess miningProcess,
@@ -52,11 +47,14 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
             BlockValidator blockValidator,
             OrphanBlockPool orphanBlockPool,
             BlockFactory blockFactory,
+            TransactionFactory transactionFactory,
+            TransactionPool transactionPool,
             BlockchainSystemNodeBehavior behavior,
             Set<String> tags
     ) {
         super(id, name);
 
+        _transactionPropagationStrategy = transactionPropagationStrategy;
         _blockPropagationStrategy = blockPropagationStrategy;
         _networkInterface = networkInterface;
         _miningProcess = miningProcess;
@@ -64,6 +62,8 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
         _blockValidator = blockValidator;
         _blockFactory = blockFactory;
         _orphanBlockPool = orphanBlockPool;
+        _transactionFactory = transactionFactory;
+        _transactionPool = transactionPool;
 
         _behavior = behavior;
 
@@ -71,19 +71,23 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
 
         _context = new BlockchainSystemNodeContextImpl(
                 id,
+                _transactionPropagationStrategy,
                 _blockPropagationStrategy,
                 _networkInterface,
                 _miningProcess,
                 _blockchain,
                 _blockValidator,
                 _orphanBlockPool,
-                _blockFactory
+                _blockFactory,
+                _transactionFactory,
+                _transactionPool
         );
     }
 
     public BlockchainSystemNode(
             String id,
             String name,
+            PropagationStrategy<Transaction> transactionPropagationStrategy,
             PropagationStrategy<Block> blockPropagationStrategy,
             NodeP2PNetworkInterface networkInterface,
             MiningProcess miningProcess,
@@ -91,10 +95,13 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
             BlockValidator blockValidator,
             OrphanBlockPool orphanBlockPool,
             BlockFactory blockFactory,
+            TransactionFactory transactionFactory,
+            TransactionPool transactionPool,
             BlockchainSystemNodeBehavior behavior) {
         this(
                 id,
                 name,
+                transactionPropagationStrategy,
                 blockPropagationStrategy,
                 networkInterface,
                 miningProcess,
@@ -102,6 +109,8 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
                 blockValidator,
                 orphanBlockPool,
                 blockFactory,
+                transactionFactory,
+                transactionPool,
                 behavior,
                 Collections.emptySet()
         );
@@ -118,6 +127,12 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
         _blockPropagationStrategy.initialize(getSimulationContext());
         _blockPropagationStrategy.initializeLogger(this);
 
+        _transactionPropagationStrategy.setNetworkInterface(_networkInterface);
+        _transactionPropagationStrategy.setBlockchain(_blockchain);
+        _transactionPropagationStrategy.setOnPropagatedObjectReceivedCallback(this::onTransactionReceived);
+        _transactionPropagationStrategy.initialize(getSimulationContext());
+        _transactionPropagationStrategy.initializeLogger(this);
+
         _blockValidator.setOnBlockValidatedCallback(this::onBlockValidated);
         _blockValidator.initialize(getSimulationContext());
         _blockValidator.initializeLogger(this);
@@ -128,8 +143,13 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
         _miningProcess.initialize(getSimulationContext());
         _miningProcess.initializeLogger(this);
 
+        // TODO: Add smart contract process
+
         _orphanBlockPool.initialize(getSimulationContext());
         _orphanBlockPool.initializeLogger(this);
+
+        _transactionPool.initialize(getSimulationContext());
+        _transactionPool.initializeLogger(this);
 
         _behavior.initialize(getSimulationContext());
         _behavior.initializeLogger(this);
@@ -167,6 +187,10 @@ public class BlockchainSystemNode extends BlockchainSimulationObject implements 
 
     private void onBlockMined(Block block) {
         _behavior.onBlockMined(block, _context);
+    }
+
+    private void onTransactionReceived(Transaction transaction) {
+        _behavior.onTransactionReceived(transaction, _context);
     }
 
     @Override

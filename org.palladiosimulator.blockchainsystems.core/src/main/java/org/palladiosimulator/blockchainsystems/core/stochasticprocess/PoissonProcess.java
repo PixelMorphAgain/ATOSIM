@@ -9,7 +9,8 @@ public class PoissonProcess {
 
     public PoissonProcess(
             double mean,
-            RandomGenerator randomGenerator) {
+            RandomGenerator randomGenerator
+    ) {
         _mean = mean;
         _randomGenerator = randomGenerator;
     }

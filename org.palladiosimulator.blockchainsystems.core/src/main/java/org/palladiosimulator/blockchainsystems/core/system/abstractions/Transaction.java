@@ -25,4 +25,9 @@ public interface Transaction {
      * @return the gas actually used by the transaction
      */
     int getGasUsed();
+
+    /**
+    * @return the time it actually takes to execute the transaction
+    */
+    double getExecutionTime();
 }
