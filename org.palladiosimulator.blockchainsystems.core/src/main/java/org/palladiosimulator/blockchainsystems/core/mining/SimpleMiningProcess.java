@@ -17,9 +17,9 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningPr
 public class SimpleMiningProcess extends BlockchainNodeObject implements MiningProcess {
 
     private final PoissonProcess _poissonProcess;
-    private BiFunction<Long, String, Block> _onCreatingBlockCallback;
-    private Supplier<String> _previousBlockSelectionCallback;
-    private Consumer<Block> _onBlockMinedCallback;
+    protected BiFunction<Long, String, Block> _onCreatingBlockCallback;
+    protected Supplier<String> _previousBlockSelectionCallback;
+    protected Consumer<Block> _onBlockMinedCallback;
 
     /**
      * Specifies if this node is currently acting as a miner
@@ -61,7 +61,7 @@ public class SimpleMiningProcess extends BlockchainNodeObject implements MiningP
     }
 
 
-    private String scheduleNewBlockMinedEvent() {
+    protected String scheduleNewBlockMinedEvent() {
         String previousBlockHash = _previousBlockSelectionCallback.get();
 
         getSimulationContext()
@@ -79,7 +79,7 @@ public class SimpleMiningProcess extends BlockchainNodeObject implements MiningP
         return getSimulationContext().getSystemClock().getCurrentTime() + eventCurrentTimeOffset;
     }
 
-    private void notifyBlockMined(Block block) {
+    protected void notifyBlockMined(Block block) {
         if (_onBlockMinedCallback != null) {
             _onBlockMinedCallback.accept(block);
         }
@@ -155,7 +155,7 @@ public class SimpleMiningProcess extends BlockchainNodeObject implements MiningP
                 .logEvent(event);
     }
 
-    private void logBlockMined(Block block) {
+    protected void logBlockMined(Block block) {
         if (!getTraceEventLogger().isEventTypeEnabled(BlockMinedTraceEvent.EVENT_TYPE)) {
             return;
         }
@@ -168,7 +168,7 @@ public class SimpleMiningProcess extends BlockchainNodeObject implements MiningP
                 .logEvent(event);
     }
 
-    private void logMiningRestarted(String previousHash) {
+    protected void logMiningRestarted(String previousHash) {
         if (!getTraceEventLogger().isEventTypeEnabled(BlockMiningRestartedTraceEvent.EVENT_TYPE)) {
             return;
         }
