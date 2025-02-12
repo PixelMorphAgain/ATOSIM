@@ -3,17 +3,20 @@ package org.palladiosimulator.blockchainsystems.trilemma.metrics
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetric
 
 /**
- * Censorship Resistance
+ * Nakamoto Coefficient
  *
  * @author Davis Riedel
  */
-data class CensorshipResistance(
-  override val value: Double
-): OutputMetric<Double> {
+data class NakamotoCoefficient(
+  override val value: Int,
+  val threshold: Double,
+): OutputMetric<Int> {
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ censorshipResistance=")
+      append("{ nakamotoCoefficient=")
       append(value)
+      append("; threshold=")
+      append(threshold)
       append(" }")
     }
   }

@@ -3,16 +3,16 @@ package org.palladiosimulator.blockchainsystems.trilemma.metrics
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetric
 
 /**
- * Censorship Resistance
+ * Gini coefficient
  *
  * @author Davis Riedel
  */
-data class CensorshipResistance(
-  override val value: Double
+data class GiniCoefficient(
+  override val value: Double,
 ): OutputMetric<Double> {
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ censorshipResistance=")
+      append("{ giniCoefficient=")
       append(value)
       append(" }")
     }

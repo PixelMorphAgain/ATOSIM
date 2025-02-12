@@ -5,6 +5,15 @@ import kotlin.math.log
 import kotlin.math.pow
 import kotlin.math.sqrt
 
+/**
+ * Calculates geographical diversity
+ *
+ * @property numberOfNodesPerCountry Stores for each country i the amount of nodes located in country i.
+ *                                   The length of the array indicates the overall number of countries.
+ *                                   If no nodes are located in country i, the value at index i is 0.
+ *
+ * @author Davis Riedel
+ */
 class GeographicalDiversityCalculator(
   private val numberOfNodesPerCountry: Array<Int>,
 ): OutputMetricCalculator<GeographicalDiversity> {

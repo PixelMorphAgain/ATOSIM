@@ -3,6 +3,14 @@ package org.palladiosimulator.blockchainsystems.trilemma.metrics
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetricCalculator
 import kotlin.math.ln
 
+/**
+ * Calculates Shannon Entropy
+ *
+ * @property k the constant factor k of the Shannon Entropy
+ * @property totalBlocksProposedPerNode stores for each node i the amount of blocks proposed by i
+ *
+ * @author Davis Riedel
+ */
 class ShannonEntropyCalculator(
   private val k: Double,
   private val totalBlocksProposedPerNode: Array<Int>

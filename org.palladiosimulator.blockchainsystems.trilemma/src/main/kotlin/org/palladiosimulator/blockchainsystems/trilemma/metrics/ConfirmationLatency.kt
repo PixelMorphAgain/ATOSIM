@@ -1,18 +1,19 @@
 package org.palladiosimulator.blockchainsystems.trilemma.metrics
 
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetric
+import kotlin.time.Duration
 
 /**
- * Censorship Resistance
+ * Confirmation latency
  *
  * @author Davis Riedel
  */
-data class CensorshipResistance(
-  override val value: Double
-): OutputMetric<Double> {
+data class ConfirmationLatency(
+  override val value: Duration
+): OutputMetric<Duration> {
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ censorshipResistance=")
+      append("{ confirmationLatency=")
       append(value)
       append(" }")
     }
