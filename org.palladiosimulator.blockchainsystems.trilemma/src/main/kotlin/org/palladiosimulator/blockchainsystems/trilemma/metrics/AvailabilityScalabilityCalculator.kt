@@ -12,13 +12,13 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-class AvailabilityCalculator(
+class AvailabilityScalabilityCalculator(
   private val observationTime: Duration,
   private val numberOfConfirmedTransactions: Int,
   private val numberOfTransactions: Int
-): OutputMetricCalculator<Availability> {
-  override fun calculate(): Availability {
+): OutputMetricCalculator<AvailabilityScalability> {
+  override fun calculate(): AvailabilityScalability {
     val availability = numberOfConfirmedTransactions.toDouble() / numberOfTransactions.toDouble()
-    return Availability(availability, observationTime)
+    return AvailabilityScalability(availability, observationTime)
   }
 }
