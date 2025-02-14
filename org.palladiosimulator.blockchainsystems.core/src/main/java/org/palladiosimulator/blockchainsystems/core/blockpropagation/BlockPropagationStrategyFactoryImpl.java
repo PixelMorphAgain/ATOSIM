@@ -1,14 +1,13 @@
 package org.palladiosimulator.blockchainsystems.core.blockpropagation;
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategyFactory;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockPropagationStrategy;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockPropagationStrategyFactory;
 
-public class BlockPropagationStrategyFactoryImpl implements PropagationStrategyFactory<Block> {
+public class BlockPropagationStrategyFactoryImpl implements BlockPropagationStrategyFactory {
 
-    @Override
-    public PropagationStrategy<Block> createPropagationStrategy() {
-        return new BlockPropagationStrategyImpl();
-    }
+	@Override
+	public BlockPropagationStrategy createBlockPropagationStrategy() {
+		return new BlockPropagationStrategyImpl();
+	}
 
 }

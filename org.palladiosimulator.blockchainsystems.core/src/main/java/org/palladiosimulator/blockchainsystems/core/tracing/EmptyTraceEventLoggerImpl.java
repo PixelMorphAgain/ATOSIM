@@ -6,23 +6,24 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 
 public class EmptyTraceEventLoggerImpl implements TraceEventLogger {
 
-    private final TraceEventLogOrigin _logOrigin;
+	private final TraceEventLogOrigin _logOrigin;
+	
+	public EmptyTraceEventLoggerImpl(TraceEventLogOrigin logOrigin) {
+		_logOrigin = logOrigin;
+	}
+	
+	@Override
+	public TraceEventLogOrigin getLogOrigin() {
+		return _logOrigin;
+	}
 
-    public EmptyTraceEventLoggerImpl(TraceEventLogOrigin logOrigin) {
-        _logOrigin = logOrigin;
-    }
+	@Override
+	public void logEvent(TraceEvent traceEvent) {
+	}
 
-    @Override
-    public TraceEventLogOrigin getLogOrigin() {
-        return _logOrigin;
-    }
+	@Override
+	public boolean isEventTypeEnabled(String eventType) {
+		return false;
+	}
 
-    @Override
-    public void logEvent(TraceEvent traceEvent) {
-    }
-
-    @Override
-    public boolean isEventTypeEnabled(String eventType) {
-        return false;
-    }
 }

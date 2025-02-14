@@ -2,5 +2,5 @@ package org.palladiosimulator.blockchainsystems.core.tracing;
 
 public interface TraceEventConfiguration {
 
-    boolean isEventTypeEnabled(String eventType);
+	public boolean isEventTypeEnabled(String eventType);
 }
