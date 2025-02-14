@@ -10,46 +10,46 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 /**
  * The {@code BehaviorUtils} class provides common behavior methods used by behavior implementations.
- * 
- * @author Yannik Sproll
  *
+ * @author Yannik Sproll
  */
 public class BehaviorUtils {
 
-	private BehaviorUtils() {	}
-	
-	/**
-	 * Appends the specified to the blockchain, if possible.
-	 * If there is no matching previous block, the block is stored in the orphan block pool.
-	 * If there are descending blocks to the current block, these blocks are also appended to the blockchian.
-	 * The method returns a value that indicates if the blockchain has a new longest branch.
-	 * 
-	 * @param block the block to add to the blockchain
-	 * @param context the context of a blockchain system node
-	 * @return true if the blockchain has a new longest branch, false otherwise
-	 */
-	public static boolean appendBlockToBlockchain(Block block, BlockchainSystemNodeContext context) {
-		BlockAppendingResult blockAppendingResult = context.getBlockchain().appendBlock(block);
-		
-		if (blockAppendingResult.getType() == BlockAppendingResultType.Appended) {
-			BlockType appendedBlockType = blockAppendingResult.getBlockType();
-			
-			Set<Block> orphanBlocks = context.getOrphanBlockPool().getBlocksByPreviousBlockHash(block.getHash());
-			boolean hasNewLongestBranch = appendedBlockType == BlockType.IncludedBlock;
-			
-			for (Block orphanBlock : orphanBlocks) {
-				boolean hasNewLongestBranchInner = appendBlockToBlockchain(orphanBlock, context);
-				if (!hasNewLongestBranch) {
-					hasNewLongestBranch = hasNewLongestBranchInner;
-				}
-			}
-			
-			return appendedBlockType == BlockType.IncludedBlock;
-			
-		} else if (blockAppendingResult.getType() == BlockAppendingResultType.NotAppendedBecauseOrphanBlock) {
-			context.getOrphanBlockPool().storeBlock(block);
-		}
-		
-		return false;
-	}
+    private BehaviorUtils() {
+    }
+
+    /**
+     * Appends the specified to the blockchain, if possible.
+     * If there is no matching previous block, the block is stored in the orphan block pool.
+     * If there are descending blocks to the current block, these blocks are also appended to the blockchain.
+     * The method returns a value that indicates if the blockchain has a new longest branch.
+     *
+     * @param block   the block to add to the blockchain
+     * @param context the context of a blockchain system node
+     * @return true if the blockchain has a new longest branch, false otherwise
+     */
+    public static boolean appendBlockToBlockchain(Block block, BlockchainSystemNodeContext context) {
+        BlockAppendingResult blockAppendingResult = context.getBlockchain().appendBlock(block);
+
+        if (blockAppendingResult.getType() == BlockAppendingResultType.Appended) {
+            BlockType appendedBlockType = blockAppendingResult.getBlockType();
+
+            Set<Block> orphanBlocks = context.getOrphanBlockPool().getBlocksByPreviousBlockHash(block.getHash());
+            boolean hasNewLongestBranch = appendedBlockType == BlockType.IncludedBlock;
+
+            for (Block orphanBlock : orphanBlocks) {
+                boolean hasNewLongestBranchInner = appendBlockToBlockchain(orphanBlock, context);
+                if (!hasNewLongestBranch) {
+                    hasNewLongestBranch = hasNewLongestBranchInner;
+                }
+            }
+
+            return appendedBlockType == BlockType.IncludedBlock;
+
+        } else if (blockAppendingResult.getType() == BlockAppendingResultType.NotAppendedBecauseOrphanBlock) {
+            context.getOrphanBlockPool().storeBlock(block);
+        }
+
+        return false;
+    }
 }

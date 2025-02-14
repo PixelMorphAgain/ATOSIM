@@ -11,55 +11,53 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 
 public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
-	@Override
-	public void onBlockReceived(Block block, BlockchainSystemNodeContext context) {
-		context.getBlockValidator().validateBlock(block);
-	}
+    @Override
+    public void onBlockReceived(Block block, BlockchainSystemNodeContext context) {
+        context.getBlockValidator().validateBlock(block);
+    }
 
-	@Override
-	public void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context) {
-		if (isValid != null && isValid.booleanValue()) {
-			
-			boolean hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context);
-			if (hasNewLongestChain) {
-				context.getMiningProcess().restartMinig();
-			}
-			
-			context.getBlockPropagationStrategy().distributeBlock(block); // Blocks are distributed too often
-		}
-	}
-	
-	@Override
-	public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
-		BehaviorUtils.appendBlockToBlockchain(block, context);
-		
-		context.getBlockPropagationStrategy().distributeBlock(block);
-	}
+    @Override
+    public void onBlockValidated(Block block, Boolean isValid, BlockchainSystemNodeContext context) {
+        if (isValid != null && isValid) {
 
-	@Override
-	public Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
-		return context.getBlockFactory().createBlock(
-				UUID.randomUUID().toString(), 
-				previousBlockHash, 
-				context.getId(), 
-				blockMinedAt);
-	}
+            boolean hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context);
+            if (hasNewLongestChain) {
+                context.getMiningProcess().restartMining();
+            }
+
+            context.getBlockPropagationStrategy().distributeBlock(block); // Blocks are distributed too often
+        }
+    }
+
+    @Override
+    public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
+        BehaviorUtils.appendBlockToBlockchain(block, context);
+
+        context.getBlockPropagationStrategy().distributeBlock(block);
+    }
+
+    @Override
+    public Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
+        return context.getBlockFactory().createBlock(
+                UUID.randomUUID().toString(),
+                previousBlockHash,
+                context.getId(),
+                blockMinedAt);
+    }
 
 
-	@Override
-	public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
-		Set<Block> blocks = context.getBlockchain().getLastBlocksOfLongestChains();
-		String s = blocks.stream().findFirst().get().getHash();
-		
-		return s;
-	}
+    @Override
+    public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
+        Set<Block> blocks = context.getBlockchain().getLastBlocksOfLongestChains();
+        return blocks.stream().findFirst().get().getHash();
+    }
 
-	@Override
-	public void onNodeInitialized(BlockchainSystemNodeContext context) {
-		context.getMiningProcess().startMining();
-	}
+    @Override
+    public void onNodeInitialized(BlockchainSystemNodeContext context) {
+        context.getMiningProcess().startMining();
+    }
 
-	@Override
-	public void dispatchEvent(Event event) {
-	}
+    @Override
+    public void dispatchEvent(Event event) {
+    }
 }

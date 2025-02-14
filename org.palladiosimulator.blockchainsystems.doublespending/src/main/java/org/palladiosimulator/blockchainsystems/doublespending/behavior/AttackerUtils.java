@@ -31,7 +31,7 @@ public class AttackerUtils {
                 .filter(x -> maliciousMinerIds.contains(x.getEndpointId())) // Filter honest neighbors
                 .collect(Collectors.toSet());
 
-        context.getBlockPropagationStrategy().distribute(block, maliciousNeighborEndpoints);
+        context.getBlockPropagationStrategy().distributeBlock(block, maliciousNeighborEndpoints);
     }
 
     public static void distributeBlockToHonestNodes(
@@ -47,7 +47,7 @@ public class AttackerUtils {
                 .filter(x -> !maliciousMinerIds.contains(x.getEndpointId())) // Filter malicious neighbors
                 .collect(Collectors.toSet());
 
-        context.getBlockPropagationStrategy().distribute(block, maliciousNeighborEndpoints);
+        context.getBlockPropagationStrategy().distributeBlock(block, maliciousNeighborEndpoints);
     }
 
     public static boolean isMaliciousBlock(

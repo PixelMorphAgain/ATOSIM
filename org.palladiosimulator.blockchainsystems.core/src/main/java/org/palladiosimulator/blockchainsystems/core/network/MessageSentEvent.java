@@ -4,44 +4,44 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventDispatchable;
 
 public record MessageSentEvent(
-		long occuranceTime,
-		P2PLinkMessageFrame message,
-		EventDispatchable target, 
-		P2PNode recipientNode,
-		P2PNode senderNode) implements Event {
+        long occurrenceTime,
+        P2PLinkMessageFrame message,
+        EventDispatchable target,
+        P2PNode recipientNode,
+        P2PNode senderNode) implements Event {
 
-	public static final String EVENT_NAME = "MessageSentEvent";
-	
-	@Override
-	public long getOccurenceTime() {
-		return this.occuranceTime();
-	}
+    public static final String EVENT_NAME = "MessageSentEvent";
 
-	@Override
-	public String getEventType() {
-		return EVENT_NAME;
-	}
-	
-	public P2PLinkMessageFrame getMessage() {
-		return this.message();
-	}
+    @Override
+    public long getOccurrenceTime() {
+        return this.occurrenceTime();
+    }
 
-	@Override
-	public EventDispatchable getOrigin() {
-		return this.target();
-	}
+    @Override
+    public String getEventType() {
+        return EVENT_NAME;
+    }
 
-	
-	public P2PNode getRecipientNode() {
-		return this.recipientNode();
-	}
-	
-	public P2PNode getSenderNode() {
-		return this.senderNode();
-	}
+    public P2PLinkMessageFrame getMessage() {
+        return this.message();
+    }
 
-	@Override
-	public String getValueFormatted() {
-		return this.toString();
-	}
+    @Override
+    public EventDispatchable getOrigin() {
+        return this.target();
+    }
+
+
+    public P2PNode getRecipientNode() {
+        return this.recipientNode();
+    }
+
+    public P2PNode getSenderNode() {
+        return this.senderNode();
+    }
+
+    @Override
+    public String getValueFormatted() {
+        return this.toString();
+    }
 }

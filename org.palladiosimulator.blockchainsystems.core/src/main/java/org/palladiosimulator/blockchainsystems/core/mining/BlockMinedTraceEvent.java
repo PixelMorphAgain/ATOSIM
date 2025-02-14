@@ -4,28 +4,28 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 
 public record BlockMinedTraceEvent(
-		long occurenceTime,
-		Block block) implements TraceEvent {
+        long occurrenceTime,
+        Block block) implements TraceEvent {
 
-	public static final String EVENT_TYPE = "BlockMinedTraceEvent";
-	
-	@Override
-	public long getOccurenceTime() {
-		return this.occurenceTime();
-	}
+    public static final String EVENT_TYPE = "BlockMinedTraceEvent";
 
-	@Override
-	public String getEventType() {
-		return EVENT_TYPE;
-	}
+    @Override
+    public long getOccurrenceTime() {
+        return this.occurrenceTime();
+    }
 
-	@Override
-	public void formatDetails(StringBuilder stringBuilder) {
-		stringBuilder.append("{ blockHash=");
-		stringBuilder.append(block.getHash());
-		stringBuilder.append("; previousBlockHash=");
-		stringBuilder.append(block.getPreviousHash());
-		stringBuilder.append(" }");
-	}
+    @Override
+    public String getEventType() {
+        return EVENT_TYPE;
+    }
+
+    @Override
+    public void formatDetails(StringBuilder stringBuilder) {
+        stringBuilder.append("{ blockHash=");
+        stringBuilder.append(block.getHash());
+        stringBuilder.append("; previousBlockHash=");
+        stringBuilder.append(block.getPreviousHash());
+        stringBuilder.append(" }");
+    }
 
 }

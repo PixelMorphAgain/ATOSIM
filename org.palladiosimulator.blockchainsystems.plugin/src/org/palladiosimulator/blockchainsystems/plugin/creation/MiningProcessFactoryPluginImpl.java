@@ -4,7 +4,7 @@ import java.util.random.RandomGenerator;
 
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent;
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystemSpecification;
-import org.palladiosimulator.blockchainsystems.core.mining.SimpleMiningProcess;
+import org.palladiosimulator.blockchainsystems.core.mining.MiningProcessImpl;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcessFactory;
 
@@ -39,7 +39,7 @@ public class MiningProcessFactoryPluginImpl implements MiningProcessFactory {
         double _globalAverageBlockArrivalTime = _systemSpecification.getMeanBlockTime();
         double _nodeAverageBlockArrivalTime = _globalAverageBlockArrivalTime / nodeResourcePowerShare;
 
-        return new SimpleMiningProcess(_nodeAverageBlockArrivalTime, RandomGenerator.of("Random"));
+        return new MiningProcessImpl(_nodeAverageBlockArrivalTime, RandomGenerator.of("Random"));
     }
 
 }

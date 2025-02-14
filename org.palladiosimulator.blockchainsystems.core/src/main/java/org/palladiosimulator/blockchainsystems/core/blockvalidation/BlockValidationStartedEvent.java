@@ -5,30 +5,30 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventDis
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 
 public record BlockValidationStartedEvent(
-		long occurenceTime,
-		EventDispatchable origin,
-		Block block) implements Event {
+        long occurrenceTime,
+        EventDispatchable origin,
+        Block block) implements Event {
 
-	public static final String EVENT_NAME = "BlockValidationStartedEvent";
-	
-	@Override
-	public long getOccurenceTime() {
-		return this.occurenceTime();
-	}
+    public static final String EVENT_NAME = "BlockValidationStartedEvent";
 
-	@Override
-	public String getEventType() {
-		return EVENT_NAME;
-	}
+    @Override
+    public long getOccurrenceTime() {
+        return this.occurrenceTime();
+    }
 
-	@Override
-	public EventDispatchable getOrigin() {
-		return this.origin();
-	}
+    @Override
+    public String getEventType() {
+        return EVENT_NAME;
+    }
 
-	@Override
-	public String getValueFormatted() {
-		return this.toString();
-	}
+    @Override
+    public EventDispatchable getOrigin() {
+        return this.origin();
+    }
+
+    @Override
+    public String getValueFormatted() {
+        return this.toString();
+    }
 
 }

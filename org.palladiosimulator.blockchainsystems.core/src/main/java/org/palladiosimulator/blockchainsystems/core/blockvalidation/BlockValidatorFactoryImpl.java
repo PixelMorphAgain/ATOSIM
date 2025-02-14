@@ -6,22 +6,20 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockVal
 
 public class BlockValidatorFactoryImpl implements BlockValidatorFactory {
 
-	private final long _blockValidationDuration;
-	
-	public BlockValidatorFactoryImpl(long blockValidationDuration) {
-		_blockValidationDuration = blockValidationDuration;
-	}
-	
-	@Override
-	public BlockValidator createBlockValidator(String nodeId) {
-		return new BlockValidatorImpl(new ValueProvider<Long>() {
-			@Override
-			public Long getValue() {
-				return _blockValidationDuration;
-			}
-		});
-	}
+    private final long _blockValidationDuration;
 
+    public BlockValidatorFactoryImpl(long blockValidationDuration) {
+        _blockValidationDuration = blockValidationDuration;
+    }
 
+    @Override
+    public BlockValidator createBlockValidator(String nodeId) {
+        return new BlockValidatorImpl(new ValueProvider<Long>() {
+            @Override
+            public Long getValue() {
+                return _blockValidationDuration;
+            }
+        });
+    }
 
 }
