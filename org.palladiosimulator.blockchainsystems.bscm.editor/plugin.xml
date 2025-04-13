@@ -174,4 +174,676 @@
       </editor>
    </extension>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="entity.presentation.EntityModelWizardID"
+            name="%_UI_EntityModelWizard_label"
+            class="entity.presentation.EntityModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EntityModelFile.gif">
+         <description>%_UI_EntityModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="entity.presentation.EntityEditorID"
+            name="%_UI_EntityEditor_label"
+            icon="icons/full/obj16/EntityModelFile.gif"
+            extensions="entity"
+            class="entity.presentation.EntityEditor"
+            contributorClass="entity.presentation.EntityActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.presentation.PcmModelWizardID"
+            name="%_UI_PcmModelWizard_label"
+            class="pcm.presentation.PcmModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/PcmModelFile.gif">
+         <description>%_UI_PcmModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.presentation.PcmEditorID"
+            name="%_UI_PcmEditor_label"
+            icon="icons/full/obj16/PcmModelFile.gif"
+            extensions="pcm"
+            class="pcm.presentation.PcmEditor"
+            contributorClass="pcm.presentation.PcmActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.core.presentation.CoreModelWizardID"
+            name="%_UI_CoreModelWizard_label"
+            class="pcm.core.presentation.CoreModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CoreModelFile.gif">
+         <description>%_UI_CoreModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.core.presentation.CoreEditorID"
+            name="%_UI_CoreEditor_label"
+            icon="icons/full/obj16/CoreModelFile.gif"
+            extensions="core"
+            class="pcm.core.presentation.CoreEditor"
+            contributorClass="pcm.core.presentation.CoreActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.core.entity.presentation.EntityModelWizardID"
+            name="%_UI_EntityModelWizard_label"
+            class="pcm.core.entity.presentation.EntityModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EntityModelFile.gif">
+         <description>%_UI_EntityModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.core.entity.presentation.EntityEditorID"
+            name="%_UI_EntityEditor_label"
+            icon="icons/full/obj16/EntityModelFile.gif"
+            extensions="entity"
+            class="pcm.core.entity.presentation.EntityEditor"
+            contributorClass="pcm.core.entity.presentation.EntityActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.core.composition.presentation.CompositionModelWizardID"
+            name="%_UI_CompositionModelWizard_label"
+            class="pcm.core.composition.presentation.CompositionModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CompositionModelFile.gif">
+         <description>%_UI_CompositionModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.core.composition.presentation.CompositionEditorID"
+            name="%_UI_CompositionEditor_label"
+            icon="icons/full/obj16/CompositionModelFile.gif"
+            extensions="composition"
+            class="pcm.core.composition.presentation.CompositionEditor"
+            contributorClass="pcm.core.composition.presentation.CompositionActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.usagemodel.presentation.UsagemodelModelWizardID"
+            name="%_UI_UsagemodelModelWizard_label"
+            class="pcm.usagemodel.presentation.UsagemodelModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/UsagemodelModelFile.gif">
+         <description>%_UI_UsagemodelModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.usagemodel.presentation.UsagemodelEditorID"
+            name="%_UI_UsagemodelEditor_label"
+            icon="icons/full/obj16/UsagemodelModelFile.gif"
+            extensions="usagemodel"
+            class="pcm.usagemodel.presentation.UsagemodelEditor"
+            contributorClass="pcm.usagemodel.presentation.UsagemodelActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.repository.presentation.RepositoryModelWizardID"
+            name="%_UI_RepositoryModelWizard_label"
+            class="pcm.repository.presentation.RepositoryModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/RepositoryModelFile.gif">
+         <description>%_UI_RepositoryModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.repository.presentation.RepositoryEditorID"
+            name="%_UI_RepositoryEditor_label"
+            icon="icons/full/obj16/RepositoryModelFile.gif"
+            extensions="repository"
+            class="pcm.repository.presentation.RepositoryEditor"
+            contributorClass="pcm.repository.presentation.RepositoryActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.resourcetype.presentation.ResourcetypeModelWizardID"
+            name="%_UI_ResourcetypeModelWizard_label"
+            class="pcm.resourcetype.presentation.ResourcetypeModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ResourcetypeModelFile.gif">
+         <description>%_UI_ResourcetypeModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.resourcetype.presentation.ResourcetypeEditorID"
+            name="%_UI_ResourcetypeEditor_label"
+            icon="icons/full/obj16/ResourcetypeModelFile.gif"
+            extensions="resourcetype"
+            class="pcm.resourcetype.presentation.ResourcetypeEditor"
+            contributorClass="pcm.resourcetype.presentation.ResourcetypeActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.parameter.presentation.ParameterModelWizardID"
+            name="%_UI_ParameterModelWizard_label"
+            class="pcm.parameter.presentation.ParameterModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ParameterModelFile.gif">
+         <description>%_UI_ParameterModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.parameter.presentation.ParameterEditorID"
+            name="%_UI_ParameterEditor_label"
+            icon="icons/full/obj16/ParameterModelFile.gif"
+            extensions="parameter"
+            class="pcm.parameter.presentation.ParameterEditor"
+            contributorClass="pcm.parameter.presentation.ParameterActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.reliability.presentation.ReliabilityModelWizardID"
+            name="%_UI_ReliabilityModelWizard_label"
+            class="pcm.reliability.presentation.ReliabilityModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ReliabilityModelFile.gif">
+         <description>%_UI_ReliabilityModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.reliability.presentation.ReliabilityEditorID"
+            name="%_UI_ReliabilityEditor_label"
+            icon="icons/full/obj16/ReliabilityModelFile.gif"
+            extensions="reliability"
+            class="pcm.reliability.presentation.ReliabilityEditor"
+            contributorClass="pcm.reliability.presentation.ReliabilityActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.seff.presentation.SeffModelWizardID"
+            name="%_UI_SeffModelWizard_label"
+            class="pcm.seff.presentation.SeffModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SeffModelFile.gif">
+         <description>%_UI_SeffModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.seff.presentation.SeffEditorID"
+            name="%_UI_SeffEditor_label"
+            icon="icons/full/obj16/SeffModelFile.gif"
+            extensions="seff"
+            class="pcm.seff.presentation.SeffEditor"
+            contributorClass="pcm.seff.presentation.SeffActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.seff.seff_performance.presentation.Seff_performanceModelWizardID"
+            name="%_UI_Seff_performanceModelWizard_label"
+            class="pcm.seff.seff_performance.presentation.Seff_performanceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Seff_performanceModelFile.gif">
+         <description>%_UI_Seff_performanceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.seff.seff_performance.presentation.Seff_performanceEditorID"
+            name="%_UI_Seff_performanceEditor_label"
+            icon="icons/full/obj16/Seff_performanceModelFile.gif"
+            extensions="seff_performance"
+            class="pcm.seff.seff_performance.presentation.Seff_performanceEditor"
+            contributorClass="pcm.seff.seff_performance.presentation.Seff_performanceActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.seff.seff_reliability.presentation.Seff_reliabilityModelWizardID"
+            name="%_UI_Seff_reliabilityModelWizard_label"
+            class="pcm.seff.seff_reliability.presentation.Seff_reliabilityModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Seff_reliabilityModelFile.gif">
+         <description>%_UI_Seff_reliabilityModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.seff.seff_reliability.presentation.Seff_reliabilityEditorID"
+            name="%_UI_Seff_reliabilityEditor_label"
+            icon="icons/full/obj16/Seff_reliabilityModelFile.gif"
+            extensions="seff_reliability"
+            class="pcm.seff.seff_reliability.presentation.Seff_reliabilityEditor"
+            contributorClass="pcm.seff.seff_reliability.presentation.Seff_reliabilityActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.qosannotations.presentation.QosannotationsModelWizardID"
+            name="%_UI_QosannotationsModelWizard_label"
+            class="pcm.qosannotations.presentation.QosannotationsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/QosannotationsModelFile.gif">
+         <description>%_UI_QosannotationsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.qosannotations.presentation.QosannotationsEditorID"
+            name="%_UI_QosannotationsEditor_label"
+            icon="icons/full/obj16/QosannotationsModelFile.gif"
+            extensions="qosannotations"
+            class="pcm.qosannotations.presentation.QosannotationsEditor"
+            contributorClass="pcm.qosannotations.presentation.QosannotationsActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.qosannotations.qos_performance.presentation.Qos_performanceModelWizardID"
+            name="%_UI_Qos_performanceModelWizard_label"
+            class="pcm.qosannotations.qos_performance.presentation.Qos_performanceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Qos_performanceModelFile.gif">
+         <description>%_UI_Qos_performanceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.qosannotations.qos_performance.presentation.Qos_performanceEditorID"
+            name="%_UI_Qos_performanceEditor_label"
+            icon="icons/full/obj16/Qos_performanceModelFile.gif"
+            extensions="qos_performance"
+            class="pcm.qosannotations.qos_performance.presentation.Qos_performanceEditor"
+            contributorClass="pcm.qosannotations.qos_performance.presentation.Qos_performanceActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.qosannotations.qos_reliability.presentation.Qos_reliabilityModelWizardID"
+            name="%_UI_Qos_reliabilityModelWizard_label"
+            class="pcm.qosannotations.qos_reliability.presentation.Qos_reliabilityModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/Qos_reliabilityModelFile.gif">
+         <description>%_UI_Qos_reliabilityModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.qosannotations.qos_reliability.presentation.Qos_reliabilityEditorID"
+            name="%_UI_Qos_reliabilityEditor_label"
+            icon="icons/full/obj16/Qos_reliabilityModelFile.gif"
+            extensions="qos_reliability"
+            class="pcm.qosannotations.qos_reliability.presentation.Qos_reliabilityEditor"
+            contributorClass="pcm.qosannotations.qos_reliability.presentation.Qos_reliabilityActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.system.presentation.SystemModelWizardID"
+            name="%_UI_SystemModelWizard_label"
+            class="pcm.system.presentation.SystemModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SystemModelFile.gif">
+         <description>%_UI_SystemModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.system.presentation.SystemEditorID"
+            name="%_UI_SystemEditor_label"
+            icon="icons/full/obj16/SystemModelFile.gif"
+            extensions="system"
+            class="pcm.system.presentation.SystemEditor"
+            contributorClass="pcm.system.presentation.SystemActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.resourceenvironment.presentation.ResourceenvironmentModelWizardID"
+            name="%_UI_ResourceenvironmentModelWizard_label"
+            class="pcm.resourceenvironment.presentation.ResourceenvironmentModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ResourceenvironmentModelFile.gif">
+         <description>%_UI_ResourceenvironmentModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.resourceenvironment.presentation.ResourceenvironmentEditorID"
+            name="%_UI_ResourceenvironmentEditor_label"
+            icon="icons/full/obj16/ResourceenvironmentModelFile.gif"
+            extensions="resourceenvironment"
+            class="pcm.resourceenvironment.presentation.ResourceenvironmentEditor"
+            contributorClass="pcm.resourceenvironment.presentation.ResourceenvironmentActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.allocation.presentation.AllocationModelWizardID"
+            name="%_UI_AllocationModelWizard_label"
+            class="pcm.allocation.presentation.AllocationModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/AllocationModelFile.gif">
+         <description>%_UI_AllocationModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.allocation.presentation.AllocationEditorID"
+            name="%_UI_AllocationEditor_label"
+            icon="icons/full/obj16/AllocationModelFile.gif"
+            extensions="allocation"
+            class="pcm.allocation.presentation.AllocationEditor"
+            contributorClass="pcm.allocation.presentation.AllocationActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="pcm.subsystem.presentation.SubsystemModelWizardID"
+            name="%_UI_SubsystemModelWizard_label"
+            class="pcm.subsystem.presentation.SubsystemModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/SubsystemModelFile.gif">
+         <description>%_UI_SubsystemModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="pcm.subsystem.presentation.SubsystemEditorID"
+            name="%_UI_SubsystemEditor_label"
+            icon="icons/full/obj16/SubsystemModelFile.gif"
+            extensions="subsystem"
+            class="pcm.subsystem.presentation.SubsystemEditor"
+            contributorClass="pcm.subsystem.presentation.SubsystemActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="ecore.presentation.EcoreModelWizardID"
+            name="%_UI_EcoreModelWizard_label"
+            class="ecore.presentation.EcoreModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/EcoreModelFile.gif">
+         <description>%_UI_EcoreModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="ecore.presentation.EcoreEditorID"
+            name="%_UI_EcoreEditor_label"
+            icon="icons/full/obj16/EcoreModelFile.gif"
+            extensions="ecore"
+            class="ecore.presentation.EcoreEditor"
+            contributorClass="ecore.presentation.EcoreActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="stoex.presentation.StoexModelWizardID"
+            name="%_UI_StoexModelWizard_label"
+            class="stoex.presentation.StoexModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/StoexModelFile.gif">
+         <description>%_UI_StoexModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="stoex.presentation.StoexEditorID"
+            name="%_UI_StoexEditor_label"
+            icon="icons/full/obj16/StoexModelFile.gif"
+            extensions="stoex"
+            class="stoex.presentation.StoexEditor"
+            contributorClass="stoex.presentation.StoexActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="units.presentation.UnitsModelWizardID"
+            name="%_UI_UnitsModelWizard_label"
+            class="units.presentation.UnitsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/UnitsModelFile.gif">
+         <description>%_UI_UnitsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="units.presentation.UnitsEditorID"
+            name="%_UI_UnitsEditor_label"
+            icon="icons/full/obj16/UnitsModelFile.gif"
+            extensions="units"
+            class="units.presentation.UnitsEditor"
+            contributorClass="units.presentation.UnitsActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="probfunction.presentation.ProbfunctionModelWizardID"
+            name="%_UI_ProbfunctionModelWizard_label"
+            class="probfunction.presentation.ProbfunctionModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ProbfunctionModelFile.gif">
+         <description>%_UI_ProbfunctionModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="probfunction.presentation.ProbfunctionEditorID"
+            name="%_UI_ProbfunctionEditor_label"
+            icon="icons/full/obj16/ProbfunctionModelFile.gif"
+            extensions="probfunction"
+            class="probfunction.presentation.ProbfunctionEditor"
+            contributorClass="probfunction.presentation.ProbfunctionActionBarContributor">
+      </editor>
+   </extension>
+
 </plugin>

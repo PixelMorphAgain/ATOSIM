@@ -129,11 +129,23 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Network"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Specification"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/TransactionsSpecification"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/BlockchainSystemSpecification"
           labelFeature="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm/core/entity/NamedElement/entityName">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MeanBlockTime"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MeanBlockSize"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/numOfRequiredSecurityConfirmations"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/requiredHashPower"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/maxBlockSize"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/maxNetworkSize"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//blockchainsystem/TransactionsSpecification">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/maxTransactionSize"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/meanTransactionSize"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/meanTransactionExecutionEffort"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/meanTransactionCreationInterval"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/transactionMemoryConsumption"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Nodeenvironment" disposableProviderFactory="true" ecorePackage="bscm.ecore#//nodeenvironment">
@@ -1240,5 +1252,188 @@
     <genClasses ecoreClass="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ETypeParameter">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ETypeParameter/eBounds"/>
     </genClasses>
+  </genPackages>
+  <genPackages prefix="Stoex" ecorePackage="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermOperations">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermOperations/ADD"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermOperations/SUB"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductOperations">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductOperations/MULT"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductOperations/DIV"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductOperations/MOD"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/GREATER"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/EQUALS"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/LESS"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/NOTEQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/LESSEQUAL"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareOperations/GREATEREQUAL"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperations">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperations/AND"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperations/OR"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperations/XOR"/>
+    </genEnums>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//VariableReference"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//AbstractNamedReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//AbstractNamedReference/referenceName"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NamespaceReference">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NamespaceReference/innerReference_NamespaceReference"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Variable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Variable/id_Variable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Atom"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Unary"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Power"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Product"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Term"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Comparison"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanExpression"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IfElse"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Expression"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//TermExpression/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProductExpression/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProbabilityFunctionLiteral">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//ProbabilityFunctionLiteral/function_ProbabilityFunctionLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Parenthesis">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//Parenthesis/innerExpression"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NumericLiteral"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IntLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IntLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//DoubleLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//DoubleLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//CompareExpression/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BoolLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BoolLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral/value"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//PowerExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//PowerExpression/base"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//PowerExpression/exponent"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperatorExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperatorExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperatorExpression/right"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//BooleanOperatorExpression/operation"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NotExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NotExpression/inner"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NegativeExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//NegativeExpression/inner"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//FunctionLiteral">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//FunctionLiteral/id"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//FunctionLiteral/parameters_FunctionLiteral"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IfElseExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IfElseExpression/ifExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IfElseExpression/elseExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IfElseExpression/conditionExpression"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//RandomVariable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//RandomVariable/specification"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//RandomVariable/expression"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Units" ecorePackage="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitNames">
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitNames/UNITLESS"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitNames/BYTE"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitNames/SECOND"/>
+      <genEnumLiterals ecoreEnumLiteral="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitNames/METER"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitCarryingElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitCarryingElement/unit"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//Unit"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//BaseUnit">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//BaseUnit/name"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitRepository">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitRepository/units"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitMultiplication">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitMultiplication/units"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitPower">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitPower/unit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitPower/exponent"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitDivision">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitDivision/dividend"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#//UnitDivision/divisor"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Probfunction" ecorePackage="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#/">
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//BoxedPDF">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//BoxedPDF/samples"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityDensityFunction"/>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityFunction"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ContinuousSample">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ContinuousSample/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ContinuousSample/probability"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityMassFunction">
+      <genTypeParameters ecoreTypeParameter="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityMassFunction/T"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityMassFunction/samples"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ProbabilityMassFunction/orderedDomain"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Sample">
+      <genTypeParameters ecoreTypeParameter="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Sample/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Sample/probability"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Sample/value"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//SamplePDF">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//SamplePDF/distance"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//SamplePDF/values"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Complex">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Complex/real"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//Complex/imaginary"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ContinuousPDF"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ExponentialDistribution">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//ExponentialDistribution/rate"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//NormalDistribution">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//NormalDistribution/mu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//NormalDistribution/sigma"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//LognormalDistribution">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//LognormalDistribution/mu"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//LognormalDistribution/sigma"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//GammaDistribution">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//GammaDistribution/alpha"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//GammaDistribution/theta"/>
+    </genClasses>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//IntSample"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//BoolSample"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//DoubleSample"/>
+    <genClasses ecoreClass="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore#//StringSample"/>
   </genPackages>
 </genmodel:GenModel>
