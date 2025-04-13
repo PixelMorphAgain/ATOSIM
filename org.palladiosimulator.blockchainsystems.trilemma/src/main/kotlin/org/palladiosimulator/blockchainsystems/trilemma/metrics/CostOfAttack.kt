@@ -6,6 +6,7 @@ import java.util.Currency
 /**
  * Cost of Attack
  *
+ * @property value cost of attack represented as a Pair of the monetary value and its currency
  * @property threshold the percentual power an attack has to have, to control the blockchain system (0-100)
  *
  * @author Davis Riedel
@@ -22,9 +23,9 @@ data class CostOfAttack(
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
       append("{ costOfAttack=")
-      append(value.component1())
+      append(value.first)
       append(" ")
-      append(value.component2().displayName)
+      append(value.second.displayName)
       append(" }")
     }
   }

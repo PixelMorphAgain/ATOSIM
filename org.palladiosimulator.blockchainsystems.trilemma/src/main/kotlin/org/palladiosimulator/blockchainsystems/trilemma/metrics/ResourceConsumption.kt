@@ -5,6 +5,8 @@ import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.Out
 /**
  * Resource consumption
  *
+ * @property value Pair of memory consumption and maximum storage size
+ *
  * @author Davis Riedel
  */
 data class ResourceConsumption(
@@ -13,9 +15,9 @@ data class ResourceConsumption(
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
       append("{ ")
-      value.component1().formatDetails(this)
+      value.first.formatDetails(this)
       append("; ")
-      value.component2().formatDetails(this)
+      value.second.formatDetails(this)
       append(" }")
     }
   }

@@ -1,22 +1,18 @@
 package org.palladiosimulator.blockchainsystems.trilemma.metrics
 
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
- * Availability regarding Scalability
- *
- * @property observationTime the observed timespan for which the value was computed
+ * Stale block rate
  *
  * @author Davis Riedel
  */
-data class AvailabilityScalability(
-  override val value: Double,
-  val observationTime: Duration
+data class StaleBlockRate(
+  override val value: Double
 ): OutputMetric<Double> {
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ availabilityScalability=")
+      append("{ staleBlockRate=")
       append(value)
       append(" }")
     }

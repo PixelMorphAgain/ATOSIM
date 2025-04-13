@@ -1,20 +1,18 @@
-package org.palladiosimulator.blockchainsystems.core.transactionpropagation
+package org.palladiosimulator.blockchainsystems.core.transaction
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Transaction
 
 /**
  * @author Davis Riedel
  */
 @JvmRecord
-data class TransactionSentTraceEvent(
+data class TransactionStoredInMemPoolTraceEvent(
   private val occurrenceTime: Long,
-  val sentTransaction: Transaction,
-  val receivingNetworkEndpoint: P2PNetworkEndpoint
+  val storedTransaction: Transaction?
 ) : TraceEvent {
   companion object {
-    const val EVENT_TYPE: String = "TransactionSentTraceEvent"
+    const val EVENT_TYPE: String = "TransactionStoredInPoolTraceEvent"
   }
 
   override fun getOccurrenceTime(): Long = occurrenceTime
@@ -22,9 +20,7 @@ data class TransactionSentTraceEvent(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")
-    stringBuilder.append(sentTransaction.txId)
-    stringBuilder.append("; sentToNetworkEndpoint=")
-    stringBuilder.append(receivingNetworkEndpoint.getEndpointId())
+    stringBuilder.append(storedTransaction.txId)
     stringBuilder.append(" }")
   }
 }

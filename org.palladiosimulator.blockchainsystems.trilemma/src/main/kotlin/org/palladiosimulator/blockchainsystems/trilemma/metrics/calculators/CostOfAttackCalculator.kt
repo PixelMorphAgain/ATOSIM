@@ -1,5 +1,6 @@
-package org.palladiosimulator.blockchainsystems.trilemma.metrics
+package org.palladiosimulator.blockchainsystems.trilemma.metrics.calculators
 
+import org.palladiosimulator.blockchainsystems.trilemma.metrics.CostOfAttack
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetricCalculator
 import java.util.Currency
 
@@ -25,12 +26,12 @@ class CostOfAttackCalculator(
   }
 
   override fun calculate(): CostOfAttack {
-    val c = costPerHashUnit.component1()
+    val c = costPerHashUnit.first
     val t = threshold / 100
     val sum = (1..numberOfMiners).sumOf { i ->
       hashPowerNeededPerMiner[i]
     }
     val result = t * c * sum
-    return CostOfAttack(Pair(result, costPerHashUnit.component2()), threshold)
+    return CostOfAttack(Pair(result, costPerHashUnit.second), threshold)
   }
 }

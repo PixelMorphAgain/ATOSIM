@@ -37,5 +37,4 @@ public class BlockValidatorFactoryPluginImpl implements BlockValidatorFactory {
         return new BlockValidatorImpl(adapter);
     }
 
-
 }

@@ -1,5 +1,6 @@
-package org.palladiosimulator.blockchainsystems.trilemma.metrics
+package org.palladiosimulator.blockchainsystems.trilemma.metrics.calculators
 
+import org.palladiosimulator.blockchainsystems.trilemma.metrics.CensorshipResistance
 import org.palladiosimulator.blockchainsystems.trilemma.metrics.abstractions.OutputMetricCalculator
 
 /**
