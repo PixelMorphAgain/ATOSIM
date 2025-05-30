@@ -9,13 +9,21 @@ Bundle-Activator: org.palladiosimulator.blockchainsystems.bscm.nodeallocation.pr
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Export-Package: ecore.provider,
+Export-Package: bscm.blockchainsystem.provider,
+ bscm.blockchainsystemComponentRepository.provider,
+ bscm.nodeallocation.provider,
+ bscm.nodeenvironment.provider,
+ bscm.nodegeographicalenvironment.provider,
+ bscm.nodesystem.provider,
+ bscm.p2pnetwork.provider,
+ ecore.provider,
  entity.provider,
  identifier.provider,
  org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.provider,
  org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.provider,
  org.palladiosimulator.blockchainsystems.bscm.nodeallocation.provider,
  org.palladiosimulator.blockchainsystems.bscm.nodeenvironment.provider,
+ org.palladiosimulator.blockchainsystems.bscm.nodegeographicalenvironment.provider,
  org.palladiosimulator.blockchainsystems.bscm.nodesystem.provider,
  org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.provider,
  pcm.allocation.provider,

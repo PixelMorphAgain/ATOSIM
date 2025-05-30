@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
-  <viewpoint:DAnalysis uid="_pZhLAFJ0Ee-HbdXYjN690g" selectedViews="_pbgIAFJ0Ee-HbdXYjN690g _XsYp0FKTEe-sBOzEZAwBww _XshMsFKTEe-sBOzEZAwBww _XuMnsFKTEe-sBOzEZAwBww" version="15.0.0.202209061200">
+  <viewpoint:DAnalysis uid="_pZhLAFJ0Ee-HbdXYjN690g" selectedViews="_pbgIAFJ0Ee-HbdXYjN690g _XsYp0FKTEe-sBOzEZAwBww _XshMsFKTEe-sBOzEZAwBww _XuMnsFKTEe-sBOzEZAwBww" version="15.4.1.202403191723">
     <semanticResources>bscm.ecore</semanticResources>
-    <semanticResources>bscm.genmodel</semanticResources>
     <semanticResources>platform:/resource/org.palladiosimulator.pcm/model/pcm.ecore</semanticResources>
     <semanticResources>platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore</semanticResources>
     <semanticResources>platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore</semanticResources>
@@ -15,29 +14,31 @@
     <semanticResources>platform:/resource/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel</semanticResources>
     <semanticResources>platform:/resource/de.uka.ipd.sdq.units/model/Units.genmodel</semanticResources>
     <semanticResources>platform:/resource/de.uka.ipd.sdq.stoex/model/stoex.genmodel</semanticResources>
+    <semanticResources>bscm-old.genmodel</semanticResources>
+    <semanticResources>bscm.genmodel</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_pbgIAFJ0Ee-HbdXYjN690g">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_nrxusWCJEe-qUrSg7WZDFg" name="nodesystem class diagram" repPath="#_nrxHoGCJEe-qUrSg7WZDFg" changeId="6b1299ff-81a3-4f31-86a3-b4f9ea9b11bd">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_nrxusWCJEe-qUrSg7WZDFg" name="nodesystem class diagram" repPath="#_nrxHoGCJEe-qUrSg7WZDFg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//nodesystem"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_mvnL8GCKEe-qUrSg7WZDFg" name="blockchainsystemComponentRepository class diagram" repPath="#_mviTcGCKEe-qUrSg7WZDFg" changeId="e1e6216f-6a00-409b-b6a8-ddc54eb807df">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_mvnL8GCKEe-qUrSg7WZDFg" name="blockchainsystemComponentRepository class diagram" repPath="#_mviTcGCKEe-qUrSg7WZDFg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//blockchainsystemComponentRepository"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Z79d0GCLEe-qUrSg7WZDFg" name="p2pnetwork class diagram" repPath="#_Z77BkGCLEe-qUrSg7WZDFg" changeId="e971cbd4-5b39-442e-884c-1946a05c6df2">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_Z79d0GCLEe-qUrSg7WZDFg" name="p2pnetwork class diagram" repPath="#_Z77BkGCLEe-qUrSg7WZDFg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//p2pnetwork"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_cVbIMWCOEe-qUrSg7WZDFg" name="blockchainsystem class diagram" repPath="#_cVR-QGCOEe-qUrSg7WZDFg" changeId="a3718f68-f5af-46b2-8fb3-b5297ae41b22">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_cVbIMWCOEe-qUrSg7WZDFg" name="blockchainsystem class diagram" repPath="#_cVR-QGCOEe-qUrSg7WZDFg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//blockchainsystem"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_67ergGCOEe-qUrSg7WZDFg" name="nodeenvironment class diagram" repPath="#_67cPQGCOEe-qUrSg7WZDFg" changeId="09112db6-cf57-4898-977d-6b87b7e31135">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_67ergGCOEe-qUrSg7WZDFg" name="nodeenvironment class diagram" repPath="#_67cPQGCOEe-qUrSg7WZDFg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//nodeenvironment"/>
       </ownedRepresentationDescriptors>
-      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_RuSqEGCREe-4pffNGaRLYg" name="nodeallocation class diagram" repPath="#_RuQN0GCREe-4pffNGaRLYg" changeId="f6df3884-a04d-4698-b0f6-d45d76e920e9">
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_RuSqEGCREe-4pffNGaRLYg" name="nodeallocation class diagram" repPath="#_RuQN0GCREe-4pffNGaRLYg" changeId="1748561978451">
         <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
         <target xmi:type="ecore:EPackage" href="bscm.ecore#//nodeallocation"/>
       </ownedRepresentationDescriptors>
