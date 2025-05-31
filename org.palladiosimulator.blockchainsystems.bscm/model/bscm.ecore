@@ -12,7 +12,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeSystem" lowerBound="1"
           eType="#//nodesystem/BlockchainSystemNodeSystem"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeGeographicalEnvironment"
-          lowerBound="1" eType="#//nodegeographicalenvironment/NodeGeographicalEnvironment"/>
+          lowerBound="1" eType="#//geography/NodeGeographicalEnvironment"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="NodeAllocationRepository" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeAllocations" upperBound="-1"
@@ -24,7 +24,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="ResourceContainer" lowerBound="1"
           eType="#//nodeenvironment/NodeResourceContainer"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeGeographicalRegionSpecification"
-          lowerBound="1" eType="#//nodegeographicalenvironment/NodeGeographicalRegionSpecification"/>
+          lowerBound="1" eType="#//geography/NodeGeographicalRegionSpecification"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="nodesystem" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeSystem/1.0"
@@ -176,6 +176,8 @@
           eType="#//blockchainsystem/BlockchainSystemSpecification" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="TransactionsSpecification"
           lowerBound="1" eType="#//blockchainsystem/TransactionsSpecification" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="GeographicalRegionsSpecification"
+          lowerBound="1" eType="#//geography/GeographicalRegionsSpecification"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BlockchainSystemSpecification" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="MeanBlockTime" lowerBound="1"
@@ -216,14 +218,22 @@
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="nodegeographicalenvironment" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeGeographicalEnvironment/1.0"
-      nsPrefix="nodegeographicalenvironment">
+  <eSubpackages name="geography" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/Geography/1.0"
+      nsPrefix="geography">
     <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalEnvironment">
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeGeographicalRegionSpecification"
-          lowerBound="1" eType="#//nodegeographicalenvironment/NodeGeographicalRegionSpecification"/>
+          lowerBound="1" eType="#//geography/NodeGeographicalRegionSpecification"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalRegionSpecification">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="Region" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="Region" lowerBound="1"
+          eType="#//geography/GeographicalRegion"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegionsSpecification">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="Regions" lowerBound="1"
+          upperBound="-1" eType="#//geography/GeographicalRegion"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegion">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="RegionName" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
   </eSubpackages>

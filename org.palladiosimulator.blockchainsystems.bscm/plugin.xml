@@ -58,8 +58,9 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated bscm -->
       <package
-            uri="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeGeographicalEnvironment/1.0"
-            class="org.palladiosimulator.blockchainsystems.bscm.nodegeographicalenvironment.NodegeographicalenvironmentPackage"
+            uri="http://palladiosimulator.org/BlockchainSystemComponentModel/Geography/1.0"
+            class="org.palladiosimulator.blockchainsystems.bscm.geography.GeographyPackage"
             genModel="model/bscm.genmodel"/>
    </extension>
+
 </plugin>

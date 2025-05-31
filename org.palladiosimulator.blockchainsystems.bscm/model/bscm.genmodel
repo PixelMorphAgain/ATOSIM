@@ -150,6 +150,8 @@
             ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Network"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Specification"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/TransactionsSpecification"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/GeographicalRegionsSpecification"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/BlockchainSystemSpecification">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MeanBlockTime"/>
@@ -181,14 +183,22 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Nodegeographicalenvironment" basePackage="org.palladiosimulator.blockchainsystems.bscm"
-        disposableProviderFactory="true" ecorePackage="bscm.ecore#//nodegeographicalenvironment">
-      <genClasses ecoreClass="bscm.ecore#//nodegeographicalenvironment/NodeGeographicalEnvironment">
+    <nestedGenPackages prefix="Geography" basePackage="org.palladiosimulator.blockchainsystems.bscm"
+        disposableProviderFactory="true" ecorePackage="bscm.ecore#//geography">
+      <genClasses ecoreClass="bscm.ecore#//geography/NodeGeographicalEnvironment">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference bscm.ecore#//nodegeographicalenvironment/NodeGeographicalEnvironment/NodeGeographicalRegionSpecification"/>
+            ecoreFeature="ecore:EReference bscm.ecore#//geography/NodeGeographicalEnvironment/NodeGeographicalRegionSpecification"/>
       </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//nodegeographicalenvironment/NodeGeographicalRegionSpecification">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodegeographicalenvironment/NodeGeographicalRegionSpecification/Region"/>
+      <genClasses ecoreClass="bscm.ecore#//geography/NodeGeographicalRegionSpecification">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//geography/NodeGeographicalRegionSpecification/Region"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//geography/GeographicalRegionsSpecification">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//geography/GeographicalRegionsSpecification/Regions"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//geography/GeographicalRegion">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//geography/GeographicalRegion/RegionName"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
