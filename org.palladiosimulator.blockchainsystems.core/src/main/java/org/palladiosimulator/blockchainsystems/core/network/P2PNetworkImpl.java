@@ -38,16 +38,8 @@ public class P2PNetworkImpl extends BlockchainSimulationObject implements P2PNet
     @Override
     public void multicast(NodeP2PNetworkInterface sendingNode, Message content) {
         Set<P2PLink> linksToNeighbors = _networkGraph.edgesOf((P2PNode) sendingNode);
-
         for (P2PLink link : linksToNeighbors) {
-            P2PNode sourceNode = _networkGraph.getEdgeSource(link);
-            P2PNode targetNode = _networkGraph.getEdgeTarget(link);
-
-            if (sendingNode == sourceNode) {
-                link.send(targetNode, content);
-            } else {
-                link.send(sourceNode, content);
-            }
+            link.send(content);
         }
     }
 
@@ -71,7 +63,7 @@ public class P2PNetworkImpl extends BlockchainSimulationObject implements P2PNet
     @Override
     public void send(NodeP2PNetworkInterface sendingNode, NodeP2PNetworkInterface recipientNode, Message content) {
         P2PLink link = _networkGraph.getEdge((P2PNode) sendingNode, (P2PNode) recipientNode);
-        link.send((P2PNode) recipientNode, content);
+        link.send(content);
     }
 
     @Override
