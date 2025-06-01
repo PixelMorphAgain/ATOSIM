@@ -6,7 +6,6 @@ import java.util.Set;
  * Interface for a factory that produces instances of {@code Block}.
  * 
  * @author Yannik Sproll
- *
  */
 public interface BlockFactory {
 

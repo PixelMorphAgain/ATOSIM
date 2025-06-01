@@ -4,6 +4,12 @@ import java.util.List;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Container for managing multiple results repositories.
+ * Provides methods to add and retrieve repositories.
+ *
+ * @author Yannik Sproll
+ */
 public class ResultsRepositoryContainer {
     private final List<ResultsRepository> _repositories;
 

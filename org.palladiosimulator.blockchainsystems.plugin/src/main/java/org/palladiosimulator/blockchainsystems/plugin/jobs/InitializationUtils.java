@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs.common;
+package org.palladiosimulator.blockchainsystems.plugin.jobs;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -12,6 +12,12 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.connectedsubgraph
 import org.palladiosimulator.blockchainsystems.plugin.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl;
 
+/**
+ * Utility class for initialization tasks.
+ * Provides methods to retrieve configuration attributes and create necessary objects.
+ *
+ * @author Yannik Sproll
+ */
 public final class InitializationUtils {
 
     private InitializationUtils() {
@@ -22,7 +28,9 @@ public final class InitializationUtils {
         return Long.parseLong(
                 configuration.getAttribute(
                         Attributes.SimulationTermination.MAX_BLOCKCHAIN_LENGTH_ATTRIBUTE,
-                        Attributes.SimulationTermination.MAX_BLOCKCHAIN_LENGTH_ATTRIBUTE_DEFAULT));
+                        Attributes.SimulationTermination.MAX_BLOCKCHAIN_LENGTH_ATTRIBUTE_DEFAULT
+                )
+        );
     }
 
     public static int getNumberOfMonteCarloSimulationRoundsFromConfig(ILaunchConfiguration configuration)
@@ -30,26 +38,32 @@ public final class InitializationUtils {
         return Integer.parseInt(
                 configuration.getAttribute(
                         Attributes.SimulationType.NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS,
-                        Attributes.SimulationType.NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT));
+                        Attributes.SimulationType.NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT
+                )
+        );
     }
 
 
     // BlockchainSystemFactory Utils
     private static BlockchainSystemFactory createBlockchainSystemFactoryForExplicitNetworkTopology(
             BlockchainSystem designBlockchainSystem,
-            ExplicitNetworkTopology explicitTopology) {
+            ExplicitNetworkTopology explicitTopology
+    ) {
         return new ExplicitNetworkBlockchainSystemFactory(
                 designBlockchainSystem,
-                explicitTopology);
+                explicitTopology
+        );
     }
 
     private static BlockchainSystemFactory createBlockchainSystemFactoryForConnectedSubgraphsTopology(
             BlockchainSystem designBlockchainSystem,
-            ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
+            ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology
+    ) {
 
         return new ConnectedSubgraphNetworkBlockchainSystemFactory(
                 designBlockchainSystem,
-                connectedSubgraphsTopology);
+                connectedSubgraphsTopology
+        );
 
     }
 
@@ -60,19 +74,22 @@ public final class InitializationUtils {
         BlockchainSystem designBlockchainSystem = designModelLoader.load(
                 configuration.getAttribute(
                         Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE,
-                        Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT));
+                        Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT
+                )
+        );
 
         NetworkTopology networkTopology = getNetworkTopologyFromBlockchainSystem(designBlockchainSystem);
 
         if (networkTopology instanceof ExplicitNetworkTopology explicitTopology) {
             return createBlockchainSystemFactoryForExplicitNetworkTopology(
                     designBlockchainSystem,
-                    explicitTopology);
-
+                    explicitTopology
+            );
         } else if (networkTopology instanceof ConnectedSubgraphsNetworkTopology connectedSubgraphsTopology) {
             return createBlockchainSystemFactoryForConnectedSubgraphsTopology(
                     designBlockchainSystem,
-                    connectedSubgraphsTopology);
+                    connectedSubgraphsTopology
+            );
         }
 
         throw new IllegalArgumentException("The network topology type of the specified blockchain system is unknown");
@@ -107,10 +124,10 @@ public final class InitializationUtils {
                 configuration.getAttribute(
                         Attributes.Logging.DATABASE_SERVER_ATTRIBUTE,
                         Attributes.Logging.DATABASE_SERVER_ATTRIBUTE_DEFAULT),
-                Integer.parseInt(
-                        configuration.getAttribute(
-                                Attributes.Logging.DATABASE_PORT_ATTRIBUTE,
-                                Attributes.Logging.DATABASE_PORT_ATTRIBUTE_DEFAULT)),
+                Integer.parseInt(configuration.getAttribute(
+                        Attributes.Logging.DATABASE_PORT_ATTRIBUTE,
+                        Attributes.Logging.DATABASE_PORT_ATTRIBUTE_DEFAULT
+                )),
                 configuration.getAttribute(
                         Attributes.Logging.DATABASE_NAME_ATTRIBUTE,
                         Attributes.Logging.DATABASE_NAME_ATTRIBUTE_DEFAULT),

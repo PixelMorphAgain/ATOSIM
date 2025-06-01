@@ -7,6 +7,12 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput;
 import org.palladiosimulator.blockchainsystems.doublespending.simulation.logoutputs.LogOutputProvider;
 import org.palladiosimulator.blockchainsystems.loggers.*;
 
+/**
+ * Implementation of the {@link LogOutputProvider} interface.
+ * Supports console, file, and database logging.
+ *
+ * @author Yannik Sproll
+ */
 public class LogOutputProviderImpl implements LogOutputProvider {
 
     private final boolean _useConsoleLogging;
@@ -30,7 +36,8 @@ public class LogOutputProviderImpl implements LogOutputProvider {
             int dbPort,
             String dbName,
             String dbUsername,
-            String dbPassword) {
+            String dbPassword
+    ) {
         _useConsoleLogging = useConsoleLogging;
         _useFileLogging = useFileLogging;
         _fileLoggingDirectoryPath = fileLoggingDirectoryPath;
@@ -75,6 +82,7 @@ public class LogOutputProviderImpl implements LogOutputProvider {
                 _dbPort,
                 _dbName,
                 _dbUsername,
-                _dbPassword);
+                _dbPassword
+        );
     }
 }

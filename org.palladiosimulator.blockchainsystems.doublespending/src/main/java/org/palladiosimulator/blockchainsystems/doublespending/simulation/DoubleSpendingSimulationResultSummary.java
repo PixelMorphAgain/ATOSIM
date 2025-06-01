@@ -1,9 +1,13 @@
-package org.palladiosimulator.blockchainsystems.plugin.results;
+package org.palladiosimulator.blockchainsystems.doublespending.simulation;
 
+import org.jetbrains.annotations.NotNull;
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary;
+
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.Map;
 
-public class SimulationResultSummary {
+public class DoubleSpendingSimulationResultSummary extends SimulationResultSummary {
 
     private final String _simulationType;
 
@@ -13,12 +17,13 @@ public class SimulationResultSummary {
 
     private final Double _attackSuccessProbability;
 
-    public SimulationResultSummary(
+    public DoubleSpendingSimulationResultSummary(
             String simulationType,
             Long attackerWonRounds,
             Long systemWonRounds,
             Long unambiguousRounds,
-            Double attackSuccessProbability) {
+            Double attackSuccessProbability
+    ) {
         _simulationType = simulationType;
         _attackerWonRounds = attackerWonRounds;
         _systemWonRounds = systemWonRounds;
@@ -31,6 +36,7 @@ public class SimulationResultSummary {
     }
 
     // Serialize object to a text file
+    @NotNull
     public String serializeToText() {
         StringBuilder sb = new StringBuilder();
         sb.append("SimulationType: " + _simulationType);
@@ -57,7 +63,7 @@ public class SimulationResultSummary {
     }
 
     // Deserialize object from a text file
-    public static SimulationResultSummary deserializeFromTextFile(String serializedSummary) {
+    public static DoubleSpendingSimulationResultSummary deserializeFromText(String serializedSummary) {
         String simulationType = null;
         Long attackerWonRounds = null;
         Long systemWonRounds = null;
@@ -88,7 +94,7 @@ public class SimulationResultSummary {
                     break;
             }
         }
-        return new SimulationResultSummary(simulationType, attackerWonRounds, systemWonRounds, unambiguousRounds,
+        return new DoubleSpendingSimulationResultSummary(simulationType, attackerWonRounds, systemWonRounds, unambiguousRounds,
                 attackSuccessProbability);
     }
 
@@ -106,5 +112,26 @@ public class SimulationResultSummary {
 
     public Double getAttackSuccessProbability() {
         return _attackSuccessProbability;
+    }
+
+    @Override
+    public @NotNull Map<String, String> getValues() {
+        Map<String, String> values = new HashMap<String, String>()
+        if (getSimulationType() != null) {
+            values.put("Simulation Type", getSimulationType());
+        }
+        if (getAttackerWonRounds() != null) {
+            values.put("Attacker Won Rounds", getAttackerWonRounds().toString());
+        }
+        if (getSystemWonRounds() != null) {
+            values.put("System Won Rounds", getSystemWonRounds().toString());
+        }
+        if (getUnambiguousRounds() != null) {
+            values.put("Unambiguous Rounds", getUnambiguousRounds().toString());
+        }
+        if (getAttackSuccessProbability() != null) {
+            values.put("Attack Success Probability", String.format(Locale.US, "%.20f", getAttackSuccessProbability()));
+        }
+        return values;
     }
 }

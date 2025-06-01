@@ -8,4 +8,5 @@ module org.palladiosimulator.blockchainsystems.doublespending {
 
     requires transitive org.palladiosimulator.blockchainsystems.core;
     requires transitive org.palladiosimulator.blockchainsystems.loggers;
+    requires annotations;
 }

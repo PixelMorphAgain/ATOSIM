@@ -5,6 +5,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
+/**
+ * A filter for Eclipse viewers that allows only files with specific extensions to be displayed.
+ *
+ * @author Yannik Sproll
+ */
 public class FileExtensionFilter extends ViewerFilter {
     private final String[] extensions;
 

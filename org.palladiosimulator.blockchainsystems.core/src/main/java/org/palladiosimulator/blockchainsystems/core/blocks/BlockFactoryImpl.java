@@ -7,12 +7,10 @@ import java.util.UUID;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockFactory;
 
+// TODO: Consider block size based on transactions
+
 public class BlockFactoryImpl implements BlockFactory {
-	private final BlockSizeValueProvider _blockSizeValueProvider;
-	
-	public BlockFactoryImpl(BlockSizeValueProvider blockSizeValueProvider) {
-		_blockSizeValueProvider = blockSizeValueProvider;
-	}
+	public BlockFactoryImpl() {}
 	
 	@Override
 	public Block createBlock(String hash, String previousHash, String originId, long blockMinedTimestamp) {
@@ -22,7 +20,8 @@ public class BlockFactoryImpl implements BlockFactory {
 				originId,
 				blockMinedTimestamp,
 				_blockSizeValueProvider.getValue(),
-				new HashSet<String>());
+				new HashSet<String>()
+		);
 	}
 
 	@Override
@@ -33,7 +32,8 @@ public class BlockFactoryImpl implements BlockFactory {
 				null, 
 				0, 
 				0,
-				new HashSet<String>());
+				new HashSet<String>()
+		);
 	}
 
 	@Override
@@ -45,7 +45,8 @@ public class BlockFactoryImpl implements BlockFactory {
 				originId,
 				blockMinedTimestamp,
 				_blockSizeValueProvider.getValue(),
-				new HashSet<String>(tags));
+				new HashSet<String>(tags)
+		);
 	}
 
 }

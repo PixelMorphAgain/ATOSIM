@@ -32,6 +32,11 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.BlockchainSystemN
 import org.palladiosimulator.blockchainsystems.plugin.creation.MaliciousNodesIdProviderImpl;
 import org.palladiosimulator.blockchainsystems.plugin.creation.MiningProcessFactoryPluginImpl;
 
+/**
+ * Factory for creating a {@link BlockchainSystem} based on an {@link ExplicitNetworkTopology}.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemFactory {
 
     private final ExplicitTopologyP2PNetworkFactory _networkFactory;
@@ -40,7 +45,8 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
 
     public ExplicitNetworkBlockchainSystemFactory(
             org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystem designBlockchainSystem,
-            ExplicitNetworkTopology explicitTopology) {
+            ExplicitNetworkTopology explicitTopology
+    ) {
         _networkFactory = new ExplicitTopologyP2PNetworkFactory(explicitTopology);
         _designBlockchainSystem = designBlockchainSystem;
         _explicitTopology = explicitTopology;
@@ -50,13 +56,9 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
     public BlockchainSystem createBlockchainSystem() {
         P2PNetworkCreationResult networkCreationResult = _networkFactory.createP2PNetwork();
 
-        ExplicitNetworkNodeAllocationResolver nodeAllocationResolver = new ExplicitNetworkNodeAllocationResolver(
-                _explicitTopology);
-        ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator =
-                new ExplicitNetworkGlobalResourcePowerCalculator(
-                        _explicitTopology);
-        MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(
-                _explicitTopology);
+        ExplicitNetworkNodeAllocationResolver nodeAllocationResolver = new ExplicitNetworkNodeAllocationResolver(_explicitTopology);
+        ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator = new ExplicitNetworkGlobalResourcePowerCalculator(_explicitTopology);
+        MaliciousNodesIdProvider maliciousNodesIdProvider = createMaliciousNodesIdProvider(_explicitTopology);
 
         BlockFactoryImpl blockFactory = createBlockFactory();
 
@@ -64,19 +66,21 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
                 nodeAllocationResolver,
                 globalResourcePowerCalculator,
                 maliciousNodesIdProvider,
-                blockFactory);
+                blockFactory
+        );
 
         return createBlockchainSystemInstance(
                 networkCreationResult.getCreatedNetwork(),
                 blockFactory,
-                nodeFactory);
-
+                nodeFactory
+        );
     }
 
     private BlockchainSystem createBlockchainSystemInstance(
             P2PNetwork network,
             BlockFactory blockFactory,
-            BlockchainSystemNodeFactory nodeFactory) {
+            BlockchainSystemNodeFactory nodeFactory
+    ) {
         String blockchainSystemId = UUID.randomUUID().toString();
         String blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.substring(0, 8);
 
@@ -102,7 +106,8 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
             ExplicitNetworkNodeAllocationResolver nodeAllocationResolver,
             ExplicitNetworkGlobalResourcePowerCalculator globalResourcePowerCalculator,
             MaliciousNodesIdProvider maliciousNodesIdProvider,
-            BlockFactory blockFactory) {
+            BlockFactory blockFactory
+    ) {
         // Create factories independent of the metamodel information
         BlockchainFactoryImpl blockchainFactory = new BlockchainFactoryImpl();
         BlockPropagationStrategyFactoryImpl propagationStrategyFactory = new BlockPropagationStrategyFactoryImpl();
@@ -133,6 +138,7 @@ public class ExplicitNetworkBlockchainSystemFactory implements BlockchainSystemF
     }
 
     public BlockFactoryImpl createBlockFactory() {
+        // TODO: We no longer have mean block size, block size must be calculated based on transactions
         BlockSizeValueProvider blockSizeValueProvider =
                 new BlockSizeValueProvider(_designBlockchainSystem.getSpecification().getMeanBlockSize());
         return new BlockFactoryImpl(blockSizeValueProvider);

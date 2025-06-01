@@ -20,6 +20,12 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+/**
+ * A dialog for selecting resource files in the Eclipse workspace.
+ * It allows users to filter files based on specified extensions.
+ *
+ * @author Yannik Sproll
+ */
 public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
 
     private String[] extensions;

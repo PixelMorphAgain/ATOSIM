@@ -7,7 +7,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
 import org.palladiosimulator.blockchainsystems.plugin.common.SelectedSimulationType;
-import org.palladiosimulator.blockchainsystems.plugin.jobs.montecarlosimulation.MonteCarloSimulationJob;
+import org.palladiosimulator.blockchainsystems.plugin.jobs.SimulationJob;
 import org.palladiosimulator.blockchainsystems.plugin.jobs.singlesimulation.SingleSimulationJob;
 
 public class PluginLaunch extends LaunchConfigurationDelegate {
@@ -18,22 +18,26 @@ public class PluginLaunch extends LaunchConfigurationDelegate {
 
         SelectedSimulationType simulationType = getSelectedSimulationTypeFromConfig(configuration);
 
+        // TODO: Create trilemma simulation
         if (simulationType == SelectedSimulationType.Single) {
-            SingleSimulationJob job = new SingleSimulationJob(configuration);
-            job.schedule();
+//            SingleSimulationJob job = new SingleSimulationJob(configuration);
+//            job.schedule();
         } else if (simulationType == SelectedSimulationType.MonteCarlo) {
-            MonteCarloSimulationJob job = new MonteCarloSimulationJob(configuration);
-            job.schedule();
+//            SimulationJob job = new SimulationJob(configuration);
+//            job.schedule();
         }
     }
 
     // SimulationConfig Util
-    public static SelectedSimulationType getSelectedSimulationTypeFromConfig(ILaunchConfiguration configuration)
-            throws CoreException {
+    public static SelectedSimulationType getSelectedSimulationTypeFromConfig(
+            ILaunchConfiguration configuration
+    ) throws CoreException {
         return Enum.valueOf(
                 SelectedSimulationType.class,
                 configuration.getAttribute(
                         Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE,
-                        Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE_DEFAULT));
+                        Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE_DEFAULT
+                )
+        );
     }
 }

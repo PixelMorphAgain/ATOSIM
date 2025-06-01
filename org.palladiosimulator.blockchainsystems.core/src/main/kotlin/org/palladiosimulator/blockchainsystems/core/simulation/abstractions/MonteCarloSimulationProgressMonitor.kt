@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.trilemma.simulation
+package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
 
 interface MonteCarloSimulationProgressMonitor {
   fun onSimulationStarted(numberOfSimulationRounds: Long)

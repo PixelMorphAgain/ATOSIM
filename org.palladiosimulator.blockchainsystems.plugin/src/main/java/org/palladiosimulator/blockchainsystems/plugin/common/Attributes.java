@@ -1,5 +1,11 @@
 package org.palladiosimulator.blockchainsystems.plugin.common;
 
+/**
+ * This class contains all attributes used in the plugin.
+ *
+ * @author Yannik Sproll
+ * @implNote This class is not meant to be instantiated.
+ */
 public final class Attributes {
 
     private Attributes() {

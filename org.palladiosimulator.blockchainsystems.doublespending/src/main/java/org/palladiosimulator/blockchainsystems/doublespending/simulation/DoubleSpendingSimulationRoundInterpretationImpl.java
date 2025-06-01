@@ -1,10 +1,6 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs.common;
+package org.palladiosimulator.blockchainsystems.doublespending.simulation;
 
-import org.palladiosimulator.blockchainsystems.doublespending.simulation.InterpretedResult;
-import org.palladiosimulator.blockchainsystems.doublespending.simulation.SimulationRoundInterpretation;
-import org.palladiosimulator.blockchainsystems.doublespending.simulation.SimulationRoundResult;
-
-public class SimulationRoundInterpretationImpl implements SimulationRoundInterpretation {
+public class DoubleSpendingSimulationRoundInterpretationImpl implements SimulationRoundInterpretation {
 
     public InterpretedResult interpretRoundResult(SimulationRoundResult roundResult) {
 

@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs.common;
+package org.palladiosimulator.blockchainsystems.plugin.jobs;
 
 import java.util.Map;
 
@@ -12,8 +12,12 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainS
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainsystemPackage;
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.impl.BlockchainSystemImpl;
 
+/**
+ * Load {@link BlockchainSystem} from the ecore metamodel.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 public class BlockchainSystemModelLoader {
-
     public BlockchainSystem load(String uri) {
         BlockchainsystemPackage.eINSTANCE.eClass();
 
@@ -25,19 +29,16 @@ public class BlockchainSystemModelLoader {
         m.put("blockchainsystemComponentRepository", new XMIResourceFactoryImpl());
         m.put("nodesystem", new XMIResourceFactoryImpl());
         m.put("nodeenvironment", new XMIResourceFactoryImpl());
+        m.put("geography", new XMIResourceFactoryImpl());
 
         // Obtain a new resource set
         ResourceSet resSet = new ResourceSetImpl();
 
         // Get the resource
-        Resource resource = resSet.getResource(URI
-                .createURI(uri), true);
+        Resource resource = resSet.getResource(URI.createURI(uri), true);
 
         EcoreUtil.resolveAll(resSet);
 
-        BlockchainSystemImpl imp = (BlockchainSystemImpl) resource.getContents().get(0);
-
-
-        return imp;
+        return (BlockchainSystemImpl) resource.getContents().getFirst();
     }
 }

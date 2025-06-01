@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs.common;
+package org.palladiosimulator.blockchainsystems.plugin.jobs;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,18 +11,26 @@ import java.time.format.DateTimeFormatter;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
-import org.palladiosimulator.blockchainsystems.plugin.results.SimulationResultSummary;
 
+/**
+ * Utility class for saving simulation result summaries.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 public final class SummaryUtils {
     private SummaryUtils() {
     }
 
-    public static void saveResultSummary(SimulationResultSummary summary, ILaunchConfiguration configuration)
-            throws CoreException {
+    public static void saveResultSummary(
+            SimulationResultSummary summary,
+            ILaunchConfiguration configuration
+    ) throws CoreException {
         String path = configuration.getAttribute(
                 Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
-                Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
+                Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT
+        );
 
         String fileName = getCurrentTimeFormatted() + "-" + summary.getSimulationType() + ".dssimresult";
         String fullFilePath = Path.of(path, fileName).toString();
