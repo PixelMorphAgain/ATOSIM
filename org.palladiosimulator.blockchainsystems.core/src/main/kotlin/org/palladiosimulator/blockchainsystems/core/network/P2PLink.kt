@@ -47,7 +47,7 @@ class P2PLink(
 
   private fun handleMessageSentEvent(event: MessageSentEvent) {
     val transmissionDuration = latencyValueProvider.getValue().latency + event.message.content.getSize()
-      .toLong() / throughputValueProvider.getValue()!!
+      .toLong() / throughputValueProvider.getValue().throughput
 
     val newMessageReceivedEvent = MessageReceivedEvent(
       event.message,

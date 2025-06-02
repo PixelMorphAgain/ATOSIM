@@ -12,16 +12,17 @@ import org.palladiosimulator.blockchainsystems.plugin.creation.SimulationFactory
  * Job that executes a simulation based on the provided launch configuration.
  *
  * @property configuration The launch configuration containing the parameters for the simulation.
- * @property factory The factory used to create the simulation instance.
+ * @property simulationFactory The factory used to create the simulation instance.
  *
  * @author Davis Riedel
  */
 class SimulationJob(
   private val configuration: ILaunchConfiguration,
-  private val factory: SimulationFactory
-) : Job("Monte-Carlo Simulation Job") {
+  private val simulationFactory: SimulationFactory,
+  val jobName: String
+) : Job(jobName) {
   override fun run(progressMonitor: IProgressMonitor): IStatus {
-    val simulation = factory.create(configuration, progressMonitor);
+    val simulation = simulationFactory.create(configuration, progressMonitor);
 
     val result = simulation.run();
 

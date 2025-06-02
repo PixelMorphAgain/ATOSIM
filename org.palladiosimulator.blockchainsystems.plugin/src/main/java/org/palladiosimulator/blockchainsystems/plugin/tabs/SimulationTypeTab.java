@@ -18,14 +18,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
-import org.palladiosimulator.blockchainsystems.plugin.common.SelectedSimulationType;
+import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType;
 import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils;
 
 public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
 
     private static final long MINIMUM_NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS = 1;
 
-    private SelectedSimulationType _selectedSimulationType;
+    private SimulationType _selectedSimulationType;
 
     private Button _selectSingleSimulationTypeRadioButton;
     private Button _selectMonteCarloSimulationTypeRadioButton;
@@ -56,7 +56,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
         _selectSingleSimulationTypeRadioButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                onSimulationTypeSelected(SelectedSimulationType.Single);
+                onSimulationTypeSelected(SimulationType.Single);
                 updateLaunchConfigurationDialog();
             }
         });
@@ -67,7 +67,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
         _selectMonteCarloSimulationTypeRadioButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                onSimulationTypeSelected(SelectedSimulationType.MonteCarlo);
+                onSimulationTypeSelected(SimulationType.MonteCarlo);
                 updateLaunchConfigurationDialog();
             }
         });
@@ -92,7 +92,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
         });
     }
 
-    private void onSimulationTypeSelected(SelectedSimulationType simulationType) {
+    private void onSimulationTypeSelected(SimulationType simulationType) {
         _selectedSimulationType = simulationType;
 
         switch (simulationType) {
@@ -136,7 +136,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
 
             onSimulationTypeSelected(
                     Enum.valueOf(
-                            SelectedSimulationType.class,
+                            SimulationType.class,
                             simulationTypeString));
 
             _numberOfSimulationRoundsText.setText(
@@ -147,7 +147,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
         } catch (CoreException | IllegalArgumentException | NullPointerException e) {
             onSimulationTypeSelected(
                     Enum.valueOf(
-                            SelectedSimulationType.class,
+                            SimulationType.class,
                             Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE_DEFAULT));
 
             _numberOfSimulationRoundsText.setText(Attributes.SimulationType.NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT);
@@ -186,7 +186,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
 
     @Override
     public boolean isValid(ILaunchConfiguration launchConfig) {
-        if (_selectedSimulationType == SelectedSimulationType.MonteCarlo) {
+        if (_selectedSimulationType == SimulationType.MonteCarlo) {
             return isNumberOfSimulationRoundsValid();
         }
 

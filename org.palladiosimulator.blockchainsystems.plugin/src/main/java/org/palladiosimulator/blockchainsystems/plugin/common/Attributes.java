@@ -21,7 +21,8 @@ public final class Attributes {
 
     public static class SimulationType {
         public static final String SIMULATION_TYPE_ATTRIBUTE = "SimulationType";
-        public static final String SIMULATION_TYPE_ATTRIBUTE_DEFAULT = SelectedSimulationType.Single.toString();
+        public static final String SIMULATION_TYPE_ATTRIBUTE_DEFAULT =
+                org.palladiosimulator.blockchainsystems.plugin.common.SimulationType.Single.toString();
 
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS = "NumberOfMonteCarloSimulationRounds";
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT = "10000";

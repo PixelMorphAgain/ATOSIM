@@ -20,7 +20,7 @@ data class TransactionStoredInMemPoolTraceEvent(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")
-    stringBuilder.append(storedTransaction.txId)
+    stringBuilder.append(storedTransaction?.txId)
     stringBuilder.append(" }")
   }
 }

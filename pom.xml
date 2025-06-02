@@ -57,7 +57,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <executable>/Users/davisriedel/Desktop/Bachelorarbeit/Palladio.app/Contents/MacOS/PalladioBench</executable>
+                    <executable>/Users/davisriedel/Desktop/Bachelorarbeit/Palladio.app/Contents/MacOS/PalladioBench
+                    </executable>
                     <arguments>
                         <argument>-data</argument>
                         <argument>${project.build.directory}/runtime-workspace</argument>
@@ -73,12 +74,12 @@
         <module>target-platform</module>
         <module>org.palladiosimulator.blockchainsystems.core</module>
         <module>org.palladiosimulator.blockchainsystems.loggers</module>
-        <module>org.palladiosimulator.blockchainsystems.doublespending</module>
         <module>org.palladiosimulator.blockchainsystems.bscm</module>
         <module>org.palladiosimulator.blockchainsystems.bscm.edit</module>
         <module>org.palladiosimulator.blockchainsystems.bscm.editor</module>
         <module>org.palladiosimulator.blockchainsystems.plugin</module>
-        <module>org.palladiosimulator.blockchainsystems.trilemma</module>
+        <module>org.palladiosimulator.blockchainsystems.threesim</module>
+        <module>org.palladiosimulator.blockchainsystems.threesim_plugin</module>
         <!-- <module>org.palladiosimulator.blockchainsystems.bscm.design</module> -->
         <!-- <module>org.palladiosimulator.blockchainsystems.plugin.ui</module> -->
     </modules>

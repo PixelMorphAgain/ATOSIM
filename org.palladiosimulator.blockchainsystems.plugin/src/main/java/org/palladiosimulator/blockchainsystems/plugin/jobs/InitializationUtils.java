@@ -8,6 +8,7 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTo
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology;
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
+import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType;
 import org.palladiosimulator.blockchainsystems.plugin.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl;
@@ -21,6 +22,18 @@ import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderI
 public final class InitializationUtils {
 
     private InitializationUtils() {
+    }
+
+    public static SimulationType getSelectedSimulationTypeFromConfig(
+            ILaunchConfiguration configuration
+    ) throws CoreException {
+        return Enum.valueOf(
+                SimulationType.class,
+                configuration.getAttribute(
+                        Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE,
+                        Attributes.SimulationType.SIMULATION_TYPE_ATTRIBUTE_DEFAULT
+                )
+        );
     }
 
     public static long getMaximumAllowedBlockchainLengthFromConfig(ILaunchConfiguration configuration)
