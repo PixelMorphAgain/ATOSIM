@@ -29,4 +29,5 @@ public class MessageImpl implements Message {
     public int getSize() {
         return _size;
     }
+
 }

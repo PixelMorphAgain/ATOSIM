@@ -5,7 +5,8 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 
 public record BlockStoredInOrphanPoolTraceEvent(
         long occurrenceTime,
-        Block storedBlock) implements TraceEvent {
+        Block storedBlock
+) implements TraceEvent {
 
     public static final String EVENT_TYPE = "BlockStoredInOrphanPoolTraceEvent";
 

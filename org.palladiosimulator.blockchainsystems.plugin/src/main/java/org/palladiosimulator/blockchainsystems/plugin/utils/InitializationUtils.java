@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs;
+package org.palladiosimulator.blockchainsystems.plugin.utils;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -9,8 +9,8 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology;
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType;
-import org.palladiosimulator.blockchainsystems.plugin.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory;
-import org.palladiosimulator.blockchainsystems.plugin.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory;
+import org.palladiosimulator.blockchainsystems.threesim_plugin.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory;
+import org.palladiosimulator.blockchainsystems.threesim_plugin.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl;
 
 /**

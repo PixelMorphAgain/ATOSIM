@@ -12,6 +12,13 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint;
 
+/**
+ * Default implementation of the {@link BlockPropagationStrategy} interface.
+ * This class handles the distribution of blocks across the network and manages
+ * the reception of block-related messages.
+ *
+ * @author Yannik Sproll
+ */
 public class BlockPropagationStrategyImpl extends BlockchainNodeObject implements BlockPropagationStrategy {
 
     private static final int MESSAGE_HEADER_BYTE_SIZE = 24;
@@ -31,7 +38,9 @@ public class BlockPropagationStrategyImpl extends BlockchainNodeObject implement
 
     @Override
     public void distributeBlock(Block block) {
-        if (_networkInterface == null) return;
+        if (_networkInterface == null) {
+            return;
+        }
         _networkInterface.multicast(createInvMessage(block.getHash()));
     }
 

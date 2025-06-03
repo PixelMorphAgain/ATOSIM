@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.core.blockvalidation;
 
-import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidatorFactory;
 
@@ -14,12 +13,7 @@ public class BlockValidatorFactoryImpl implements BlockValidatorFactory {
 
     @Override
     public BlockValidator createBlockValidator(String nodeId) {
-        return new BlockValidatorImpl(new ValueProvider<Long>() {
-            @Override
-            public Long getValue() {
-                return _blockValidationDuration;
-            }
-        });
+        return new BlockValidatorImpl(() -> _blockValidationDuration);
     }
 
 }

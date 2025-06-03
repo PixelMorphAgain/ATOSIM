@@ -8,7 +8,8 @@ public record MessageReceivedEvent(
         long occurrenceTime,
         EventDispatchable target,
         P2PNode recipientNode,
-        P2PNode senderNode) implements Event {
+        P2PNode senderNode
+) implements Event {
 
     public static final String EVENT_NAME = "MessageReceivedEvent";
 

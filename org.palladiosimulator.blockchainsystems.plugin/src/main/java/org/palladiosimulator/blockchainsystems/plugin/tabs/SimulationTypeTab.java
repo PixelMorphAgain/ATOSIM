@@ -114,7 +114,7 @@ public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
     private boolean isNumberOfSimulationRoundsValid() {
         String text = _numberOfSimulationRoundsText.getText();
 
-        return !ValidationUtils.isStringNullOrEmpty(text)
+        return ValidationUtils.isStringPopulated(text)
                 && ValidationUtils.isNumber(text)
                 && ValidationUtils.isInRange(
                 Long.parseLong(text),

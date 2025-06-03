@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput;
-import org.palladiosimulator.blockchainsystems.doublespending.simulation.logoutputs.LogOutputProvider;
 import org.palladiosimulator.blockchainsystems.loggers.*;
 
 /**

@@ -19,7 +19,7 @@ public class BehaviorUtils {
     }
 
     /**
-     * Appends the specified to the blockchain, if possible.
+     * Appends the specified block to the blockchain, if possible.
      * If there is no matching previous block, the block is stored in the orphan block pool.
      * If there are descending blocks to the current block, these blocks are also appended to the blockchain.
      * The method returns a value that indicates if the blockchain has a new longest branch.

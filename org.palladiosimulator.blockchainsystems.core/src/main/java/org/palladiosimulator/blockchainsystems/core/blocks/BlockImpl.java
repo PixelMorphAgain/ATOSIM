@@ -10,7 +10,8 @@ public record BlockImpl(
         String originId,
         long blockMinedTimestamp,
         int size,
-        HashSet<String> tags) implements Block {
+        HashSet<String> tags
+) implements Block {
 
     @Override
     public String getHash() {

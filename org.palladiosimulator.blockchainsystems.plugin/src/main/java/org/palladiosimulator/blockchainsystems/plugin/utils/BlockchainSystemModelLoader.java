@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs;
+package org.palladiosimulator.blockchainsystems.plugin.utils;
 
 import java.util.Map;
 

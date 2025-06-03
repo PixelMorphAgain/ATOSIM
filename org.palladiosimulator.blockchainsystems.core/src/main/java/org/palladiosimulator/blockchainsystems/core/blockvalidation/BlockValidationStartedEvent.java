@@ -7,7 +7,8 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 public record BlockValidationStartedEvent(
         long occurrenceTime,
         EventDispatchable origin,
-        Block block) implements Event {
+        Block block
+) implements Event {
 
     public static final String EVENT_NAME = "BlockValidationStartedEvent";
 

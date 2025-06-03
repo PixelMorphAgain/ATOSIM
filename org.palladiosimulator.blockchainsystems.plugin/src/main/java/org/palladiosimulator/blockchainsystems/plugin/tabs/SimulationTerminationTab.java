@@ -48,7 +48,7 @@ public class SimulationTerminationTab extends AbstractLaunchConfigurationTab {
     private boolean isMaxBlockchainLengthTextValid() {
         String text = _maxBlockchainLengthText.getText();
         // Check if the new text is a valid number
-        return !ValidationUtils.isStringNullOrEmpty(text)
+        return ValidationUtils.isStringPopulated(text)
                 && ValidationUtils.isNumber(text)
                 && ValidationUtils.isInRange(
                 Integer.parseInt(text),
@@ -94,7 +94,7 @@ public class SimulationTerminationTab extends AbstractLaunchConfigurationTab {
     private boolean isRequiredNumberOfBlocksInAdvanceTextValid() {
         String text = _requiredNumberOfBlocksInAdvanceText.getText();
 
-        return !ValidationUtils.isStringNullOrEmpty(text)
+        return ValidationUtils.isStringPopulated(text)
                 && ValidationUtils.isNumber(text)
                 && ValidationUtils.isInRange(
                 Long.parseLong(text),

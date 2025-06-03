@@ -13,6 +13,12 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockApp
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
 
+/**
+ * Implementation of the {@link Blockchain} interface.
+ * This class manages the blockchain, including appending blocks, tracking the longest chains, and handling forks.
+ *
+ * @author Yannik Sproll
+ */
 public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
 
     private static final long INITIAL_BLOCKCHAIN_LENGTH = 1;
@@ -125,7 +131,8 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
         }
 
         // Mark (currently forked) descendants of new (latest) block as included
-        traverseBlockchainAndChangeBlockTypes(previousBlockchainElement, BlockchainElementType.Forking, BlockchainElementType.Included);
+        traverseBlockchainAndChangeBlockTypes(previousBlockchainElement, BlockchainElementType.Forking,
+                BlockchainElementType.Included);
     }
 
 
@@ -186,7 +193,8 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
         return blockchainElements.stream().findFirst().get();
     }
 
-    private void traverseBlockchainAndChangeBlockTypes(BlockchainElement startingElement, BlockchainElementType whileType, BlockchainElementType newType) {
+    private void traverseBlockchainAndChangeBlockTypes(BlockchainElement startingElement, BlockchainElementType whileType,
+                                                       BlockchainElementType newType) {
         BlockchainElement currentElement = startingElement;
         while (currentElement != null && currentElement.getType() == whileType) {
             changeBlockType(currentElement, newType);
@@ -195,7 +203,9 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
     }
 
     private void changeBlockType(BlockchainElement blockchainElement, BlockchainElementType newBlockType) {
-        if (blockchainElement.getType() == newBlockType) return;
+        if (blockchainElement.getType() == newBlockType) {
+            return;
+        }
 
         BlockchainElementType oldBlockType = blockchainElement.getType();
         blockchainElement.setType(newBlockType);
@@ -207,8 +217,11 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
                 newBlockType);
     }
 
-    private void logBlockTypeChanged(BlockchainElement blockchainElement, BlockchainElementType oldBlockType, BlockchainElementType newBlockType) {
-        if (!getTraceEventLogger().isEventTypeEnabled(BlockAppendedTraceEvent.EVENT_TYPE)) return;
+    private void logBlockTypeChanged(BlockchainElement blockchainElement, BlockchainElementType oldBlockType,
+                                     BlockchainElementType newBlockType) {
+        if (!getTraceEventLogger().isEventTypeEnabled(BlockAppendedTraceEvent.EVENT_TYPE)) {
+            return;
+        }
 
         BlockTypeChangedTraceEvent event = new BlockTypeChangedTraceEvent(
                 getSimulationContext().getSystemClock().getCurrentTime(),
@@ -241,7 +254,9 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
 
 
     private void logBlockAppended(Block block, long blockPosition, Block previousBlock, BlockType blockType) {
-        if (!getTraceEventLogger().isEventTypeEnabled(BlockAppendedTraceEvent.EVENT_TYPE)) return;
+        if (!getTraceEventLogger().isEventTypeEnabled(BlockAppendedTraceEvent.EVENT_TYPE)) {
+            return;
+        }
 
         BlockAppendedTraceEvent event = new BlockAppendedTraceEvent(
                 getSimulationContext().getSystemClock().getCurrentTime(),
@@ -290,7 +305,9 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
 
     @Override
     public Set<Block> getSuccessorBlocks(String hash) {
-        if (!hasBlockWithHash(hash)) return null;
+        if (!hasBlockWithHash(hash)) {
+            return null;
+        }
 
         BlockchainElement startingBlockchain = _blockchainElementsMap.get(hash);
 
@@ -313,7 +330,9 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
 
     @Override
     public Set<Block> getImmediateSuccessorBlocks(String hash) {
-        if (!hasBlockWithHash(hash)) return null;
+        if (!hasBlockWithHash(hash)) {
+            return null;
+        }
 
         BlockchainElement startingBlockchain = _blockchainElementsMap.get(hash);
         return startingBlockchain.getNextBlockchainElements().stream().map(x -> x.getBlock()).collect(Collectors.toSet());
@@ -321,7 +340,9 @@ public class BlockchainImpl extends BlockchainNodeObject implements Blockchain {
 
     @Override
     public long getLongestSuccessorChainLength(String hash) {
-        if (!hasBlockWithHash(hash)) return 0;
+        if (!hasBlockWithHash(hash)) {
+            return 0;
+        }
 
         BlockchainElement startingBlockchain = _blockchainElementsMap.get(hash);
 

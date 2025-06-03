@@ -7,6 +7,7 @@ import java.util.random.RandomGenerator;
 
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
+import org.palladiosimulator.blockchainsystems.core.stochastics.PoissonProcess;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess;
 
@@ -33,11 +34,14 @@ public class MiningProcessImpl extends BlockchainNodeObject implements MiningPro
     @Override
     public void dispatchEvent(Event event) {
         if (event.getEventType() == BlockMinedEvent.EVENT_TYPE) {
-            if (!_isMining) return;
+            if (!_isMining) {
+                return;
+            }
 
             BlockMinedEvent blockMinedEvent = (BlockMinedEvent) event;
 
-            Block block = _onCreatingBlockCallback.apply(blockMinedEvent.getOccurrenceTime(), blockMinedEvent.getPreviousBlockHash());
+            Block block =
+                    _onCreatingBlockCallback.apply(blockMinedEvent.getOccurrenceTime(), blockMinedEvent.getPreviousBlockHash());
 
             if (block != null) {
                 logBlockMined(block);
@@ -82,7 +86,9 @@ public class MiningProcessImpl extends BlockchainNodeObject implements MiningPro
 
     @Override
     public void startMining() {
-        if (_isMining) return;
+        if (_isMining) {
+            return;
+        }
 
         scheduleNewBlockMinedEvent();
         _isMining = true;
@@ -107,7 +113,9 @@ public class MiningProcessImpl extends BlockchainNodeObject implements MiningPro
 
     @Override
     public void stopMining() {
-        if (!_isMining) return;
+        if (!_isMining) {
+            return;
+        }
         cancelPendingEvent();
         logMiningStopped();
     }

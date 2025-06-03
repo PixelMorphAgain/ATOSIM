@@ -7,7 +7,8 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
 public record BlockSentTraceEvent(
         long occurenceTime,
         Block sentBlock,
-        P2PNetworkEndpoint receivingEndpoint) implements TraceEvent {
+        P2PNetworkEndpoint receivingEndpoint
+) implements TraceEvent {
 
     public static final String EVENT_TYPE = "BlockSentTraceEvent";
 

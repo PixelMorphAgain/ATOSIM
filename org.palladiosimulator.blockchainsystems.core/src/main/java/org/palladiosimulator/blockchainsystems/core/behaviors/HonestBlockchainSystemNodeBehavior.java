@@ -9,6 +9,11 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeBehavior;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext;
 
+/**
+ * This behavior represents a node in the blockchain system that behaves honestly.
+ *
+ * @author Yannik Sproll
+ */
 public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
     @Override
@@ -38,11 +43,13 @@ public class HonestBlockchainSystemNodeBehavior extends BlockchainNodeObject imp
 
     @Override
     public Block onCreatingBlock(Long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
+        // TODO: Block size based on transactions
         return context.getBlockFactory().createBlock(
                 UUID.randomUUID().toString(),
                 previousBlockHash,
                 context.getId(),
-                blockMinedAt);
+                blockMinedAt
+        );
     }
 
 

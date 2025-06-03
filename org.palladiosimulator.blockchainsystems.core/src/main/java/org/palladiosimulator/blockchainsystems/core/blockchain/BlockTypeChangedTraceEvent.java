@@ -5,7 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType;
 
 public record BlockTypeChangedTraceEvent(
-        long occurenceTime,
+        long occurrenceTime,
         Block block,
         BlockType oldBlockType,
         BlockType newBlockType) implements TraceEvent {
@@ -14,7 +14,7 @@ public record BlockTypeChangedTraceEvent(
 
     @Override
     public long getOccurrenceTime() {
-        return occurenceTime;
+        return occurrenceTime;
     }
 
     @Override

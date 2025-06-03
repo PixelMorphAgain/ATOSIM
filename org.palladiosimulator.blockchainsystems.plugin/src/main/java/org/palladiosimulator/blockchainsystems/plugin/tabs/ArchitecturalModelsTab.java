@@ -172,13 +172,13 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
     private boolean isTopologyFilePathTextValid() {
         String path = _topologyFilePathText.getText();
 
-        return !ValidationUtils.isStringNullOrEmpty(path);
+        return ValidationUtils.isStringPopulated(path);
     }
 
     private boolean isSimulationOutputDirectoryValid() {
         String path = _simulationResultsDirectoryPath.getText();
 
-        return !ValidationUtils.isStringNullOrEmpty(path)
+        return ValidationUtils.isStringPopulated(path)
                 && Files.exists(Path.of(path));
     }
 

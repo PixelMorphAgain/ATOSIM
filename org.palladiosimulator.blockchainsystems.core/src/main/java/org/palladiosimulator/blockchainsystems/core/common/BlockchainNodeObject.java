@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEventLoggerContainer;
 
 /**
- * The {@code BlockchainNodeObject} is an base class for all classes that represent components
+ * The {@code BlockchainNodeObject} is a base class for all classes that represent components
  * of a blockchain system node.
  * It provides the necessary fields to hold trace event logger and simulation context
  * and implements their initialization.

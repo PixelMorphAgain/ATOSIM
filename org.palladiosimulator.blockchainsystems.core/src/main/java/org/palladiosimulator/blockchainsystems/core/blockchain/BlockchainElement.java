@@ -22,7 +22,8 @@ public class BlockchainElement {
             Block block,
             BlockchainElement previousBlockchainElement,
             BlockchainElementType type,
-            long position) {
+            long position
+    ) {
         _block = block;
         _previousBlockchainElement = previousBlockchainElement;
         _type = type;

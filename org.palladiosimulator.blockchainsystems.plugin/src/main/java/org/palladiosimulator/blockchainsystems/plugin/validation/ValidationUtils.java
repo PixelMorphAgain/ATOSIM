@@ -13,12 +13,12 @@ public final class ValidationUtils {
         return text.matches("\\d*");
     }
 
-    public static boolean isStringNullOrEmpty(String text) {
-        return text == null || text.isEmpty();
+    public static boolean isStringPopulated(String text) {
+        return text != null && !text.isEmpty();
     }
 
     public static boolean isPort(String text) {
-        return !isStringNullOrEmpty(text)
+        return isStringPopulated(text)
                 && isNumber(text)
                 && isInRange(Long.parseLong(text), MINIMUM_PORT, MAXIMUM_PORT);
     }

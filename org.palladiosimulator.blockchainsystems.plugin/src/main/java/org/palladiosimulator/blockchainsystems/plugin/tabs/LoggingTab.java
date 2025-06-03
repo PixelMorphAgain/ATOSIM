@@ -368,7 +368,7 @@ public class LoggingTab extends AbstractLaunchConfigurationTab {
 
         String selectedPath = _logFilePathSelectionText.getText();
 
-        return !ValidationUtils.isStringNullOrEmpty(selectedPath)
+        return ValidationUtils.isStringPopulated(selectedPath)
                 && Files.exists(Path.of(selectedPath));
     }
 
@@ -377,11 +377,11 @@ public class LoggingTab extends AbstractLaunchConfigurationTab {
             return true;
         }
 
-        return !ValidationUtils.isStringNullOrEmpty(_databaseServerText.getText())
-                && !ValidationUtils.isStringNullOrEmpty(_databaseNameText.getText())
+        return ValidationUtils.isStringPopulated(_databaseServerText.getText())
+                && ValidationUtils.isStringPopulated(_databaseNameText.getText())
                 && ValidationUtils.isPort(_databasePortText.getText())
-                && !ValidationUtils.isStringNullOrEmpty(_databaseUsernameText.getText())
-                && !ValidationUtils.isStringNullOrEmpty(_databasePasswordText.getText());
+                && ValidationUtils.isStringPopulated(_databaseUsernameText.getText())
+                && ValidationUtils.isStringPopulated(_databasePasswordText.getText());
     }
 
     @Override

@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.jobs.montecarlosimulation;
+package org.palladiosimulator.blockchainsystems.plugin.utils;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.MonteCarloSimulationProgressMonitor;
