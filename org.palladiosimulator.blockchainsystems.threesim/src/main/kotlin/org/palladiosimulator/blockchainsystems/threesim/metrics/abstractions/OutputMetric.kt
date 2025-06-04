@@ -12,6 +12,11 @@ interface OutputMetric<T> {
   val value: T
 
   /**
+   * The name of the output metric, used for identification in results
+   */
+  val name: String
+ 
+  /**
    * Writes a representation of the output metric to the specified `StringBuilder`.
    *
    * @param stringBuilder the string builder to which the metric's details are written

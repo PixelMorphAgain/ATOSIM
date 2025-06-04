@@ -8,4 +8,8 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
  * @author Davis Riedel
  */
 class ThreesimSimulationRound : SimulationRound {
+  override fun run(): ThreesimSimulationRoundResult {
+    // TODO: Implement the logic for running a single simulation round in 3SIM.
+    TODO("Not yet implemented")
+  }
 }

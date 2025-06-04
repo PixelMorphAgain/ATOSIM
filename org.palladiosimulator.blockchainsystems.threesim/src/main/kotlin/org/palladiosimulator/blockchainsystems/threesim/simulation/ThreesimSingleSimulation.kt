@@ -16,6 +16,8 @@ class ThreesimSingleSimulation(
   val maxAllowedBlockchainLength: Long,
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
-    TODO("Not yet implemented")
+    // TODO: Pass parameters along
+    val result = ThreesimSimulationRound().run();
+    return ThreesimSingleSimulationResult(result);
   }
 }

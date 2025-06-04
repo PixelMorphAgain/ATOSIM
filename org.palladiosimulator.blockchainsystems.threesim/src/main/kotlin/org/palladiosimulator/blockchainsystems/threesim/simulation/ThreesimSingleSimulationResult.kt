@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 
 /**
@@ -7,4 +8,14 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Sing
  *
  * @author Davis Riedel
  */
-class ThreesimSingleSimulationResult : SingleSimulationResult {}
+class ThreesimSingleSimulationResult(
+  private val simulationRoundResult: ThreesimSimulationRoundResult
+) : SingleSimulationResult {
+
+  override fun getSummary(): SimulationResultSummary {
+    return ThreesimSingleSimulationResultSummary(
+      "3SIM Single Simulation",
+      simulationRoundResult.outputMetrics
+    )
+  }
+}

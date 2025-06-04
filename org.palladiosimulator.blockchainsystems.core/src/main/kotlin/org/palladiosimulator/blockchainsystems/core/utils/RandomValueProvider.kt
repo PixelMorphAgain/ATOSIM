@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.utils
 
+import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import java.util.TreeMap
 import java.util.random.RandomGenerator
 
@@ -15,25 +16,27 @@ import java.util.random.RandomGenerator
 class RandomValueProvider<T> private constructor(
   private val items: TreeMap<Int, RandomValueProviderItem<T>>,
   private val randomGenerator: RandomGenerator
-) {
+) : ValueProvider<T> {
 
-  val value: T?
-    get() {
-      val selectionValue = randomGenerator.nextDouble()
+  override fun getValue(): T {
+    // NOTE: The not-null assertions are safe, because instances of this class can only be created
+    // with the `create` method (private constructor), which ensures that the items map is not empty.
 
-      var index = 0
+    val selectionValue = randomGenerator.nextDouble()
 
-      var currentLowerBorder = 0.0
-      var currentUpperBorder: Double = items.get(0)?.selectionValueBorder ?: return null
+    var index = 0
 
-      while (!isInRange(selectionValue, currentLowerBorder, currentUpperBorder) && indexIsInValidRange(index)) {
-        currentLowerBorder = currentUpperBorder
-        currentUpperBorder = items.get(index + 1)?.selectionValueBorder ?: return null
-        index++
-      }
+    var currentLowerBorder = 0.0
+    var currentUpperBorder: Double = items.get(0)!!.selectionValueBorder
 
-      return items.get(index)?.value
+    while (!isInRange(selectionValue, currentLowerBorder, currentUpperBorder) && indexIsInValidRange(index)) {
+      currentLowerBorder = currentUpperBorder
+      currentUpperBorder = items.get(index + 1)!!.selectionValueBorder
+      index++
     }
+
+    return items.get(index)!!.value
+  }
 
   private fun indexIsInValidRange(index: Int): Boolean {
     return index < items.size - 1
@@ -47,6 +50,8 @@ class RandomValueProvider<T> private constructor(
     private const val RANDOM_VALUES_SUM_MAX_DEVIATION = 0.005
 
     fun <T> create(randomValues: HashMap<T, Double>, generator: RandomGenerator): RandomValueProvider<T> {
+      require(randomValues.values.isNotEmpty()) { "The provided probabilities map must not be empty." }
+
       val randomValuesSum = randomValues.values.sum()
 
       // May not be greater than 1, but if it is not exactly one it can be tolerated
@@ -68,7 +73,7 @@ class RandomValueProvider<T> private constructor(
         index++
       }
 
-      return RandomValueProvider<T>(items, generator)
+      return RandomValueProvider(items, generator)
     }
   }
 }

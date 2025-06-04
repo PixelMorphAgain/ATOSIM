@@ -10,4 +10,14 @@ package org.palladiosimulator.blockchainsystems.core.geography
 data class GeographicalRegions(
   // NOTE: Since [GeographicalRegion] is a data class, the `Set` can only contain unique regions (with unique names).
   val regions: Set<GeographicalRegion>
-)
+) {
+  /**
+   * Returns the geographical region with the specified name.
+   *
+   * @param regionName the name of the geographical region to retrieve
+   * @return the [GeographicalRegion] with the specified name, or null if not found
+   */
+  fun getRegionByName(regionName: String): GeographicalRegion? {
+    return regions.find { it.region == regionName }
+  }
+}

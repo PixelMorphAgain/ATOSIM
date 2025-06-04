@@ -6,4 +6,6 @@ package org.palladiosimulator.blockchainsystems.core.simulation.abstractions;
  *
  * @author Davis Riedel
  */
-interface SimulationRound {}
+interface SimulationRound {
+  fun run(): SimulationRoundResult
+}
