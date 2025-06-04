@@ -1,6 +1,8 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
+import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.SimulationMonitor
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResult
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResultFromSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 
 /**
@@ -10,5 +12,11 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 class ThreesimSimulationRoundResult(
   val outputMetrics: List<OutputMetric<Any>>,
-) : SimulationRoundResult {
+) : SimulationRoundResult, SimulationRoundResultFromSimulationMonitor by ThreesimSimulationRoundResult {
+  companion object : SimulationRoundResultFromSimulationMonitor {
+    override fun fromSimulationMonitor(monitor: SimulationMonitor): ThreesimSimulationRoundResult {
+      // TODO: Implement this
+      TODO("Not yet implemented")
+    }
+  }
 }

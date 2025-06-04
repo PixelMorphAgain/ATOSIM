@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.plugin.results.ui;
 
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary;
-import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummarySerializer;
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummaryDeserializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.Map;
 public record SimulationResultFile(
         File file,
         ResultsRepository repository,
-        SimulationResultSummarySerializer serializer
+        SimulationResultSummaryDeserializer serializer
 ) {
     public Map<String, String> getValues() {
         Path filePath = Paths.get(file.getPath());

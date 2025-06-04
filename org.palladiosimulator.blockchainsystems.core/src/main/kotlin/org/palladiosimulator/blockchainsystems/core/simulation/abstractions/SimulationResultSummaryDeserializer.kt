@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
 
-interface SimulationResultSummarySerializer {
-  fun serializeToText(simulationResultSummary: SimulationResultSummary): String
+interface SimulationResultSummaryDeserializer {
   fun deserializeFromText(text: String): SimulationResultSummary
 }

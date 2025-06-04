@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.eventcoordiation;
+package org.palladiosimulator.blockchainsystems.core.eventcoordination;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -9,6 +9,8 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventCoordinator;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventDispatchable;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SystemClockControl;
+
+// TODO: Evaluate and adjust for 3SIM
 
 public class EventCoordinatorImpl implements EventCoordinator {
 

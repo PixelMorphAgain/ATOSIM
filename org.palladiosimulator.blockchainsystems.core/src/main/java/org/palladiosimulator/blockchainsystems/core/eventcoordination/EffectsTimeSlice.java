@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.eventcoordiation;
+package org.palladiosimulator.blockchainsystems.core.eventcoordination;
 
 import java.util.ArrayList;
 import java.util.Collections;

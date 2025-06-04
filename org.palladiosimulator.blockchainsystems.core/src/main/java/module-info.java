@@ -10,7 +10,7 @@ module org.palladiosimulator.blockchainsystems.core {
     exports org.palladiosimulator.blockchainsystems.core.blocks;
     exports org.palladiosimulator.blockchainsystems.core.mining;
     exports org.palladiosimulator.blockchainsystems.core.common.abstractions;
-    exports org.palladiosimulator.blockchainsystems.core.eventcoordiation;
+    exports org.palladiosimulator.blockchainsystems.core.eventcoordination;
     exports org.palladiosimulator.blockchainsystems.core.blockvalidation;
     exports org.palladiosimulator.blockchainsystems.core.clock;
     exports org.palladiosimulator.blockchainsystems.core.system;

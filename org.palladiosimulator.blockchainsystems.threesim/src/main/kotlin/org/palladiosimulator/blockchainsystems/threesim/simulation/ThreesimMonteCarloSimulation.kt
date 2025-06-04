@@ -11,29 +11,21 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.logoutputs.Lo
  * @author Davis Riedel
  */
 class ThreesimMonteCarloSimulation(
-  val blockchainSystemFactory: BlockchainSystemFactory,
-  val logOutputProvider: LogOutputProvider,
-  val maxAllowedBlockchainLength: Long,
-  val progressMonitor: MonteCarloSimulationProgressMonitor,
-  val numberOfRounds: Int
-) : MonteCarloSimulation {
-  override fun run(): ThreesimMonteCarloSimulationResult {
-    progressMonitor.onSimulationStarted(numberOfRounds)
-
-    // Run the simulation rounds and collect results
-    val results = (1..numberOfRounds).map { i ->
-      // TODO: Pass parameters along
-      val result = ThreesimSimulationRound().run()
-      progressMonitor.onSimulationRoundFinished()
-      result
-    }
-
-    progressMonitor.onSimulationFinished()
-
-    return ThreesimMonteCarloSimulationResult(results)
+  numberOfRounds: Long,
+  progressMonitor: MonteCarloSimulationProgressMonitor,
+  private val blockchainSystemFactory: BlockchainSystemFactory,
+  private val logOutputProvider: LogOutputProvider,
+  private val maxAllowedBlockchainLength: Long,
+) : MonteCarloSimulation<ThreesimSimulationRoundResult>(numberOfRounds, progressMonitor) {
+  override fun performSimulationRound(): ThreesimSimulationRoundResult {
+    return ThreesimSimulationRound(
+      blockchainSystemFactory.createBlockchainSystem(),
+      logOutputProvider.logOutputs,
+      maxAllowedBlockchainLength
+    ).run();
   }
 
-  override fun getNumberOfRounds(): Int {
-    return numberOfRounds
+  override fun createSimulationResultFromRoundResults(results: List<ThreesimSimulationRoundResult>): ThreesimMonteCarloSimulationResult {
+    return ThreesimMonteCarloSimulationResult(results)
   }
 }

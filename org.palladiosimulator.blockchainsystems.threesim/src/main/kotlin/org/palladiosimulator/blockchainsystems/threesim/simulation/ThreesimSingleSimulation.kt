@@ -16,8 +16,12 @@ class ThreesimSingleSimulation(
   val maxAllowedBlockchainLength: Long,
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
-    // TODO: Pass parameters along
-    val result = ThreesimSimulationRound().run();
+    val result = ThreesimSimulationRound(
+      blockchainSystemFactory.createBlockchainSystem(),
+      logOutputProvider.logOutputs,
+      maxAllowedBlockchainLength
+    ).run();
+
     return ThreesimSingleSimulationResult(result);
   }
 }

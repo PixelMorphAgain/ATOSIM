@@ -4,20 +4,35 @@ package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
  * Represents a Monte-Carlo simulation with several rounds.
  * This class serves as a base for more specific simulations.
  *
+ * @property numberOfRounds the number of rounds in this Monte-Carlo simulation.
+ *
  * @author Davis Riedel
  */
-interface MonteCarloSimulation : Simulation {
+abstract class MonteCarloSimulation<R : SimulationRoundResult>(
+  protected val numberOfRounds: Long,
+  protected val progressMonitor: MonteCarloSimulationProgressMonitor,
+) : Simulation {
+
   /**
    * Runs the Monte-Carlo simulation and returns the result.
    *
    * @return The result of the simulation.
    */
-  override fun run(): MonteCarloSimulationResult
+  override fun run(): MonteCarloSimulationResult {
+    progressMonitor.onSimulationStarted(numberOfRounds)
 
-  /**
-   * Returns the number of rounds in this Monte-Carlo simulation.
-   *
-   * @return The number of rounds.
-   */
-  fun getNumberOfRounds(): Int
+    // Run the simulation rounds and collect results
+    val results = (1..numberOfRounds).map { i ->
+      val result = performSimulationRound()
+      progressMonitor.onSimulationRoundFinished()
+      result
+    }
+
+    progressMonitor.onSimulationFinished()
+
+    return createSimulationResultFromRoundResults(results)
+  }
+
+  abstract fun performSimulationRound(): R
+  abstract fun createSimulationResultFromRoundResults(results: List<R>): MonteCarloSimulationResult
 }
