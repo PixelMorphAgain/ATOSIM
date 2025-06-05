@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsysttems.threesim.creation.explicitnetwork;
+package org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork;
 
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent;
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology;

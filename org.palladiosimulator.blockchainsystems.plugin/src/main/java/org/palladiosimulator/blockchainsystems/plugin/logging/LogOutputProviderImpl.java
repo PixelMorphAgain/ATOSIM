@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.plugin.logging;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider;
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput;
 import org.palladiosimulator.blockchainsystems.loggers.*;
 

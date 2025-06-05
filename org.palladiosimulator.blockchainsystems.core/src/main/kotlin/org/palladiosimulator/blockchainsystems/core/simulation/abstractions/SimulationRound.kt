@@ -33,6 +33,12 @@ abstract class SimulationRound<R : SimulationRoundResult>(
     traceEventLoggerContainer,
   )
 
+  init {
+    // Set up trace event subscribers
+    traceEventLoggerContainer.addSubscriber(monitor)
+    logOutputs.forEach { traceEventLoggerContainer.addSubscriber(it) }
+  }
+
 
   fun run(): R {
     // Initialization

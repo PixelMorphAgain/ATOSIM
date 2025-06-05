@@ -5,7 +5,6 @@ import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simulation
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
-import org.palladiosimulator.blockchainsystems.plugin.utils.InitializationUtils
 import org.palladiosimulator.blockchainsystems.plugin.utils.MonteCarloSimulationProgressMonitorAdapter
 
 /**

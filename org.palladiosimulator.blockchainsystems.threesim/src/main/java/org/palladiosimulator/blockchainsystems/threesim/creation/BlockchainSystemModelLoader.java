@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.utils;
+package org.palladiosimulator.blockchainsystems.threesim.creation;
 
 import java.util.Map;
 

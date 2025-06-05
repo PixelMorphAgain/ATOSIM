@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsysttems.threesim.creation.explicitnetwork;
+package org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork;
 
 import java.util.HashMap;
 

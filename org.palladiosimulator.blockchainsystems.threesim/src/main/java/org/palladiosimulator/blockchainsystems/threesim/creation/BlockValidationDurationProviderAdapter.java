@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsysttems.threesim.creation;
+package org.palladiosimulator.blockchainsystems.threesim.creation;
 
 import java.util.HashMap;
 import java.util.random.RandomGenerator;

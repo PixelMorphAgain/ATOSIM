@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsysttems.threesim.creation.connectedsubgraphnetwork;
+package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork;
 
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent;
 import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocation;

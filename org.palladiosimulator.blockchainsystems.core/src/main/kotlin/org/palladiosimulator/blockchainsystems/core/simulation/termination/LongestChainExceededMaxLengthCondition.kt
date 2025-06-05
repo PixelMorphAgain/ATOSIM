@@ -2,7 +2,9 @@ package org.palladiosimulator.blockchainsystems.core.simulation.termination
 
 import kotlin.math.max
 
-class LongestChainExceededMaxLengthCondition(private val maxAllowedLength: Long) {
+class LongestChainExceededMaxLengthCondition(
+  private val maxAllowedLength: Long
+) {
   var currentLength: Long = 0
     private set
 

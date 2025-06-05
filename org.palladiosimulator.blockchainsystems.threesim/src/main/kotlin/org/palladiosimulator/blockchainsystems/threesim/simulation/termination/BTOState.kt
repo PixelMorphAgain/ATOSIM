@@ -3,11 +3,19 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation.termination
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType
 
+/**
+ * Represents the state of a BTO (Block Type Object) in the blockchain simulation.
+ *
+ * @property btoState The state of the BTO block.
+ * @property numberOfBlocksRequiredForBTOAcceptance The number of blocks required for BTO acceptance.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 class BTOState(
   private val btoState: BlockState,
   private val numberOfBlocksRequiredForBTOAcceptance: Int
 ) {
-  private val btouSuccessorsByHashes = HashMap<String, BlockState>()
+  private val btoSuccessorsByHashes = HashMap<String, BlockState>()
 
   var isBTOAccepted: Boolean = false
     private set
@@ -17,12 +25,12 @@ class BTOState(
 
   fun isBlockSuccessorOfBTO(block: Block): Boolean {
     return btoState.block.getHash() === block.getPreviousHash()
-      || btouSuccessorsByHashes.containsKey(block.getPreviousHash())
+      || btoSuccessorsByHashes.containsKey(block.getPreviousHash())
   }
 
   fun addBTOSuccessorBlock(blockState: BlockState) {
     if (!isBlockSuccessorOfBTO(blockState.block)) return
-    btouSuccessorsByHashes.put(blockState.block.getHash(), blockState)
+    btoSuccessorsByHashes.put(blockState.block.getHash(), blockState)
     updateIsBTOAccepted()
   }
 
@@ -51,9 +59,9 @@ class BTOState(
   val numberOfLongestChainSuccessors: Long
     private set
     get() {
-      if (btouSuccessorsByHashes.isEmpty()) return 0
+      if (btoSuccessorsByHashes.isEmpty()) return 0
 
-      val latestSuccessorPosition = btouSuccessorsByHashes
+      val latestSuccessorPosition = btoSuccessorsByHashes
         .values
         .stream()
         .mapToLong { obj: BlockState -> obj.blockPosition }

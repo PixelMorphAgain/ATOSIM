@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsysttems.threesim.creation;
+package org.palladiosimulator.blockchainsystems.threesim.creation;
 
 import java.util.Set;
 import java.util.random.RandomGenerator;
@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRep
 import org.palladiosimulator.blockchainsystems.core.blockvalidation.BlockValidatorImpl;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidatorFactory;
-import org.palladiosimulator.blockchainsystems.threesim_plugin.creation.abstractions.NodeAllocationResolver;
+import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver;
 
 /**
  * Factory implementation for creating a {@link BlockValidator} based on the

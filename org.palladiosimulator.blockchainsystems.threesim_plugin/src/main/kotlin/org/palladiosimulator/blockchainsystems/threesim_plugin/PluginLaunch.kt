@@ -2,7 +2,7 @@ package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.plugin.BlockchainSimulationBasePluginLaunch
-import org.palladiosimulator.blockchainsystems.plugin.utils.InitializationUtils
+import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 import org.palladiosimulator.blockchainsystems.plugin.simulation.SimulationJob
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationFactory

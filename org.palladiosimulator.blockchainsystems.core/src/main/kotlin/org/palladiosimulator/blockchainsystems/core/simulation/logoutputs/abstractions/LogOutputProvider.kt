@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.simulation.logoutputs
+package org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions
 
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 
