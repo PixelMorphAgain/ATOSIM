@@ -17,4 +17,5 @@ module org.palladiosimulator.blockchainsystems.core {
 
     requires org.jgrapht.core;
     requires kotlin.stdlib;
+    requires annotations;
 }

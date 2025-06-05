@@ -9,7 +9,7 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable
  *
  * @author Yannik Sproll
  */
-public interface Block extends Taggable {
+public interface Block extends Taggable, Propagatable {
 
     /**
      * Returns the hash that uniquely identifies the block.

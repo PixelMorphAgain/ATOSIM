@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulation
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
-import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory
 
 /**
  * Single simulation of 3SIM.

@@ -6,11 +6,11 @@ import java.util.function.Consumer;
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockPropagationStrategy;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
 
 /**
  * Default implementation of the {@link BlockPropagationStrategy} interface.
@@ -19,7 +19,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
  *
  * @author Yannik Sproll
  */
-public class BlockPropagationStrategyImpl extends BlockchainNodeObject implements BlockPropagationStrategy {
+public class BlockPropagationStrategyImpl extends BlockchainNodeObject implements PropagationStrategy<Block> {
 
     private static final int MESSAGE_HEADER_BYTE_SIZE = 24;
 
@@ -37,7 +37,7 @@ public class BlockPropagationStrategyImpl extends BlockchainNodeObject implement
     private Consumer<Block> _onBlockReceivedCallback;
 
     @Override
-    public void distributeBlock(Block block) {
+    public void distribute(Block block) {
         if (_networkInterface == null) {
             return;
         }
@@ -45,7 +45,7 @@ public class BlockPropagationStrategyImpl extends BlockchainNodeObject implement
     }
 
     @Override
-    public void distributeBlock(Block block, Set<P2PNetworkEndpoint> neighborEndpoints) {
+    public void distribute(Block block, Set<P2PNetworkEndpoint> neighborEndpoints) {
         for (P2PNetworkEndpoint neighborEndpoint : neighborEndpoints) {
             _networkInterface.send(createInvMessage(block.getHash()), neighborEndpoint);
         }
@@ -168,7 +168,7 @@ public class BlockPropagationStrategyImpl extends BlockchainNodeObject implement
     }
 
     @Override
-    public void setOnBlockReceivedCallback(Consumer<Block> onBlockReceivedCallback) {
+    public void setOnReceivedCallback(Consumer<Block> onBlockReceivedCallback) {
         _onBlockReceivedCallback = onBlockReceivedCallback;
     }
 

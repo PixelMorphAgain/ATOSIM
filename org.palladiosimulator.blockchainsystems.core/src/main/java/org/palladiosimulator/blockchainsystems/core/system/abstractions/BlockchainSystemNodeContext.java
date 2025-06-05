@@ -1,11 +1,13 @@
 package org.palladiosimulator.blockchainsystems.core.system.abstractions;
 
+import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion;
+
 /**
  * The @code{BlockchainSystemNodeContext} interface represents the
  * context of a blockchain system node.
  * It provides access to the components of a blockchain system node.
  *
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  */
 public interface BlockchainSystemNodeContext {
 
@@ -22,7 +24,15 @@ public interface BlockchainSystemNodeContext {
      *
      * @return the strategy used to propagate blocks
      */
-    BlockPropagationStrategy getBlockPropagationStrategy();
+    PropagationStrategy<Block> getBlockPropagationStrategy();
+
+    /**
+     * Returns an abstraction of the strategy used by the blockchain system node
+     * to propagate transactions through the network.
+     *
+     * @return the strategy used to propagate blocks
+     */
+    PropagationStrategy<Transaction> getTransactionPropagationStrategy();
 
     /**
      * Returns an abstraction of the underlying P2P network.
@@ -69,4 +79,11 @@ public interface BlockchainSystemNodeContext {
      * @return block validator abstraction
      */
     BlockValidator getBlockValidator();
+
+    /**
+     * Returns the geographical region of the blockchain system node.
+     *
+     * @return the geographical region of the blockchain system node
+     */
+    GeographicalRegion getGeographicalRegion();
 }

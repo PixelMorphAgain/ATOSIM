@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.creation.geography
 import org.palladiosimulator.blockchainsystems.bscm.geography.GeographicalRegionsSpecification
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegions
+import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegionsResolver
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
 
 /**
@@ -13,22 +14,22 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.No
  *
  * @author Davis Riedel
  */
-class GeographicalRegionsResolver(
+class ThreesimGeographicalRegionsResolver(
   private val geoRegionsSpec: GeographicalRegionsSpecification,
   private val nodeAllocationResolver: NodeAllocationResolver
-) {
+) : GeographicalRegionsResolver {
   private val geoRegions = GeographicalRegions(
     geoRegionsSpec.getRegions()
       .map { region -> GeographicalRegion(region.regionName) }
       .toSet()
   )
 
-  fun resolveGeographicalRegions(): GeographicalRegions {
+  override fun resolveGeographicalRegions(): GeographicalRegions {
     // NOTE: This is cached in the constructor to avoid repeated computation.
     return geoRegions
   }
 
-  fun getGeographicalRegionForNode(nodeId: String): GeographicalRegion {
+  override fun getGeographicalRegionOfNode(nodeId: String): GeographicalRegion {
     val regionName = nodeAllocationResolver
       .getNodeAllocation(nodeId)
       .nodeGeographicalEnvironment

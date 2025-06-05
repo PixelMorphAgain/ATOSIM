@@ -13,7 +13,7 @@ import org.palladiosimulator.blockchainsystems.core.blockpropagation.BlockPropag
 import org.palladiosimulator.blockchainsystems.core.blocks.BlockFactoryImpl;
 import org.palladiosimulator.blockchainsystems.core.orphanblockpool.OrphanBlockPoolFactoryImpl;
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem;
-import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemFactory;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory;
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode;
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNodeFactory;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
