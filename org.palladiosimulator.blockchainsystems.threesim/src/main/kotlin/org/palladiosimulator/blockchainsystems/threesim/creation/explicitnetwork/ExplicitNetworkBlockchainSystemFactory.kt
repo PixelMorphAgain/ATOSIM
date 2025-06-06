@@ -4,16 +4,16 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainS
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockchainFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.blockpropagation.BlockPropagationStrategyFactoryImpl
-import org.palladiosimulator.blockchainsystems.core.transactionpropagation.TransactionPropagationStrategyFactoryImpl
+import org.palladiosimulator.blockchainsystems.core.transaction.propagation.TransactionPropagationStrategyFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.blocks.BlockFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.orphanblockpool.OrphanBlockPoolFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNodeFactory
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
+import org.palladiosimulator.blockchainsystems.core.transaction.TrxMemPoolFactoryImpl
 import org.palladiosimulator.blockchainsystems.threesim.creation.geography.ThreesimGeographicalRegionsResolver
 import java.util.*
 
-// TODO: Rewrite from SM-SIM to 3SIM
 /**
  * Factory for creating a [BlockchainSystem] based on an [ExplicitNetworkTopology].
  *
@@ -25,7 +25,7 @@ class ExplicitNetworkBlockchainSystemFactory(
 ) : BlockchainSystemFactory {
   private val networkFactory: ExplicitTopologyP2PNetworkFactory = ExplicitTopologyP2PNetworkFactory(explicitTopology)
   private val nodeAllocationResolver = ExplicitNetworkNodeAllocationResolver(explicitTopology)
-  private val regionsResolver = ThreesimGeographicalRegionsResolver(
+  private val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
     designBlockchainSystem.geographicalRegionsSpecification,
     nodeAllocationResolver
   );
@@ -82,6 +82,7 @@ class ExplicitNetworkBlockchainSystemFactory(
     val blockPropagationStrategyFactory = BlockPropagationStrategyFactoryImpl()
     val transactionPropagationStrategyFactory = TransactionPropagationStrategyFactoryImpl()
     val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()
+    val trxMemPoolFactory = TrxMemPoolFactoryImpl()
 
     // TODO: Fix these
 
@@ -103,14 +104,15 @@ class ExplicitNetworkBlockchainSystemFactory(
       blockValidatorFactory,
       blockPropagationStrategyFactory,
       transactionPropagationStrategyFactory,
+      trxMemPoolFactory,
       orphanBlockPoolFactory,
       behaviorFactory,
-      regionsResolver,
+      geographicalRegionsResolver,
       tagProvider
     )
   }
 
-  fun createBlockFactory(): BlockFactoryImpl {
+  private fun createBlockFactory(): BlockFactoryImpl {
     // TODO: We no longer have mean block size, block size must be calculated based on transactions
     val blockSizeValueProvider: BlockSizeValueProvider =
       BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize())

@@ -2,6 +2,7 @@ package org.palladiosimulator.blockchainsystems.core.system
 
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
 /**
  * The [BlockchainSystemNodeContextImpl] class is an implementation of the [BlockchainSystemNodeContext] interface.
@@ -17,6 +18,7 @@ class BlockchainSystemNodeContextImpl(
   private val miningProcess: MiningProcess,
   private val blockchain: Blockchain,
   private val blockValidator: BlockValidator,
+  private val trxMemPool: TrxMemPool,
   private val orphanBlockPool: OrphanBlockPool,
   private val blockFactory: BlockFactory,
   private val geographicalRegion: GeographicalRegion
@@ -24,6 +26,7 @@ class BlockchainSystemNodeContextImpl(
   override fun getId() = id
   override fun getBlockPropagationStrategy() = blockPropagationStrategy
   override fun getTransactionPropagationStrategy() = transactionPropagationStrategy
+  override fun getTrxMemPool() = trxMemPool
   override fun getNetworkInterface() = networkInterface
   override fun getMiningProcess() = miningProcess
   override fun getBlockchain() = blockchain

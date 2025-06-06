@@ -11,6 +11,9 @@ import org.palladiosimulator.blockchainsystems.core.stochastics.PoissonProcess;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess;
 
+// TODO: Mining process must include transactions to create a block
+// TODO: This can be used as a starting point for implementing the transactions submission process
+
 public class MiningProcessImpl extends BlockchainNodeObject implements MiningProcess {
 
     private final PoissonProcess _poissonProcess;

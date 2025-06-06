@@ -1,3 +1,3 @@
-# org.palladiosimulator.blockchainsystems.threesim
+# Package org.palladiosimulator.blockchainsystems.threesim
 
-Business logic for the 3SIM blockchain simulator.
+This package contains the business logic for the 3SIM blockchain simulator.

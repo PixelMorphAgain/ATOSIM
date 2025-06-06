@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.transactionpropagation
+package org.palladiosimulator.blockchainsystems.core.transaction.propagation
 
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
@@ -7,7 +7,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import java.util.function.Consumer
 
 class TransactionPropagationStrategyImpl : BlockchainNodeObject(), PropagationStrategy<Transaction> {

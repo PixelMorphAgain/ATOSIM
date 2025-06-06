@@ -13,7 +13,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
 
 /**
- * Default implementation of the {@link BlockPropagationStrategy} interface.
+ * Default implementation of the {@link PropagationStrategy} interface.
  * This class handles the distribution of blocks across the network and manages
  * the reception of block-related messages.
  *

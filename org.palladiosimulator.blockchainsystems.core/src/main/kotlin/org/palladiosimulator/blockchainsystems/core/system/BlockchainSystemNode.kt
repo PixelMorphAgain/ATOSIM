@@ -5,6 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
 /**
  * The [BlockchainSystemNode] class represents a blockchain system node.
@@ -24,6 +25,7 @@ class BlockchainSystemNode(
   private val miningProcess: MiningProcess,
   private val blockchain: Blockchain,
   private val blockValidator: BlockValidator,
+  private val trxMemPool: TrxMemPool,
   private val orphanBlockPool: OrphanBlockPool,
   private val blockFactory: BlockFactory,
   private val behavior: BlockchainSystemNodeBehavior,
@@ -39,6 +41,7 @@ class BlockchainSystemNode(
     miningProcess,
     blockchain,
     blockValidator,
+    trxMemPool,
     orphanBlockPool,
     blockFactory,
     geographicalRegion
@@ -48,9 +51,15 @@ class BlockchainSystemNode(
     blockchain.initialize(simulationContext)
     blockchain.initializeLogger(this)
 
+    transactionPropagationStrategy.setNetworkInterface(networkInterface)
+    transactionPropagationStrategy.setBlockchain(blockchain)
+    transactionPropagationStrategy.setOnReceivedCallback { this.onTransactionReceived(it) }
+    transactionPropagationStrategy.initialize(simulationContext)
+    transactionPropagationStrategy.initializeLogger(this)
+
     blockPropagationStrategy.setNetworkInterface(networkInterface)
     blockPropagationStrategy.setBlockchain(blockchain)
-    blockPropagationStrategy.setOnReceivedCallback { block -> this.onBlockReceived(block) }
+    blockPropagationStrategy.setOnReceivedCallback { this.onBlockReceived(it) }
     blockPropagationStrategy.initialize(simulationContext)
     blockPropagationStrategy.initializeLogger(this)
 
@@ -74,6 +83,9 @@ class BlockchainSystemNode(
     miningProcess.initialize(simulationContext)
     miningProcess.initializeLogger(this)
 
+    trxMemPool.initialize(simulationContext)
+    trxMemPool.initializeLogger(this)
+
     orphanBlockPool.initialize(simulationContext)
     orphanBlockPool.initializeLogger(this)
 
@@ -83,11 +95,16 @@ class BlockchainSystemNode(
   }
 
   override fun onCleanup() {
+    trxMemPool.cleanup()
     orphanBlockPool.cleanup()
     miningProcess.cleanup()
     blockValidator.cleanup()
     blockPropagationStrategy.cleanup()
     blockchain.cleanup()
+  }
+
+  private fun onTransactionReceived(transaction: Transaction) {
+    behavior.onTransactionReceived(transaction, context)
   }
 
   private fun onBlockReceived(block: Block) {

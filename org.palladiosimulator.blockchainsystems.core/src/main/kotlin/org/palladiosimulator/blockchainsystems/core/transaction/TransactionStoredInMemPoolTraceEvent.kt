@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.transaction
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
 /**
  * @author Davis Riedel

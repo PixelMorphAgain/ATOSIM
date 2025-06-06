@@ -7,8 +7,13 @@ import java.util.UUID;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockFactory;
 
-// TODO: Consider block size based on transactions
-
+/**
+ * The @code{BlockFactoryImpl} class implements the @code{BlockFactory} interface
+ * to create instances of the @code{Block} class.
+ * It provides methods to create blocks with or without tags, and a genesis block.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 public class BlockFactoryImpl implements BlockFactory {
     public BlockFactoryImpl() {
     }

@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.system.abstractions;
 
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion;
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction;
 
 /**
  * The @code{BlockchainSystemNodeContext} interface represents the
@@ -33,6 +34,14 @@ public interface BlockchainSystemNodeContext {
      * @return the strategy used to propagate blocks
      */
     PropagationStrategy<Transaction> getTransactionPropagationStrategy();
+
+    /**
+     * Returns an abstraction of the P2P network used by the blockchain system node
+     * to communicate with other nodes in the network.
+     *
+     * @return P2P network abstraction
+     */
+    TrxMemPool getTrxMemPool();
 
     /**
      * Returns an abstraction of the underlying P2P network.

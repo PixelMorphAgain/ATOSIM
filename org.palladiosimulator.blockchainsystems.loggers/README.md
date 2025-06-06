@@ -1,3 +1,3 @@
-# org.palladiosimulator.blockchainsystems.loggers
+# Package org.palladiosimulator.blockchainsystems.loggers
 
-Loggers to log trace events of the blockchain simulation to console, file, or database.
+This package implements loggers to log trace events of the blockchain simulation to console, file, or database.

@@ -2,13 +2,15 @@ package org.palladiosimulator.blockchainsystems.core.transaction
 
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.MemPool
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPool
 
 /**
  * @author Davis Riedel
  */
-class MemPoolImpl : BlockchainNodeObject(), MemPool {
+class TrxMemPoolImpl(
+  private val nodeId: String
+) : BlockchainNodeObject(), TrxMemPool {
   private val transactions = HashMap<String, Transaction>();
 
   private fun logTransactionStoredEvent(transaction: Transaction) {
@@ -28,10 +30,10 @@ class MemPoolImpl : BlockchainNodeObject(), MemPool {
   }
 
   override fun getTransactionById(txId: String): Transaction? {
-    return transactions[txId]
+    return transactions.get(txId)
   }
 
   override fun storeTransaction(transaction: Transaction) {
-    transactions.put(transaction.txId, transaction)
+    transactions.put(transaction.getTxId(), transaction)
   }
 }
