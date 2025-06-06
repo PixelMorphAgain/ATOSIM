@@ -10,7 +10,6 @@
     <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>

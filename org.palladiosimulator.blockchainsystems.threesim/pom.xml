@@ -12,7 +12,6 @@
     <artifactId>org.palladiosimulator.blockchainsystems.threesim</artifactId>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>

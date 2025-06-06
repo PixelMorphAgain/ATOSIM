@@ -9,7 +9,6 @@
     <artifactId>org.palladiosimulator.blockchainsystems.core</artifactId>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
