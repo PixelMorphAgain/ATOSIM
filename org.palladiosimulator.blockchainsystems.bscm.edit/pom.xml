@@ -7,7 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>org.palladiosimulator.blockchainsystems.bscm.edit</artifactId>
-    <packaging>pom</packaging>
+    <packaging>eclipse-plugin</packaging>
 
     <build>
         <sourceDirectory>src-gen</sourceDirectory>
