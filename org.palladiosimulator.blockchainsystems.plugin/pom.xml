@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>org.palladiosimulator.blockchainsystems.plugin</artifactId>
-    <packaging>eclipse-plugin</packaging>
+    <packaging>pom</packaging>
 
     <build>
         <plugins>

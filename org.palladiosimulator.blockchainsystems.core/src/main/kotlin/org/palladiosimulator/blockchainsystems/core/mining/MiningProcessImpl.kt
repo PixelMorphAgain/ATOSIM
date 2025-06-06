@@ -12,52 +12,51 @@ import java.util.random.RandomGenerator
 
 // TODO: Mining process must include transactions to create a block
 // TODO: This can be used as a starting point for implementing the transactions submission process
-class MiningProcessImpl(meanBlockTime: Double, randomGenerator: RandomGenerator) : BlockchainNodeObject(),
+
+/**
+ * This class implements the mining process for a blockchain node.
+ *
+ * @param meanBlockTime the average time between blocks
+ * @param randomGenerator the random generator used to generate blocks
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
+class MiningProcessImpl(
+  meanBlockTime: Double,
+  randomGenerator: RandomGenerator
+) : BlockchainNodeObject(),
   MiningProcess {
-  private val _poissonProcess: PoissonProcess
-  private var _onCreatingBlockCallback: BiFunction<Long?, String?, Block?>?
-  private var _previousBlockSelectionCallback: Supplier<String?>?
-  private var _onBlockMinedCallback: Consumer<Block?>?
+  private val poissonProcess = PoissonProcess(1.0 / meanBlockTime, randomGenerator)
+  private var onCreatingBlockCallback: BiFunction<Long, String, Block>? = null
+  private var previousBlockSelectionCallback: Supplier<String>? = null
+  private var onBlockMinedCallback: Consumer<Block>? = null
 
-  private var _isMining: Boolean
-
-  init {
-    _poissonProcess = PoissonProcess(1.0 / meanBlockTime, randomGenerator)
-
-    _onCreatingBlockCallback = null
-    _previousBlockSelectionCallback = null
-    _onBlockMinedCallback = null
-
-    _isMining = false
-  }
-
+  private var isMining = false
 
   override fun dispatchEvent(event: Event) {
     if (event.getEventType() === BlockMinedEvent.EVENT_TYPE) {
-      if (!_isMining) {
-        return
-      }
+      if (!isMining) return
 
       val blockMinedEvent = event as BlockMinedEvent
 
-      val block =
-        _onCreatingBlockCallback!!.apply(blockMinedEvent.getOccurrenceTime(), blockMinedEvent.getPreviousBlockHash())
+      val block = onCreatingBlockCallback!!.apply(
+        blockMinedEvent.occurrenceTime,
+        blockMinedEvent.previousBlockHash
+      )
 
-      if (block != null) {
-        logBlockMined(block)
+      logBlockMined(block)
 
-        notifyBlockMined(block)
-      }
+      notifyBlockMined(block)
 
       scheduleNewBlockMinedEvent()
     }
   }
 
 
-  private fun scheduleNewBlockMinedEvent(): String? {
-    val previousBlockHash = _previousBlockSelectionCallback!!.get()
+  private fun scheduleNewBlockMinedEvent(): String {
+    val previousBlockHash = previousBlockSelectionCallback!!.get()
 
-    getSimulationContext()
+    simulationContext
       .getEventCoordinator()
       .raiseEvent(
         BlockMinedEvent(
@@ -72,35 +71,31 @@ class MiningProcessImpl(meanBlockTime: Double, randomGenerator: RandomGenerator)
 
   private val nextBlockMinedEventOccurrenceTimestamp: Long
     get() {
-      val eventCurrentTimeOffset = _poissonProcess.nextPointDistance()
-      return getSimulationContext().getSystemClock().getCurrentTime() + eventCurrentTimeOffset
+      val eventCurrentTimeOffset = poissonProcess.nextPointDistance()
+      return simulationContext.getSystemClock().getCurrentTime() + eventCurrentTimeOffset
     }
 
-  private fun notifyBlockMined(block: Block?) {
-    if (_onBlockMinedCallback != null) {
-      _onBlockMinedCallback!!.accept(block)
-    }
+  private fun notifyBlockMined(block: Block) {
+    onBlockMinedCallback?.accept(block)
   }
 
   private fun cancelPendingEvent() {
-    getSimulationContext()
+    simulationContext
       .getEventCoordinator()
       .cancelEventsFor(this)
   }
 
   override fun startMining() {
-    if (_isMining) {
-      return
-    }
+    if (isMining) return
 
     scheduleNewBlockMinedEvent()
-    _isMining = true
+    isMining = true
 
     logMiningStarted()
   }
 
   override fun restartMining() {
-    if (!_isMining) {
+    if (!isMining) {
       startMining()
       return
     }
@@ -114,77 +109,76 @@ class MiningProcessImpl(meanBlockTime: Double, randomGenerator: RandomGenerator)
   }
 
   override fun stopMining() {
-    if (!_isMining) {
-      return
-    }
+    if (!isMining) return
+
     cancelPendingEvent()
     logMiningStopped()
   }
 
-  override fun setOnCreatingBlockCallback(onCreatingBlockCallback: BiFunction<Long?, String?, Block?>?) {
-    _onCreatingBlockCallback = onCreatingBlockCallback
+  override fun setOnCreatingBlockCallback(onCreatingBlockCallback: BiFunction<Long, String, Block>) {
+    this@MiningProcessImpl.onCreatingBlockCallback = onCreatingBlockCallback
   }
 
-  override fun setPreviousBlockSelectionCallback(previousBlockSelectionCallback: Supplier<String?>?) {
-    _previousBlockSelectionCallback = previousBlockSelectionCallback
+  override fun setPreviousBlockSelectionCallback(previousBlockSelectionCallback: Supplier<String>) {
+    this@MiningProcessImpl.previousBlockSelectionCallback = previousBlockSelectionCallback
   }
 
-  override fun setOnBlockMinedCallback(onBlockMinedCallback: Consumer<Block?>?) {
-    _onBlockMinedCallback = onBlockMinedCallback
+  override fun setOnBlockMinedCallback(onBlockMinedCallback: Consumer<Block>) {
+    this@MiningProcessImpl.onBlockMinedCallback = onBlockMinedCallback
   }
 
 
   private fun logMiningStarted() {
-    if (!getTraceEventLogger().isEventTypeEnabled(BlockMiningStartedTraceEvent.EVENT_TYPE)) {
+    if (!traceEventLogger.isEventTypeEnabled(BlockMiningStartedTraceEvent.EVENT_TYPE)) {
       return
     }
 
     val event = BlockMiningStartedTraceEvent(
-      getSimulationContext().getSystemClock().getCurrentTime()
+      simulationContext.getSystemClock().getCurrentTime()
     )
 
-    getTraceEventLogger()
+    traceEventLogger
       .logEvent(event)
   }
 
-  private fun logBlockMined(block: Block?) {
-    if (!getTraceEventLogger().isEventTypeEnabled(BlockMinedTraceEvent.EVENT_TYPE)) {
+  private fun logBlockMined(block: Block) {
+    if (!traceEventLogger.isEventTypeEnabled(BlockMinedTraceEvent.EVENT_TYPE)) {
       return
     }
 
     val event = BlockMinedTraceEvent(
-      getSimulationContext().getSystemClock().getCurrentTime(),
+      simulationContext.getSystemClock().getCurrentTime(),
       block
     )
 
-    getTraceEventLogger()
+    traceEventLogger
       .logEvent(event)
   }
 
-  private fun logMiningRestarted(previousHash: String?) {
-    if (!getTraceEventLogger().isEventTypeEnabled(BlockMiningRestartedTraceEvent.EVENT_TYPE)) {
+  private fun logMiningRestarted(previousHash: String) {
+    if (!traceEventLogger.isEventTypeEnabled(BlockMiningRestartedTraceEvent.EVENT_TYPE)) {
       return
     }
 
     val event = BlockMiningRestartedTraceEvent(
-      getSimulationContext().getSystemClock().getCurrentTime(),
+      simulationContext.getSystemClock().getCurrentTime(),
       previousHash
     )
 
-    getTraceEventLogger()
+    traceEventLogger
       .logEvent(event)
   }
 
   private fun logMiningStopped() {
-    if (!getTraceEventLogger().isEventTypeEnabled(BlockMiningStoppedTraceEvent.EVENT_TYPE)) {
+    if (!traceEventLogger.isEventTypeEnabled(BlockMiningStoppedTraceEvent.EVENT_TYPE)) {
       return
     }
 
     val event = BlockMiningStoppedTraceEvent(
-      getSimulationContext().getSystemClock().getCurrentTime()
+      simulationContext.getSystemClock().getCurrentTime()
     )
 
-    getTraceEventLogger()
+    traceEventLogger
       .logEvent(event)
   }
 }

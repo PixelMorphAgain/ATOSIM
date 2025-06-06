@@ -52,12 +52,13 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     previousBlockHash: String,
     context: BlockchainSystemNodeContext
   ): Block {
-    // TODO: Calculate block size based on transactions
+    TODO("Not yet implemented")
     return context.getBlockFactory().createBlock(
       UUID.randomUUID().toString(),
       previousBlockHash,
       context.getId(),
-      blockMinedAt
+      blockMinedAt,
+      0 // TODO: Calculate block size based on transactions
     )
   }
 

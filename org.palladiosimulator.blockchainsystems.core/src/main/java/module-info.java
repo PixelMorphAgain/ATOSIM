@@ -6,7 +6,7 @@ module org.palladiosimulator.blockchainsystems.core {
     exports org.palladiosimulator.blockchainsystems.core.orphanblockpool;
     exports org.palladiosimulator.blockchainsystems.core.blockpropagation;
     exports org.palladiosimulator.blockchainsystems.core.system.abstractions;
-    exports org.palladiosimulator.blockchainsystems.core.behaviors;
+    exports org.palladiosimulator.blockchainsystems.core.behavior;
     exports org.palladiosimulator.blockchainsystems.core.blocks;
     exports org.palladiosimulator.blockchainsystems.core.mining;
     exports org.palladiosimulator.blockchainsystems.core.common.abstractions;
