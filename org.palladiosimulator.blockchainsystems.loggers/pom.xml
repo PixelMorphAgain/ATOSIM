@@ -10,15 +10,15 @@
     <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
 
     <build>
+        <sourceDirectory>src</sourceDirectory>
         <plugins>
             <plugin>
+                <groupId>org.jetbrains.dokka</groupId>
+                <artifactId>dokka-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>
             </plugin>
         </plugins>
     </build>

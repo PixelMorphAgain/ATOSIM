@@ -6,6 +6,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <parent>
+        <groupId>org.palladiosimulator</groupId>
+        <artifactId>eclipse-parent-updatesite</artifactId>
+        <version>0.8.9</version>
+    </parent>
+
     <repositories>
         <repository>
             <id>eclipse-platform</id>
@@ -34,6 +40,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
         <kotlin.compiler.jvmTarget>22</kotlin.compiler.jvmTarget>
+        <org.palladiosimulator.maven.tychotprefresh.tplocation.2>
+            ${project.basedir}/releng/org.palladiosimulator.blockchainsystems.targetplatform/tp.target
+        </org.palladiosimulator.maven.tychotprefresh.tplocation.2>
     </properties>
 
     <build>
@@ -78,36 +87,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <version>2.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>pre-site</phase>
-                        <goals>
-                            <goal>dokka</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sourceDirectories>
-                        <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
-                        <sourceDir>${project.basedir}/src/main/java</sourceDir>
-                    </sourceDirectories>
-                    <documentedVisibilities>
-                        <visibility>PUBLIC</visibility>
-                        <visibility>PRIVATE</visibility>
-                        <visibility>PROTECTED</visibility>
-                        <visibility>INTERNAL</visibility>
-                        <visibility>PACKAGE</visibility>
-                    </documentedVisibilities>
-                    <includes>
-                        <include>packages.md</include>
-                    </includes>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
@@ -130,10 +109,91 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>2.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>pre-site</phase>
+                            <goals>
+                                <goal>dokka</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <sourceDirectories>
+                            <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                            <sourceDir>${project.basedir}/src/main/java</sourceDir>
+                        </sourceDirectories>
+                        <documentedVisibilities>
+                            <visibility>PUBLIC</visibility>
+                            <visibility>PRIVATE</visibility>
+                            <visibility>PROTECTED</visibility>
+                            <visibility>INTERNAL</visibility>
+                            <visibility>PACKAGE</visibility>
+                        </documentedVisibilities>
+                        <includes>
+                            <include>README.md</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.4.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <executions>
+                        <execution>
+                            <id>copy-dependencies</id>
+                            <phase>initialize</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <includeScope>runtime</includeScope>
+                                <stripVersion>true</stripVersion>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <copy file="target/${project.artifactId}-${project.version}.jar"
+                                          todir="/Users/davisriedel/Desktop/Bachelorarbeit/Palladio.app/Contents/Eclipse/dropins"/>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <modules>
-        <module>target-platform</module>
+        <module>releng</module>
         <module>org.palladiosimulator.blockchainsystems.core</module>
         <module>org.palladiosimulator.blockchainsystems.loggers</module>
         <module>org.palladiosimulator.blockchainsystems.bscm</module>
