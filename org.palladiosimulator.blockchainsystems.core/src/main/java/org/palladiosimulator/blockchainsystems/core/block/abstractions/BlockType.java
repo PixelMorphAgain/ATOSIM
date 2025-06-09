@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.system.abstractions;
+package org.palladiosimulator.blockchainsystems.core.block.abstractions;
 
 /**
  * The @code{BlockType} enum specifies possible block types as which blocks can

@@ -1,8 +1,8 @@
 package org.palladiosimulator.blockchainsystems.core.blockchain;
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType;
 
 public record BlockTypeChangedTraceEvent(
         long occurrenceTime,

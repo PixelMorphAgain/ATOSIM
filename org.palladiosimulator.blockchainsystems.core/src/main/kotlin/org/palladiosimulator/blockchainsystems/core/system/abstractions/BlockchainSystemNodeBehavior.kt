@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.system.abstractions
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
@@ -25,7 +26,7 @@ interface BlockchainSystemNodeBehavior : Traceable {
    * @param context     the context of the blockchain system node
    */
   fun onTransactionReceived(transaction: Transaction, context: BlockchainSystemNodeContext)
- 
+
   /**
    * This callback is invoked when the node receives a block from one of its neighbors.
    *

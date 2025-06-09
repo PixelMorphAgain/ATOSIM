@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface;

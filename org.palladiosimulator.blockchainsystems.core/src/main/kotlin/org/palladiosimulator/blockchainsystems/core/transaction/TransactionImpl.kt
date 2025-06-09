@@ -16,39 +16,11 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
  * @author Davis Riedel
  */
 class TransactionImpl(
-  private val txId: String,
-  private val size: Int,
-  private val creationTime: Long,
-  private val senderId: String,
-  private val recipientId: String,
-  private val amount: Double,
-  private val fee: Double
-) : Transaction {
-  override fun getTxId(): String {
-    return txId
-  }
-
-  override fun getSize(): Int {
-    return size
-  }
-
-  override fun getCreationTime(): Long {
-    return creationTime
-  }
-
-  override fun getSenderId(): String {
-    return senderId
-  }
-
-  override fun getRecipientId(): String {
-    return recipientId
-  }
-
-  override fun getAmount(): Double {
-    return amount
-  }
-
-  override fun getFee(): Double {
-    return fee
-  }
-}
+  override val txId: String,
+  override val size: Int,
+  override val creationTime: Long,
+  override val senderId: String,
+  override val recipientId: String,
+  override val amount: Double,
+  override val fee: Double
+) : Transaction

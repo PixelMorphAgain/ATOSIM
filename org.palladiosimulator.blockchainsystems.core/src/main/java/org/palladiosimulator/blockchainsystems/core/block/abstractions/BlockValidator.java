@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.system.abstractions;
+package org.palladiosimulator.blockchainsystems.core.block.abstractions;
 
 import java.util.function.BiConsumer;
 

@@ -5,8 +5,8 @@ import java.util.function.BiConsumer;
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator;
 
 public class BlockValidatorImpl extends BlockchainNodeObject implements BlockValidator {
 

@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPool
+import java.util.TreeSet
 
 /**
  * @author Davis Riedel
@@ -11,7 +12,14 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPo
 class TrxMemPoolImpl(
   private val nodeId: String
 ) : BlockchainNodeObject(), TrxMemPool {
-  private val transactions = HashMap<String, Transaction>();
+  /*
+   * Stores transactions sorted by their fee rate in descending order.
+   */
+  private val transactions = TreeSet<Transaction> { t1, t2 ->
+    val firstRate = t1.fee / t1.size
+    val secondRate = t2.fee / t2.size
+    secondRate.compareTo(firstRate) // Argument order is reversed to sort in descending order
+  };
 
   private fun logTransactionStoredEvent(transaction: Transaction) {
     if (!traceEventLogger.isEventTypeEnabled(TransactionStoredInMemPoolTraceEvent.EVENT_TYPE)) {
@@ -29,11 +37,11 @@ class TrxMemPoolImpl(
   override fun dispatchEvent(event: Event) {
   }
 
-  override fun getTransactionById(txId: String): Transaction? {
-    return transactions.get(txId)
+  override fun storeTransaction(transaction: Transaction) {
+    transactions.add(transaction)
   }
 
-  override fun storeTransaction(transaction: Transaction) {
-    transactions.put(transaction.getTxId(), transaction)
+  override fun getTransactionsSortedByFeeRate(): TreeSet<Transaction> {
+    return transactions
   }
 }

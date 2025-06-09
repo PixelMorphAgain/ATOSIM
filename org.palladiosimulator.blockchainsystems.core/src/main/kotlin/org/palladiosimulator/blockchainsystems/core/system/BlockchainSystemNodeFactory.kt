@@ -1,8 +1,12 @@
 package org.palladiosimulator.blockchainsystems.core.system
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFactory
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegionsResolver
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcessFactory
 
 
 /**
@@ -14,6 +18,7 @@ class BlockchainSystemNodeFactory(
   private val blockFactory: BlockFactory,
   private val blockchainFactory: BlockchainFactory,
   private val miningProcessFactory: MiningProcessFactory,
+  private val transactionSelectionProcessFactory: TransactionSelectionProcessFactory,
   private val blockValidatorFactory: BlockValidatorFactory,
   private val blockPropagationStrategyFactory: PropagationStrategyFactory<Block>,
   private val transactionPropagationStrategyFactory: PropagationStrategyFactory<Transaction>,
@@ -35,6 +40,7 @@ class BlockchainSystemNodeFactory(
       transactionPropagationStrategyFactory.createPropagationStrategy(),
       networkInterface,
       miningProcessFactory.createMiningProcess(nodeId),
+      transactionSelectionProcessFactory.createTransactionSelectionProcess(nodeId),
       blockchainFactory.createBlockchain(genesisBlock, nodeId),
       blockValidatorFactory.createBlockValidator(nodeId),
       trxMemPoolFactory.createEmptyTransactionMemPool(nodeId),

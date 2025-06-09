@@ -1,11 +1,15 @@
 package org.palladiosimulator.blockchainsystems.core.system
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFactory
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainSimulationObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcess
 
 /**
  * The [BlockchainSystemNode] class represents a blockchain system node.
@@ -23,6 +27,7 @@ class BlockchainSystemNode(
   private val transactionPropagationStrategy: PropagationStrategy<Transaction>,
   private val networkInterface: NodeP2PNetworkInterface,
   private val miningProcess: MiningProcess,
+  private val transactionSelectionProcess: TransactionSelectionProcess,
   private val blockchain: Blockchain,
   private val blockValidator: BlockValidator,
   private val trxMemPool: TrxMemPool,
@@ -39,6 +44,7 @@ class BlockchainSystemNode(
     transactionPropagationStrategy,
     networkInterface,
     miningProcess,
+    transactionSelectionProcess,
     blockchain,
     blockValidator,
     trxMemPool,
@@ -82,6 +88,9 @@ class BlockchainSystemNode(
     }
     miningProcess.initialize(simulationContext)
     miningProcess.initializeLogger(this)
+
+    transactionSelectionProcess.initialize(simulationContext)
+    transactionSelectionProcess.initializeLogger(this)
 
     trxMemPool.initialize(simulationContext)
     trxMemPool.initializeLogger(this)

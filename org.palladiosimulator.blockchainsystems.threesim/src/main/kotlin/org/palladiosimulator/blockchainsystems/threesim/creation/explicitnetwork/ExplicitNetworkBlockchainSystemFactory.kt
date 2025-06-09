@@ -5,14 +5,22 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTo
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockchainFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.blockpropagation.BlockPropagationStrategyFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.transaction.propagation.TransactionPropagationStrategyFactoryImpl
-import org.palladiosimulator.blockchainsystems.core.blocks.BlockFactoryImpl
+import org.palladiosimulator.blockchainsystems.core.block.BlockFactoryImpl
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFactory
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory
+import org.palladiosimulator.blockchainsystems.core.mining.MiningProcessFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.orphanblockpool.OrphanBlockPoolFactoryImpl
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNodeFactory
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.TrxMemPoolFactoryImpl
+import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeBehaviorFactory
+import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransactionSelectionProcessFactory
+import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockValidatorFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.geography.ThreesimGeographicalRegionsResolver
-import java.util.*
+import java.util.random.RandomGenerator
+import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeTagProvider
+import java.util.UUID
 
 /**
  * Factory for creating a [BlockchainSystem] based on an [ExplicitNetworkTopology].
@@ -33,13 +41,13 @@ class ExplicitNetworkBlockchainSystemFactory(
   override fun createBlockchainSystem(): BlockchainSystem {
     val networkCreationResult = networkFactory.createP2PNetwork()
 
+    // TODO: Why is this not needed anymore?
     val globalResourcePowerCalculator = ExplicitNetworkGlobalResourcePowerCalculator(explicitTopology)
 
     val blockFactory = createBlockFactory()
 
     val nodeFactory = createBlockchainSystemNodeFactory(
       nodeAllocationResolver,
-      globalResourcePowerCalculator,
       blockFactory
     )
 
@@ -74,7 +82,6 @@ class ExplicitNetworkBlockchainSystemFactory(
 
   private fun createBlockchainSystemNodeFactory(
     nodeAllocationResolver: ExplicitNetworkNodeAllocationResolver,
-    globalResourcePowerCalculator: ExplicitNetworkGlobalResourcePowerCalculator,
     blockFactory: BlockFactory
   ): BlockchainSystemNodeFactory {
     // Create factories independent of the metamodel information
@@ -84,23 +91,23 @@ class ExplicitNetworkBlockchainSystemFactory(
     val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
 
-    // TODO: Fix these
-
     // Create factories dependent of the metamodel information
-    val miningProcessFactory: MiningProcessFactory = MiningProcessFactoryPluginImpl(
-      nodeAllocationResolver,
-      globalResourcePowerCalculator, designBlockchainSystem.getSpecification()
+    val miningProcessFactory = MiningProcessFactoryImpl(
+      meanBlockTime = designBlockchainSystem.specification.meanBlockTime,
+      randomGenerator = RandomGenerator.of("Random"),
     )
-    val blockValidatorFactory: BlockValidatorFactory = BlockValidatorFactoryPluginImpl(nodeAllocationResolver)
-    val behaviorFactory: BlockchainSystemNodeBehaviorFactory = BlockchainSystemNodeBehaviorFactoryPluginImpl(
-      maliciousNodesIdProvider
+    val transactionSelectionProcessFactory = ThreesimTransactionSelectionProcessFactory(
+      maxBlockSize = designBlockchainSystem.specification.maxBlockSize
     )
-    val tagProvider: BlockchainSystemNodeTagProvider = BlockchainSystemNodeTagProviderImpl(maliciousNodesIdProvider)
+    val blockValidatorFactory: BlockValidatorFactory = ThreesimBlockValidatorFactory(nodeAllocationResolver)
+    val behaviorFactory: BlockchainSystemNodeBehaviorFactory = ThreesimBlockchainSystemNodeBehaviorFactory()
+    val tagProvider: BlockchainSystemNodeTagProvider = ThreesimBlockchainSystemNodeTagProvider()
 
     return BlockchainSystemNodeFactory(
       blockFactory,
       blockchainFactory,
       miningProcessFactory,
+      transactionSelectionProcessFactory,
       blockValidatorFactory,
       blockPropagationStrategyFactory,
       transactionPropagationStrategyFactory,
@@ -113,9 +120,6 @@ class ExplicitNetworkBlockchainSystemFactory(
   }
 
   private fun createBlockFactory(): BlockFactoryImpl {
-    // TODO: We no longer have mean block size, block size must be calculated based on transactions
-    val blockSizeValueProvider: BlockSizeValueProvider =
-      BlockSizeValueProvider(designBlockchainSystem.getSpecification().getMeanBlockSize())
-    return BlockFactoryImpl(blockSizeValueProvider)
+    return BlockFactoryImpl()
   }
 }

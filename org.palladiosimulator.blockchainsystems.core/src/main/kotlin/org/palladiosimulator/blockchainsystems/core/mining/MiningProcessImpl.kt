@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.core.mining
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.stochastics.PoissonProcess
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess
 import java.util.function.BiFunction
 import java.util.function.Consumer

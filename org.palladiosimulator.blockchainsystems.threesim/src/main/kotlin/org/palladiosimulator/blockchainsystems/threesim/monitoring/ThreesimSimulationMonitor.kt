@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstractions.NodeTerminationState
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 
 
 class ThreesimSimulationMonitor(

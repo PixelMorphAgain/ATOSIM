@@ -22,7 +22,7 @@ data class TransactionReceivedTraceEvent(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")
-    stringBuilder.append(sentTransaction.getTxId())
+    stringBuilder.append(sentTransaction.txId)
     stringBuilder.append("; receivedFromNetworkEndpoint=")
     stringBuilder.append(receivingNetworkEndpoint.getEndpointId())
     stringBuilder.append(" }")

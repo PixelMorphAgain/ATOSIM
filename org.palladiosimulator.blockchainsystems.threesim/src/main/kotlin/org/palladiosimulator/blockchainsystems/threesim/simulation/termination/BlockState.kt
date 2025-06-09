@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.termination
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 
 /**
  * Represents the state of a block in the blockchain simulation.

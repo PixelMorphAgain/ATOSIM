@@ -9,7 +9,7 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 @JvmRecord
 data class TransactionStoredInMemPoolTraceEvent(
   private val occurrenceTime: Long,
-  val storedTransaction: Transaction?
+  val storedTransaction: Transaction
 ) : TraceEvent {
   companion object {
     const val EVENT_TYPE: String = "TransactionStoredInPoolTraceEvent"
@@ -20,7 +20,7 @@ data class TransactionStoredInMemPoolTraceEvent(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")
-    stringBuilder.append(storedTransaction?.getTxId())
+    stringBuilder.append(storedTransaction.txId)
     stringBuilder.append(" }")
   }
 }

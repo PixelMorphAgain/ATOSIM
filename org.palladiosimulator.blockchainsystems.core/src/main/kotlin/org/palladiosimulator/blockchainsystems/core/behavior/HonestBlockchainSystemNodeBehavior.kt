@@ -2,7 +2,7 @@ package org.palladiosimulator.blockchainsystems.core.behavior
 
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
@@ -18,17 +18,16 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     block: Block,
     context: BlockchainSystemNodeContext
   ) {
-    context.getBlockValidator().validateBlock(block)
+    context.blockValidator.validateBlock(block)
   }
 
   override fun onTransactionReceived(
     transaction: Transaction,
     context: BlockchainSystemNodeContext
   ) {
-    // TODO: Implement transaction handling
-    // Broadcast the transaction to neighbors
-    // Include it in the transaction mem pool
-    TODO("Not yet implemented")
+    // TODO: Shall we validate the transaction here?
+    context.trxMemPool.storeTransaction(transaction)
+    context.transactionPropagationStrategy.distribute(transaction)
   }
 
   override fun onBlockValidated(block: Block, isValid: Boolean, context: BlockchainSystemNodeContext) {
@@ -36,15 +35,16 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
 
     val hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context)
     if (hasNewLongestChain) {
-      context.getMiningProcess().restartMining()
+      context.miningProcess.restartMining()
     }
 
-    context.getBlockPropagationStrategy().distribute(block) // TODO: Blocks are distributed too often
+    context.blockPropagationStrategy
+      .distribute(block) // TODO: Blocks are distributed too often (Problem from SM-SIM)
   }
 
   override fun onBlockMined(block: Block, context: BlockchainSystemNodeContext) {
     BehaviorUtils.appendBlockToBlockchain(block, context)
-    context.getBlockPropagationStrategy().distribute(block)
+    context.blockPropagationStrategy.distribute(block)
   }
 
   override fun onCreatingBlock(
@@ -52,23 +52,27 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     previousBlockHash: String,
     context: BlockchainSystemNodeContext
   ): Block {
-    TODO("Not yet implemented")
-    return context.getBlockFactory().createBlock(
+    // Select transactions to include in the block
+    val selectedTrxsResult = context.transactionSelectionProcess.selectTransactionsForBlock(context)
+
+    // Create a new block with the selected transactions
+    return context.blockFactory.createBlock(
       UUID.randomUUID().toString(),
       previousBlockHash,
-      context.getId(),
+      context.id,
       blockMinedAt,
-      0 // TODO: Calculate block size based on transactions
+      selectedTrxsResult.totalSize,
+      selectedTrxsResult.transactions,
     )
   }
 
   override fun onPreviousBlockSelection(context: BlockchainSystemNodeContext): String {
-    val blocks = context.getBlockchain().getLastBlocksOfLongestChains()
-    return blocks.stream().findFirst().get().getHash()
+    val blocks = context.blockchain.getLastBlocksOfLongestChains()
+    return blocks.stream().findFirst().get().hash
   }
 
   override fun onNodeInitialized(context: BlockchainSystemNodeContext) {
-    context.getMiningProcess().startMining()
+    context.miningProcess.startMining()
   }
 
   override fun dispatchEvent(event: Event) {

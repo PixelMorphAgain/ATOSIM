@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.blockchain;
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainFactory;
 

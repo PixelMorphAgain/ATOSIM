@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.mining;
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 
 public record BlockMinedTraceEvent(
         long occurrenceTime,

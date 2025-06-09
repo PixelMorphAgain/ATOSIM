@@ -2,7 +2,7 @@ package org.palladiosimulator.blockchainsystems.core.blockvalidation;
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.EventDispatchable;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 
 public record BlockValidationStartedEvent(
         long occurrenceTime,

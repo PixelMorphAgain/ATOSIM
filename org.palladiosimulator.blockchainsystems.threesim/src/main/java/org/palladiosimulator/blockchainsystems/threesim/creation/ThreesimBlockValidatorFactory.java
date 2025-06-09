@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.BlockValidatorComponent;
 import org.palladiosimulator.blockchainsystems.core.blockvalidation.BlockValidatorImpl;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidatorFactory;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory;
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver;
 
 /**
@@ -16,11 +16,11 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.No
  *
  * @author Yannik Sproll
  */
-public class BlockValidatorFactoryPluginImpl implements BlockValidatorFactory {
+public class ThreesimBlockValidatorFactory implements BlockValidatorFactory {
 
     private final NodeAllocationResolver _nodeAllocationResolver;
 
-    public BlockValidatorFactoryPluginImpl(NodeAllocationResolver nodeAllocationResolver) {
+    public ThreesimBlockValidatorFactory(NodeAllocationResolver nodeAllocationResolver) {
         _nodeAllocationResolver = nodeAllocationResolver;
     }
 

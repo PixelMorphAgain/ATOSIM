@@ -1,8 +1,8 @@
 package org.palladiosimulator.blockchainsystems.core.behavior
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Block
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockAppendingResultType
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockType
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockAppendingResultType
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext
 
 /**
@@ -22,15 +22,14 @@ object BehaviorUtils {
    * @return true if the blockchain has a new longest branch, false otherwise
    */
   fun appendBlockToBlockchain(block: Block, context: BlockchainSystemNodeContext): Boolean {
-    val blockAppendingResult = context.getBlockchain().appendBlock(block)
+    val blockAppendingResult = context.blockchain.appendBlock(block)
 
     when (blockAppendingResult.type) {
       BlockAppendingResultType.Appended -> {
         val appendedBlockType = blockAppendingResult.blockType
 
-        val orphanBlocks = context
-          .getOrphanBlockPool()
-          .getBlocksByPreviousBlockHash(block.getHash())
+        val orphanBlocks = context.orphanBlockPool
+          .getBlocksByPreviousBlockHash(block.hash)
 
         var hasNewLongestBranch = (appendedBlockType == BlockType.IncludedBlock)
 
@@ -43,7 +42,7 @@ object BehaviorUtils {
       }
 
       BlockAppendingResultType.NotAppendedBecauseOrphanBlock -> {
-        context.getOrphanBlockPool().storeBlock(block)
+        context.orphanBlockPool.storeBlock(block)
         return false
       }
 

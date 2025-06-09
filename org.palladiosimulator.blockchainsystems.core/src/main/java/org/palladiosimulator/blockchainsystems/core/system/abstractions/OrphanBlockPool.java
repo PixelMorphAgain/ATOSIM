@@ -2,6 +2,7 @@ package org.palladiosimulator.blockchainsystems.core.system.abstractions;
 
 import java.util.Set;
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable;
 
 /**

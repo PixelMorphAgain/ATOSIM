@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.blockvalidation;
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidator;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockValidatorFactory;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator;
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory;
 
 public class BlockValidatorFactoryImpl implements BlockValidatorFactory {
 

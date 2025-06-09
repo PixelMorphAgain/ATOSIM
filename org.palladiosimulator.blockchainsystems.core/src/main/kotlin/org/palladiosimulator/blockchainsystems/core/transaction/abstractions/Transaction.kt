@@ -4,52 +4,37 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Propagat
 
 interface Transaction : Propagatable {
   /**
-   * Returns the unique identifier of the transaction.
-   *
-   * @return the transaction ID
+   * Unique identifier of the transaction.
    */
-  fun getTxId(): String
+  val txId: String
 
   /**
-   * Returns the size of the transaction in bytes.
-   *
-   * @return the size of the transaction
+   * The size of the transaction in bytes.
    */
-  fun getSize(): Int
+  val size: Int
 
   /**
-   * Returns the time when the transaction was created.
-   *
-   * @return the creation time of the transaction
+   * The time when the transaction was created.
    */
-  fun getCreationTime(): Long
-
+  val creationTime: Long
 
   /**
-   * Returns the ID of the sender of the transaction.
-   *
-   * @return the sender's ID
+   * The ID of the sender of the transaction.
    */
-  fun getSenderId(): String
+  val senderId: String
 
   /**
-   * Returns the ID of the recipient of the transaction.
-   *
-   * @return the recipient's ID
+   * The ID of the recipient of the transaction.
    */
-  fun getRecipientId(): String
+  val recipientId: String
 
   /**
-   * Returns the amount of the transaction.
-   *
-   * @return the transaction amount
+   * The amount of the transaction.
    */
-  fun getAmount(): Double
+  val amount: Double
 
   /**
-   * Returns the fee associated with the transaction.
-   *
-   * @return the transaction fee
+   * The fee associated with the transaction.
    */
-  fun getFee(): Double
+  val fee: Double
 }

@@ -1,8 +1,12 @@
 package org.palladiosimulator.blockchainsystems.core.system
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFactory
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcess
 
 /**
  * The [BlockchainSystemNodeContextImpl] class is an implementation of the [BlockchainSystemNodeContext] interface.
@@ -11,27 +15,16 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
  * @author Yannik Sproll, Davis Riedel
  */
 class BlockchainSystemNodeContextImpl(
-  private val id: String,
-  private val blockPropagationStrategy: PropagationStrategy<Block>,
-  private val transactionPropagationStrategy: PropagationStrategy<Transaction>,
-  private val networkInterface: NodeP2PNetworkInterface,
-  private val miningProcess: MiningProcess,
-  private val blockchain: Blockchain,
-  private val blockValidator: BlockValidator,
-  private val trxMemPool: TrxMemPool,
-  private val orphanBlockPool: OrphanBlockPool,
-  private val blockFactory: BlockFactory,
-  private val geographicalRegion: GeographicalRegion
-) : BlockchainSystemNodeContext {
-  override fun getId() = id
-  override fun getBlockPropagationStrategy() = blockPropagationStrategy
-  override fun getTransactionPropagationStrategy() = transactionPropagationStrategy
-  override fun getTrxMemPool() = trxMemPool
-  override fun getNetworkInterface() = networkInterface
-  override fun getMiningProcess() = miningProcess
-  override fun getBlockchain() = blockchain
-  override fun getOrphanBlockPool() = orphanBlockPool
-  override fun getBlockFactory() = blockFactory
-  override fun getBlockValidator() = blockValidator
-  override fun getGeographicalRegion() = geographicalRegion
-}
+  override val id: String,
+  override val blockPropagationStrategy: PropagationStrategy<Block>,
+  override val transactionPropagationStrategy: PropagationStrategy<Transaction>,
+  override val networkInterface: NodeP2PNetworkInterface,
+  override val miningProcess: MiningProcess,
+  override val transactionSelectionProcess: TransactionSelectionProcess,
+  override val blockchain: Blockchain,
+  override val blockValidator: BlockValidator,
+  override val trxMemPool: TrxMemPool,
+  override val orphanBlockPool: OrphanBlockPool,
+  override val blockFactory: BlockFactory,
+  override val geographicalRegion: GeographicalRegion,
+) : BlockchainSystemNodeContext
