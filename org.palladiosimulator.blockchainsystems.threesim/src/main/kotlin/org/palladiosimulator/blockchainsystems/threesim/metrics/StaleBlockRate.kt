@@ -9,12 +9,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 data class StaleBlockRate(
   override val value: Double
-) : OutputMetric<Double> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ staleBlockRate=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Double>() {
+  override val name: String = "StaleBlockRate"
 }

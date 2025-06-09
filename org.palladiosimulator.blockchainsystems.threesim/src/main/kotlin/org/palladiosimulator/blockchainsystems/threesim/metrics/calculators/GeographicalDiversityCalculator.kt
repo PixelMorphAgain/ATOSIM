@@ -9,14 +9,12 @@ import kotlin.math.sqrt
 /**
  * Calculates geographical diversity
  *
- * @property numberOfNodesPerCountry Stores for each country i the amount of nodes located in country i.
- *                                   The length of the array indicates the overall number of countries.
- *                                   If no nodes are located in country i, the value at index i is 0.
- *
  * @author Davis Riedel
  */
 class GeographicalDiversityCalculator(
-  private val numberOfNodesPerCountry: Array<Int>,
+  private val numberOfNodes: Int,
+  private val numberOfRegions: Int,
+  private val numberOfNodesPerRegion: List<Int>
 ) : OutputMetricCalculator<GeographicalDiversity> {
   override fun calculate(): GeographicalDiversity {
     val dqGeoTarget = calculateDqGeoTarget()
@@ -28,11 +26,11 @@ class GeographicalDiversityCalculator(
     return GeographicalDiversity(result)
   }
 
-  private fun calculateFirstFactor(numberOfCountries: Double, numberOfCountriesWithNodes: Double): Double {
-    val a = log(numberOfCountries, numberOfCountriesWithNodes + 1.0)
-    val b = log(numberOfCountries, numberOfCountries + 1.0)
-    val c = log(numberOfCountries, 2.0)
-    val d = log(numberOfCountries + 1, numberOfCountries)
+  private fun calculateFirstFactor(numberOfRegionsWithNodes: Double): Double {
+    val a = log(numberOfRegions, numberOfRegionsWithNodes + 1.0)
+    val b = log(numberOfRegions, numberOfRegions + 1.0)
+    val c = log(numberOfRegions, 2.0)
+    val d = log(numberOfRegions + 1, numberOfRegions)
     return 2.0 - (a - b) / (c - d)
   }
 
@@ -40,14 +38,13 @@ class GeographicalDiversityCalculator(
    * @return the geographical diversity target
    */
   private fun calculateDqGeoTarget(): Double {
-    val numberOfCountries = numberOfNodesPerCountry.count().toDouble()
-    val numberOfCountriesWithNodes = numberOfNodesPerCountry.count { it > 0 }.toDouble()
-    val mu = numberOfNodesPerCountry.sum() / numberOfCountries
+    val numberOfRegionsWithNodes = numberOfNodesPerRegion.count { it > 0 }.toDouble()
+    val mu = numberOfNodes.toDouble() / numberOfRegions.toDouble()
 
-    val first = calculateFirstFactor(numberOfCountries, numberOfCountriesWithNodes)
+    val first = calculateFirstFactor(numberOfRegions, numberOfRegionsWithNodes)
 
-    val e = numberOfNodesPerCountry.sumOf { (it - mu).pow(2) }
-    val second = sqrt(e / numberOfCountries)
+    val e = numberOfNodesPerRegion.sumOf { (it - mu).pow(2) }
+    val second = sqrt(e / numberOfRegions)
 
     return first * second
   }
@@ -56,15 +53,13 @@ class GeographicalDiversityCalculator(
    * @return the geographical diversity, if all nodes were located in a single country
    */
   private fun calculateDqGeoExcl(): Double {
-    val numberOfCountries = numberOfNodesPerCountry.count().toDouble()
-    val numberOfCountriesWithNodes = 1.0
-    val numberOfNodes = numberOfNodesPerCountry.sum()
-    val mu = numberOfNodes / numberOfCountries
+    val numberOfRegionsWithNodes = 1.0
+    val mu = numberOfNodes / numberOfRegions
 
-    val first = calculateFirstFactor(numberOfCountries, numberOfCountriesWithNodes)
+    val first = calculateFirstFactor(numberOfRegions, numberOfRegionsWithNodes)
 
-    val e = (numberOfNodes - mu).pow(2) + (numberOfCountries - 1) * (0 - mu).pow(2)
-    val second = sqrt(e / numberOfCountries)
+    val e = (numberOfNodes - mu).pow(2) + (numberOfRegions - 1) * (0 - mu).pow(2)
+    val second = sqrt(e / numberOfRegions)
 
     return first * second
   }
@@ -73,11 +68,8 @@ class GeographicalDiversityCalculator(
    * @return the geographical diversity, if all nodes are equally distributed across all countries
    */
   private fun calculateDqGeoEqual(): Double {
-    val numberOfCountries = numberOfNodesPerCountry.count().toDouble()
-    val numberOfCountriesWithNodes = numberOfCountries
-
+    val numberOfRegionsWithNodes = numberOfRegions
     // NOTE: the second factor evaluates to 0
-
-    return calculateFirstFactor(numberOfCountries, numberOfCountriesWithNodes)
+    return calculateFirstFactor(numberOfRegions, numberOfRegionsWithNodes)
   }
 }

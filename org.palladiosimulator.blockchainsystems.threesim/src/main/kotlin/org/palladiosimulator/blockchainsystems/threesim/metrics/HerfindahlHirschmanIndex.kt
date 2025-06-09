@@ -9,12 +9,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 data class HerfindahlHirschmanIndex(
   override val value: Double,
-) : OutputMetric<Double> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ herfindahlHirschmanIndex=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Double>() {
+  override val name: String = "HerfindahlHirschmanIndex"
 }

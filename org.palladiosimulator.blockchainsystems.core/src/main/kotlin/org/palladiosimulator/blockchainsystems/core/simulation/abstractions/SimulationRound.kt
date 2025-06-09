@@ -43,7 +43,7 @@ abstract class SimulationRound<R : SimulationRoundResult>(
   fun run(): R {
     // Initialization
     logOutputs.forEach { it.initialize() }
-    monitor.initializeNodes(blockchainSystem.nodes)
+    monitor.initialize(blockchainSystem)
     blockchainSystem.initialize(context)
 
     // Start processing events - processing will stop if termination condition is met

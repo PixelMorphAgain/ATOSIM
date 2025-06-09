@@ -12,10 +12,14 @@ import kotlin.time.Duration
  */
 data class FaultTolerance(
   override val value: Pair<Double, Duration>
-) : OutputMetric<Pair<Double, Duration>> {
+) : OutputMetric<Pair<Double, Duration>>() {
+  override val name: String = "FaultTolerance"
+
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ faultTolerance={ throughputDelta=")
+      append("{ ")
+      append(name)
+      append("={ throughputDelta=")
       append(value.first)
       append("; confirmationLatencyDelta=")
       append(value.second)

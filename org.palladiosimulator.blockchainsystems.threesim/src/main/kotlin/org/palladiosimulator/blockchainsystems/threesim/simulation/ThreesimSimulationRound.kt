@@ -23,7 +23,6 @@ class ThreesimSimulationRound(
   )
 
   override fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-    // TODO: Implement this
-    TODO("Not yet implemented")
+    return ThreesimSimulationRoundResult.fromSimulationMonitor(monitor)
   }
 }

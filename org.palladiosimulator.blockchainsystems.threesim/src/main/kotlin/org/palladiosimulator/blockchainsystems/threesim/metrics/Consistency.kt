@@ -9,12 +9,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 data class Consistency(
   override val value: Double
-) : OutputMetric<Double> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ consistency=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Double>() {
+  override val name: String = "Consistency"
 }

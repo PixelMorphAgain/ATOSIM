@@ -10,12 +10,6 @@ import kotlin.time.Duration
  */
 data class ConfirmationLatency(
   override val value: Duration
-) : OutputMetric<Duration> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ confirmationLatency=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Duration>() {
+  override val name: String = "ConfirmationLatency"
 }

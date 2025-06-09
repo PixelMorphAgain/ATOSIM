@@ -9,12 +9,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 data class GeographicalDiversity(
   override val value: Double
-) : OutputMetric<Double> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ geographicalDiversity=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Double>() {
+  override val name: String = "GeographicalDiversity"
 }

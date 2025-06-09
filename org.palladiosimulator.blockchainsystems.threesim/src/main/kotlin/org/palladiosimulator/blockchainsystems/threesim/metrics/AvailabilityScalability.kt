@@ -13,12 +13,6 @@ import kotlin.time.Duration
 data class AvailabilityScalability(
   override val value: Double,
   val observationTime: Duration
-) : OutputMetric<Double> {
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ availabilityScalability=")
-      append(value)
-      append(" }")
-    }
-  }
+) : OutputMetric<Double>() {
+  override val name: String = "AvailabilityScalability"
 }

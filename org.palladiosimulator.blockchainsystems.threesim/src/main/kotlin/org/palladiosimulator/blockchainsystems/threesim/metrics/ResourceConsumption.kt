@@ -11,12 +11,16 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 data class ResourceConsumption(
   override val value: Pair<MemoryConsumption, MaxStorageSize>
-) : OutputMetric<Pair<MemoryConsumption, MaxStorageSize>> {
+) : OutputMetric<Pair<MemoryConsumption, MaxStorageSize>>() {
+  override val name: String = "ResourceConsumption"
+
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
       append("{ ")
+      append(name)
+      append("={ memoryConsumption=")
       value.first.formatDetails(this)
-      append("; ")
+      append("; maxStorageSize=")
       value.second.formatDetails(this)
       append(" }")
     }

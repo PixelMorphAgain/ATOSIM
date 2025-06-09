@@ -1,25 +1,28 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions
 
-/**
- * Represents an output metric computed by the simulator
- *
- * @author Davis Riedel
- */
-interface OutputMetric<T> {
+abstract class OutputMetric<T> {
   /**
    * The computed value of the output metric
    */
-  val value: T
+  abstract val value: T
 
   /**
    * The name of the output metric, used for identification in results
    */
-  val name: String
- 
+  abstract val name: String
+
   /**
    * Writes a representation of the output metric to the specified `StringBuilder`.
    *
    * @param stringBuilder the string builder to which the metric's details are written
    */
-  fun formatDetails(stringBuilder: StringBuilder)
+  open fun formatDetails(stringBuilder: StringBuilder) {
+    with(stringBuilder) {
+      append("{ ")
+      append(name)
+      append("=")
+      append(value)
+      append(" }")
+    }
+  }
 }

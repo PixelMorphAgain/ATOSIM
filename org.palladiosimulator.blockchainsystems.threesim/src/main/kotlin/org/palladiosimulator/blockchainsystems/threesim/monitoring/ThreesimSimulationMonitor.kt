@@ -9,19 +9,28 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.Longe
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstractions.NodeTerminationState
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 
-
+/**
+ * Monitor for the 3SIM simulation.
+ *
+ * @author Davis Riedel
+ */
 class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition
 ) : SimulationMonitor {
 
-  private val nodeTerminationStates = HashMap<String, NodeTerminationState>()
-  private val forkedBlocks = HashSet<Block>()
+  private val nodeTerminationStates: MutableMap<String, NodeTerminationState> = HashMap()
+  private val forkedBlocks: MutableSet<Block> = HashSet()
+  val nodes: MutableSet<BlockchainSystemNode> = HashSet()
+  var blockchainSystem: BlockchainSystem? = null
 
-  override fun initializeNodes(nodes: Set<BlockchainSystemNode>) {
+  override fun initialize(blockchainSystem: BlockchainSystem) {
+    this.blockchainSystem = blockchainSystem
     nodes.forEach {
+      this.nodes.add(it)
       // TODO: Implement a proper NodeTerminationState for 3SIM
-      nodeTerminationStates.put(it.id, NodeTerminationState(it))
+//      nodeTerminationStates.put(it.id, NodeTerminationState(it))
     }
   }
 
@@ -29,19 +38,25 @@ class ThreesimSimulationMonitor(
     event: TraceEvent,
     logOrigin: TraceEventLogOrigin
   ) {
-    if (event.eventType === BlockMinedTraceEvent.EVENT_TYPE) {
-      val blockMinedTraceEvent = event as BlockMinedTraceEvent
+    // TODO: Implement all trace event handling logic, e.g. check fails etc.
 
-      // TODO: Handle forked blocks properly
+    when (event.eventType) {
+      BlockMinedTraceEvent.EVENT_TYPE -> {
+        val blockMinedTraceEvent = event as BlockMinedTraceEvent
+
+        // TODO: Handle forked blocks properly
 //      if (AttackerUtils.isBlockABlockForkedBlock(blockMinedTraceEvent.block)) {
 //        _forkedBlocks.add(blockMinedTraceEvent.block)
 //      }
-    } else if (event.eventType === BlockAppendedTraceEvent.EVENT_TYPE) {
-      val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
-      maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
+      }
+
+      BlockAppendedTraceEvent.EVENT_TYPE -> {
+        val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
+        maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
+      }
     }
 
-    nodeTerminationStates.get(logOrigin.id)?.onTraceEventOccurred(event)
+    nodeTerminationStates[logOrigin.id]?.onTraceEventOccurred(event)
   }
 
   override fun shouldTerminate(): Boolean {

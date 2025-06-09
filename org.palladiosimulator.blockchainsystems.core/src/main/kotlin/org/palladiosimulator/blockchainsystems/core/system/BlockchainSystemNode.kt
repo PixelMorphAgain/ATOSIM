@@ -34,7 +34,7 @@ class BlockchainSystemNode(
   private val orphanBlockPool: OrphanBlockPool,
   private val blockFactory: BlockFactory,
   private val behavior: BlockchainSystemNodeBehavior,
-  private val geographicalRegion: GeographicalRegion,
+  val geographicalRegion: GeographicalRegion,
   private val tags: MutableSet<String> = mutableSetOf()
 ) : BlockchainSimulationObject(id, name), Taggable {
 

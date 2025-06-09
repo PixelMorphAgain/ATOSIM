@@ -14,7 +14,9 @@ import java.util.Currency
 data class CostOfAttack(
   override val value: Pair<Double, Currency>,
   val threshold: Int
-) : OutputMetric<Pair<Double, Currency>> {
+) : OutputMetric<Pair<Double, Currency>>() {
+  override val name: String = "CostOfAttack"
+
   init {
     require(threshold >= 0)
     require(threshold <= 100)
@@ -22,7 +24,9 @@ data class CostOfAttack(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {
-      append("{ costOfAttack=")
+      append("{ ")
+      append(name)
+      append("=")
       append(value.first)
       append(" ")
       append(value.second.displayName)
