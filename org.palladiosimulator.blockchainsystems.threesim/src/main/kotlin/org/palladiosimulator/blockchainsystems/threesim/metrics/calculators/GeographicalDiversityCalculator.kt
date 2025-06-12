@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.GeographicalDiversity
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.math.log
 import kotlin.math.pow
@@ -71,5 +72,11 @@ class GeographicalDiversityCalculator(
     val numberOfRegionsWithNodes = numberOfRegions
     // NOTE: the second factor evaluates to 0
     return calculateFirstFactor(numberOfRegions, numberOfRegionsWithNodes)
+  }
+
+  companion object : OutputMetricAverageCalculator<GeographicalDiversity> {
+    override fun calculateAverage(measurements: List<GeographicalDiversity>): GeographicalDiversity {
+      return GeographicalDiversity(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

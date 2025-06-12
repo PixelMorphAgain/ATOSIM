@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -24,6 +25,12 @@ class ThroughputCalculator(
     val t =
       numberOfSuccessfulTransactions.toDouble() / (blockConfirmationTime.minus(blockProposalTime)).toDouble(DurationUnit.MILLISECONDS)
     return Throughput(t)
+  }
+
+  companion object : OutputMetricAverageCalculator<Throughput> {
+    override fun calculateAverage(measurements: List<Throughput>): Throughput {
+      return Throughput(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }
 

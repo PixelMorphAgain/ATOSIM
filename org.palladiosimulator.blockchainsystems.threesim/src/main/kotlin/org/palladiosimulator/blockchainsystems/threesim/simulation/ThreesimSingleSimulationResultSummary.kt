@@ -6,7 +6,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 
 class ThreesimSingleSimulationResultSummary(
   private val simulationType: String,
-  private val outputMetrics: List<OutputMetric<Any>>,
+  private val outputMetrics: List<OutputMetric<*>>,
 ) : SimulationResultSummary, SimulationResultSummaryDeserializer by ThreesimSingleSimulationResultSummary {
   override fun getValues(): Map<String, String> {
     return outputMetrics.associate { metric ->
@@ -18,7 +18,7 @@ class ThreesimSingleSimulationResultSummary(
     return simulationType
   }
 
-  override fun serializeToText(simulationResultSummary: SimulationResultSummary): String {
+  override fun serializeToText(): String {
     TODO("Not yet implemented")
   }
 

@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class GiniCoefficient(
-  override val value: Double,
-) : OutputMetric<Double>() {
-  override val name: String = "GiniCoefficient"
+class GiniCoefficient(
+  value: Double,
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "GiniCoefficient"
+  }
+
+  override val name: String = NAME
 }

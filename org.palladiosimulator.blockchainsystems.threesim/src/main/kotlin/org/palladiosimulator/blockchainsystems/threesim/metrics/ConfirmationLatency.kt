@@ -8,8 +8,12 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-data class ConfirmationLatency(
-  override val value: Duration
-) : OutputMetric<Duration>() {
-  override val name: String = "ConfirmationLatency"
+class ConfirmationLatency(
+  value: Duration
+) : OutputMetric<Duration>(value) {
+  companion object {
+    const val NAME = "ConfirmationLatency"
+  }
+
+  override val name: String = NAME
 }

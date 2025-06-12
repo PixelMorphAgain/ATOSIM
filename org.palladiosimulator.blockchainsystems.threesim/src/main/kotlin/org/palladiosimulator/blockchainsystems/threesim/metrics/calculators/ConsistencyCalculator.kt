@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.time.ComparableTimeMark
 import kotlin.time.DurationUnit
@@ -26,5 +27,11 @@ class ConsistencyCalculator(
     }
     val result = (1 / numberOfBlocks.toDouble()) * sum;
     return Consistency(result)
+  }
+
+  companion object : OutputMetricAverageCalculator<Consistency> {
+    override fun calculateAverage(measurements: List<Consistency>): Consistency {
+      return Consistency(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

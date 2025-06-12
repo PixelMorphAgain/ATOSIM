@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.ShannonEntropy
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.math.ln
 
@@ -24,5 +25,11 @@ class ShannonEntropyCalculator(
     }
     val result = -1 * k * sum
     return ShannonEntropy(result)
+  }
+
+  companion object : OutputMetricAverageCalculator<ShannonEntropy> {
+    override fun calculateAverage(measurements: List<ShannonEntropy>): ShannonEntropy {
+      return ShannonEntropy(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

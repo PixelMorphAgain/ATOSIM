@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class MemoryConsumption(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "MemoryConsumption"
+class MemoryConsumption(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "MemoryConsumption"
+  }
+
+  override val name: String = NAME
 }

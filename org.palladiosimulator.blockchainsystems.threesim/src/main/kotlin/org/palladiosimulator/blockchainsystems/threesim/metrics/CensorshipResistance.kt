@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class CensorshipResistance(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "CensorshipResistance"
+class CensorshipResistance(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "CensorshipResistance"
+  }
+
+  override val name: String = NAME
 }

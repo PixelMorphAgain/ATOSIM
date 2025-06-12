@@ -9,12 +9,17 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
  * @author Davis Riedel
  */
 class ThreesimMonteCarloSimulationResult(
-  private val simulationRoundResults: List<ThreesimSimulationRoundResult>
+  val simulationRoundResults: List<ThreesimSimulationRoundResult>
 ) : MonteCarloSimulationResult {
+  val averageSimulationRoundResult =
+    ThreesimAverageSimulationRoundResult.fromSimulationRoundResults(simulationRoundResults)
+
   override fun getSummary(): SimulationResultSummary {
     return ThreesimMonteCarloSimulationResultSummary(
       "3SIM Monte-Carlo Simulation",
-      simulationRoundResults.map { it.outputMetrics }
+      simulationRoundResults.map { it.outputMetrics },
+      averageSimulationRoundResult
     )
   }
+
 }

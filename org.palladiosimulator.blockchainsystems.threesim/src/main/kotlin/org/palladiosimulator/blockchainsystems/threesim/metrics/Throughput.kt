@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class Throughput(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "Throughput"
+class Throughput(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "Throughput"
+  }
+
+  override val name: String = NAME
 }

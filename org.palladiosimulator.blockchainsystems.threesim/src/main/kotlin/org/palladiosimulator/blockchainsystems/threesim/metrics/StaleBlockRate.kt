@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class StaleBlockRate(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "StaleBlockRate"
+class StaleBlockRate(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "StaleBlockRate"
+  }
+
+  override val name: String = NAME
 }

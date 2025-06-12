@@ -10,11 +10,15 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class NakamotoCoefficient(
-  override val value: Int,
+class NakamotoCoefficient(
+  value: Int,
   val threshold: Double,
-) : OutputMetric<Int>() {
-  override val name: String = "NakamotoCoefficient"
+) : OutputMetric<Int>(value) {
+  companion object {
+    const val NAME = "NakamotoCoefficient"
+  }
+
+  override val name: String = NAME
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {

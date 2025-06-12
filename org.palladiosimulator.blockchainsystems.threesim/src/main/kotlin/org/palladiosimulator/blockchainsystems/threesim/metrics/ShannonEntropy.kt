@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class ShannonEntropy(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "ShannonEntropy"
+class ShannonEntropy(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "ShannonEntropy"
+  }
+
+  override val name: String = NAME
 }

@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class Consistency(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "Consistency"
+class Consistency(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "Consistency"
+  }
+
+  override val name: String = NAME
 }

@@ -8,8 +8,12 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-data class AverageConfirmationLatency(
-  override val value: Duration
-) : OutputMetric<Duration>() {
-  override val name: String = "AverageConfirmationLatency"
+class AverageConfirmationLatency(
+  value: Duration
+) : OutputMetric<Duration>(value) {
+  companion object {
+    const val NAME = "AverageConfirmationLatency"
+  }
+
+  override val name: String = AvailabilitySecurity.Companion.NAME
 }

@@ -8,8 +8,12 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-data class AvailabilitySecurity(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "AvailabilitySecurity"
+class AvailabilitySecurity(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "AvailabilitySecurity"
+  }
+
+  override val name: String = NAME
 }

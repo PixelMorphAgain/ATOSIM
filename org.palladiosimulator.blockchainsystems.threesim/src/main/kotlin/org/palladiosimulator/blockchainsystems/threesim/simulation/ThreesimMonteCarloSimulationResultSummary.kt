@@ -2,14 +2,14 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
 
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummaryDeserializer
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 
 class ThreesimMonteCarloSimulationResultSummary(
   private val simulationType: String,
-  private val outputMetricsPerRound: List<List<OutputMetric<Any>>>,
+  private val outputMetricsPerRound: List<OutputMetricsSet>,
+  private val averageSimulationRoundResult: ThreesimAverageSimulationRoundResult
 ) : SimulationResultSummary, SimulationResultSummaryDeserializer by ThreesimMonteCarloSimulationResultSummary {
   override fun getValues(): Map<String, String> {
-    // TODO: Sum up rounds
     TODO("Not yet implemented")
   }
 
@@ -17,7 +17,7 @@ class ThreesimMonteCarloSimulationResultSummary(
     return simulationType
   }
 
-  override fun serializeToText(simulationResultSummary: SimulationResultSummary): String {
+  override fun serializeToText(): String {
     TODO("Not yet implemented")
   }
 

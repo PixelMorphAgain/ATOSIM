@@ -11,16 +11,20 @@ import java.util.Currency
  *
  * @author Davis Riedel
  */
-data class CostOfAttack(
-  override val value: Pair<Double, Currency>,
+class CostOfAttack(
+  value: Pair<Double, Currency>,
   val threshold: Int
-) : OutputMetric<Pair<Double, Currency>>() {
-  override val name: String = "CostOfAttack"
-
+) : OutputMetric<Pair<Double, Currency>>(value) {
   init {
     require(threshold >= 0)
     require(threshold <= 100)
   }
+
+  companion object {
+    const val NAME = "CostOfAttack"
+  }
+
+  override val name: String = NAME
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {

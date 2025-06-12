@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.StaleBlockRate
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 
 /**
@@ -18,5 +19,11 @@ class StaleBlockRateCalculator(
   override fun calculate(): StaleBlockRate {
     val sb = numberOfQueuedBlocks.toDouble() / numberOfConfirmedBlocks.toDouble()
     return StaleBlockRate(sb)
+  }
+
+  companion object : OutputMetricAverageCalculator<StaleBlockRate> {
+    override fun calculateAverage(measurements: List<StaleBlockRate>): StaleBlockRate {
+      return StaleBlockRate(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class GeographicalDiversity(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "GeographicalDiversity"
+class GeographicalDiversity(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "GeographicalDiversity"
+  }
+
+  override val name: String = NAME
 }

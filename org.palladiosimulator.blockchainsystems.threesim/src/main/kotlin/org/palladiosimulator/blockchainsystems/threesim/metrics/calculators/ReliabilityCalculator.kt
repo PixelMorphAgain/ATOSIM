@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Reliability
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.time.Duration
 
@@ -19,5 +20,11 @@ class ReliabilityCalculator(
   override fun calculate(): Reliability {
     val r = systemUptime.div(meanTimeToFailure)
     return Reliability(r)
+  }
+
+  companion object : OutputMetricAverageCalculator<Reliability> {
+    override fun calculateAverage(measurements: List<Reliability>): Reliability {
+      return Reliability(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

@@ -7,8 +7,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
-data class MaxStorageSize(
-  override val value: Double
-) : OutputMetric<Double>() {
-  override val name: String = "MaxStorageSize"
+class MaxStorageSize(
+  value: Double
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "MaxStorageSize"
+  }
+
+  override val name: String = NAME
 }

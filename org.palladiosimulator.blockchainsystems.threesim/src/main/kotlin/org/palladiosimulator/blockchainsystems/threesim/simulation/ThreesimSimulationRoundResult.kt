@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResult
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 
 /**
  * Result of a single simulation round of 3SIM.
@@ -9,5 +9,5 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 class ThreesimSimulationRoundResult(
-  val outputMetrics: List<OutputMetric<Any>>,
+  val outputMetrics: OutputMetricsSet
 ) : SimulationRoundResult

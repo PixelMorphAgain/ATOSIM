@@ -10,9 +10,13 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-data class AvailabilityScalability(
-  override val value: Double,
+class AvailabilityScalability(
+  value: Double,
   val observationTime: Duration
-) : OutputMetric<Double>() {
-  override val name: String = "AvailabilityScalability"
+) : OutputMetric<Double>(value) {
+  companion object {
+    const val NAME = "AvailabilityScalability"
+  }
+
+  override val name: String = NAME
 }

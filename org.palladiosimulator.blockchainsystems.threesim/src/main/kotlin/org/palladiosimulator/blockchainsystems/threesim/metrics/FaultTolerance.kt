@@ -10,10 +10,14 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-data class FaultTolerance(
-  override val value: Pair<Double, Duration>
-) : OutputMetric<Pair<Double, Duration>>() {
-  override val name: String = "FaultTolerance"
+class FaultTolerance(
+  value: Pair<Double, Duration>
+) : OutputMetric<Pair<Double, Duration>>(value) {
+  companion object {
+    const val NAME = "FaultTolerance"
+  }
+
+  override val name: String = NAME
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {

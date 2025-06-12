@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.CensorshipResistance
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 
 /**
@@ -18,5 +19,11 @@ class CensorshipResistanceCalculator(
     val n = hashPowerPerNode.count().toDouble()
     val result = 1 - 2 * ((1 / n) * sum)
     return CensorshipResistance(result)
+  }
+
+  companion object : OutputMetricAverageCalculator<CensorshipResistance> {
+    override fun calculateAverage(measurements: List<CensorshipResistance>): CensorshipResistance {
+      return CensorshipResistance(measurements.sumOf { it.value } / measurements.size)
+    }
   }
 }

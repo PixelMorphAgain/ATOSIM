@@ -1,11 +1,17 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions
 
-abstract class OutputMetric<T> {
-  /**
-   * The computed value of the output metric
-   */
-  abstract val value: T
-
+/**
+ * Represents an output metric in 3SIM
+ *
+ * @param T the type of the value of the output metric
+ *
+ * @property value the computed value of the output metric
+ *
+ * @author Davis Riedel
+ */
+abstract class OutputMetric<T>(
+  val value: T
+) {
   /**
    * The name of the output metric, used for identification in results
    */
