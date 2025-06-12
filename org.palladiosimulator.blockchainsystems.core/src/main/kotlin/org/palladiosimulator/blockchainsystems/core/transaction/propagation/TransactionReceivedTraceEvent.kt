@@ -7,9 +7,8 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 /**
  * @author Davis Riedel
  */
-@JvmRecord
 data class TransactionReceivedTraceEvent(
-  private val occurrenceTime: Long,
+  override val occurrenceTime: Long,
   val sentTransaction: Transaction,
   val receivingNetworkEndpoint: P2PNetworkEndpoint
 ) : TraceEvent {
@@ -17,8 +16,7 @@ data class TransactionReceivedTraceEvent(
     const val EVENT_TYPE: String = "TransactionReceivedTraceEvent"
   }
 
-  override fun getOccurrenceTime(): Long = occurrenceTime
-  override fun getEventType(): String = EVENT_TYPE
+  override val eventType = EVENT_TYPE
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")

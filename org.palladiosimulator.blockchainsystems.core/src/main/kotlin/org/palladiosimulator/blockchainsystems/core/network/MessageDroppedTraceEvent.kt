@@ -16,17 +16,11 @@ import java.lang.StringBuilder
  */
 data class MessageDroppedTraceEvent(
   val message: P2PLinkMessageFrame,
-  val occurrenceTime: Long,
+  override val occurrenceTime: Long,
   val recipientNode: P2PNode,
   val senderNode: P2PNode,
 ) : TraceEvent {
-  override fun getOccurrenceTime(): Long {
-    return this.occurrenceTime
-  }
-
-  override fun getEventType(): String {
-    return EVENT_TYPE
-  }
+  override val eventType = EVENT_TYPE
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     with(stringBuilder) {

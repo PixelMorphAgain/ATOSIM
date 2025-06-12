@@ -6,17 +6,15 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 /**
  * @author Davis Riedel
  */
-@JvmRecord
 data class TransactionStoredInMemPoolTraceEvent(
-  private val occurrenceTime: Long,
+  override val occurrenceTime: Long,
   val storedTransaction: Transaction
 ) : TraceEvent {
   companion object {
     const val EVENT_TYPE: String = "TransactionStoredInPoolTraceEvent"
   }
 
-  override fun getOccurrenceTime(): Long = occurrenceTime
-  override fun getEventType(): String = EVENT_TYPE
+  override val eventType = EVENT_TYPE
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")

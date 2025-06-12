@@ -74,7 +74,6 @@ class P2PLink(
         MessageDroppedTraceEvent(
           event.message,
           simulationContext.systemClock.currentTime,
-          this,
           event.recipientNode,
           event.senderNode
         )
@@ -100,8 +99,8 @@ class P2PLink(
 
   companion object {
     fun create(
-      latencyValueProvider: ValueProvider<LinkLatency>,
-      throughputValueProvider: ValueProvider<LinkThroughput>,
+      latencyValueProvider: SimulationLifecycleAwareValueProvider<Long>,
+      throughputValueProvider: SimulationLifecycleAwareValueProvider<Int>,
       fromNode: P2PNode,
       toNode: P2PNode
     ): P2PLink {
