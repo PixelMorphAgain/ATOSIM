@@ -26,6 +26,7 @@ class BlockchainSystemNodeFactory(
   private val orphanBlockPoolFactory: OrphanBlockPoolFactory,
   private val behaviorFactory: BlockchainSystemNodeBehaviorFactory,
   private val geographicalRegionsResolver: GeographicalRegionsResolver,
+  private val resourcePowerCalculator: ResourcePowerCalculator,
   private val tagProvider: BlockchainSystemNodeTagProvider
 ) {
   fun createBlockchainSystemNode(
@@ -39,6 +40,7 @@ class BlockchainSystemNodeFactory(
       blockPropagationStrategyFactory.createPropagationStrategy(),
       transactionPropagationStrategyFactory.createPropagationStrategy(),
       networkInterface,
+      resourcePowerCalculator.getResourcePowerOfNode(nodeId)!!,
       miningProcessFactory.createMiningProcess(nodeId),
       transactionSelectionProcessFactory.createTransactionSelectionProcess(nodeId),
       blockchainFactory.createBlockchain(genesisBlock, nodeId),

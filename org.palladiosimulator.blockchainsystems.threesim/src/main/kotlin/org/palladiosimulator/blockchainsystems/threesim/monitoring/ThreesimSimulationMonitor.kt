@@ -8,8 +8,6 @@ import org.palladiosimulator.blockchainsystems.core.mining.BlockMinedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.SimulationMonitor
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstractions.NodeTerminationState
-import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
@@ -23,49 +21,52 @@ class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition
 ) : SimulationMonitor {
 
-  var blockchainSystem: BlockchainSystem? = null
- 
   private val nodeTerminationStates: MutableMap<String, NodeTerminationState> = HashMap()
-  private val forkedBlocks: MutableSet<Block> = HashSet()
-  val nodes: MutableSet<BlockchainSystemNode> = HashSet()
-  val blocksProposedPerNode = CounterMap<Int>()
+
+  var state: ThreesimSimulationMonitorState? = null
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
-    this.blockchainSystem = blockchainSystem
-    nodes.forEach {
-      this.nodes.add(it)
-      // TODO: Implement a proper NodeTerminationState for 3SIM
+    state = ThreesimSimulationMonitorState(
+      forkedBlocks = mutableSetOf(),
+      nodes = blockchainSystem.nodes,
+      blocksProposedPerNode = CounterMap(),
+      geographicalRegions = blockchainSystem.geographicalRegions
+    )
+    // TODO: Implement a proper NodeTerminationState for 3SIM
+//    nodes.forEach {
 //      nodeTerminationStates.put(it.id, NodeTerminationState(it))
-    }
+//    }
   }
 
   override fun onTraceEventOccurred(
     event: TraceEvent,
     logOrigin: TraceEventLogOrigin
   ) {
-    // TODO: Implement all trace event handling logic, e.g. check fails etc.
+    this.state?.let { state ->
+      when (event.eventType) {
+        // TODO: Implement all trace event handling logic, e.g. check fails etc.
 
-    when (event.eventType) {
-      BlockMinedTraceEvent.EVENT_TYPE -> {
-        val blockMinedTraceEvent = event as BlockMinedTraceEvent
+        BlockMinedTraceEvent.EVENT_TYPE -> {
+          val blockMinedTraceEvent = event as BlockMinedTraceEvent
 
-        if (BlockUtils.isBlockForked(blockMinedTraceEvent.block)) {
-          forkedBlocks.add(blockMinedTraceEvent.block)
+          if (BlockUtils.isBlockForked(blockMinedTraceEvent.block)) {
+            state.forkedBlocks.add(blockMinedTraceEvent.block)
+          }
         }
-      }
 
-      BlockAppendedTraceEvent.EVENT_TYPE -> {
-        val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
+        BlockAppendedTraceEvent.EVENT_TYPE -> {
+          val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
 
-        // Needed for Shannon Entropy calculation
-        val proposingNodeId = blockAppendedTraceEvent.appendedBlock.originId
-        blocksProposedPerNode.increment(proposingNodeId)
+          // Needed for Shannon Entropy calculation
+          val proposingNodeId = blockAppendedTraceEvent.appendedBlock.originId
+          state.blocksProposedPerNode.increment(proposingNodeId)
 
-        blocksProposedPerNode.maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
-      }
+          maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
+        }
 
-      MessageDroppedTraceEvent.EVENT_TYPE -> {
-        // TODO: Calculate the time the system was inoperative
+        MessageDroppedTraceEvent.EVENT_TYPE -> {
+          // TODO: Calculate the time the system was inoperative
+        }
       }
     }
 

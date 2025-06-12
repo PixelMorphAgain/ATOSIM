@@ -54,6 +54,14 @@ interface BlockchainSystemNodeContext {
   val networkInterface: NodeP2PNetworkInterface
 
   /**
+   * Returns the resource power of the blockchain system node.
+   * This is a measure of the computational resources available to the node.
+   *
+   * @return resource power of the blockchain system node
+   */
+  val resourcePower: Double
+
+  /**
    * Returns an abstraction of the mining process used by the blockchain system node
    * to mine blocks.
    *

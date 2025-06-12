@@ -37,19 +37,14 @@ class ExplicitNetworkBlockchainSystemFactory(
     designBlockchainSystem.geographicalRegionsSpecification,
     nodeAllocationResolver
   );
+  private val resourcePowerCalculator = ExplicitNetworkResourcePowerCalculator(explicitTopology)
 
   override fun createBlockchainSystem(): BlockchainSystem {
     val networkCreationResult = networkFactory.createP2PNetwork()
 
-    // TODO: Why is this not needed anymore?
-    val globalResourcePowerCalculator = ExplicitNetworkGlobalResourcePowerCalculator(explicitTopology)
-
     val blockFactory = createBlockFactory()
 
-    val nodeFactory = createBlockchainSystemNodeFactory(
-      nodeAllocationResolver,
-      blockFactory
-    )
+    val nodeFactory = createBlockchainSystemNodeFactory(blockFactory)
 
     return createBlockchainSystemInstance(
       networkCreationResult.getCreatedNetwork(),
@@ -81,7 +76,6 @@ class ExplicitNetworkBlockchainSystemFactory(
   }
 
   private fun createBlockchainSystemNodeFactory(
-    nodeAllocationResolver: ExplicitNetworkNodeAllocationResolver,
     blockFactory: BlockFactory
   ): BlockchainSystemNodeFactory {
     // Create factories independent of the metamodel information
@@ -92,6 +86,7 @@ class ExplicitNetworkBlockchainSystemFactory(
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
 
     // Create factories dependent of the metamodel information
+    // TODO: Respect resource power in mining process
     val miningProcessFactory = MiningProcessFactoryImpl(
       meanBlockTime = designBlockchainSystem.specification.meanBlockTime,
       randomGenerator = RandomGenerator.of("Random"),

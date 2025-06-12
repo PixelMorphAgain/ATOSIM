@@ -4,14 +4,14 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRep
 import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocation;
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology;
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.SubgraphSpecification;
-import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.GlobalResourcePowerCalculator;
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator;
 
 /**
  * This class calculates the global resource power of a connected subgraph network topology.
  *
  * @author Yannik Sproll
  */
-public class ConnectedSubgraphNetworkGlobalResourcePowerCalculator implements GlobalResourcePowerCalculator {
+public class ConnectedSubgraphNetworkGlobalResourcePowerCalculator implements ResourcePowerCalculator {
 
     private final double _globalResourcePower;
 

@@ -1,0 +1,38 @@
+package org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork
+
+import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent
+import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
+import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.Node
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator
+
+/**
+ * Calculates the global resource power of a blockchain system with an explicit network topology.
+ * Allows to retrieve resource power of specific nodes in the network.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
+class ExplicitNetworkResourcePowerCalculator(
+  private val networkTopology: ExplicitNetworkTopology
+) : ResourcePowerCalculator {
+  private val resourcePowerPerNode: Map<String, Double> by lazy {
+    networkTopology.nodes.associate { it.id to getResourcePowerOfNode(it) }
+  }
+  private val globalResourcePower: Double by lazy {
+    resourcePowerPerNode.values.sum()
+  }
+
+  override fun calculateGlobalResourcePower(): Double {
+    // Returns the pre-calculated global resource power
+    return globalResourcePower
+  }
+
+  override fun getResourcePowerOfNode(nodeId: String): Double? {
+    return resourcePowerPerNode[nodeId]
+  }
+
+  private fun getResourcePowerOfNode(node: Node): Double {
+    return node.allocation.allocationContexts
+      .filter { it!!.getAssemblyContext().getEncapsulatedComponent() is MiningProcessComponent }
+      .sumOf { it!!.getResourceContainer().getResourcePower() }
+  }
+}

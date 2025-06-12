@@ -19,6 +19,7 @@ class BlockchainSystemNodeContextImpl(
   override val blockPropagationStrategy: PropagationStrategy<Block>,
   override val transactionPropagationStrategy: PropagationStrategy<Transaction>,
   override val networkInterface: NodeP2PNetworkInterface,
+  override val resourcePower: Double,
   override val miningProcess: MiningProcess,
   override val transactionSelectionProcess: TransactionSelectionProcess,
   override val blockchain: Blockchain,
