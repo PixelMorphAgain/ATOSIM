@@ -4,6 +4,11 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEve
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType;
 
+/**
+ * Represents a trace event that is triggered when a block is appended to the blockchain.
+ * This event contains details about the appended block, its position, the previous block,
+ * and the type of the appended block.
+ */
 public record BlockAppendedTraceEvent(
         long occurrenceTime,
         Block appendedBlock,

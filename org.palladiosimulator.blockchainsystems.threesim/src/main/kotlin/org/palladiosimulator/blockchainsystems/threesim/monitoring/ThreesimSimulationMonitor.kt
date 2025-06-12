@@ -11,6 +11,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstr
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
+import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 
 /**
@@ -22,10 +23,12 @@ class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition
 ) : SimulationMonitor {
 
+  var blockchainSystem: BlockchainSystem? = null
+ 
   private val nodeTerminationStates: MutableMap<String, NodeTerminationState> = HashMap()
   private val forkedBlocks: MutableSet<Block> = HashSet()
   val nodes: MutableSet<BlockchainSystemNode> = HashSet()
-  var blockchainSystem: BlockchainSystem? = null
+  val blocksProposedPerNode = CounterMap<Int>()
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     this.blockchainSystem = blockchainSystem
@@ -53,7 +56,12 @@ class ThreesimSimulationMonitor(
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {
         val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
-        maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
+
+        // Needed for Shannon Entropy calculation
+        val proposingNodeId = blockAppendedTraceEvent.appendedBlock.originId
+        blocksProposedPerNode.increment(proposingNodeId)
+
+        blocksProposedPerNode.maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
       }
 
       MessageDroppedTraceEvent.EVENT_TYPE -> {

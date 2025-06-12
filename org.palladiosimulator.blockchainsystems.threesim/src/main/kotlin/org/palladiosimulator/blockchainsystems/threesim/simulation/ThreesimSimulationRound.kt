@@ -23,6 +23,6 @@ class ThreesimSimulationRound(
   )
 
   override fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-    return ThreesimSimulationRoundResult.fromSimulationMonitor(monitor)
+    return ThreesimSimulationRoundResultFactory(monitor).createSimulationRoundResult()
   }
 }
