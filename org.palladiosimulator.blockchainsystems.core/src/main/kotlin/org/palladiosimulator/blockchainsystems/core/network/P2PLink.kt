@@ -2,21 +2,39 @@ package org.palladiosimulator.blockchainsystems.core.network
 
 import org.palladiosimulator.blockchainsystems.core.common.P2PNetworkObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
+import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
 
+/**
+ * Unidirectional link between two [P2PNode]s in a P2P network.
+ *
+ * @author Davis Riedel, Yannik Sproll
+ */
 class P2PLink(
-  private val latencyValueProvider: ValueProvider<LinkLatency>,
-  private val throughputValueProvider: ValueProvider<LinkThroughput>,
+  private val latencyValueProvider: SimulationLifecycleAwareValueProvider<Long>,
+  private val throughputValueProvider: SimulationLifecycleAwareValueProvider<Int>,
   private val fromNode: P2PNode,
   private val toNode: P2PNode
 ) : P2PNetworkObject() {
+  override fun onInitialize() {
+    super.onInitialize()
+    latencyValueProvider.initialize(simulationContext)
+    throughputValueProvider.initialize(simulationContext)
+  }
+
+  override fun onCleanup() {
+    super.onCleanup()
+    latencyValueProvider.cleanup()
+    throughputValueProvider.cleanup()
+  }
+
   fun send(messageContent: Message) {
     val msEvent = MessageSentEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.getCurrentTime(),
       P2PLinkMessageFrame(
         messageContent,
-        simulationContext.getSystemClock().getCurrentTime()
+        simulationContext.systemClock.getCurrentTime()
       ),
       this,
       toNode,
@@ -24,10 +42,9 @@ class P2PLink(
     )
 
     simulationContext
-      .getEventCoordinator()
+      .eventCoordinator
       .raiseEvent(msEvent)
   }
-
 
   override fun dispatchEvent(event: Event) {
     when (event.getEventType()) {
@@ -46,21 +63,22 @@ class P2PLink(
   }
 
   private fun handleMessageSentEvent(event: MessageSentEvent) {
-    val transmissionDuration = latencyValueProvider.getValue().latency + event.message.content.getSize()
-      .toLong() / throughputValueProvider.getValue().throughput
+    val latency = latencyValueProvider.getValue()
+    val throughput = throughputValueProvider.getValue()
+    val messageSize = event.message.content.getSize().toLong()
+
+    val transmissionDuration = latency + messageSize / throughput
 
     val newMessageReceivedEvent = MessageReceivedEvent(
       event.message,
-      simulationContext
-        .getSystemClock()
-        .getCurrentTime() + transmissionDuration,
+      simulationContext.systemClock.currentTime + transmissionDuration,
       this,
       event.recipientNode,
       event.senderNode
     )
 
     simulationContext
-      .getEventCoordinator()
+      .eventCoordinator
       .raiseEvent(newMessageReceivedEvent)
   }
 

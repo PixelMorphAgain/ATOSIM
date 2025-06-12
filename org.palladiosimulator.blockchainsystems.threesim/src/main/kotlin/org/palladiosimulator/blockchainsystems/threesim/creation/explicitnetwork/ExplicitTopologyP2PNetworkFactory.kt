@@ -20,22 +20,23 @@ import java.util.random.RandomGenerator
  *
  * @author Davis Riedel
  */
-class ExplicitTopologyP2PNetworkFactory(private val topology: ExplicitNetworkTopology) : P2PNetworkFactory {
+class ExplicitTopologyP2PNetworkFactory(
+  private val topology: ExplicitNetworkTopology
+) : P2PNetworkFactory {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val networkGraph: Graph<P2PNode, P2PLink> = SimpleGraph(P2PLink::class.java)
 
-    val p2pNodeMappings = HashMap<String, P2PNode>()
-
     // Add nodes to the graph
-    for (designNode in topology.getNodes()) {
-      val nodeImpl = P2PNode(designNode.id)
+    val p2pNodeMappings: HashMap<String, P2PNode> =
+      topology.nodes.associateTo {
+        val nodeImpl = P2PNode(it.id)
+        networkGraph.addVertex(nodeImpl)
+        it.id to nodeImpl
+      }
 
-      p2pNodeMappings.put(designNode.id, nodeImpl)
-      networkGraph.addVertex(nodeImpl)
-    }
 
     // Add links to the graph
-    for (designLink in topology.getLinks()) {
+    topology.links.forEach { designLink ->
       val fromDesignNode: Node = designLink.getFromNode()
       val toDesignNode: Node = designLink.getToNode()
 
@@ -43,11 +44,11 @@ class ExplicitTopologyP2PNetworkFactory(private val topology: ExplicitNetworkTop
       val toP2PNode: P2PNode = p2pNodeMappings.get(toDesignNode.id)!!
 
       val link = P2PLink(
-        LatencyValueProviderAdapter.Companion.create(
+        LatencyValueProviderAdapter.create(
           designLink.getSpecification().getLatencySpecification(),
           RandomGenerator.of("Random")
         ),
-        ThroughputValueProviderAdapter.Companion.create(
+        ThroughputValueProviderAdapter.create(
           designLink.getSpecification().getThroughputSpecification(),
           RandomGenerator.of("Random")
         ),
@@ -65,9 +66,7 @@ class ExplicitTopologyP2PNetworkFactory(private val topology: ExplicitNetworkTop
     val networkImpl = P2PNetworkImpl.create(networkGraph)
 
     // Initialize the nodes with a reference to the network
-    for (p2pNode in p2pNodeMappings.values) {
-      p2pNode.initNetwork(networkImpl)
-    }
+    p2pNodeMappings.values.forEach { it.initNetwork(networkImpl) }
 
     return ExplicitP2PNetworkCreationResult(networkImpl)
   }

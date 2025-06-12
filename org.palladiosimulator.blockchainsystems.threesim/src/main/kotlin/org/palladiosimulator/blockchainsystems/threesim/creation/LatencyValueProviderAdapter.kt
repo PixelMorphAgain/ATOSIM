@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkLatencySpecif
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.network.LinkLatency
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
+import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.TemporalValueProviderAdapter
 import java.util.random.RandomGenerator
 
 /**
@@ -14,27 +15,23 @@ import java.util.random.RandomGenerator
  * @author Davis Riedel
  */
 class LatencyValueProviderAdapter(
-  private val randomValueProvider: RandomValueProvider<LinkLatency>
-) : ValueProvider<LinkLatency> {
-  override fun getValue(): LinkLatency {
-    return randomValueProvider.getValue()
-  }
-
+  randomValueProvider: RandomValueProvider<LinkLatency>,
+) : TemporalValueProviderAdapter<Long, LinkLatency>(randomValueProvider) {
   companion object {
     fun create(
       linkLatencySpecification: LinkLatencySpecification,
       randomGenerator: RandomGenerator
     ): LatencyValueProviderAdapter {
-      val valuesToProbabilitiesMapping = HashMap<LinkLatency, Double>()
+      val valuesToProbabilitiesMapping: HashMap<LinkLatency, Double> =
+        linkLatencySpecification.values.associateTo {
+          LinkLatency(it.getLatency(), it.getDuration()) to it.getProbability()
+        }
 
-      for (latencyValue in linkLatencySpecification.getValues()) {
-        valuesToProbabilitiesMapping.put(
-          LinkLatency(latencyValue.getLatency(), latencyValue.getDuration()),
-          latencyValue.getProbability()
-        )
-      }
+      val valueProvider = RandomValueProvider.create(
+        valuesToProbabilitiesMapping,
+        randomGenerator
+      )
 
-      val valueProvider = RandomValueProvider.create(valuesToProbabilitiesMapping, randomGenerator)
       return LatencyValueProviderAdapter(valueProvider)
     }
   }

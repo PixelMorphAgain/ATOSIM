@@ -31,7 +31,7 @@ class ExplicitNetworkBlockchainSystemFactory(
   private val designBlockchainSystem: DesignBlockchainSystem,
   private val explicitTopology: ExplicitNetworkTopology
 ) : BlockchainSystemFactory {
-  private val networkFactory: ExplicitTopologyP2PNetworkFactory = ExplicitTopologyP2PNetworkFactory(explicitTopology)
+  private val networkFactory = ExplicitTopologyP2PNetworkFactory(explicitTopology)
   private val nodeAllocationResolver = ExplicitNetworkNodeAllocationResolver(explicitTopology)
   private val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
     designBlockchainSystem.geographicalRegionsSpecification,
