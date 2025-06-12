@@ -67,19 +67,35 @@ class P2PLink(
     val throughput = throughputValueProvider.getValue()
     val messageSize = event.message.content.getSize().toLong()
 
-    val transmissionDuration = latency + messageSize / throughput
+    if (throughput <= 0) {
+      // Link failed, log message dropped event
+      if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) return
+      traceEventLogger.logEvent(
+        MessageDroppedTraceEvent(
+          event.message,
+          simulationContext.systemClock.currentTime,
+          this,
+          event.recipientNode,
+          event.senderNode
+        )
+      )
+    } else {
+      // Link is operational, send message
 
-    val newMessageReceivedEvent = MessageReceivedEvent(
-      event.message,
-      simulationContext.systemClock.currentTime + transmissionDuration,
-      this,
-      event.recipientNode,
-      event.senderNode
-    )
+      val transmissionDuration = latency + messageSize / throughput
 
-    simulationContext
-      .eventCoordinator
-      .raiseEvent(newMessageReceivedEvent)
+      val event = MessageReceivedEvent(
+        event.message,
+        simulationContext.systemClock.currentTime + transmissionDuration,
+        this,
+        event.recipientNode,
+        event.senderNode
+      )
+
+      simulationContext
+        .eventCoordinator
+        .raiseEvent(event)
+    }
   }
 
   companion object {

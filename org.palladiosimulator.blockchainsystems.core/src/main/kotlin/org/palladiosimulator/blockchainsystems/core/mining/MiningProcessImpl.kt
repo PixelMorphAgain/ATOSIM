@@ -24,8 +24,7 @@ import java.util.random.RandomGenerator
 class MiningProcessImpl(
   meanBlockTime: Double,
   randomGenerator: RandomGenerator
-) : BlockchainNodeObject(),
-  MiningProcess {
+) : BlockchainNodeObject(), MiningProcess {
   private val poissonProcess = PoissonProcess(1.0 / meanBlockTime, randomGenerator)
   private var onCreatingBlockCallback: BiFunction<Long, String, Block>? = null
   private var previousBlockSelectionCallback: Supplier<String>? = null

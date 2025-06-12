@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.monitoring
 
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
+import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEventLogOrigin
 import org.palladiosimulator.blockchainsystems.core.mining.BlockMinedTraceEvent
@@ -10,6 +11,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstr
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
+import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 
 /**
  * Monitor for the 3SIM simulation.
@@ -44,15 +46,18 @@ class ThreesimSimulationMonitor(
       BlockMinedTraceEvent.EVENT_TYPE -> {
         val blockMinedTraceEvent = event as BlockMinedTraceEvent
 
-        // TODO: Handle forked blocks properly
-//      if (AttackerUtils.isBlockABlockForkedBlock(blockMinedTraceEvent.block)) {
-//        _forkedBlocks.add(blockMinedTraceEvent.block)
-//      }
+        if (BlockUtils.isBlockForked(blockMinedTraceEvent.block)) {
+          forkedBlocks.add(blockMinedTraceEvent.block)
+        }
       }
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {
         val blockAppendedTraceEvent = event as BlockAppendedTraceEvent
         maxBlockchainLengthCondition.onBlockAppended(blockAppendedTraceEvent.blockPosition)
+      }
+
+      MessageDroppedTraceEvent.EVENT_TYPE -> {
+        // TODO: Calculate the time the system was inoperative
       }
     }
 
