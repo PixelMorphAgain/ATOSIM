@@ -8,4 +8,10 @@ import java.util.TreeSet
  *
  * @author Davis Riedel
  */
-class OutputMetricsSet : TreeSet<OutputMetric<*>>(compareBy { it.name })
+class OutputMetricsSet : TreeSet<OutputMetric<*>>(compareBy { it.name }) {
+  companion object {
+    fun from(vararg metrics: OutputMetric<*>): OutputMetricsSet {
+      return OutputMetricsSet().apply { addAll(metrics) }
+    }
+  }
+}

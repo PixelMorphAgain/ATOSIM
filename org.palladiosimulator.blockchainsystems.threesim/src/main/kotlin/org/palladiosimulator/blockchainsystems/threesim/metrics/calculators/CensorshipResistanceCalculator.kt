@@ -12,7 +12,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 class CensorshipResistanceCalculator(
-  private val hashPowerPerNode: Array<Double>
+  private val hashPowerPerNode: Collection<Double>
 ) : OutputMetricCalculator<CensorshipResistance> {
   override fun calculate(): CensorshipResistance {
     val sum = hashPowerPerNode.sum()

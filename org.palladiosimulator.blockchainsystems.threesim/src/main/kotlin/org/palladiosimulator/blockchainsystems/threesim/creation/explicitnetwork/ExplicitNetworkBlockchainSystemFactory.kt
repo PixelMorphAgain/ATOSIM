@@ -71,6 +71,7 @@ class ExplicitNetworkBlockchainSystemFactory(
       blockchainSystemId,
       blockchainSystemName,
       network,
+      geographicalRegionsResolver.resolveGeographicalRegions(),
       blockchainSystemNodes
     )
   }

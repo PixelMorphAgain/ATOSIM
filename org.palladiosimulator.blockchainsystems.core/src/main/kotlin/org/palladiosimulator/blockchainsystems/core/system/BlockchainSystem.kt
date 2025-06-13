@@ -9,14 +9,15 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
  * The [BlockchainSystem] class represents a blockchain system,
  * consisting of a set of blockchain system nodes and a P2P network.
  *
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  */
 class BlockchainSystem(
   id: String,
   name: String,
   val network: P2PNetwork,
   val geographicalRegions: GeographicalRegions,
-  val nodes: HashSet<BlockchainSystemNode>
+  val nodes: HashSet<BlockchainSystemNode>,
+  val numberOfRequiredSecurityConfirmations: Int
 ) : BlockchainSimulationObject(id, name) {
   public override fun onInitialize() {
     network.initialize(simulationContext)

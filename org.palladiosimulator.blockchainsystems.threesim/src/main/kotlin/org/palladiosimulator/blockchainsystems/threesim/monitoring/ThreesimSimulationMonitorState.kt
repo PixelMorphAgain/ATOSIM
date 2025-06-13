@@ -6,8 +6,10 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 
 class ThreesimSimulationMonitorState(
-  val forkedBlocks: MutableSet<Block>,
-  val nodes: MutableSet<BlockchainSystemNode>,
-  val blocksProposedPerNode: CounterMap<Int>,
-  val geographicalRegions: GeographicalRegions
+  val forkedBlocks: Set<Block>,
+  val nodes: Set<BlockchainSystemNode>,
+  val blocksProposedPerNode: CounterMap<String>,
+  val geographicalRegions: GeographicalRegions,
+  val numberOfSubmittedTransactions: Int,
+  val numberOfConfirmedTransactions: Int,
 )
