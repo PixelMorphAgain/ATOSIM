@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.mining;
 
+import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 
@@ -15,6 +16,7 @@ public record BlockMinedTraceEvent(
         return this.occurrenceTime();
     }
 
+    @NotNull
     @Override
     public String getEventType() {
         return EVENT_TYPE;

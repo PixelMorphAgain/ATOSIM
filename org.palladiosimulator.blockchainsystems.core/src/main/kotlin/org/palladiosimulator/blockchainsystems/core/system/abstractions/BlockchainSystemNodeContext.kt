@@ -5,6 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFact
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionReceptionProcess
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcess
 
 /**

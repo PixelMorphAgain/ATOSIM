@@ -10,7 +10,7 @@ import java.util.TreeSet
  * @author Davis Riedel
  */
 class TrxMemPoolImpl(
-  private val nodeId: String
+  val nodeId: String
 ) : BlockchainNodeObject(), TrxMemPool {
   /*
    * Stores transactions sorted by their fee rate in descending order.

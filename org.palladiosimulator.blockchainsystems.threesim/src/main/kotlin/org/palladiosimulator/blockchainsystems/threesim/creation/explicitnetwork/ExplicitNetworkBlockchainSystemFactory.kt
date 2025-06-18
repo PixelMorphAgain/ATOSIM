@@ -20,6 +20,7 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockVa
 import org.palladiosimulator.blockchainsystems.threesim.creation.geography.ThreesimGeographicalRegionsResolver
 import java.util.random.RandomGenerator
 import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeTagProvider
+import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransactionSubmissionProcess
 import java.util.UUID
 
 /**
@@ -67,12 +68,21 @@ class ExplicitNetworkBlockchainSystemFactory(
       .map { nodeFactory.createBlockchainSystemNode(it, genesisBlock) }
       .toHashSet()
 
+    val transactionSubmissionProcess = ThreesimTransactionSubmissionProcess(
+      blockchainSystemId,
+      blockchainSystemName,
+      designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval,
+      designBlockchainSystem.transactionsSpecification.transactionPropertiesSpecification
+    )
+
     return BlockchainSystem(
       blockchainSystemId,
       blockchainSystemName,
       network,
       geographicalRegionsResolver.resolveGeographicalRegions(),
-      blockchainSystemNodes
+      blockchainSystemNodes,
+      designBlockchainSystem.specification.numOfRequiredSecurityConfirmations,
+      transactionSubmissionProcess
     )
   }
 
@@ -111,6 +121,7 @@ class ExplicitNetworkBlockchainSystemFactory(
       orphanBlockPoolFactory,
       behaviorFactory,
       geographicalRegionsResolver,
+      resourcePowerCalculator,
       tagProvider
     )
   }

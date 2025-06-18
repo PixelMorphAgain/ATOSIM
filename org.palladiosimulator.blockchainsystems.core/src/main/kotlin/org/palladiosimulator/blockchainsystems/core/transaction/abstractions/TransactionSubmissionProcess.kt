@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.transaction.abstractions
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable
+import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 
 /**
  * The [TransactionSubmissionProcess] generates transactions and submits them to the blockchain network.
@@ -10,11 +11,15 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceabl
 interface TransactionSubmissionProcess : Traceable {
 
   /**
-   * Sets the callback that is invoked when the transaction submission process submits a
-   * new transaction to a validating node.
+   * Multiple nodes can subscribe to this callback that is invoked when the
+   * transaction submission process submits a new transaction to the network.
    */
-  fun setOnTransactionSubmittedCallback(
-    onTransactionSubmittedCallback: () -> Unit,
+  fun addOnTransactionSubmittedCallbackSubscriber(
+    subscriber: TransactionSubmittedCallbackSubscriber
+  )
+
+  fun setOnSelectRecipientNodeIdCallback(
+    onSelectRecipientNodeIdCallback: (() -> String)? = null,
   )
 
   /**

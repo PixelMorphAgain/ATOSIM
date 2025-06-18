@@ -59,7 +59,7 @@ class MiningProcessImpl(
       .getEventCoordinator()
       .raiseEvent(
         BlockMinedEvent(
-          this.nextBlockMinedEventOccurrenceTimestamp,
+          this.getNextBlockMinedEventOccurrenceTimestamp(),
           previousBlockHash,
           this
         )
@@ -68,11 +68,10 @@ class MiningProcessImpl(
     return previousBlockHash
   }
 
-  private val nextBlockMinedEventOccurrenceTimestamp: Long
-    get() {
-      val eventCurrentTimeOffset = poissonProcess.nextPointDistance()
-      return simulationContext.getSystemClock().getCurrentTime() + eventCurrentTimeOffset
-    }
+  private fun getNextBlockMinedEventOccurrenceTimestamp(): Long {
+    val eventCurrentTimeOffset = poissonProcess.nextPointDistance()
+    return simulationContext.getSystemClock().getCurrentTime() + eventCurrentTimeOffset
+  }
 
   private fun notifyBlockMined(block: Block) {
     onBlockMinedCallback?.accept(block)
@@ -102,9 +101,7 @@ class MiningProcessImpl(
     cancelPendingEvent()
     val previousHash = scheduleNewBlockMinedEvent()
 
-    if (previousHash != null) {
-      logMiningRestarted(previousHash)
-    }
+    logMiningRestarted(previousHash)
   }
 
   override fun stopMining() {
@@ -115,15 +112,15 @@ class MiningProcessImpl(
   }
 
   override fun setOnCreatingBlockCallback(onCreatingBlockCallback: BiFunction<Long, String, Block>) {
-    this@MiningProcessImpl.onCreatingBlockCallback = onCreatingBlockCallback
+    this.onCreatingBlockCallback = onCreatingBlockCallback
   }
 
   override fun setPreviousBlockSelectionCallback(previousBlockSelectionCallback: Supplier<String>) {
-    this@MiningProcessImpl.previousBlockSelectionCallback = previousBlockSelectionCallback
+    this.previousBlockSelectionCallback = previousBlockSelectionCallback
   }
 
   override fun setOnBlockMinedCallback(onBlockMinedCallback: Consumer<Block>) {
-    this@MiningProcessImpl.onBlockMinedCallback = onBlockMinedCallback
+    this.onBlockMinedCallback = onBlockMinedCallback
   }
 
 

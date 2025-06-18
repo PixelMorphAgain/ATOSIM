@@ -9,7 +9,10 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionReceptionProcess
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcess
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSubmissionProcess
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSubmittedCallbackSubscriber
 
 /**
  * The [BlockchainSystemNode] class represents a blockchain system node.
@@ -37,7 +40,7 @@ class BlockchainSystemNode(
   private val behavior: BlockchainSystemNodeBehavior,
   val geographicalRegion: GeographicalRegion,
   private val tags: MutableSet<String> = mutableSetOf()
-) : BlockchainSimulationObject(id, name), Taggable {
+) : BlockchainSimulationObject(id, name), Taggable, TransactionSubmittedCallbackSubscriber {
 
   private val context: BlockchainSystemNodeContext = BlockchainSystemNodeContextImpl(
     id,
@@ -61,31 +64,33 @@ class BlockchainSystemNode(
 
     transactionPropagationStrategy.setNetworkInterface(networkInterface)
     transactionPropagationStrategy.setBlockchain(blockchain)
-    transactionPropagationStrategy.setOnReceivedCallback { this.onTransactionReceived(it) }
+    transactionPropagationStrategy.setOnReceivedCallback { behavior.onTransactionReceived(it, context) }
     transactionPropagationStrategy.initialize(simulationContext)
     transactionPropagationStrategy.initializeLogger(this)
 
     blockPropagationStrategy.setNetworkInterface(networkInterface)
     blockPropagationStrategy.setBlockchain(blockchain)
-    blockPropagationStrategy.setOnReceivedCallback { this.onBlockReceived(it) }
+    blockPropagationStrategy.setOnReceivedCallback { behavior.onBlockReceived(it, context) }
     blockPropagationStrategy.initialize(simulationContext)
     blockPropagationStrategy.initializeLogger(this)
 
     blockValidator.setOnBlockValidatedCallback { block, isValid ->
-      this.onBlockValidated(
+      behavior.onBlockValidated(
         block,
-        isValid
+        isValid,
+        context
       )
     }
     blockValidator.initialize(simulationContext)
     blockValidator.initializeLogger(this)
 
-    miningProcess.setOnBlockMinedCallback { block -> this.onBlockMined(block) }
-    miningProcess.setPreviousBlockSelectionCallback { this.onPreviousBlockSelected() }
+    miningProcess.setOnBlockMinedCallback { behavior.onBlockMined(it, context) }
+    miningProcess.setPreviousBlockSelectionCallback { behavior.onPreviousBlockSelection(context) }
     miningProcess.setOnCreatingBlockCallback { blockMinedAt, previousBlockHash ->
-      this.onCreatingBlock(
+      behavior.onCreatingBlock(
         blockMinedAt,
-        previousBlockHash
+        previousBlockHash,
+        context
       )
     }
     miningProcess.initialize(simulationContext)
@@ -114,34 +119,15 @@ class BlockchainSystemNode(
     blockchain.cleanup()
   }
 
-  private fun onTransactionReceived(transaction: Transaction) {
-    behavior.onTransactionReceived(transaction, context)
-  }
-
-  private fun onBlockReceived(block: Block) {
-    behavior.onBlockReceived(block, context)
-  }
-
-  private fun onBlockValidated(block: Block, isValid: Boolean) {
-    behavior.onBlockValidated(block, isValid, context)
-  }
-
-  private fun onCreatingBlock(blockMinedAt: Long, previousBlockHash: String): Block {
-    return behavior.onCreatingBlock(blockMinedAt, previousBlockHash, context)
-  }
-
-  private fun onPreviousBlockSelected(): String {
-    return behavior.onPreviousBlockSelection(context)
-  }
-
-  private fun onBlockMined(block: Block) {
-    behavior.onBlockMined(block, context)
-  }
-
   override fun dispatchEvent(event: Event) {
   }
 
   override fun hasTag(tag: String): Boolean {
     return tags.contains(tag)
+  }
+
+  override fun onTransactionSubmitted(transaction: Transaction) {
+    if (transaction.recipientId !== this.id) return // Only handle transactions send to this node
+    behavior.onTransactionReceived(transaction, context)
   }
 }
