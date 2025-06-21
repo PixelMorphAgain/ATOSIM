@@ -8,7 +8,7 @@ Bundle-ClassPath: .
 Bundle-Activator: org.palladiosimulator.blockchainsystems.bscm.nodeallocation.presentation.BscmEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-22
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: bscm.blockchainsystem.presentation,
  bscm.blockchainsystemComponentRepository.presentation,
  bscm.nodeallocation.presentation,

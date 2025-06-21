@@ -10,8 +10,4 @@
     </parent>
     <artifactId>releng</artifactId>
     <packaging>pom</packaging>
-
-    <!--    <modules>-->
-    <!--        <module>org.palladiosimulator.blockchainsystems.updatesite</module>-->
-    <!--    </modules>-->
 </project>

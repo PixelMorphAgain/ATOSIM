@@ -36,7 +36,7 @@ public class SimulationResultsExplorer extends ViewPart {
                 return repository.getSimulationResults().toArray();
             }
             if (parentElement instanceof SimulationResultFile file) {
-                return file.getValues().toArray();
+                return file.getValues().values().toArray();
             }
 
             return new Object[0];

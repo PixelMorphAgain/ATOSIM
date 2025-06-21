@@ -30,18 +30,19 @@
     </repositories>
 
     <properties>
-        <java.version>22</java.version>
-        <kotlin.version>2.1.10</kotlin.version>
-        <maven.version>3.13.0</maven.version>
+        <java.version>17</java.version>
+        <kotlin.version>2.1.21</kotlin.version>
+        <maven.version>3.14.0</maven.version>
         <tycho.version>4.0.10</tycho.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.code.style>official</kotlin.code.style>
-        <kotlin.compiler.jvmTarget>22</kotlin.compiler.jvmTarget>
+        <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
+        <dokka.version>2.0.0</dokka.version>
         <org.palladiosimulator.maven.tychotprefresh.tplocation.2>
-            ${project.basedir}/releng/org.palladiosimulator.blockchainsystems.targetplatform/tp.target
+            ${project.basedir}/releng/tp.target
         </org.palladiosimulator.maven.tychotprefresh.tplocation.2>
     </properties>
 
@@ -50,7 +51,6 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-maven-plugin</artifactId>
-                <version>${tycho.version}</version>
                 <extensions>true</extensions>
             </plugin>
 
@@ -117,7 +117,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.0</version>
+                    <version>${maven.version}</version>
                 </plugin>
 
                 <plugin>
@@ -173,7 +173,7 @@
                 <plugin>
                     <groupId>org.jetbrains.dokka</groupId>
                     <artifactId>dokka-maven-plugin</artifactId>
-                    <version>2.0.0</version>
+                    <version>${dokka.version}</version>
                     <executions>
                         <execution>
                             <phase>pre-site</phase>

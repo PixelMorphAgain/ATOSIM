@@ -28,4 +28,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.palladiosimulator.blockchainsystems</groupId>
+            <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

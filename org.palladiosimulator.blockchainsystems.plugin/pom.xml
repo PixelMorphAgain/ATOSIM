@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>org.palladiosimulator.blockchainsystems.plugin</artifactId>
-    <packaging>pom</packaging>
+    <packaging>eclipse-plugin</packaging>
 
     <build>
         <plugins>
@@ -37,19 +37,16 @@
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
