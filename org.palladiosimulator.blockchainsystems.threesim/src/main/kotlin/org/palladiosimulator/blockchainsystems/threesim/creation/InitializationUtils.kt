@@ -10,7 +10,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl
-import org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory
+//import org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory
 
 /**
@@ -64,10 +64,11 @@ object InitializationUtils {
     designBlockchainSystem: BlockchainSystem,
     connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology
   ): BlockchainSystemFactory {
-    return ConnectedSubgraphNetworkBlockchainSystemFactory(
-      designBlockchainSystem,
-      connectedSubgraphsTopology
-    )
+    TODO("Not yet implemented")
+//    return ConnectedSubgraphNetworkBlockchainSystemFactory(
+//      designBlockchainSystem,
+//      connectedSubgraphsTopology
+//    )
   }
 
   @Throws(NumberFormatException::class, CoreException::class)
