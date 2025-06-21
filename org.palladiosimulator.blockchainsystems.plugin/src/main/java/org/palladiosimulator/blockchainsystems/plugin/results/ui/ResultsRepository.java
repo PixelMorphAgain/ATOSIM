@@ -1,5 +1,7 @@
 package org.palladiosimulator.blockchainsystems.plugin.results.ui;
 
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummaryDeserializer;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
@@ -12,10 +14,11 @@ import java.util.stream.Stream;
  *
  * @param directory The directory where simulation results are stored.
  * @param container The container that holds the results repository.
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  */
 public record ResultsRepository(
         File directory,
+        SimulationResultSummaryDeserializer deserializer,
         ResultsRepositoryContainer container
 ) {
 
@@ -28,7 +31,7 @@ public record ResultsRepository(
 
     public List<SimulationResultFile> getSimulationResults() {
         return Stream.of(directory.listFiles(textFileFilter))
-                .map(x -> new SimulationResultFile(x, this))
+                .map(x -> new SimulationResultFile(x, deserializer, this))
                 .collect(Collectors.toList());
     }
 }

@@ -24,7 +24,6 @@ class PluginLaunch : BlockchainSimulationBasePluginLaunch() {
     val jobName = when (simulationType) {
       SimulationType.Single -> "Single Simulation"
       SimulationType.MonteCarlo -> "Monte Carlo Simulation"
-      else -> throw IllegalArgumentException("Unsupported simulation type: $simulationType")
     }
 
     val job = SimulationJob(

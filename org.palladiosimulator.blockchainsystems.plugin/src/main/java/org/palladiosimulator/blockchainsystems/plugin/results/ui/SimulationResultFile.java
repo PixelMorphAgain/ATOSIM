@@ -17,13 +17,13 @@ import java.util.Map;
  *
  * @param file       the file containing the simulation results
  * @param repository the repository where this file is stored
- * @param serializer the serializer used to deserialize the simulation result summary
+ * @param serializer the deserializer used to deserialize the simulation result summary
  * @author Yannik Sproll, Davis Riedel
  */
 public record SimulationResultFile(
         File file,
-        ResultsRepository repository,
-        SimulationResultSummaryDeserializer serializer
+        SimulationResultSummaryDeserializer serializer,
+        ResultsRepository repository
 ) {
     public Map<String, String> getValues() {
         Path filePath = Paths.get(file.getPath());
