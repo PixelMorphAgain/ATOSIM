@@ -23,10 +23,9 @@ class ThroughputValueProviderAdapter(
       linkThroughputSpecification: LinkThroughputSpecification,
       randomGenerator: RandomGenerator
     ): ThroughputValueProviderAdapter {
-      val valuesToProbabilitiesMapping: HashMap<LinkThroughput, Double> =
-        linkThroughputSpecification.values.associateTo {
-          LinkThroughput(it.getThroughput(), it.getDuration()) to it.getProbability()
-        }
+      val valuesToProbabilitiesMapping = linkThroughputSpecification.values.associate {
+        LinkThroughput(it.getThroughput(), it.getDuration()) to it.getProbability()
+      }
 
       val valueProvider = RandomValueProvider.create(
         valuesToProbabilitiesMapping,

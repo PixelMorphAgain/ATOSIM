@@ -11,7 +11,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
  * @author Davis Riedel
  */
 class ThreesimMonteCarloSimulation(
-  numberOfRounds: Long,
+  numberOfRounds: Int,
   progressMonitor: MonteCarloSimulationProgressMonitor,
   private val blockchainSystemFactory: BlockchainSystemFactory,
   private val logOutputProvider: LogOutputProvider,

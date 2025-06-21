@@ -9,7 +9,7 @@ package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
  * @author Davis Riedel
  */
 abstract class MonteCarloSimulation<R : SimulationRoundResult>(
-  protected val numberOfRounds: Long,
+  protected val numberOfRounds: Int,
   protected val progressMonitor: MonteCarloSimulationProgressMonitor,
 ) : Simulation {
 

@@ -10,11 +10,13 @@ import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmi
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSubmissionProcess
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSubmittedCallbackSubscriber
-import java.util.*
-
+import java.util.random.RandomGenerator
+import java.util.UUID
 
 /**
+ * The process that randomly submits transactions to the blockchain system in 3SIM.
  *
+ * @author Davis Riedel
  */
 class ThreesimTransactionSubmissionProcess(
   id: String,
@@ -23,7 +25,7 @@ class ThreesimTransactionSubmissionProcess(
   transactionPropertiesSpecification: TransactionPropertiesSpecification
 ) : BlockchainSimulationObject(id, name), TransactionSubmissionProcess {
   // TODO: Get or create the random generator
-  private val poissonProcess = PoissonProcess(1.0 / meanTransactionCreationTime, randomGenerator)
+  private val poissonProcess = PoissonProcess(1.0 / meanTransactionCreationTime, RandomGenerator.of("Random"))
 
   private var onSelectRecipientNodeIdCallback: (() -> String)? = null
 
@@ -71,7 +73,7 @@ class ThreesimTransactionSubmissionProcess(
     creationTime: Long,
     recipientId: String
   ): Transaction {
-    TransactionFactoryImpl().createTransaction(
+    return TransactionFactoryImpl().createTransaction(
       txId = UUID.randomUUID().toString(),
       size = 0, // TODO: Calculate based on transaction properties specification
       creationTime = creationTime,

@@ -26,22 +26,22 @@ class ThreesimAverageSimulationRoundResult(
         .groupBy { it.name }
         .mapNotNull {
           when (it.key) {
-            AvailabilityScalability.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value)
-            AvailabilitySecurity.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value)
-            AverageConfirmationLatency.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(it.value)
-            CensorshipResistance.NAME -> CensorshipResistanceCalculator.calculateAverage(it.value)
-            ConfirmationLatency.NAME -> ConfirmationLatencyCalculator.calculateAverage(it.value)
-            Consistency.NAME -> ConsistencyCalculator.calculateAverage(it.value)
-            CostOfAttack.NAME -> CostOfAttackCalculator.calculateAverage(it.value)
-            FaultTolerance.NAME -> FaultToleranceCalculator.calculateAverage(it.value)
-            GeographicalDiversity.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value)
-            GiniCoefficient.NAME -> GiniCoefficientCalculator.calculateAverage(it.value)
-            HerfindahlHirschmanIndex.NAME -> HerfindahlHirschmanIndexCalculator.calculateAverage(it.value)
-            NakamotoCoefficient.NAME -> NakamotoCoefficientCalculator.calculateAverage(it.value)
-            Reliability.NAME -> ReliabilityCalculator.calculateAverage(it.value)
-            ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value)
-            StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value)
-            Throughput.NAME -> ThroughputCalculator.calculateAverage(it.value)
+            AvailabilityScalability.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value as List<AvailabilityScalability>)
+            AvailabilitySecurity.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
+            AverageConfirmationLatency.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(it.value as List<AverageConfirmationLatency>)
+            CensorshipResistance.NAME -> CensorshipResistanceCalculator.calculateAverage(it.value as List<CensorshipResistance>)
+            ConfirmationLatency.NAME -> ConfirmationLatencyCalculator.calculateAverage(it.value as List<ConfirmationLatency>)
+            Consistency.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
+            CostOfAttack.NAME -> CostOfAttackCalculator.calculateAverage(it.value as List<CostOfAttack>)
+            FaultTolerance.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
+            GeographicalDiversity.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value as List<GeographicalDiversity>)
+            GiniCoefficient.NAME -> GiniCoefficientCalculator.calculateAverage(it.value as List<GiniCoefficient>)
+            HerfindahlHirschmanIndex.NAME -> HerfindahlHirschmanIndexCalculator.calculateAverage(it.value as List<HerfindahlHirschmanIndex>)
+            NakamotoCoefficient.NAME -> NakamotoCoefficientCalculator.calculateAverage(it.value as List<NakamotoCoefficient>)
+            Reliability.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
+            ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
+            StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
+            Throughput.NAME -> ThroughputCalculator.calculateAverage(it.value as List<Throughput>)
             else -> null
           }
         }

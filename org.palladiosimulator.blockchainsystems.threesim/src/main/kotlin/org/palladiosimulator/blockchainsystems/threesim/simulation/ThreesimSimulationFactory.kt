@@ -6,6 +6,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
 import org.palladiosimulator.blockchainsystems.plugin.utils.MonteCarloSimulationProgressMonitorAdapter
+import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 
 /**
  * Factory for creating instances of [Simulation] for the 3SIM blockchain simulator.
@@ -30,11 +31,11 @@ class ThreesimSimulationFactory(
 
       SimulationType.MonteCarlo -> {
         ThreesimMonteCarloSimulation(
-          InitializationUtils.createBlockchainSystemFactory(configuration),
-          InitializationUtils.createLogOutputProviderFromConfig(configuration),
-          MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
-          InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration),
-          InitializationUtils.getNumberOfMonteCarloSimulationRoundsFromConfig(configuration)
+          numberOfRounds = InitializationUtils.getNumberOfMonteCarloSimulationRoundsFromConfig(configuration),
+          progressMonitor = MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
+          blockchainSystemFactory = InitializationUtils.createBlockchainSystemFactory(configuration),
+          logOutputProvider = InitializationUtils.createLogOutputProviderFromConfig(configuration),
+          maxAllowedBlockchainLength = InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration)
         )
       }
     }

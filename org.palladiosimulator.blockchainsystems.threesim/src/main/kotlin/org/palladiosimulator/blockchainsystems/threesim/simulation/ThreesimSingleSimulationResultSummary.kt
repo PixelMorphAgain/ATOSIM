@@ -3,10 +3,11 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummaryDeserializer
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 
 class ThreesimSingleSimulationResultSummary(
   private val simulationType: String,
-  private val outputMetrics: List<OutputMetric<*>>,
+  private val outputMetrics: OutputMetricsSet
 ) : SimulationResultSummary, SimulationResultSummaryDeserializer by ThreesimSingleSimulationResultSummary {
   override fun getValues(): Map<String, String> {
     return outputMetrics.associate { metric ->

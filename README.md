@@ -16,6 +16,13 @@ The package is structured as follows:
 - `org.palladiosimulator.blockchainsystems.loggers`: Loggers to log trace events of the blockchain simulation to
   console, file, or database.
 
+## Pre-requisites
+
+- Eclipse 2024-09 RAP
+- Palladio Nightly Plugin
+- Java 17 or higher
+- Maven
+
 ## Acknowledgements
 
 3SIM was developed by _Davis Riedel_ as part of his bachelor's thesis at the Karlsruhe Institute of Technology (KIT)

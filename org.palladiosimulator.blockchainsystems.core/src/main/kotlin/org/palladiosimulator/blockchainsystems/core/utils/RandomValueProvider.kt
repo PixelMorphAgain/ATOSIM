@@ -49,7 +49,7 @@ class RandomValueProvider<T> private constructor(
   companion object {
     private const val RANDOM_VALUES_SUM_MAX_DEVIATION = 0.005
 
-    fun <T> create(randomValues: HashMap<T, Double>, generator: RandomGenerator): RandomValueProvider<T> {
+    fun <T> create(randomValues: Map<T, Double>, generator: RandomGenerator): RandomValueProvider<T> {
       require(randomValues.values.isNotEmpty()) { "The provided probabilities map must not be empty." }
 
       val randomValuesSum = randomValues.values.sum()

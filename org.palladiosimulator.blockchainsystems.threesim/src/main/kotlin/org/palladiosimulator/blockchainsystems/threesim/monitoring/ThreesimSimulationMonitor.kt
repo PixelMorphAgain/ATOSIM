@@ -52,9 +52,10 @@ class ThreesimSimulationMonitor(
       forkedBlocks = forkedBlocks,
       nodes = nodes,
       blocksProposedPerNode = blocksProposedPerNode,
-      geographicalRegions = geographicalRegions ?: throw IllegalStateException("Geographical regions not initialized"),
+      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
       numberOfSubmittedTransactions = numberOfSubmittedTransactions,
-      numberOfConfirmedTransactions = confirmedTransactionsCounter.numberOfConfirmedTransactions
+      numberOfConfirmedTransactions = confirmedTransactionsCounter?.numberOfConfirmedTransactions
+        ?: throw IllegalStateException("confirmedTransactionsCounter not initialized"),
     )
   }
 

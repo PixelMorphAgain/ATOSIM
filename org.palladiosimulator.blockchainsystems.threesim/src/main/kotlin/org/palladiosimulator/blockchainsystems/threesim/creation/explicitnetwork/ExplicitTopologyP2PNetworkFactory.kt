@@ -27,13 +27,11 @@ class ExplicitTopologyP2PNetworkFactory(
     val networkGraph: Graph<P2PNode, P2PLink> = SimpleGraph(P2PLink::class.java)
 
     // Add nodes to the graph
-    val p2pNodeMappings: HashMap<String, P2PNode> =
-      topology.nodes.associateTo {
-        val nodeImpl = P2PNode(it.id)
-        networkGraph.addVertex(nodeImpl)
-        it.id to nodeImpl
-      }
-
+    val p2pNodeMappings = topology.nodes.associate {
+      val nodeImpl = P2PNode(it.id)
+      networkGraph.addVertex(nodeImpl)
+      it.id to nodeImpl
+    }
 
     // Add links to the graph
     topology.links.forEach { designLink ->

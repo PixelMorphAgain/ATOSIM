@@ -22,10 +22,9 @@ class LatencyValueProviderAdapter(
       linkLatencySpecification: LinkLatencySpecification,
       randomGenerator: RandomGenerator
     ): LatencyValueProviderAdapter {
-      val valuesToProbabilitiesMapping: HashMap<LinkLatency, Double> =
-        linkLatencySpecification.values.associateTo {
-          LinkLatency(it.getLatency(), it.getDuration()) to it.getProbability()
-        }
+      val valuesToProbabilitiesMapping = linkLatencySpecification.values.associate {
+        LinkLatency(it.getLatency(), it.getDuration()) to it.getProbability()
+      }
 
       val valueProvider = RandomValueProvider.create(
         valuesToProbabilitiesMapping,
