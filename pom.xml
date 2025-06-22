@@ -33,7 +33,7 @@
         <java.version>17</java.version>
         <kotlin.version>2.1.21</kotlin.version>
         <maven.version>3.14.0</maven.version>
-        <tycho.version>4.0.10</tycho.version>
+        <tycho.version>4.0.13</tycho.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -42,7 +42,7 @@
         <kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
         <dokka.version>2.0.0</dokka.version>
         <org.palladiosimulator.maven.tychotprefresh.tplocation.2>
-            ${project.basedir}/releng/tp.target
+            ${project.basedir}/releng/org.palladiosimulator.blockchainsystems.target_platform/tp.target
         </org.palladiosimulator.maven.tychotprefresh.tplocation.2>
     </properties>
 
@@ -51,30 +51,8 @@
             <plugin>
                 <groupId>org.eclipse.tycho</groupId>
                 <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho.version}</version>
                 <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <executable>/Users/davisriedel/Desktop/Bachelorarbeit/Palladio.app/Contents/MacOS/PalladioBench
-                    </executable>
-                    <arguments>
-                        <argument>-data</argument>
-                        <argument>${project.build.directory}/runtime-workspace</argument>
-                        <argument>-consoleLog</argument>
-                        <argument>-clean</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
 
@@ -121,56 +99,6 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.4.2</version>
-                    <configuration>
-                        <archive>
-                            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-                        </archive>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy-dependencies</id>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <includeScope>runtime</includeScope>
-                                <stripVersion>true</stripVersion>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                                <target>
-                                    <copy file="${project.basedir}/target/${project.artifactId}-${project.version}.jar"
-                                          todir="/Users/davisriedel/Desktop/Bachelorarbeit/Palladio.app/Contents/Eclipse/dropins"/>
-                                </target>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
                     <groupId>org.jetbrains.dokka</groupId>
                     <artifactId>dokka-maven-plugin</artifactId>
                     <version>${dokka.version}</version>
@@ -205,6 +133,7 @@
 
     <modules>
         <module>releng</module>
+        <module>org.palladiosimulator.blockchainsystems.threesim_feature</module>
         <module>org.palladiosimulator.blockchainsystems.core</module>
         <module>org.palladiosimulator.blockchainsystems.loggers</module>
         <module>org.palladiosimulator.blockchainsystems.bscm</module>
@@ -213,16 +142,9 @@
         <module>org.palladiosimulator.blockchainsystems.plugin</module>
         <module>org.palladiosimulator.blockchainsystems.threesim</module>
         <module>org.palladiosimulator.blockchainsystems.threesim_plugin</module>
-        <!-- <module>org.palladiosimulator.blockchainsystems.bscm.design</module> -->
-        <!-- <module>org.palladiosimulator.blockchainsystems.plugin.ui</module>-->
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

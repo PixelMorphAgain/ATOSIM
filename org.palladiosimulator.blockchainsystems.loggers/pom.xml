@@ -8,17 +8,13 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
-    <packaging>jar</packaging>
+    <packaging>eclipse-plugin</packaging>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
 
             <plugin>

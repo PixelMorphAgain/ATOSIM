@@ -8,7 +8,7 @@
         <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <packaging>jar</packaging>
+    <packaging>eclipse-plugin</packaging>
 
     <artifactId>org.palladiosimulator.blockchainsystems.threesim</artifactId>
 
@@ -18,13 +18,10 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
             </plugin>
 
             <plugin>
@@ -35,6 +32,11 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.core</artifactId>
@@ -49,7 +51,6 @@
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.plugin</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

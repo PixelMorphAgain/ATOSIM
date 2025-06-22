@@ -39,6 +39,6 @@ public class BlockchainSystemModelLoader {
 
         EcoreUtil.resolveAll(resSet);
 
-        return (BlockchainSystemImpl) resource.getContents().getFirst();
+        return (BlockchainSystemImpl) resource.getContents().get(0);
     }
 }
