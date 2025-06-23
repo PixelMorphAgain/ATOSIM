@@ -4,4 +4,8 @@
             id="org.palladiosimulator.blockchainsystems.threesim_feature"
             version="0.0.1.qualifier"
     />
+    <feature
+            id="org.palladiosimulator.blockchainsystems.threesim_feature.source"
+            version="0.0.1.qualifier"
+    />
 </site>

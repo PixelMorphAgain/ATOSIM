@@ -22,6 +22,11 @@ The package is structured as follows:
 - Palladio Nightly Plugin
 - Java 17 or higher
 - Maven
+- Just
+
+## Building 3SIM
+
+Use `just clean`, `just verify`, and `just build` to clean, verify, and build the 3SIM project. `just` sets required arguments for maven.
 
 ## Acknowledgements
 
