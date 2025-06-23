@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 import org.eclipse.debug.core.ILaunchConfiguration
-import org.palladiosimulator.blockchainsystems.plugin.BlockchainSimulationBasePluginLaunch
+import org.palladiosimulator.blockchainsystems.plugin.PluginLaunch
 import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 import org.palladiosimulator.blockchainsystems.plugin.simulation.SimulationJob
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
@@ -14,7 +14,7 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimul
  *
  * @author Davis Riedel
  */
-class PluginLaunch : BlockchainSimulationBasePluginLaunch() {
+class ThreesimPluginLaunch : PluginLaunch() {
 
   override fun launchSimulationJob(
     configuration: ILaunchConfiguration

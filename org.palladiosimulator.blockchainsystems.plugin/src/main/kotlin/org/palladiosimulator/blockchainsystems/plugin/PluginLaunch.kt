@@ -13,7 +13,7 @@ import org.eclipse.debug.core.model.LaunchConfigurationDelegate
  *
  * @author Yannik Sproll, Davis Riedel
  */
-abstract class BlockchainSimulationBasePluginLaunch : LaunchConfigurationDelegate() {
+abstract class PluginLaunch : LaunchConfigurationDelegate() {
   @Throws(CoreException::class)
   override fun launch(
     configuration: ILaunchConfiguration,
