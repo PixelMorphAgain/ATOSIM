@@ -5,13 +5,13 @@
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true"
                   type="InstallableUnit">
             <repository location="https://download.eclipse.org/releases/2023-09/202309131000/"/>
-            <unit id="org.eclipse.jface" version="3.31.0.v20230821-1552"/>
-            <unit id="org.eclipse.swt" version="3.124.100.v20230825-1346"/>
-            <unit id="org.eclipse.ocl" version="3.18.0.v20221201-0557"/>
-            <unit id="org.eclipse.ocl.pivot" version="1.18.0.v20221201-0557"/>
-            <unit id="org.eclipse.ocl.examples" version="3.18.0.v20221201-0557"/>
-            <unit id="org.eclipse.ocl.examples.codegen" version="2.18.0.v20221201-0557"/>
-            <unit id="org.eclipse.emf.ecore" version="2.35.0.v20230829-0934"/>
+            <unit id="org.eclipse.jface" version="0.0.0"/>
+            <unit id="org.eclipse.swt" version="0.0.0"/>
+            <unit id="org.eclipse.ocl" version="0.0.0"/>
+            <unit id="org.eclipse.ocl.pivot" version="0.0.0"/>
+            <unit id="org.eclipse.ocl.examples" version="0.0.0"/>
+            <unit id="org.eclipse.ocl.examples.codegen" version="0.0.0"/>
+            <unit id="org.eclipse.emf.ecore" version="0.0.0"/>
         </location>
         <location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
             <dependencies>
