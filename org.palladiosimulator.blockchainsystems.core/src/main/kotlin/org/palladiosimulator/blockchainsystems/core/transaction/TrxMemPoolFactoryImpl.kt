@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.transaction
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPool
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPoolFactory
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPool
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPoolFactory
 
 /**
  * @author Davis Riedel

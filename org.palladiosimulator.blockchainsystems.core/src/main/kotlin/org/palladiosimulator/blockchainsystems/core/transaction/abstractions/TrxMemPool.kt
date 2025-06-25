@@ -1,8 +1,6 @@
-package org.palladiosimulator.blockchainsystems.core.system.abstractions
+package org.palladiosimulator.blockchainsystems.core.transaction.abstractions
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable
-import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSelectionResult
-import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import java.util.TreeSet
 
 /**
@@ -18,6 +16,13 @@ interface TrxMemPool : Traceable {
    * @param transaction The transaction to store.
    */
   fun storeTransaction(transaction: Transaction)
+
+  /**
+   * Gets a transaction with a given ID from the mempool.
+   *
+   * @param txId The ID of the transaction
+   */
+  fun getTransactionById(txId: String): Transaction?
 
   /**
    * Get all transactions in the mempool sorted by their fee rate in descending order.

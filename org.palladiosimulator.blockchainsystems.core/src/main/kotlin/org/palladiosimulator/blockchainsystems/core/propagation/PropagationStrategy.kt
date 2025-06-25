@@ -1,11 +1,13 @@
-package org.palladiosimulator.blockchainsystems.core.system.abstractions
+package org.palladiosimulator.blockchainsystems.core.propagation
 
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable
-import java.util.function.Consumer
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PNetworkInterface
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 
 /**
- * The [BlockPropagationStrategy] interface is an abstraction
+ * The [PropagationStrategy] interface is an abstraction
  * of the strategy used to exchange blocks and transactions between nodes.
  *
  * @author Yannik Sproll, Davis Riedel
@@ -24,7 +26,7 @@ interface PropagationStrategy<E : Propagatable> : Traceable {
    * @param element           the element to distribute
    * @param neighborEndpoints the neighbors to receive the element
    */
-  fun distribute(element: Block, neighborEndpoints: MutableSet<P2PNetworkEndpoint>)
+  fun distribute(element: E, neighborEndpoints: MutableSet<P2PNetworkEndpoint>)
 
   /**
    * Sets the network interface used to send the elements to the neighbors.
@@ -34,16 +36,16 @@ interface PropagationStrategy<E : Propagatable> : Traceable {
   fun setNetworkInterface(networkInterface: NodeP2PNetworkInterface)
 
   /**
-   * Sets the blockchain instance.
+   * Sets the blockchain system node context for this propagation strategy.
    *
-   * @param blockchain the blockchain instance
+   * @param context the blockchain system node context to set
    */
-  fun setBlockchain(blockchain: Blockchain)
+  fun setBlockchainSystemNodeContext(context: BlockchainSystemNodeContext)
 
   /**
    * Sets a callback that is invoked if an element is received from the assigned network interface.
    *
    * @param onReceivedCallback callback that is invoked when a new element is received
    */
-  fun setOnReceivedCallback(onBlockReceivedCallback: Consumer<E>)
+  fun setOnReceivedCallback(onReceivedCallback: (E) -> Unit)
 }

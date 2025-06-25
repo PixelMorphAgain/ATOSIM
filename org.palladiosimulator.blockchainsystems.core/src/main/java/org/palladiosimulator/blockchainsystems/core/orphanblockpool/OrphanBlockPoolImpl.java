@@ -15,7 +15,7 @@ public class OrphanBlockPoolImpl extends BlockchainNodeObject implements OrphanB
     private final HashMap<String, Set<Block>> _orphanBlocks;
 
     public OrphanBlockPoolImpl() {
-        _orphanBlocks = new HashMap<String, Set<Block>>();
+        _orphanBlocks = new HashMap<>();
     }
 
     @Override

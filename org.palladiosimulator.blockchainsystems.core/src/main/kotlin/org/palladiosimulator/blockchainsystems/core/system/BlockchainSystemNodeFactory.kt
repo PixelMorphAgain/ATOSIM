@@ -4,7 +4,9 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockFactory
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegionsResolver
+import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrategyFactory
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPoolFactory
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcessFactory
 

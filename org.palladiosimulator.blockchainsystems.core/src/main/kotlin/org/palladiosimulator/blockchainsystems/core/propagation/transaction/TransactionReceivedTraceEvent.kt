@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.transaction.propagation
+package org.palladiosimulator.blockchainsystems.core.propagation.transaction
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint

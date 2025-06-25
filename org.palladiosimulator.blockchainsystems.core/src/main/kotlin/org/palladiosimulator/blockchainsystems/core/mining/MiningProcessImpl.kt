@@ -10,9 +10,6 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 import java.util.random.RandomGenerator
 
-// TODO: Mining process must include transactions to create a block
-// TODO: This can be used as a starting point for implementing the transactions submission process
-
 /**
  * This class implements the mining process for a blockchain node.
  *

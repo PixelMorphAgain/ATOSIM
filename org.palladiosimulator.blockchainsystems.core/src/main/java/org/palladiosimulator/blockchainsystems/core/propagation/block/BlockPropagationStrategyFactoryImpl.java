@@ -1,9 +1,9 @@
-package org.palladiosimulator.blockchainsystems.core.blockpropagation;
+package org.palladiosimulator.blockchainsystems.core.propagation.block;
 
 import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategy;
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.PropagationStrategyFactory;
+import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrategy;
+import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrategyFactory;
 
 /**
  * Factory implementation for creating instances of BlockPropagationStrategy.
@@ -14,6 +14,6 @@ public class BlockPropagationStrategyFactoryImpl implements PropagationStrategyF
 
     @Override
     public @NotNull PropagationStrategy<Block> createPropagationStrategy() {
-        return new BlockPropagationStrategyImpl();
+        return new BlockPropagationStrategy();
     }
 }

@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.core.transaction
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPool
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPool
 import java.util.TreeSet
 
 /**

@@ -1,16 +1,17 @@
-package org.palladiosimulator.blockchainsystems.core.blockpropagation;
+package org.palladiosimulator.blockchainsystems.core.propagation.block;
 
+import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint;
 
-public record BlockReceivedTraceEvent(
+public record BlockSentTraceEvent(
         long occurrenceTime,
-        Block receivedBlock,
-        P2PNetworkEndpoint sendingEndpoint
+        Block sentBlock,
+        P2PNetworkEndpoint receivingEndpoint
 ) implements TraceEvent {
 
-    public static final String EVENT_TYPE = "BlockReceivedTraceEvent";
+    public static final String EVENT_TYPE = "BlockSentTraceEvent";
 
     @Override
     public long getOccurrenceTime() {
@@ -18,13 +19,14 @@ public record BlockReceivedTraceEvent(
     }
 
     public Block getSentBlock() {
-        return receivedBlock;
+        return sentBlock;
     }
 
     public P2PNetworkEndpoint getReceivingNetworkEndpoint() {
-        return sendingEndpoint;
+        return receivingEndpoint;
     }
 
+    @NotNull
     @Override
     public String getEventType() {
         return EVENT_TYPE;
@@ -33,10 +35,9 @@ public record BlockReceivedTraceEvent(
     @Override
     public void formatDetails(StringBuilder stringBuilder) {
         stringBuilder.append("{ blockHash=");
-        stringBuilder.append(receivedBlock.getHash());
-        stringBuilder.append("; receivedFromNetworkEndpoint=");
-        stringBuilder.append(sendingEndpoint.getEndpointId());
+        stringBuilder.append(sentBlock.getHash());
+        stringBuilder.append("; sentToNetworkEndpoint=");
+        stringBuilder.append(receivingEndpoint.getEndpointId());
         stringBuilder.append(" }");
     }
-
 }

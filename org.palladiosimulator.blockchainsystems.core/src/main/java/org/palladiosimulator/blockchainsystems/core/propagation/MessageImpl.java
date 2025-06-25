@@ -1,7 +1,13 @@
-package org.palladiosimulator.blockchainsystems.core.blockpropagation;
+package org.palladiosimulator.blockchainsystems.core.propagation;
 
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message;
 
+/**
+ * Implementation of the Message interface, representing a message sent in
+ * the P2P network, with content, content type, and size.
+ *
+ * @author Yannik Sproll, Davis Riedel
+ */
 public class MessageImpl implements Message {
 
     private final Object _content;

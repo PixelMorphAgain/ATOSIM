@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.core.system.abstractions
+package org.palladiosimulator.blockchainsystems.core.propagation
 
 /**
  * Interface for a factory that produces instances of [PropagationStrategy]
