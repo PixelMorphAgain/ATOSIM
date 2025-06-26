@@ -33,5 +33,3 @@ class ThroughputCalculator(
     }
   }
 }
-
-// TODO: The alternative throughput is not yet implemented (see paper)

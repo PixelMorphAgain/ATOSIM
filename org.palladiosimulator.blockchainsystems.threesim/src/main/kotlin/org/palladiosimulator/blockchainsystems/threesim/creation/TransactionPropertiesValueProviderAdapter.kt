@@ -4,8 +4,9 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkThroughputSpe
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.network.LinkThroughput
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
-import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.TemporalValueProviderAdapter
 import java.util.random.RandomGenerator
+import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.TransactionPropertiesSpecification
+import org.palladiosimulator.blockchainsystems.core.transaction.TransactionProperties
 
 /**
  * Adapter for a [ValueProvider] that provides [LinkThroughput] values based on the [LinkThroughputSpecification] from the metamodel.
@@ -14,16 +15,20 @@ import java.util.random.RandomGenerator
  *
  * @author Davis Riedel
  */
-class ThroughputValueProviderAdapter(
-  randomValueProvider: RandomValueProvider<LinkThroughput>,
-) : TemporalValueProviderAdapter<Int, LinkThroughput>(randomValueProvider) {
+class TransactionPropertiesValueProviderAdapter(
+  private val randomValueProvider: RandomValueProvider<TransactionProperties>,
+) : ValueProvider<TransactionProperties> {
+  override fun getValue(): TransactionProperties {
+    return randomValueProvider.getValue()
+  }
+
   companion object {
     fun create(
-      linkThroughputSpecification: LinkThroughputSpecification,
+      transactionPropertiesSpecification: TransactionPropertiesSpecification,
       randomGenerator: RandomGenerator
-    ): ThroughputValueProviderAdapter {
-      val valuesToProbabilitiesMapping = linkThroughputSpecification.values.associate {
-        LinkThroughput(it.throughput, it.duration) to it.probability
+    ): TransactionPropertiesValueProviderAdapter {
+      val valuesToProbabilitiesMapping = transactionPropertiesSpecification.values.associate {
+        TransactionProperties(it.size, it.fee, it.amount) to it.probability
       }
 
       val valueProvider = RandomValueProvider.create(
@@ -31,7 +36,7 @@ class ThroughputValueProviderAdapter(
         randomGenerator
       )
 
-      return ThroughputValueProviderAdapter(valueProvider)
+      return TransactionPropertiesValueProviderAdapter(valueProvider)
     }
   }
 }

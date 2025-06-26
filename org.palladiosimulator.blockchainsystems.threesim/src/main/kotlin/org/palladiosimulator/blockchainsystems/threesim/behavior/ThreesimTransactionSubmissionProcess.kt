@@ -1,10 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.behavior
 
-import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.TransactionPropertiesSpecification
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainSimulationObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
+import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.stochastics.PoissonProcess
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionFactoryImpl
+import org.palladiosimulator.blockchainsystems.core.transaction.TransactionProperties
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
@@ -22,9 +23,8 @@ class ThreesimTransactionSubmissionProcess(
   id: String,
   name: String,
   meanTransactionCreationTime: Double,
-  transactionPropertiesSpecification: TransactionPropertiesSpecification
+  private val transactionPropertiesProvider: ValueProvider<TransactionProperties>,
 ) : BlockchainSimulationObject(id, name), TransactionSubmissionProcess {
-  // TODO: Get or create the random generator
   private val poissonProcess = PoissonProcess(1.0 / meanTransactionCreationTime, RandomGenerator.of("Random"))
 
   private var onSelectRecipientNodeIdCallback: (() -> String)? = null
@@ -73,14 +73,19 @@ class ThreesimTransactionSubmissionProcess(
     creationTime: Long,
     recipientId: String
   ): Transaction {
+    val trxProps = transactionPropertiesProvider.getValue()
+
+    // NOTE: In 3SIM transactions are considered to be sent from an anonymous user
+    val senderId = UUID.randomUUID().toString()
+
     return TransactionFactoryImpl().createTransaction(
       txId = UUID.randomUUID().toString(),
-      size = 0, // TODO: Calculate based on transaction properties specification
+      size = trxProps.size,
+      amount = trxProps.amount,
+      fee = trxProps.fee,
       creationTime = creationTime,
-      senderId = UUID.randomUUID().toString(), // NOTE: Transactions are sent from an anonymous user
-      recipientId = recipientId,
-      amount = 0.0, // TODO: Calculate based on transaction properties specification
-      fee = 0.0 // TODO: Calculate based on transaction properties specification
+      senderId = senderId,
+      recipientId = recipientId
     )
   }
 

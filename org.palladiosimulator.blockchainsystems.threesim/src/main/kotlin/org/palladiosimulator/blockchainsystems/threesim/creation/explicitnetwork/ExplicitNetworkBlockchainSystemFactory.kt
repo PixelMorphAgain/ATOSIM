@@ -21,6 +21,7 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.geography.Three
 import java.util.random.RandomGenerator
 import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeTagProvider
 import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransactionSubmissionProcess
+import org.palladiosimulator.blockchainsystems.threesim.creation.TransactionPropertiesValueProviderAdapter
 import java.util.UUID
 
 /**
@@ -68,20 +69,26 @@ class ExplicitNetworkBlockchainSystemFactory(
       .map { nodeFactory.createBlockchainSystemNode(it, genesisBlock) }
       .toHashSet()
 
+    val trxPropSpec = designBlockchainSystem.transactionsSpecification.transactionPropertiesSpecification
+    val meanTrxCreationInterval = designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval,
+
     val transactionSubmissionProcess = ThreesimTransactionSubmissionProcess(
       blockchainSystemId,
       blockchainSystemName,
-      designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval,
-      designBlockchainSystem.transactionsSpecification.transactionPropertiesSpecification
+      meanTrxCreationInterval,
+      TransactionPropertiesValueProviderAdapter.create(trxPropSpec),
     )
+
+    val geographicalRegions = geographicalRegionsResolver.resolveGeographicalRegions()
+    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations,
 
     return BlockchainSystem(
       blockchainSystemId,
       blockchainSystemName,
       network,
-      geographicalRegionsResolver.resolveGeographicalRegions(),
+      geographicalRegions,
       blockchainSystemNodes,
-      designBlockchainSystem.specification.numOfRequiredSecurityConfirmations,
+      numReqSecConfirmations,
       transactionSubmissionProcess
     )
   }
