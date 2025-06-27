@@ -15,5 +15,9 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 data class BlockState(
   val block: Block,
   val blockPosition: Long,
-  var blockType: BlockType
-)
+  var blockType: BlockType,
+  val appendedTime: Long,
+) {
+  var isConfirmed: Boolean = false
+  var confirmedTime: Long? = null
+}

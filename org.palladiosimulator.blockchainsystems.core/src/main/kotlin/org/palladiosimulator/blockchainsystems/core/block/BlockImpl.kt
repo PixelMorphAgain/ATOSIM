@@ -3,8 +3,7 @@ package org.palladiosimulator.blockchainsystems.core.block
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
-@JvmRecord
-data class BlockImpl(
+open class BlockImpl(
   override val hash: String,
   override val previousHash: String?,
   override val originId: String?,

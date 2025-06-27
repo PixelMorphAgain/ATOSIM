@@ -9,12 +9,11 @@ import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.mining.BlockMinedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.SimulationMonitor
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
-import org.palladiosimulator.blockchainsystems.core.simulation.termination.abstractions.NodeTerminationState
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
-import org.palladiosimulator.blockchainsystems.core.transaction.propagation.TransactionSentTraceEvent
-import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
+import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionSentTraceEvent
+import org.palladiosimulator.blockchainsystems.threesim.simulation.termination.ThreesimNodeTerminationState
 
 /**
  * Monitor for the 3SIM simulation.
@@ -25,39 +24,39 @@ class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition
 ) : SimulationMonitor {
 
-  private val nodeTerminationStates: MutableMap<String, NodeTerminationState> = HashMap()
+  val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
 
   private val forkedBlocks: MutableSet<Block> = mutableSetOf()
-  private var nodes: MutableSet<BlockchainSystemNode> = mutableSetOf()
-  private val blocksProposedPerNode: CounterMap<String> = CounterMap()
-  private var geographicalRegions: GeographicalRegions? = null
-  private var numberOfSubmittedTransactions: Int = 0
-  private var confirmedTransactionsCounter: ConfirmedTransactionsCounter? = null
+
+  var nodes: MutableSet<BlockchainSystemNode> = mutableSetOf()
+    private set
+
+  var geographicalRegions: GeographicalRegions? = null
+    private set
+
+  var numberOfSubmittedTransactions: Int = 0
+    private set
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
-    confirmedTransactionsCounter = ConfirmedTransactionsCounter(
-      blockchainSystem.numberOfRequiredSecurityConfirmations
-    )
 
-    // TODO: Implement a proper NodeTerminationState for 3SIM
-//    nodes.forEach {
-//      nodeTerminationStates.put(it.id, NodeTerminationState(it))
-//    }
+    nodes.forEach {
+      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it))
+    }
   }
 
-  fun getFinalState(): ThreesimSimulationMonitorState {
-    return ThreesimSimulationMonitorState(
-      forkedBlocks = forkedBlocks,
-      nodes = nodes,
-      blocksProposedPerNode = blocksProposedPerNode,
-      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
-      numberOfSubmittedTransactions = numberOfSubmittedTransactions,
-      numberOfConfirmedTransactions = confirmedTransactionsCounter?.numberOfConfirmedTransactions
-        ?: throw IllegalStateException("confirmedTransactionsCounter not initialized"),
-    )
-  }
+  // TODO: Reimplement
+//  fun getFinalState(): ThreesimSimulationMonitorState {
+//    return ThreesimSimulationMonitorState(
+//      forkedBlocks = forkedBlocks,
+//      nodes = nodes,
+//      blocksProposedPerNode = nodeTerminationStates.mapValues { it.value.blocks. }
+//      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
+//      numberOfSubmittedTransactions = numberOfSubmittedTransactions,
+//      numberOfConfirmedTransactions =
+//    )
+//  }
 
   override fun onTraceEventOccurred(
     event: TraceEvent,
@@ -76,19 +75,11 @@ class ThreesimSimulationMonitor(
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {
         val e = event as BlockAppendedTraceEvent
-        val block = e.appendedBlock
-
-        block.originId?.let { proposingNodeId ->
-          blocksProposedPerNode.increment(proposingNodeId)
-        }
-
-        confirmedTransactionsCounter?.add(block.transactions.size)
-
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
       }
 
       TransactionSentTraceEvent.EVENT_TYPE -> {
-        numberOfSubmittedTransactions += 1
+        numberOfSubmittedTransactions++
       }
 
       MessageDroppedTraceEvent.EVENT_TYPE -> {
@@ -101,6 +92,6 @@ class ThreesimSimulationMonitor(
 
   override fun shouldTerminate(): Boolean {
     // TODO: Implement other termination conditions if needed
-    return maxBlockchainLengthCondition.hasLengthExceeded();
+    return maxBlockchainLengthCondition.hasLengthExceeded()
   }
 }

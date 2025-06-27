@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import kotlin.time.Duration
 
 /**
  * Calculates availability regarding scalability
@@ -15,7 +14,7 @@ import kotlin.time.Duration
  * @author Davis Riedel
  */
 class AvailabilityScalabilityCalculator(
-  private val observationTime: Duration,
+  private val observationTime: Long,
   private val numberOfConfirmedTransactions: Int,
   private val numberOfTransactions: Int
 ) : OutputMetricCalculator<AvailabilityScalability> {
@@ -27,9 +26,7 @@ class AvailabilityScalabilityCalculator(
   companion object : OutputMetricAverageCalculator<AvailabilityScalability> {
     override fun calculateAverage(measurements: List<AvailabilityScalability>): AvailabilityScalability {
       val avgValue = measurements.sumOf { it.value } / measurements.size
-      val avgObservationTime = measurements
-        .map { it.observationTime }
-        .reduce(Duration::plus) / measurements.size
+      val avgObservationTime = measurements.sumOf { it.observationTime } / measurements.size
       return AvailabilityScalability(avgValue, avgObservationTime)
     }
   }

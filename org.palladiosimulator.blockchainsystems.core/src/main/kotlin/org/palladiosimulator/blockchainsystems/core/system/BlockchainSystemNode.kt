@@ -32,7 +32,7 @@ class BlockchainSystemNode(
   val resourcePower: Double,
   private val miningProcess: MiningProcess,
   private val transactionSelectionProcess: TransactionSelectionProcess,
-  private val blockchain: Blockchain,
+  val blockchain: Blockchain,
   private val blockValidator: BlockValidator,
   private val trxMemPool: TrxMemPool,
   private val orphanBlockPool: OrphanBlockPool,

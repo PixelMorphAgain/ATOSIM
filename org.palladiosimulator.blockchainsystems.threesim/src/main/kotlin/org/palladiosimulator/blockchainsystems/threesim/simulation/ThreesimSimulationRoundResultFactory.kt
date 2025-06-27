@@ -1,45 +1,57 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
-import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilityScalabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.CensorshipResistanceCalculator
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.GeographicalDiversityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ShannonEntropyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
-import kotlin.time.Duration
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 
+/**
+ * Factory for creating a [ThreesimSimulationRoundResult] based on the current state of the simulation.
+ *
+ * @author Davis Riedel
+ */
 class ThreesimSimulationRoundResultFactory(
   private val monitor: ThreesimSimulationMonitor
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-    val state = monitor.getFinalState()
+
+    // TODO: We have an output set for each node!!! Change this!!!
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
 
         GeographicalDiversityCalculator(
-          numberOfNodes = state.nodes.size,
-          numberOfRegions = state.geographicalRegions.getNumberOfRegions(),
-          numberOfNodesPerRegion = state.nodes
+          numberOfNodes = monitor.nodes.size,
+          numberOfRegions = monitor.geographicalRegions?.getNumberOfRegions() ?: 0,
+          numberOfNodesPerRegion = monitor.nodes
             .groupingBy { it.geographicalRegion.region }
             .eachCount().values
         ).calculate(),
 
         ShannonEntropyCalculator(
           k = 1.0, // TODO: Make k configurable
-          totalBlocksProposedPerNode = state.blocksProposedPerNode.getValues()
+          totalBlocksProposedPerNode = monitor.nodeTerminationStates.values.map { it.blocksProposedByNode }
         ).calculate(),
 
         CensorshipResistanceCalculator(
-          hashPowerPerNode = state.nodes.map { it.resourcePower }
+          hashPowerPerNode = monitor.nodes.map { it.resourcePower }
         ).calculate(),
 
         AvailabilityScalabilityCalculator(
-          observationTime = Duration.ZERO, // TODO: Get the actual observation time from the simulation state
-          numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
-          numberOfTransactions = state.numberOfSubmittedTransactions
-        ).calculate()
+          observationTime = 0, // TODO: Get the actual observation time from the simulation state
+          // TODO: We are only considering the first node. The chain that most nodes agree upon should be used!!!
+          numberOfConfirmedTransactions = monitor.nodeTerminationStates.values.firstOrNull()
+            ?.calculateNumberOfConfirmedTransactions() ?: 0,
+          numberOfTransactions = monitor.numberOfSubmittedTransactions
+        ).calculate(),
+
+        AverageConfirmationLatencyCalculator(
+          // TODO: We are calculating the average for all nodes now. Maybe some metrics should be output per node?
+          monitor.nodeTerminationStates.values.flatMap { it.calculateTransactionConfirmationDurations().values },
+        ).calculate(),
 
         // TODO: Implement other metrics
 

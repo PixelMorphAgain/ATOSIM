@@ -3,26 +3,26 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import kotlin.time.Duration
 
 /**
- * Calculates average confirmation latency
+ * Calculates average confirmation latency that occurred during a single simulation round.
  *
- * @property timeSlices each item is a duration between inclusion and completion of a transaction
+ * @property timeSlices each item is a duration between inclusion and confirmation of a transaction
  *
  * @author Davis Riedel
  */
 class AverageConfirmationLatencyCalculator(
-  private val timeSlices: List<Duration>
+  private val timeSlices: List<Long>
 ) : OutputMetricCalculator<AverageConfirmationLatency> {
   override fun calculate(): AverageConfirmationLatency {
-    val sum = timeSlices.reduce(Duration::plus)
-    return AverageConfirmationLatency(sum)
+    return AverageConfirmationLatency(
+      timeSlices.sum() / timeSlices.size
+    )
   }
 
   companion object : OutputMetricAverageCalculator<AverageConfirmationLatency> {
     override fun calculateAverage(measurements: List<AverageConfirmationLatency>): AverageConfirmationLatency {
-      val avgValue = measurements.map { it.value }.reduce(Duration::plus) / measurements.size
+      val avgValue = measurements.sumOf { it.value } / measurements.size
       return AverageConfirmationLatency(avgValue)
     }
   }

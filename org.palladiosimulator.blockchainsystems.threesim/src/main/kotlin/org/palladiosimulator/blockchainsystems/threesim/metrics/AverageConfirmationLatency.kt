@@ -1,7 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
  * Average confirmation latency
@@ -9,11 +8,11 @@ import kotlin.time.Duration
  * @author Davis Riedel
  */
 class AverageConfirmationLatency(
-  value: Duration
-) : OutputMetric<Duration>(value) {
+  value: Double
+) : OutputMetric<Double>(value) {
   companion object {
     const val NAME = "AverageConfirmationLatency"
   }
 
-  override val name: String = AvailabilitySecurity.Companion.NAME
+  override val name: String = NAME
 }
