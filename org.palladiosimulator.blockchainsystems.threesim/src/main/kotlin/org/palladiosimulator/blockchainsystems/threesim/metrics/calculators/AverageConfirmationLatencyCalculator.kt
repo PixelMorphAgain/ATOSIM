@@ -12,7 +12,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 class AverageConfirmationLatencyCalculator(
-  private val timeSlices: List<Long>
+  private val timeSlices: List<Long> // Each time slice contains blockConfirmationTime - blockProposalTime
 ) : OutputMetricCalculator<AverageConfirmationLatency> {
   override fun calculate(): AverageConfirmationLatency {
     return AverageConfirmationLatency(

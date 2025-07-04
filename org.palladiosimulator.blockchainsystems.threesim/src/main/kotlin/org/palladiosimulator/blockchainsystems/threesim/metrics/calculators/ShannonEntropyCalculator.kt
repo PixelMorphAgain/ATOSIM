@@ -9,18 +9,18 @@ import kotlin.math.ln
  * Calculates Shannon Entropy
  *
  * @property k the constant factor k of the Shannon Entropy
- * @property totalBlocksProposedPerNode stores for each node i the amount of blocks proposed by i
+ * @property blocksProposedPerNode stores for each node i the amount of blocks proposed by i
  *
  * @author Davis Riedel
  */
 class ShannonEntropyCalculator(
   private val k: Double,
-  private val totalBlocksProposedPerNode: Array<Int>
+  private val blocksProposedPerNode: Array<Int>
 ) : OutputMetricCalculator<ShannonEntropy> {
   override fun calculate(): ShannonEntropy {
-    val totalProposedBlocks = totalBlocksProposedPerNode.sum();
-    val sum = totalBlocksProposedPerNode.sumOf {
-      val b = it.toDouble() / totalProposedBlocks
+    val totalNumOfBlocksProposed = blocksProposedPerNode.sum();
+    val sum = blocksProposedPerNode.sumOf {
+      val b = it.toDouble() / totalNumOfBlocksProposed // Probability of block proposed by node i
       b * ln(b)
     }
     val result = -1 * k * sum

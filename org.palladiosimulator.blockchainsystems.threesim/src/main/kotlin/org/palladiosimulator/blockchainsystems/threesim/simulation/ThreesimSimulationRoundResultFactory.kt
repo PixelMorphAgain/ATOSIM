@@ -1,12 +1,8 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilityScalabilityCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.CensorshipResistanceCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.*
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.GeographicalDiversityCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ShannonEntropyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 
 /**
  * Factory for creating a [ThreesimSimulationRoundResult] based on the current state of the simulation.
@@ -20,8 +16,19 @@ class ThreesimSimulationRoundResultFactory(
 
     // TODO: We have an output set for each node!!! Change this!!!
 
+    // TODO: We are only considering the first node. The chain that most nodes agree upon should be used!!!
+    val numberOfConfirmedTransactions = monitor.nodeTerminationStates.values.firstOrNull()
+      ?.calculateNumberOfConfirmedTransactions() ?: 0
+
+    val observationTime = 0 // TODO: Get the actual observation time from the simulation state
+
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
+
+        ShannonEntropyCalculator(
+          k = 1.0, // TODO: Make k configurable
+          blocksProposedPerNode = monitor.nodeTerminationStates.values.map { it.blocksProposedByNode }
+        ),
 
         GeographicalDiversityCalculator(
           numberOfNodes = monitor.nodes.size,
@@ -29,31 +36,58 @@ class ThreesimSimulationRoundResultFactory(
           numberOfNodesPerRegion = monitor.nodes
             .groupingBy { it.geographicalRegion.region }
             .eachCount().values
-        ).calculate(),
+        ),
 
-        ShannonEntropyCalculator(
-          k = 1.0, // TODO: Make k configurable
-          totalBlocksProposedPerNode = monitor.nodeTerminationStates.values.map { it.blocksProposedByNode }
-        ).calculate(),
+        NakamotoCoefficientCalculator(
+          monitor.nodes.map { it.resourcePower },
+          threshold = 0.51 // TODO: Make threshold configurable
+        ),
 
-        CensorshipResistanceCalculator(
-          hashPowerPerNode = monitor.nodes.map { it.resourcePower }
-        ).calculate(),
+        HerfindahlHirschmanIndexCalculator(
+
+        ),
+
+        GiniCoefficientCalculator(
+
+        ),
 
         AvailabilityScalabilityCalculator(
-          observationTime = 0, // TODO: Get the actual observation time from the simulation state
-          // TODO: We are only considering the first node. The chain that most nodes agree upon should be used!!!
-          numberOfConfirmedTransactions = monitor.nodeTerminationStates.values.firstOrNull()
-            ?.calculateNumberOfConfirmedTransactions() ?: 0,
+          observationTime = observationTime,
+          numberOfConfirmedTransactions = numberOfConfirmedTransactions,
           numberOfTransactions = monitor.numberOfSubmittedTransactions
-        ).calculate(),
+        ),
 
         AverageConfirmationLatencyCalculator(
           // TODO: We are calculating the average for all nodes now. Maybe some metrics should be output per node?
           monitor.nodeTerminationStates.values.flatMap { it.calculateTransactionConfirmationDurations().values },
-        ).calculate(),
+        ),
 
-        // TODO: Implement other metrics
+        AverageThroughputCalculator(
+          numberOfConfirmedTransactions = numberOfConfirmedTransactions,
+          observationTime = observationTime
+        ),
+
+
+        AvailabilitySecurityCalculator(
+
+        ),
+
+        ConsistencyCalculator(
+          // TODO: Implement
+          blockConfirmationTimePerConfirmedBlock = listOf(),
+          blockProposalTimePerConfirmedBlock = listOf(),
+        ),
+
+        CensorshipResistanceCalculator(
+          hashPowerPerNode = monitor.nodes.map { it.resourcePower }
+        ),
+
+
+        StaleBlockRateCalculator(
+
+        )
+
+        // TODO Implement other metrics
 
       )
     )

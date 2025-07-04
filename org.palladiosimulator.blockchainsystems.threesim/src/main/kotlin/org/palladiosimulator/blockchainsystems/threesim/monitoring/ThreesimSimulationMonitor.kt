@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.monitoring
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.AppendedBlock
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
@@ -21,7 +22,8 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.termination.T
  * @author Davis Riedel
  */
 class ThreesimSimulationMonitor(
-  private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition
+  private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition,
+  private val numberOfRequiredSecurityConfirmations: Int
 ) : SimulationMonitor {
 
   val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
@@ -42,12 +44,15 @@ class ThreesimSimulationMonitor(
     geographicalRegions = blockchainSystem.geographicalRegions
 
     nodes.forEach {
-      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it))
+      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it, numberOfRequiredSecurityConfirmations))
     }
   }
 
   // TODO: Reimplement
-//  fun getFinalState(): ThreesimSimulationMonitorState {
+  fun getFinalState(): ThreesimSimulationMonitorState {
+    val canonicalChain = getCanonicalChain() ?: throw IllegalStateException("No canonical chain found")
+    val numberOfConfirmedTransactions = calculateNumberOfConfirmedTransactions(canonicalChain)
+
 //    return ThreesimSimulationMonitorState(
 //      forkedBlocks = forkedBlocks,
 //      nodes = nodes,
@@ -56,7 +61,7 @@ class ThreesimSimulationMonitor(
 //      numberOfSubmittedTransactions = numberOfSubmittedTransactions,
 //      numberOfConfirmedTransactions =
 //    )
-//  }
+  }
 
   override fun onTraceEventOccurred(
     event: TraceEvent,
@@ -94,4 +99,35 @@ class ThreesimSimulationMonitor(
     // TODO: Implement other termination conditions if needed
     return maxBlockchainLengthCondition.hasLengthExceeded()
   }
+
+  fun getCanonicalChain(): List<AppendedBlock>? {
+    return nodes
+      .map { node ->
+        // longest chain of each node, associated by the last block in the chain
+        node.blockchain.getLongestChains().associateBy { it.last() }
+      }
+      // count how many nodes have a longest chain ending with the same block
+      // returns a map where the last block of a longest chain is the key and the value is a pair of the corresponding longest chain (first found is used)
+      // and the number of nodes that have this chain
+      .fold(emptyMap<AppendedBlock, Pair<List<AppendedBlock>, Int>>()) { acc, map ->
+        map.forEach {
+          if (acc.containsKey(it.key)) {
+            acc[it.key] = Pair(acc[it.key]!!.first, acc[it.key]!!.second + 1)
+          } else {
+            acc[it.key] = Pair(it.value, 1)
+          }
+        }
+        acc
+      }
+      // find the longest chain that is present in the most nodes
+      .maxByOrNull { it.value.second }
+      ?.value?.first
+  }
+
+  fun calculateNumberOfConfirmedTransactions(blockchain: List<AppendedBlock>): Int {
+    return blockchain
+      .take(blockchain.size - numberOfRequiredSecurityConfirmations)
+      .sumOf { it.transactions.size }
+  }
+
 }

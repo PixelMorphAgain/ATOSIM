@@ -47,7 +47,7 @@ interface ReadonlyBlockchain {
    *
    * @return length of the blockchain
    */
-  fun length(): Long
+  fun getLength(): Long
 
   /**
    * Check if there is a block with the specified hash in the blockchain.

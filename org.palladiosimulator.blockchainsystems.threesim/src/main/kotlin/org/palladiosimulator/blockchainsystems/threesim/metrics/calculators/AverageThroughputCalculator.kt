@@ -3,27 +3,21 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
 
 /**
  * Calculates throughput
  *
- * @property numberOfSuccessfulTransactions number of successfully processed transactions
- * @property blockConfirmationTime system time to confirm a new block
- * @property blockProposalTime system time to issue new block
+ * @property numberOfConfirmedTransactions number of successfully processed transactions
+ * @property observationTime observation time, here equal to the duration of the simulation run
  *
  * @author Davis Riedel
  */
-class ThroughputCalculator(
-  private val numberOfSuccessfulTransactions: Int,
-  private val blockConfirmationTime: Duration,
-  private val blockProposalTime: Duration,
+class AverageThroughputCalculator(
+  private val numberOfConfirmedTransactions: Int,
+  private val observationTime: Long,
 ) : OutputMetricCalculator<Throughput> {
   override fun calculate(): Throughput {
-    // TODO: Are milliseconds the right duration unit?
-    val t =
-      numberOfSuccessfulTransactions.toDouble() / (blockConfirmationTime.minus(blockProposalTime)).toDouble(DurationUnit.MILLISECONDS)
+    val t = numberOfConfirmedTransactions.toDouble() / observationTime.toDouble()
     return Throughput(t)
   }
 

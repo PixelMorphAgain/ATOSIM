@@ -7,22 +7,27 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 /**
  * Calculates the Nakamoto coefficient
  *
- * @property tokensStakedPerNode stores for each node i how many tokens i has staked
+ * @property hashingPowerPerNode the hashing power of each validating node in the system
  * @property threshold the threshold to compute the Nakamoto coefficient for
  *
  * @author Davis Riedel
  */
 class NakamotoCoefficientCalculator(
-  private val tokensStakedPerNode: Array<Double>,
+  private val hashingPowerPerNode: Array<Double>,
   private val threshold: Double
 ) : OutputMetricCalculator<NakamotoCoefficient> {
   override fun calculate(): NakamotoCoefficient {
-    tokensStakedPerNode.indices.forEach { k ->
-      val sum = (1..k).sumOf { tokensStakedPerNode[it] }
-      if (sum >= threshold) return NakamotoCoefficient(k, threshold);
-    }
-    // NOTE: Should not be reached
-    return NakamotoCoefficient(tokensStakedPerNode.count(), threshold)
+    val totalHashingPower = hashingPowerPerNode.sum()
+    if (totalHashingPower == 0.0) return NakamotoCoefficient(0.0, threshold)
+
+    val sortedHashingPowers = hashingPowerPerNode.sortedDescending()
+
+    val coefficient = sortedHashingPowers
+      .runningReduce { acc, d -> acc + d } // Calculate cumulative hashing power for each entry
+      .indexOfFirst { it / totalHashingPower >= threshold } // Find first index where cumulative hashing power >= threshold
+      .let { if (it == -1) sortedHashingPowers.size else it + 1 } // +1 because index is 0-based. If not found, return size of array.
+
+    return NakamotoCoefficient(coefficient, threshold)
   }
 
   companion object : OutputMetricAverageCalculator<NakamotoCoefficient> {

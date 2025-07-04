@@ -26,10 +26,9 @@ class BlockchainImpl(
   private val blockchainElementsMap: HashMap<String, BlockchainElement> =
     hashMapOf(Pair(genesisBlock.block.hash, genesisBlock))
 
-  var length: Long = INITIAL_BLOCKCHAIN_LENGTH
-    private set
+  private var length: Long = INITIAL_BLOCKCHAIN_LENGTH
 
-  override fun dispatchEvent(event: Event?) {
+  override fun dispatchEvent(event: Event) {
   }
 
   override fun getLastBlocksOfLongestChains(): Set<Block> {
@@ -284,7 +283,7 @@ class BlockchainImpl(
       .toSet()
   }
 
-  override fun length(): Long {
+  override fun getLength(): Long {
     return this.length
   }
 

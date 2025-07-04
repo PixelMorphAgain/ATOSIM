@@ -86,20 +86,20 @@ class ThreesimNodeTerminationState(
 //    return forkedBlocks.all { node.blockchain.hasBlockWithHash(it.hash) }
 //  }
 
-  fun calculateNumberOfConfirmedTransactions(): Int {
-    var numberOfConfirmedTransactions = 0
-
-    // TODO: We are only looking at one longest chain here, maybe instead consider the chain all agree upon???
-    node.blockchain.getLongestChains().firstOrNull()?.let { chain ->
-      val lastConfirmedBlockPos = chain.size - numberOfRequiredSecurityConfirmations
-      for (i in 0 until lastConfirmedBlockPos) {
-        val block = chain[i]
-        numberOfConfirmedTransactions += block.transactions.size
-      }
-    }
-
-    return numberOfConfirmedTransactions
-  }
+//  fun calculateNumberOfConfirmedTransactions(): Int {
+//    var numberOfConfirmedTransactions = 0
+//
+//    // TODO: We are only looking at one longest chain here, maybe instead consider the chain all agree upon???
+//    node.blockchain.getLongestChains().firstOrNull()?.let { chain ->
+//      val lastConfirmedBlockPos = chain.size - numberOfRequiredSecurityConfirmations
+//      for (i in 0 until lastConfirmedBlockPos) {
+//        val block = chain[i]
+//        numberOfConfirmedTransactions += block.transactions.size
+//      }
+//    }
+//
+//    return numberOfConfirmedTransactions
+//  }
 
   fun calculateTransactionConfirmationDurations(): Map<Transaction, Long> {
     val transactionConfirmationDurations = HashMap<Transaction, Long>()

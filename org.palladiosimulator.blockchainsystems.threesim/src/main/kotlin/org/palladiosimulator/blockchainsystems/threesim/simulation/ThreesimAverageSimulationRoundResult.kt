@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 import org.palladiosimulator.blockchainsystems.threesim.metrics.*
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.*
@@ -41,7 +40,7 @@ class ThreesimAverageSimulationRoundResult(
             Reliability.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
             ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
             StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
-            Throughput.NAME -> ThroughputCalculator.calculateAverage(it.value as List<Throughput>)
+            Throughput.NAME -> AverageThroughputCalculator.calculateAverage(it.value as List<Throughput>)
             else -> null
           }
         }

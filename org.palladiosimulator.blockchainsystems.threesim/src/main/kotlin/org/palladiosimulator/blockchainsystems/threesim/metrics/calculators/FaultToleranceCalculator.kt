@@ -11,8 +11,8 @@ import kotlin.time.Duration
  * @author Davis Riedel
  */
 class FaultToleranceCalculator(
-  private val throughputCalculatorWithoutFailedNodes: ThroughputCalculator,
-  private val throughputCalculatorWithFailedNodes: ThroughputCalculator,
+  private val throughputCalculatorWithoutFailedNodes: AverageThroughputCalculator,
+  private val throughputCalculatorWithFailedNodes: AverageThroughputCalculator,
   private val confirmationLatencyCalculatorWithoutFailedNodes: ConfirmationLatencyCalculator,
   private val confirmationLatencyCalculatorWithFailedNodes: ConfirmationLatencyCalculator
 ) : OutputMetricCalculator<FaultTolerance> {
