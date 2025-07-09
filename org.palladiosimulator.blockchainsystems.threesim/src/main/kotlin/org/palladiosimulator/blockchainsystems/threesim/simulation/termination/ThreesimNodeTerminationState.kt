@@ -100,22 +100,22 @@ class ThreesimNodeTerminationState(
 //
 //    return numberOfConfirmedTransactions
 //  }
-
-  fun calculateTransactionConfirmationDurations(): Map<Transaction, Long> {
-    val transactionConfirmationDurations = HashMap<Transaction, Long>()
-
-    node.blockchain.getLongestChains().forEach { chain ->
-      val lastConfirmedBlockPos = chain.size - numberOfRequiredSecurityConfirmations
-      for (i in 0 until lastConfirmedBlockPos) {
-        val block = chain[i]
-        val confirmationTime = chain[i + numberOfRequiredSecurityConfirmations].appendedTimestamp
-
-        block.transactions.forEach {
-          transactionConfirmationDurations[it] = confirmationTime - it.creationTime
-        }
-      }
-    }
-
-    return transactionConfirmationDurations
-  }
+//
+//  fun calculateTransactionConfirmationDurations(): Map<Transaction, Long> {
+//    val transactionConfirmationDurations = HashMap<Transaction, Long>()
+//
+//    node.blockchain.getLongestChains().forEach { chain ->
+//      val lastConfirmedBlockPos = chain.size - numberOfRequiredSecurityConfirmations
+//      for (i in 0 until lastConfirmedBlockPos) {
+//        val block = chain[i]
+//        val confirmationTime = chain[i + numberOfRequiredSecurityConfirmations].appendedTimestamp
+//
+//        block.transactions.forEach {
+//          transactionConfirmationDurations[it] = confirmationTime - it.creationTime
+//        }
+//      }
+//    }
+//
+//    return transactionConfirmationDurations
+//  }
 }

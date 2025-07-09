@@ -22,7 +22,9 @@ class ThreesimSimulationRound(
     )
   )
 
-  override fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-    return ThreesimSimulationRoundResultFactory(monitor).createSimulationRoundResult()
+  override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
+    return ThreesimSimulationRoundResultFactory(
+      monitor, finalSystemTime
+    ).createSimulationRoundResult()
   }
 }

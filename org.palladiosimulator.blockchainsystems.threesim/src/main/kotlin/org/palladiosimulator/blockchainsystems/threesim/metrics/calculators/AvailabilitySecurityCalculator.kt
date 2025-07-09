@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import kotlin.time.Duration
 
 /**
  * Calculates availability regarding security
@@ -14,13 +13,13 @@ import kotlin.time.Duration
  * @author Davis Riedel
  */
 class AvailabilitySecurityCalculator(
-  private val meanTimeToFailure: Duration,
-  private val meanTimeToRepair: Duration,
+  private val meanTimeToFailure: Long,
+  private val meanTimeToRepair: Long,
 ) : OutputMetricCalculator<AvailabilitySecurity> {
   override fun calculate(): AvailabilitySecurity {
     // average time between consecutive failures
-    val meanTimeBetweenFailure = meanTimeToFailure.plus(meanTimeToRepair)
-    val a = meanTimeToFailure.div(meanTimeBetweenFailure)
+    val meanTimeBetweenFailure = meanTimeToFailure + meanTimeToRepair
+    val a = meanTimeToFailure / meanTimeBetweenFailure
     return AvailabilitySecurity(a)
   }
 

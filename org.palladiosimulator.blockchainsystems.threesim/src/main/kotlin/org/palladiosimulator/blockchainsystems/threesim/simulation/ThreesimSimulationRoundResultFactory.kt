@@ -10,85 +10,83 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetr
  * @author Davis Riedel
  */
 class ThreesimSimulationRoundResultFactory(
-  private val monitor: ThreesimSimulationMonitor
+  private val monitor: ThreesimSimulationMonitor,
+  private val finalSystemTime: Long,
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
 
-    // TODO: We have an output set for each node!!! Change this!!!
-
-    // TODO: We are only considering the first node. The chain that most nodes agree upon should be used!!!
-    val numberOfConfirmedTransactions = monitor.nodeTerminationStates.values.firstOrNull()
-      ?.calculateNumberOfConfirmedTransactions() ?: 0
-
-    val observationTime = 0 // TODO: Get the actual observation time from the simulation state
+    val state = monitor.getFinalState()
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
 
         ShannonEntropyCalculator(
           k = 1.0, // TODO: Make k configurable
-          blocksProposedPerNode = monitor.nodeTerminationStates.values.map { it.blocksProposedByNode }
+          blocksProposedPerNode = state.blocksProposedPerNode
         ),
 
         GeographicalDiversityCalculator(
-          numberOfNodes = monitor.nodes.size,
-          numberOfRegions = monitor.geographicalRegions?.getNumberOfRegions() ?: 0,
-          numberOfNodesPerRegion = monitor.nodes
-            .groupingBy { it.geographicalRegion.region }
-            .eachCount().values
+          numberOfNodes = state.nodes.size,
+          numberOfRegions = state.geographicalRegions.getNumberOfRegions(),
+          numberOfNodesPerRegion = state.numberOfNodesPerRegion
         ),
 
         NakamotoCoefficientCalculator(
-          monitor.nodes.map { it.resourcePower },
+          state.hashPowerPerNode,
           threshold = 0.51 // TODO: Make threshold configurable
         ),
 
         HerfindahlHirschmanIndexCalculator(
-
+          tokensHeldPerNode = state.tokensHeldPerNode
         ),
 
         GiniCoefficientCalculator(
-
+          tokensHeldPerNode = state.tokensHeldPerNode
         ),
 
         AvailabilityScalabilityCalculator(
-          observationTime = observationTime,
-          numberOfConfirmedTransactions = numberOfConfirmedTransactions,
-          numberOfTransactions = monitor.numberOfSubmittedTransactions
+          observationTime = finalSystemTime,
+          numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
+          numberOfTransactions = state.numberOfSubmittedTransactions
         ),
 
         AverageConfirmationLatencyCalculator(
-          // TODO: We are calculating the average for all nodes now. Maybe some metrics should be output per node?
-          monitor.nodeTerminationStates.values.flatMap { it.calculateTransactionConfirmationDurations().values },
+          state.transactionConfirmationDurations
         ),
 
         AverageThroughputCalculator(
-          numberOfConfirmedTransactions = numberOfConfirmedTransactions,
-          observationTime = observationTime
+          numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
+          observationTime = finalSystemTime
         ),
 
-
         AvailabilitySecurityCalculator(
-
+          meanTimeToFailure = state.meanTimeToFailure,
+          meanTimeToRepair = state.meanTimeToRepair
         ),
 
         ConsistencyCalculator(
-          // TODO: Implement
-          blockConfirmationTimePerConfirmedBlock = listOf(),
-          blockProposalTimePerConfirmedBlock = listOf(),
+          blockConfirmationTimePerConfirmedBlock = state.blockConfirmationTimePerConfirmedBlock,
+          blockProposalTimePerConfirmedBlock = state.blockProposalTimePerConfirmedBlock,
         ),
 
-        CensorshipResistanceCalculator(
-          hashPowerPerNode = monitor.nodes.map { it.resourcePower }
+        FaultToleranceCalculator(
+          throughputCalculatorWithoutFailedNodes = TODO(),
+          throughputCalculatorWithFailedNodes = TODO(),
+          confirmationLatencyCalculatorWithoutFailedNodes = TODO(),
+          confirmationLatencyCalculatorWithFailedNodes = TODO()
         ),
 
+        ReliabilityCalculator(
+          totalOperatingTime = finalSystemTime,
+          meanTimeBetweenFailures = state.meanTimeToFailure
+        ),
 
         StaleBlockRateCalculator(
-
+          numberOfStaleBlocks = state.numberOfStaleBlocks,
+          numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
         )
 
-        // TODO Implement other metrics
-
+        // Cost of Attack and Censorship Resistance not implemented (not part of the paper)
       )
     )
   }

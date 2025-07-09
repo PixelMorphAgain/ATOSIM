@@ -1,7 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
  * Fault tolerance
@@ -11,8 +10,8 @@ import kotlin.time.Duration
  * @author Davis Riedel
  */
 class FaultTolerance(
-  value: Pair<Double, Duration>
-) : OutputMetric<Pair<Double, Duration>>(value) {
+  value: Pair<Double, Double>
+) : OutputMetric<Pair<Double, Double>>(value) {
   companion object {
     const val NAME = "FaultTolerance"
   }

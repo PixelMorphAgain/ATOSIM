@@ -8,18 +8,18 @@ import kotlin.math.abs
 /**
  * Calculates the Gini coefficient
  *
- * @property tokensOwnedPerMiner stores for each miner i how much tokens i has staked
+ * @property tokensHeldPerNode stores for each miner i how much tokens i owns
  *
  * @author Davis Riedel
  */
 class GiniCoefficientCalculator(
-  private val tokensOwnedPerMiner: Array<Double>
+  private val tokensHeldPerNode: Array<Double>
 ) : OutputMetricCalculator<GiniCoefficient> {
   override fun calculate(): GiniCoefficient {
-    val sum = tokensOwnedPerMiner.sumOf { pi ->
-      tokensOwnedPerMiner.sumOf { pj -> abs(pi - pj) }
+    val sum = tokensHeldPerNode.sumOf { pi ->
+      tokensHeldPerNode.sumOf { pj -> abs(pi - pj) }
     }
-    val gini = sum / (2 * tokensOwnedPerMiner.count())
+    val gini = sum / (2 * tokensHeldPerNode.count())
     return GiniCoefficient(gini)
   }
 

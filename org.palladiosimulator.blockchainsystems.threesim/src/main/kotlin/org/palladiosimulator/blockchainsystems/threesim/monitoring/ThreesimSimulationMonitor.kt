@@ -26,18 +26,15 @@ class ThreesimSimulationMonitor(
   private val numberOfRequiredSecurityConfirmations: Int
 ) : SimulationMonitor {
 
-  val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
+  private val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
 
   private val forkedBlocks: MutableSet<Block> = mutableSetOf()
 
-  var nodes: MutableSet<BlockchainSystemNode> = mutableSetOf()
-    private set
+  private var nodes: MutableSet<BlockchainSystemNode> = mutableSetOf()
 
-  var geographicalRegions: GeographicalRegions? = null
-    private set
+  private var geographicalRegions: GeographicalRegions? = null
 
-  var numberOfSubmittedTransactions: Int = 0
-    private set
+  private var numberOfSubmittedTransactions: Int = 0
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
@@ -48,19 +45,30 @@ class ThreesimSimulationMonitor(
     }
   }
 
-  // TODO: Reimplement
   fun getFinalState(): ThreesimSimulationMonitorState {
     val canonicalChain = getCanonicalChain() ?: throw IllegalStateException("No canonical chain found")
     val numberOfConfirmedTransactions = calculateNumberOfConfirmedTransactions(canonicalChain)
+    val numberOfNodesPerRegion = nodes
+      .groupingBy { it.geographicalRegion.region }
+      .eachCount().values
 
-//    return ThreesimSimulationMonitorState(
-//      forkedBlocks = forkedBlocks,
-//      nodes = nodes,
-//      blocksProposedPerNode = nodeTerminationStates.mapValues { it.value.blocks. }
-//      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
-//      numberOfSubmittedTransactions = numberOfSubmittedTransactions,
-//      numberOfConfirmedTransactions =
-//    )
+    return ThreesimSimulationMonitorState(
+      forkedBlocks = forkedBlocks,
+      nodes = nodes,
+      hashPowerPerNode = nodes.map { it.resourcePower },
+      blocksProposedPerNode = nodeTerminationStates.mapValues { it.value.blocksProposedByNode },
+      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
+      numberOfNodesPerRegion = numberOfNodesPerRegion,
+      numberOfSubmittedTransactions = numberOfSubmittedTransactions,
+      numberOfConfirmedTransactions = numberOfConfirmedTransactions,
+      transactionConfirmationDurations = TODO(), // TODO: Calculate transaction confirmation durations
+      blockConfirmationTimePerConfirmedBlock = TODO(),
+      blockProposalTimePerConfirmedBlock = TODO(),
+      meanTimeToFailure = TODO(),
+      meanTimeToRepair = TODO(),
+      numberOfStaleBlocks = TODO(), // TODO: What is the number of queued blocks?
+      numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(canonicalChain)
+    )
   }
 
   override fun onTraceEventOccurred(
@@ -124,10 +132,14 @@ class ThreesimSimulationMonitor(
       ?.value?.first
   }
 
-  fun calculateNumberOfConfirmedTransactions(blockchain: List<AppendedBlock>): Int {
-    return blockchain
-      .take(blockchain.size - numberOfRequiredSecurityConfirmations)
-      .sumOf { it.transactions.size }
+  fun calculateNumberOfConfirmedBlocks(blockchain: List<AppendedBlock>): Int {
+    return blockchain.size - numberOfRequiredSecurityConfirmations
   }
 
+  fun calculateNumberOfConfirmedTransactions(blockchain: List<AppendedBlock>): Int {
+    val numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(blockchain)
+    return blockchain
+      .take(numberOfConfirmedBlocks)
+      .sumOf { it.transactions.size }
+  }
 }

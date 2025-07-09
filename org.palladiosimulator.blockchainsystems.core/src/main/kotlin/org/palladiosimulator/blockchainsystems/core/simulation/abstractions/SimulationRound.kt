@@ -52,8 +52,8 @@ abstract class SimulationRound<R : SimulationRoundResult>(
     // Clean up log outputs
     logOutputs.forEach { it.cleanUp() }
 
-    return createSimulationRoundResult()
+    return createSimulationRoundResult(clock.currentTime)
   }
 
-  abstract fun createSimulationRoundResult(): R
+  abstract fun createSimulationRoundResult(finalSystemTime: Long): R
 }
