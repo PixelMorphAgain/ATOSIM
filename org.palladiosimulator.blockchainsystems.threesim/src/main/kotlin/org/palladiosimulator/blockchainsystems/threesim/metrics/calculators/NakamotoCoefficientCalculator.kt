@@ -13,12 +13,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 class NakamotoCoefficientCalculator(
-  private val hashingPowerPerNode: Array<Double>,
+  private val hashingPowerPerNode: Collection<Double>,
   private val threshold: Double
 ) : OutputMetricCalculator<NakamotoCoefficient> {
   override fun calculate(): NakamotoCoefficient {
     val totalHashingPower = hashingPowerPerNode.sum()
-    if (totalHashingPower == 0.0) return NakamotoCoefficient(0.0, threshold)
+    if (totalHashingPower == 0.0) return NakamotoCoefficient(0, threshold)
 
     val sortedHashingPowers = hashingPowerPerNode.sortedDescending()
 

@@ -11,15 +11,17 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
  * @author Davis Riedel
  */
 class ThreesimSingleSimulation(
-  val blockchainSystemFactory: BlockchainSystemFactory,
-  val logOutputProvider: LogOutputProvider,
-  val maxAllowedBlockchainLength: Long,
+  private val blockchainSystemFactory: BlockchainSystemFactory,
+  private val logOutputProvider: LogOutputProvider,
+  private val maxAllowedBlockchainLength: Long,
+  private val numberOfRequiredSecurityConfirmations: Int
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
     val result = ThreesimSimulationRound(
       blockchainSystemFactory.createBlockchainSystem(),
       logOutputProvider.logOutputs,
-      maxAllowedBlockchainLength
+      maxAllowedBlockchainLength,
+      numberOfRequiredSecurityConfirmations
     ).run();
 
     return ThreesimSingleSimulationResult(result);

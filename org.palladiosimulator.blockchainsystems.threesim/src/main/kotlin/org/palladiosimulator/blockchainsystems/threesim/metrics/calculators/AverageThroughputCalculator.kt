@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
-import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
+import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageThroughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 
@@ -15,15 +15,15 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 class AverageThroughputCalculator(
   private val numberOfConfirmedTransactions: Int,
   private val observationTime: Long,
-) : OutputMetricCalculator<Throughput> {
-  override fun calculate(): Throughput {
+) : OutputMetricCalculator<AverageThroughput> {
+  override fun calculate(): AverageThroughput {
     val t = numberOfConfirmedTransactions.toDouble() / observationTime.toDouble()
-    return Throughput(t)
+    return AverageThroughput(t)
   }
 
-  companion object : OutputMetricAverageCalculator<Throughput> {
-    override fun calculateAverage(measurements: List<Throughput>): Throughput {
-      return Throughput(measurements.sumOf { it.value } / measurements.size)
+  companion object : OutputMetricAverageCalculator<AverageThroughput> {
+    override fun calculateAverage(measurements: List<AverageThroughput>): AverageThroughput {
+      return AverageThroughput(measurements.sumOf { it.value } / measurements.size)
     }
   }
 }

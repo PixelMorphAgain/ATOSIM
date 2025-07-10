@@ -6,8 +6,6 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockchain
-import org.palladiosimulator.blockchainsystems.core.block.AppendedBlockImpl
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.AppendedBlock
 
 /**
  * Implementation of the [Blockchain] interface.
@@ -16,7 +14,8 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.AppendedB
  * @author Yannik Sproll, Davis Riedel
  */
 class BlockchainImpl(
-  private val genesisBlock: BlockchainElement
+  private val genesisBlock: BlockchainElement,
+  private val numberOfRequiredSecurityConfirmations: Int
 ) : BlockchainNodeObject(), Blockchain {
 
   // Contains the newest blocks of the longest branches
@@ -51,10 +50,9 @@ class BlockchainImpl(
       return BlockAppendingResult.createBlockAlreadyAppendedResult()
     }
 
-    val previousBlockchainElement = blockchainElementsMap.getOrDefault(block.previousHash, null)
+    blockchainElementsMap[block.previousHash]?.let { previousBlockchainElement ->
 
-    // Check if there is a block in the blockchain that has the blocks previous hash as its hash
-    if (previousBlockchainElement != null) {
+      // Check if there is a block in the blockchain that has the blocks previous hash as its hash
       val newBlockchainElementPosition = previousBlockchainElement.position + 1
 
       if (this.length < newBlockchainElementPosition) {
@@ -69,19 +67,16 @@ class BlockchainImpl(
         appendStaleBlock(block, previousBlockchainElement, newBlockchainElementPosition)
         return BlockAppendingResult.createBlockAppendedResult(BlockType.StaleBlock)
       }
-    } else {
-      // There is no block in the blockchain that has the block's previous hash as its hash -> block is an orphan block
-      return BlockAppendingResult.createBlockNoAppendedBecauseOrphanBlockResult()
     }
+
+    // There is no block in the blockchain that has the block's previous hash as its hash -> block is an orphan block
+    return BlockAppendingResult.createBlockNoAppendedBecauseOrphanBlockResult()
   }
 
 
   private fun appendIncludedBlock(block: Block, previousBlockchainElement: BlockchainElement, blockPosition: Long) {
     val newBlockchainElement = BlockchainElement(
-      AppendedBlockImpl.fromBlock(
-        block,
-        simulationContext.systemClock.currentTime
-      ),
+      block,
       previousBlockchainElement,
       BlockchainElementType.Included,
       blockPosition
@@ -118,6 +113,9 @@ class BlockchainImpl(
       BlockchainElementType.Forking,
       BlockchainElementType.Included
     )
+
+    // Mark included blocks that now have enough confirmations as confirmed
+    markConfirmedBlocks(newBlockchainElement)
   }
 
 
@@ -127,9 +125,32 @@ class BlockchainImpl(
   ) {
     var currentBlock: BlockchainElement? = startingBlock
     while (currentBlock !== untilBlock) {
-      changeBlockType(currentBlock, BlockchainElementType.Forking)
+      currentBlock?.let { changeBlockType(it, BlockchainElementType.Forking) }
       currentBlock = currentBlock?.previousBlockchainElement
     }
+  }
+
+  private fun markConfirmedBlocks(
+    startingBlock: BlockchainElement,
+  ) {
+    // Go back `numberOfRequiredSecurityConfirmations` blocks from the starting block
+    var currentBlock: BlockchainElement? = startingBlock
+    for (i in 0 until numberOfRequiredSecurityConfirmations) {
+      if (currentBlock == null) {
+        // Not enough confirmations available
+        return
+      }
+      currentBlock = currentBlock.previousBlockchainElement
+    }
+    if (currentBlock == null) return
+
+    // The current block is now the first block that has enough confirmations
+    // Mark all included blocks before the current block as confirmed
+    traverseBlockchainAndChangeBlockTypes(
+      currentBlock,
+      BlockchainElementType.Included,
+      BlockchainElementType.Confirmed
+    )
   }
 
   private fun appendForkingBlock(
@@ -137,12 +158,8 @@ class BlockchainImpl(
     previousBlockchainElement: BlockchainElement,
     blockPosition: Long
   ) {
-    // Get forking origin
     val newBlockchainElement = BlockchainElement(
-      AppendedBlockImpl.fromBlock(
-        block,
-        simulationContext.systemClock.currentTime
-      ),
+      block,
       previousBlockchainElement,
       BlockchainElementType.Forking,
       blockPosition,
@@ -153,10 +170,9 @@ class BlockchainImpl(
 
     longestChainsLastBlocks.add(newBlockchainElement)
 
-
     logBlockAppended(block, blockPosition, previousBlockchainElement.block, BlockType.ForkingBlock)
 
-    val forkOrigin = this.forkOrigin
+    val forkOrigin = getForkOrigin()
 
     for (be in longestChainsLastBlocks) {
       traverseUntilBlockAndChangeBlockTypesToForking(be, forkOrigin)
@@ -170,17 +186,17 @@ class BlockchainImpl(
 
     for (be in longestChainsLastBlocks) {
       var currentBlockchainElement: BlockchainElement? = be
-      while (currentBlockchainElement.position > min) {
+      while (currentBlockchainElement !== null && currentBlockchainElement.position > min) {
         currentBlockchainElement = currentBlockchainElement?.previousBlockchainElement
       }
 
-      blockchainElements.add(currentBlockchainElement)
+      currentBlockchainElement?.let { blockchainElements.add(it) }
     }
 
     while (blockchainElements.size > 1) {
       val previousBlockchainElements = HashSet<BlockchainElement>()
       for (be in blockchainElements) {
-        previousBlockchainElements.add(be.previousBlockchainElement)
+        be.previousBlockchainElement?.let { previousBlockchainElements.add(it) }
       }
 
       blockchainElements = previousBlockchainElements
@@ -195,9 +211,9 @@ class BlockchainImpl(
     newType: BlockchainElementType
   ) {
     var currentElement: BlockchainElement? = startingElement
-    while (currentElement.type == whileType) {
+    while (currentElement?.type == whileType) {
       changeBlockType(currentElement, newType)
-      currentElement = currentElement?.previousBlockchainElement
+      currentElement = currentElement.previousBlockchainElement
     }
   }
 
@@ -219,7 +235,7 @@ class BlockchainImpl(
     oldBlockType: BlockchainElementType,
     newBlockType: BlockchainElementType
   ) {
-    if (!traceEventLogger.isEventTypeEnabled(BlockAppendedTraceEvent.EVENT_TYPE)) {
+    if (!traceEventLogger.isEventTypeEnabled(BlockTypeChangedTraceEvent.EVENT_TYPE)) {
       return
     }
 
@@ -235,10 +251,7 @@ class BlockchainImpl(
 
   private fun appendStaleBlock(block: Block, previousBlockchainElement: BlockchainElement, blockPosition: Long) {
     val newBlockchainElement = BlockchainElement(
-      AppendedBlockImpl.fromBlock(
-        block,
-        simulationContext.systemClock.currentTime
-      )
+      block,
       previousBlockchainElement,
       BlockchainElementType.Stale,
       blockPosition,
@@ -350,9 +363,9 @@ class BlockchainImpl(
     return length.toLong()
   }
 
-  override fun getLongestChains(): List<ArrayList<AppendedBlock>> {
+  override fun getLongestChains(): List<ArrayList<Block>> {
     return longestChainsLastBlocks.map {
-      val blocks = ArrayList<AppendedBlock>()
+      val blocks = ArrayList<Block>()
       var currentElement: BlockchainElement? = it
 
       while (currentElement != null) {
@@ -375,6 +388,7 @@ class BlockchainImpl(
         BlockchainElementType.Forking -> BlockType.ForkingBlock
         BlockchainElementType.Included -> BlockType.IncludedBlock
         BlockchainElementType.Stale -> BlockType.StaleBlock
+        BlockchainElementType.Confirmed -> BlockType.ConfirmedBlock
       }
     }
   }

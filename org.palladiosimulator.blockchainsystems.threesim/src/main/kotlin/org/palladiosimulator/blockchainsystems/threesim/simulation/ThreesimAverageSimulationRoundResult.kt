@@ -29,7 +29,6 @@ class ThreesimAverageSimulationRoundResult(
             AvailabilitySecurity.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
             AverageConfirmationLatency.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(it.value as List<AverageConfirmationLatency>)
             CensorshipResistance.NAME -> CensorshipResistanceCalculator.calculateAverage(it.value as List<CensorshipResistance>)
-            ConfirmationLatency.NAME -> ConfirmationLatencyCalculator.calculateAverage(it.value as List<ConfirmationLatency>)
             Consistency.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
             CostOfAttack.NAME -> CostOfAttackCalculator.calculateAverage(it.value as List<CostOfAttack>)
             FaultTolerance.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
@@ -40,7 +39,7 @@ class ThreesimAverageSimulationRoundResult(
             Reliability.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
             ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
             StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
-            Throughput.NAME -> AverageThroughputCalculator.calculateAverage(it.value as List<Throughput>)
+            AverageThroughput.NAME -> AverageThroughputCalculator.calculateAverage(it.value as List<AverageThroughput>)
             else -> null
           }
         }

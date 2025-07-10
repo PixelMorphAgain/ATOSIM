@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.blockchain
 
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.AppendedBlock
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import java.util.Collections
 
 /**
@@ -9,7 +9,7 @@ import java.util.Collections
  * @author Yannik Sproll, Davis Riedel
  */
 class BlockchainElement(
-  val block: AppendedBlock,
+  val block: Block,
   val previousBlockchainElement: BlockchainElement?,
   var type: BlockchainElementType,
   val position: Long

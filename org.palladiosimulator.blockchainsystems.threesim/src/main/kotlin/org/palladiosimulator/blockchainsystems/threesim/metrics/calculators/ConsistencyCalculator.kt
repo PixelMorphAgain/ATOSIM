@@ -7,20 +7,17 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 /**
  * Calculates consistency
  *
- * @property blockConfirmationTimePerConfirmedBlock Denotes for each confirmed block i the time it took to confirm it.
- * @property blockProposalTimePerConfirmedBlock Denotes for each confirmed block i the time it took to propose it.
+ * @property blockProposalTimeAndConfirmationTimePerConfirmedBlock Denotes for each confirmed block i its proposal time and its confirmation time.
  *
  * @author Davis Riedel
  */
 class ConsistencyCalculator(
-  private val blockConfirmationTimePerConfirmedBlock: List<Long>,
-  private val blockProposalTimePerConfirmedBlock: List<Long>
+  private val blockProposalTimeAndConfirmationTimePerConfirmedBlock: Collection<Pair<Long, Long>>,
 ) : OutputMetricCalculator<Consistency> {
   override fun calculate(): Consistency {
-    require(blockConfirmationTimePerConfirmedBlock.size == blockProposalTimePerConfirmedBlock.size)
-
-    val result = (1.0 / blockConfirmationTimePerConfirmedBlock.size) *
-      blockConfirmationTimePerConfirmedBlock.zip(blockProposalTimePerConfirmedBlock)
+    val n = blockProposalTimeAndConfirmationTimePerConfirmedBlock.size
+    val result = (1.0 / n) *
+      blockProposalTimeAndConfirmationTimePerConfirmedBlock
         .sumOf { (blockConfirmationTime, blockProposalTime) ->
           blockConfirmationTime - blockProposalTime
         }

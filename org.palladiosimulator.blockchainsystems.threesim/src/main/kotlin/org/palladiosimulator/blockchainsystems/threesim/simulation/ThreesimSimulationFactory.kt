@@ -25,7 +25,8 @@ class ThreesimSimulationFactory(
         ThreesimSingleSimulation(
           InitializationUtils.createBlockchainSystemFactory(configuration),
           InitializationUtils.createLogOutputProviderFromConfig(configuration),
-          InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration)
+          InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration),
+          InitializationUtils.getNumberOfRequiredSecurityConfirmationsFromConfig(configuration)
         )
       }
 
@@ -35,7 +36,10 @@ class ThreesimSimulationFactory(
           progressMonitor = MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
           blockchainSystemFactory = InitializationUtils.createBlockchainSystemFactory(configuration),
           logOutputProvider = InitializationUtils.createLogOutputProviderFromConfig(configuration),
-          maxAllowedBlockchainLength = InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration)
+          maxAllowedBlockchainLength = InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration),
+          numberOfRequiredSecurityConfirmations = InitializationUtils.getNumberOfRequiredSecurityConfirmationsFromConfig(
+            configuration
+          )
         )
       }
     }

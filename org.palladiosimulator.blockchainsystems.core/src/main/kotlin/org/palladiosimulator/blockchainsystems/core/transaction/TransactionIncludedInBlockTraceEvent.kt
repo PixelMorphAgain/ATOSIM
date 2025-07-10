@@ -20,7 +20,7 @@ data class TransactionIncludedInBlockTraceEvent(
 
   override fun formatDetails(stringBuilder: StringBuilder) {
     stringBuilder.append("{ txId=")
-    stringBuilder.append(storedTransaction.txId)
+    stringBuilder.append(transaction.txId)
     stringBuilder.append(" }")
   }
 }

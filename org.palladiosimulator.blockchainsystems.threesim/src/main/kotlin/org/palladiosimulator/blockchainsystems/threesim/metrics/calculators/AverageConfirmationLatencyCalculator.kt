@@ -1,7 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.ConfirmationLatency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 
@@ -13,11 +12,11 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 class AverageConfirmationLatencyCalculator(
-  private val confirmationLatencies: List<ConfirmationLatency>
+  private val confirmationLatencies: Collection<Long>
 ) : OutputMetricCalculator<AverageConfirmationLatency> {
   override fun calculate(): AverageConfirmationLatency {
     return AverageConfirmationLatency(
-      confirmationLatencies.sumOf { it.value } / confirmationLatencies.size
+      confirmationLatencies.sum().toDouble() / confirmationLatencies.size
     )
   }
 

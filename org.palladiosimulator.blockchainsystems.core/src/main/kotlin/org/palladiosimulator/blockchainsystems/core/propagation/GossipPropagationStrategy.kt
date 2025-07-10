@@ -10,7 +10,10 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
  * @author Davis Riedel
  */
 abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObject(), PropagationStrategy<E> {
+  @set:JvmName("_setNetworkInterface")
   protected var networkInterface: NodeP2PNetworkInterface? = null
+
+  @set:JvmName("_setOnReceivedCallback")
   protected var onReceivedCallback: ((E) -> Unit)? = null
 
 

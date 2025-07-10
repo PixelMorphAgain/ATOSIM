@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.monitoring
 
-import CircularBuffer
+import org.palladiosimulator.blockchainsystems.threesim.utils.CircularBuffer
 
 /**
  * Counts the number of confirmed transactions in a blockchain system.

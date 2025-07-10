@@ -15,7 +15,7 @@ import kotlin.math.ln
  */
 class ShannonEntropyCalculator(
   private val k: Double,
-  private val blocksProposedPerNode: Array<Int>
+  private val blocksProposedPerNode: Collection<Int>
 ) : OutputMetricCalculator<ShannonEntropy> {
   override fun calculate(): ShannonEntropy {
     val totalNumOfBlocksProposed = blocksProposedPerNode.sum();

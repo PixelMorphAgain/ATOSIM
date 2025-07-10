@@ -151,4 +151,8 @@ object InitializationUtils {
       )
     )
   }
+
+  fun getNumberOfRequiredSecurityConfirmationsFromConfig(configuration: ILaunchConfiguration): Int {
+    TODO("Not yet implemented")
+  }
 }

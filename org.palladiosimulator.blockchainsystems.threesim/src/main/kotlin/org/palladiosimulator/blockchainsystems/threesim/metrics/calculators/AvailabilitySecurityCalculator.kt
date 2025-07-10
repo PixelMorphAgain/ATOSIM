@@ -19,7 +19,7 @@ class AvailabilitySecurityCalculator(
   override fun calculate(): AvailabilitySecurity {
     // average time between consecutive failures
     val meanTimeBetweenFailure = meanTimeToFailure + meanTimeToRepair
-    val a = meanTimeToFailure / meanTimeBetweenFailure
+    val a = meanTimeToFailure.toDouble() / meanTimeBetweenFailure
     return AvailabilitySecurity(a)
   }
 

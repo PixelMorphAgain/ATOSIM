@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.blockchain;
 
+import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType;
@@ -40,6 +41,7 @@ public record BlockAppendedTraceEvent(
         return appendedBlockType;
     }
 
+    @NotNull
     @Override
     public String getEventType() {
         return EVENT_TYPE;

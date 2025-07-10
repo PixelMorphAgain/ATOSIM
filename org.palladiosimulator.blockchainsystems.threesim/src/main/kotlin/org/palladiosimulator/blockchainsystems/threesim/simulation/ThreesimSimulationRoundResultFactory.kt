@@ -59,27 +59,26 @@ class ThreesimSimulationRoundResultFactory(
           observationTime = finalSystemTime
         ),
 
-        AvailabilitySecurityCalculator(
-          meanTimeToFailure = state.meanTimeToFailure,
-          meanTimeToRepair = state.meanTimeToRepair
-        ),
+//        AvailabilitySecurityCalculator(
+//          meanTimeToFailure = state.meanTimeToFailure,
+//          meanTimeToRepair = state.meanTimeToRepair
+//        ),
 
         ConsistencyCalculator(
-          blockConfirmationTimePerConfirmedBlock = state.blockConfirmationTimePerConfirmedBlock,
-          blockProposalTimePerConfirmedBlock = state.blockProposalTimePerConfirmedBlock,
+          blockProposalTimeAndConfirmationTimePerConfirmedBlock = state.blockProposalTimeAndConfirmationTimePerConfirmedBlock
         ),
 
-        FaultToleranceCalculator(
-          throughputCalculatorWithoutFailedNodes = TODO(),
-          throughputCalculatorWithFailedNodes = TODO(),
-          confirmationLatencyCalculatorWithoutFailedNodes = TODO(),
-          confirmationLatencyCalculatorWithFailedNodes = TODO()
-        ),
+//        FaultToleranceCalculator(
+//          throughputCalculatorWithoutFailedNodes = TODO(),
+//          throughputCalculatorWithFailedNodes = TODO(),
+//          confirmationLatencyCalculatorWithoutFailedNodes = TODO(),
+//          confirmationLatencyCalculatorWithFailedNodes = TODO()
+//        ),
 
-        ReliabilityCalculator(
-          totalOperatingTime = finalSystemTime,
-          meanTimeBetweenFailures = state.meanTimeToFailure
-        ),
+//        ReliabilityCalculator(
+//          totalOperatingTime = finalSystemTime,
+//          meanTimeBetweenFailures = state.meanTimeToFailure
+//        ),
 
         StaleBlockRateCalculator(
           numberOfStaleBlocks = state.numberOfStaleBlocks,

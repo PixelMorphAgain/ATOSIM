@@ -11,7 +11,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 class AvailabilityScalability(
   value: Double,
-  val observationTime: Double
+  val observationTime: Long
 ) : OutputMetric<Double>(value) {
   companion object {
     const val NAME = "AvailabilityScalability"

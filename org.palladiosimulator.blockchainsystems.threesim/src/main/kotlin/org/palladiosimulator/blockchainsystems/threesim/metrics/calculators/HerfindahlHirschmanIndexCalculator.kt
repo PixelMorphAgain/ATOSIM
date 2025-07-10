@@ -13,7 +13,7 @@ import kotlin.math.pow
  * @author Davis Riedel
  */
 class HerfindahlHirschmanIndexCalculator(
-  private val tokensHeldPerNode: Array<Double>
+  private val tokensHeldPerNode: Collection<Double>
 ) : OutputMetricCalculator<HerfindahlHirschmanIndex> {
   override fun calculate(): HerfindahlHirschmanIndex {
     val n = tokensHeldPerNode.count()

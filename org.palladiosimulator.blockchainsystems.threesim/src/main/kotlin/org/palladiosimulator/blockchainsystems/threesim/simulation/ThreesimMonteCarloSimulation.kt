@@ -16,12 +16,14 @@ class ThreesimMonteCarloSimulation(
   private val blockchainSystemFactory: BlockchainSystemFactory,
   private val logOutputProvider: LogOutputProvider,
   private val maxAllowedBlockchainLength: Long,
+  private val numberOfRequiredSecurityConfirmations: Int
 ) : MonteCarloSimulation<ThreesimSimulationRoundResult>(numberOfRounds, progressMonitor) {
   override fun performSimulationRound(): ThreesimSimulationRoundResult {
     return ThreesimSimulationRound(
       blockchainSystemFactory.createBlockchainSystem(),
       logOutputProvider.logOutputs,
-      maxAllowedBlockchainLength
+      maxAllowedBlockchainLength,
+      numberOfRequiredSecurityConfirmations
     ).run();
   }
 

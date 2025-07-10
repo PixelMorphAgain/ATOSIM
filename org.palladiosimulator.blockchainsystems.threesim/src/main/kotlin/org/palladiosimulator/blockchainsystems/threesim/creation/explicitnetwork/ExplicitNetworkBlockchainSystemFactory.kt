@@ -70,17 +70,20 @@ class ExplicitNetworkBlockchainSystemFactory(
       .toHashSet()
 
     val trxPropSpec = designBlockchainSystem.transactionsSpecification.transactionPropertiesSpecification
-    val meanTrxCreationInterval = designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval,
+    val meanTrxCreationInterval = designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval
 
     val transactionSubmissionProcess = ThreesimTransactionSubmissionProcess(
       blockchainSystemId,
       blockchainSystemName,
       meanTrxCreationInterval,
-      TransactionPropertiesValueProviderAdapter.create(trxPropSpec),
+      TransactionPropertiesValueProviderAdapter.create(
+        trxPropSpec,
+        RandomGenerator.of("Random") // TODO: Use a better random generator
+      )
     )
 
     val geographicalRegions = geographicalRegionsResolver.resolveGeographicalRegions()
-    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations,
+    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
 
     return BlockchainSystem(
       blockchainSystemId,

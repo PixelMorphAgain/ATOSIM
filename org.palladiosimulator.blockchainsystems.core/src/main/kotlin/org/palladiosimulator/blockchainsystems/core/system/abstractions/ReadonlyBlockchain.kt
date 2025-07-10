@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.core.system.abstractions
 
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.AppendedBlock
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 
 /**
@@ -98,5 +97,5 @@ interface ReadonlyBlockchain {
    *
    * @return list of blocks in the longest chain
    */
-  fun getLongestChains(): List<ArrayList<AppendedBlock>>
+  fun getLongestChains(): List<ArrayList<Block>>
 }

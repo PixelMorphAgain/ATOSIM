@@ -13,7 +13,7 @@ import kotlin.math.abs
  * @author Davis Riedel
  */
 class GiniCoefficientCalculator(
-  private val tokensHeldPerNode: Array<Double>
+  private val tokensHeldPerNode: Collection<Double>
 ) : OutputMetricCalculator<GiniCoefficient> {
   override fun calculate(): GiniCoefficient {
     val sum = tokensHeldPerNode.sumOf { pi ->

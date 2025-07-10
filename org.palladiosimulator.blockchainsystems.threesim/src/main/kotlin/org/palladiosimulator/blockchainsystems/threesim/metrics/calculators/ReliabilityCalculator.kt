@@ -17,7 +17,7 @@ class ReliabilityCalculator(
   private val meanTimeBetweenFailures: Long,
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
-    val r = totalOperatingTime / meanTimeBetweenFailures
+    val r = totalOperatingTime.toDouble() / meanTimeBetweenFailures
     return Reliability(r)
   }
 
