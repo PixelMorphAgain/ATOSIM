@@ -15,7 +15,7 @@ class ThreesimSimulationRoundResultFactory(
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
 
-    val state = monitor.getFinalState()
+    val state = monitor.getFinalState(finalSystemTime)
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
@@ -26,8 +26,8 @@ class ThreesimSimulationRoundResultFactory(
         ),
 
         GeographicalDiversityCalculator(
-          numberOfNodes = state.nodes.size,
-          numberOfRegions = state.geographicalRegions.getNumberOfRegions(),
+          numberOfNodes = state.numberOfNodes,
+          numberOfRegions = state.numberOfGeographicalRegions,
           numberOfNodesPerRegion = state.numberOfNodesPerRegion
         ),
 
@@ -59,33 +59,28 @@ class ThreesimSimulationRoundResultFactory(
           observationTime = finalSystemTime
         ),
 
-//        AvailabilitySecurityCalculator(
-//          meanTimeToFailure = state.meanTimeToFailure,
-//          meanTimeToRepair = state.meanTimeToRepair
-//        ),
+        AvailabilitySecurityCalculator(
+          meanTimeToFailure = state.meanTimeBetweenFailures,
+          meanTimeToRepair = state.meanTimeToRepair
+        ),
 
         ConsistencyCalculator(
           blockProposalTimeAndConfirmationTimePerConfirmedBlock = state.blockProposalTimeAndConfirmationTimePerConfirmedBlock
         ),
 
-//        FaultToleranceCalculator(
-//          throughputCalculatorWithoutFailedNodes = TODO(),
-//          throughputCalculatorWithFailedNodes = TODO(),
-//          confirmationLatencyCalculatorWithoutFailedNodes = TODO(),
-//          confirmationLatencyCalculatorWithFailedNodes = TODO()
-//        ),
+        FaultToleranceCalculator(TODO()),
 
-//        ReliabilityCalculator(
-//          totalOperatingTime = finalSystemTime,
-//          meanTimeBetweenFailures = state.meanTimeToFailure
-//        ),
+        ReliabilityCalculator(
+          timespan = 1000, // TODO: Find a suitable timespan or make it configurable
+          meanTimeBetweenFailures = state.meanTimeBetweenFailures
+        ),
 
         StaleBlockRateCalculator(
           numberOfStaleBlocks = state.numberOfStaleBlocks,
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
         )
 
-        // Cost of Attack and Censorship Resistance not implemented (not part of the paper)
+        // Cost of Attack (skipped) and Censorship Resistance (no longer part of the paper) not implemented
       )
     )
   }

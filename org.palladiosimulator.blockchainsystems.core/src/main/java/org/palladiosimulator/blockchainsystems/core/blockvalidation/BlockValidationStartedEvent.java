@@ -10,7 +10,7 @@ public record BlockValidationStartedEvent(
         Block block
 ) implements Event {
 
-    public static final String EVENT_NAME = "BlockValidationStartedEvent";
+    public static final String EVENT_TYPE = "BlockValidationStartedEvent";
 
     @Override
     public long getOccurrenceTime() {
@@ -19,7 +19,7 @@ public record BlockValidationStartedEvent(
 
     @Override
     public String getEventType() {
-        return EVENT_NAME;
+        return EVENT_TYPE;
     }
 
     @Override

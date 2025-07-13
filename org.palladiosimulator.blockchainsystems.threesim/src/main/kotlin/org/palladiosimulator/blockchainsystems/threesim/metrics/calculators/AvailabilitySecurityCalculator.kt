@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates availability regarding security
@@ -26,7 +27,7 @@ class AvailabilitySecurityCalculator(
 
   companion object : OutputMetricAverageCalculator<AvailabilitySecurity> {
     override fun calculateAverage(measurements: List<AvailabilitySecurity>): AvailabilitySecurity {
-      return AvailabilitySecurity(measurements.sumOf { it.value } / measurements.size)
+      return AvailabilitySecurity(measurements.averageOf { it.value })
     }
   }
 }

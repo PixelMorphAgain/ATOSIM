@@ -66,7 +66,7 @@ class MiningProcessImpl(
 
   private fun getNextBlockMinedEventOccurrenceTimestamp(): Long {
     val eventCurrentTimeOffset = poissonProcess.nextPointDistance()
-    return simulationContext.systemClock.getCurrentTime() + eventCurrentTimeOffset
+    return simulationContext.systemClock.currentTime + eventCurrentTimeOffset
   }
 
   private fun notifyBlockMined(block: Block) {

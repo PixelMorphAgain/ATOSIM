@@ -1,0 +1,40 @@
+package org.palladiosimulator.blockchainsystems.threesim.utils
+
+/**
+ * Logs the start and end of blockchain system failures.
+ *
+ * @author Davis Riedel
+ */
+class BlockchainSystemFailureLog {
+  private data class BlockchainSystemFailureLogEntry(
+    val occurrenceTime: Long,
+    var duration: Long?,
+  )
+
+  private val log: MutableList<BlockchainSystemFailureLogEntry> = mutableListOf()
+
+  fun failureStarted(occurrenceTime: Long) {
+    if (isFailureOngoing()) return
+    log.add(BlockchainSystemFailureLogEntry(occurrenceTime, null))
+  }
+
+  fun failureEnded(occurrenceTime: Long) {
+    if (!isFailureOngoing()) return
+    val lastEntry = log.last()
+    lastEntry.duration = occurrenceTime - lastEntry.occurrenceTime
+  }
+
+  fun isFailureOngoing(): Boolean {
+    return log.isNotEmpty() && log.last().duration == null
+  }
+
+  fun calculateMeanFailureDuration(): Double {
+    if (log.isEmpty()) return 0.0
+    return log.mapNotNull { it.duration }.average()
+  }
+
+  fun getNumberOfFailures(): Int {
+    return log.size
+  }
+
+}

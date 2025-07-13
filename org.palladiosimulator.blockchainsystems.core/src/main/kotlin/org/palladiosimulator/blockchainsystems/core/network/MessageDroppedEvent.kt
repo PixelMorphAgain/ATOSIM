@@ -15,7 +15,7 @@ data class MessageDroppedEvent(
   }
 
   override fun getEventType(): String {
-    return EVENT_NAME
+    return EVENT_TYPE
   }
 
   override fun getOrigin(): EventDispatchable {
@@ -27,6 +27,6 @@ data class MessageDroppedEvent(
   }
 
   companion object {
-    const val EVENT_NAME = "MessageDroppedEvent"
+    const val EVENT_TYPE = "MessageDroppedEvent"
   }
 }

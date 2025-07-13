@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.monitoring
 
+import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockTypeChangedTraceEvent
@@ -15,7 +16,8 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionSentTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.threesim.simulation.termination.ThreesimNodeTerminationState
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
 
 /**
@@ -25,7 +27,9 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
  */
 class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition,
-  private val numberOfRequiredSecurityConfirmations: Int
+  private val numberOfRequiredSecurityConfirmations: Int,
+  private val throughputMonitoringInterval: Long,
+  private val failureThroughputThreshold: Double
 ) : SimulationMonitor {
 
 //  private val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
@@ -44,7 +48,9 @@ class ThreesimSimulationMonitor(
 
   private var numberOfSubmittedTransactions: Int = 0
 
-  private var throughputTimer: Long = 0L
+  private var includedBlocksSinceLastThroughputCheck: BlocksMap? = null
+
+  private val failureLog = BlockchainSystemFailureLog()
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
@@ -58,25 +64,59 @@ class ThreesimSimulationMonitor(
     confirmedBlocks = BlocksMap(calculateMajorityThreshold())
     staleBlocks = BlocksMap(calculateMajorityThreshold())
     forkedBlocks = BlocksMap(calculateMajorityThreshold())
+
+    includedBlocksSinceLastThroughputCheck = BlocksMap(calculateMajorityThreshold())
   }
 
-  fun getFinalState(): ThreesimSimulationMonitorState {
+  fun getFinalState(
+    finalSystemTime: Long,
+  ): ThreesimSimulationMonitorState {
     return ThreesimSimulationMonitorState(
-      nodes = nodes,
+      numberOfNodes = nodes.size,
       hashPowerPerNode = calculateHashPowerPerNode(),
       blocksProposedPerNode = calculateBlocksProposedPerNode(),
-      geographicalRegions = geographicalRegions ?: throw IllegalStateException("geographicalRegions not initialized"),
+      numberOfGeographicalRegions = calculateNumberOfGeographicalRegions(),
       numberOfNodesPerRegion = calculateNumberOfNodesPerRegion(),
       numberOfSubmittedTransactions = numberOfSubmittedTransactions,
       numberOfConfirmedTransactions = calculateNumberOfConfirmedTransactions(),
       transactionConfirmationDurations = calculateTransactionConfirmationDurations(),
       blockProposalTimeAndConfirmationTimePerConfirmedBlock = calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(),
-//      meanTimeToFailure = TODO(),
-//      meanTimeToRepair = TODO(),
+      meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime),
+      meanTimeToRepair = failureLog.calculateMeanFailureDuration(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
 //      tokensHeldPerNode = TODO()
     )
+  }
+
+  private fun addBlock(blockType: BlockType, block: Block, nodeId: String, occurrenceTime: Long) {
+    when (blockType) {
+      BlockType.IncludedBlock -> includedBlocks
+      BlockType.ConfirmedBlock -> confirmedBlocks
+      BlockType.StaleBlock -> staleBlocks
+      BlockType.ForkingBlock -> forkedBlocks
+    }?.addNodeToBlock(block, nodeId, occurrenceTime)
+
+    when (e.appendedBlockType) {
+      BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
+      BlockType.ConfirmedBlock -> includedBlocksSinceLastThroughputCheck
+      else -> null
+    }?.addNodeToBlock(block, nodeId, occurrenceTime)
+  }
+
+  private fun removeBlock(blockType: BlockType, blockHash: String, nodeId: String) {
+    when (blockType) {
+      BlockType.IncludedBlock -> includedBlocks
+      BlockType.ConfirmedBlock -> confirmedBlocks
+      BlockType.StaleBlock -> staleBlocks
+      BlockType.ForkingBlock -> forkedBlocks
+    }?.removeNodeFromBlock(blockHash, nodeId)
+
+    when (blockType) {
+      BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
+      BlockType.ConfirmedBlock -> includedBlocksSinceLastThroughputCheck
+      else -> null
+    }?.removeNodeFromBlock(blockHash, nodeId)
   }
 
   override fun onTraceEventOccurred(
@@ -85,6 +125,28 @@ class ThreesimSimulationMonitor(
   ) {
     when (event.eventType) {
       // TODO: Implement all trace event handling logic, e.g. check fails etc.
+
+      ThroughputMonitoringTraceEvent.EVENT_TYPE -> {
+        val numTrxs = includedBlocksSinceLastThroughputCheck
+          ?.getValidBlocks()
+          ?.sumOf { it.first.transactions.size } ?: 0
+
+        val throughput = AverageThroughputCalculator(
+          numTrxs,
+          throughputMonitoringInterval
+        ).calculate().value
+
+        if (throughput <= failureThroughputThreshold) {
+          // Failure occurred
+          failureLog.failureStarted(event.occurrenceTime)
+        } else if (failureLog.isFailureOngoing()) {
+          // Failure ended
+          failureLog.failureEnded(event.occurrenceTime)
+        }
+
+        // Clear for next measurement
+        includedBlocksSinceLastThroughputCheck?.clear()
+      }
 
       BlockMinedTraceEvent.EVENT_TYPE -> {
         val e = event as BlockMinedTraceEvent
@@ -101,17 +163,8 @@ class ThreesimSimulationMonitor(
         val e = event as BlockAppendedTraceEvent
 
         val nodeId = logOrigin.id
-        val blockHash = e.appendedBlock.hash
 
-        when (e.appendedBlockType) {
-          BlockType.IncludedBlock -> includedBlocks
-          BlockType.ConfirmedBlock -> confirmedBlocks
-          BlockType.StaleBlock -> staleBlocks
-          BlockType.ForkingBlock -> forkedBlocks
-        }?.addNodeToBlock(blockHash, nodeId, e.occurrenceTime)
-
-        // TODO: This is called on each node, but it is only no longer stale, if accepted by majority of nodes, i.e. in the canonical chain.
-        // TODO: We need another way to determine if a block is part of the canonical chain.
+        addBlock(e.appendedBlockType, e.block, nodeId, e.occurrenceTime)
 
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
       }
@@ -120,21 +173,9 @@ class ThreesimSimulationMonitor(
         val e = event as BlockTypeChangedTraceEvent
 
         val nodeId = logOrigin.id
-        val blockHash = e.block.hash
 
-        when (e.oldBlockType) {
-          BlockType.IncludedBlock -> includedBlocks
-          BlockType.ConfirmedBlock -> confirmedBlocks
-          BlockType.StaleBlock -> staleBlocks
-          BlockType.ForkingBlock -> forkedBlocks
-        }?.removeNodeFromBlock(blockHash, nodeId)
-
-        when (e.newBlockType) {
-          BlockType.IncludedBlock -> includedBlocks
-          BlockType.ConfirmedBlock -> confirmedBlocks
-          BlockType.StaleBlock -> staleBlocks
-          BlockType.ForkingBlock -> forkedBlocks
-        }?.addNodeToBlock(blockHash, nodeId, e.occurrenceTime)
+        removeBlock(e.oldBlockType, e.block.hash, nodeId)
+        addBlock(e.newBlockType, e.block, nodeId, e.occurrenceTime)
       }
 
       TransactionSentTraceEvent.EVENT_TYPE -> {
@@ -226,5 +267,14 @@ class ThreesimSimulationMonitor(
     return confirmedBlocks?.getValidBlocks()
       ?.map { Pair(it.first.blockMinedTimestamp, it.second) }
       ?: throw IllegalStateException("confirmedBlocks not initialized")
+  }
+
+  private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {
+    return observationTime.toDouble() / failureLog.getNumberOfFailures()
+  }
+
+  private fun calculateNumberOfGeographicalRegions(): Int {
+    return geographicalRegions?.getNumberOfRegions()
+      ?: throw IllegalStateException("geographicalRegions not initialized")
   }
 }

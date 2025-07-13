@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.CostOfAttack
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 import java.util.Currency
 
 /**
@@ -41,7 +42,7 @@ class CostOfAttackCalculator(
       // TODO: We assume the first currency and threshold are the same for all measurements
       val currency = measurements.firstOrNull()?.value?.second ?: Currency.getInstance("USD")
       val threshold = measurements.firstOrNull()?.threshold ?: 0
-      val avgValue = measurements.sumOf { it.value.first } / measurements.size
+      val avgValue = measurements.averageOf { it.value.first }
       return CostOfAttack(Pair(avgValue, currency), threshold)
     }
   }

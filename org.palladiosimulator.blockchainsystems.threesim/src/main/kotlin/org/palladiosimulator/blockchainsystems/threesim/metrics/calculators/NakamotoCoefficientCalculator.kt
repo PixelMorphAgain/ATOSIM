@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.NakamotoCoefficient
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates the Nakamoto coefficient
@@ -34,7 +35,7 @@ class NakamotoCoefficientCalculator(
     override fun calculateAverage(measurements: List<NakamotoCoefficient>): NakamotoCoefficient {
       // TODO: We assume the first threshold is the same for all measurements
       val threshold = measurements.firstOrNull()?.threshold ?: 0.5
-      return NakamotoCoefficient(measurements.sumOf { it.value } / measurements.size, threshold)
+      return NakamotoCoefficient(measurements.averageOf { it.value }, threshold)
     }
   }
 }

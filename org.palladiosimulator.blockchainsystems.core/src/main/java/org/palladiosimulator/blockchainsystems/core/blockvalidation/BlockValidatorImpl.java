@@ -34,10 +34,10 @@ public class BlockValidatorImpl extends BlockchainNodeObject implements BlockVal
     @Override
     public void dispatchEvent(Event event) {
         switch (event.getEventType()) {
-            case BlockValidationStartedEvent.EVENT_NAME:
+            case BlockValidationStartedEvent.EVENT_TYPE:
                 handleBlockValidationStartedEvent((BlockValidationStartedEvent) event);
                 break;
-            case BlockValidationFinishedEvent.EVENT_NAME:
+            case BlockValidationFinishedEvent.EVENT_TYPE:
                 handleBlockValidationFinishedEvent((BlockValidationFinishedEvent) event);
                 break;
         }

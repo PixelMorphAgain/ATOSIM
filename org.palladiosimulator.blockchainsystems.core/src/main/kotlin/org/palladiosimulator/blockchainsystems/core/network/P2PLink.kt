@@ -47,9 +47,9 @@ class P2PLink(
 
   override fun dispatchEvent(event: Event) {
     when (event.eventType) {
-      MessageDroppedEvent.EVENT_NAME -> handleMessageDroppedEvent(event as MessageDroppedEvent)
-      MessageReceivedEvent.EVENT_NAME -> handleMessageReceivedEvent(event as MessageReceivedEvent)
-      MessageSentEvent.EVENT_NAME -> handleMessageSentEvent(event as MessageSentEvent)
+      MessageDroppedEvent.EVENT_TYPE -> handleMessageDroppedEvent(event as MessageDroppedEvent)
+      MessageReceivedEvent.EVENT_TYPE -> handleMessageReceivedEvent(event as MessageReceivedEvent)
+      MessageSentEvent.EVENT_TYPE -> handleMessageSentEvent(event as MessageSentEvent)
     }
   }
 

@@ -3,27 +3,28 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Reliability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
- * Calculates reliability
+ * Calculates reliability of a blockchain system within the given quantifying timespan.
  *
- * @property totalOperatingTime time taken for system to offer correct transactions
+ * @property timespan the timespan over which the reliability is calculated
  * @property meanTimeBetweenFailures average time until a failure occurs
  *
  * @author Davis Riedel
  */
 class ReliabilityCalculator(
-  private val totalOperatingTime: Long,
+  private val timespan: Long,
   private val meanTimeBetweenFailures: Long,
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
-    val r = totalOperatingTime.toDouble() / meanTimeBetweenFailures
+    val r = timespan.toDouble() / meanTimeBetweenFailures
     return Reliability(r)
   }
 
   companion object : OutputMetricAverageCalculator<Reliability> {
     override fun calculateAverage(measurements: List<Reliability>): Reliability {
-      return Reliability(measurements.sumOf { it.value } / measurements.size)
+      return Reliability(measurements.averageOf { it.value })
     }
   }
 }

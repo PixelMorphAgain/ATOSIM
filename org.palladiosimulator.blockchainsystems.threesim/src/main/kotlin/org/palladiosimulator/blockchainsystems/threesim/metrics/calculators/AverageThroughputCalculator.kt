@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageThroughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates throughput
@@ -23,7 +24,7 @@ class AverageThroughputCalculator(
 
   companion object : OutputMetricAverageCalculator<AverageThroughput> {
     override fun calculateAverage(measurements: List<AverageThroughput>): AverageThroughput {
-      return AverageThroughput(measurements.sumOf { it.value } / measurements.size)
+      return AverageThroughput(measurements.averageOf { it.value })
     }
   }
 }

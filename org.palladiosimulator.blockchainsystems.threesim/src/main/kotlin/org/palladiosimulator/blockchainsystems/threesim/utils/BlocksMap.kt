@@ -46,4 +46,9 @@ class BlocksMap(
       .filter { it.value.second.size >= threshold }
       .map { Pair(it.value.first, timestamps[it.key]!!) }
   }
+
+  fun clear() {
+    blocks.clear()
+    timestamps.clear()
+  }
 }

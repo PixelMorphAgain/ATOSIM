@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.CensorshipResistance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates Censorship Resistance
@@ -23,7 +24,7 @@ class CensorshipResistanceCalculator(
 
   companion object : OutputMetricAverageCalculator<CensorshipResistance> {
     override fun calculateAverage(measurements: List<CensorshipResistance>): CensorshipResistance {
-      return CensorshipResistance(measurements.sumOf { it.value } / measurements.size)
+      return CensorshipResistance(measurements.averageOf { it.value })
     }
   }
 }

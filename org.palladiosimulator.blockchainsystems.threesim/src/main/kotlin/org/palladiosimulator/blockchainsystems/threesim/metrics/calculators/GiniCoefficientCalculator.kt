@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.GiniCoefficient
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 import kotlin.math.abs
 
 /**
@@ -25,7 +26,7 @@ class GiniCoefficientCalculator(
 
   companion object : OutputMetricAverageCalculator<GiniCoefficient> {
     override fun calculateAverage(measurements: List<GiniCoefficient>): GiniCoefficient {
-      return GiniCoefficient(measurements.sumOf { it.value } / measurements.size)
+      return GiniCoefficient(measurements.averageOf { it.value })
     }
   }
 }

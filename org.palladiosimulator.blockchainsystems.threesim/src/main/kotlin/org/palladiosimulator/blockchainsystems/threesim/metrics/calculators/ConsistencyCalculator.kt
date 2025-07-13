@@ -3,6 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates consistency
@@ -27,7 +28,7 @@ class ConsistencyCalculator(
 
   companion object : OutputMetricAverageCalculator<Consistency> {
     override fun calculateAverage(measurements: List<Consistency>): Consistency {
-      return Consistency(measurements.sumOf { it.value } / measurements.size)
+      return Consistency(measurements.averageOf { it.value })
     }
   }
 }
