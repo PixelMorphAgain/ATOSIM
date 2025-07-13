@@ -30,7 +30,7 @@ class MiningProcessImpl(
   private var isMining = false
 
   override fun dispatchEvent(event: Event) {
-    if (event.getEventType() === BlockMinedEvent.EVENT_TYPE) {
+    if (event.eventType === BlockMinedEvent.EVENT_TYPE) {
       if (!isMining) return
 
       val blockMinedEvent = event as BlockMinedEvent
@@ -52,8 +52,7 @@ class MiningProcessImpl(
   private fun scheduleNewBlockMinedEvent(): String {
     val previousBlockHash = previousBlockSelectionCallback!!.get()
 
-    simulationContext
-      .getEventCoordinator()
+    simulationContext.eventCoordinator
       .raiseEvent(
         BlockMinedEvent(
           this.getNextBlockMinedEventOccurrenceTimestamp(),
@@ -67,7 +66,7 @@ class MiningProcessImpl(
 
   private fun getNextBlockMinedEventOccurrenceTimestamp(): Long {
     val eventCurrentTimeOffset = poissonProcess.nextPointDistance()
-    return simulationContext.getSystemClock().getCurrentTime() + eventCurrentTimeOffset
+    return simulationContext.systemClock.getCurrentTime() + eventCurrentTimeOffset
   }
 
   private fun notifyBlockMined(block: Block) {
@@ -75,8 +74,7 @@ class MiningProcessImpl(
   }
 
   private fun cancelPendingEvent() {
-    simulationContext
-      .getEventCoordinator()
+    simulationContext.eventCoordinator
       .cancelEventsFor(this)
   }
 
@@ -127,7 +125,7 @@ class MiningProcessImpl(
     }
 
     val event = BlockMiningStartedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime()
+      simulationContext.systemClock.currentTime
     )
 
     traceEventLogger
@@ -140,7 +138,7 @@ class MiningProcessImpl(
     }
 
     val event = BlockMinedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       block
     )
 
@@ -154,7 +152,7 @@ class MiningProcessImpl(
     }
 
     val event = BlockMiningRestartedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       previousHash
     )
 
@@ -168,7 +166,7 @@ class MiningProcessImpl(
     }
 
     val event = BlockMiningStoppedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime()
+      simulationContext.systemClock.currentTime,
     )
 
     traceEventLogger

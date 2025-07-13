@@ -5,6 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.propagation.MessageImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 
 /**
  * Propagation strategy for transactions in a blockchain system.
@@ -35,12 +36,30 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     return MessageImpl(element, ELEMENT_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + element.size)
   }
 
+  override fun handleMessageDropped(
+    message: Message,
+    recipientNetworkEndpoint: P2PNetworkEndpoint
+  ) {
+    if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) {
+      return
+    }
+    if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+
+    // TODO: Separate block and transaction dropped events?
+    val event = MessageDroppedTraceEvent(
+      message,
+      simulationContext.systemClock.currentTime,
+      recipientNetworkEndpoint,
+      networkInterface
+    )
+    traceEventLogger.logEvent(event)
+  }
 
   override fun handleInvMessageReceived(
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    val txId = message.getContent() as String
+    val txId = message.content as String
 
     context?.trxMemPool?.let {
       val trx = it.getTransactionById(txId)
@@ -60,7 +79,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    val txId = message.getContent() as String
+    val txId = message.content as String
 
     context?.trxMemPool?.let { trxMemPool ->
       trxMemPool.getTransactionById(txId)?.let { trx ->
@@ -74,7 +93,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    val trx = message.getContent() as Transaction
+    val trx = message.content as Transaction
 
     logTrxReceived(trx, senderNetworkEndpoint)
 
@@ -92,7 +111,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     }
 
     val event = TransactionSentTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       trx,
       receiverNetworkEndpoint
     )
@@ -105,7 +124,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     }
 
     val event = TransactionReceivedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       trx,
       senderNetworkEndpoint
     )

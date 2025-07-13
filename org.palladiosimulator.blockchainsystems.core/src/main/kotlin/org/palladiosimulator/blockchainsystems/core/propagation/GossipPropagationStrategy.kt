@@ -10,11 +10,11 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
  * @author Davis Riedel
  */
 abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObject(), PropagationStrategy<E> {
-  @set:JvmName("_setNetworkInterface")
   protected var networkInterface: NodeP2PNetworkInterface? = null
+    private set
 
-  @set:JvmName("_setOnReceivedCallback")
   protected var onReceivedCallback: ((E) -> Unit)? = null
+    private set
 
 
   protected abstract val INV_MESSAGE_KEY: String
@@ -30,6 +30,10 @@ abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObjec
   protected abstract fun createElementMessage(element: E): Message
   protected abstract fun handleElementMessageReceived(message: Message, senderNetworkEndpoint: P2PNetworkEndpoint)
 
+  protected abstract fun handleMessageDropped(
+    message: Message,
+    recipientNetworkEndpoint: P2PNetworkEndpoint
+  )
 
   protected var context: BlockchainSystemNodeContext? = null
 
@@ -52,13 +56,19 @@ abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObjec
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    when (message.getContentType()) {
+    when (message.contentType) {
       INV_MESSAGE_KEY -> handleInvMessageReceived(message, senderNetworkEndpoint)
       GET_DATA_MESSAGE_KEY -> handleGetDataMessageReceived(message, senderNetworkEndpoint)
       ELEMENT_MESSAGE_KEY -> handleElementMessageReceived(message, senderNetworkEndpoint)
     }
   }
 
+  private fun failedToSendMessageToNetworkInterface(
+    message: Message,
+    recipientNetworkEndpoint: P2PNetworkEndpoint
+  ) {
+    handleMessageDropped(message, recipientNetworkEndpoint)
+  }
 
   override fun setNetworkInterface(networkInterface: NodeP2PNetworkInterface) {
     if (this.networkInterface != null) removeCurrentNetworkInterface()
@@ -66,15 +76,21 @@ abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObjec
   }
 
   private fun removeCurrentNetworkInterface() {
-    networkInterface?.setOnReceivedCallback(null)
+    networkInterface?.setOnMessageReceivedCallback(null)
+    networkInterface?.setOnMessageDroppedCallback(null)
     networkInterface = null
   }
 
   private fun setNewNetworkInterface(networkInterface: NodeP2PNetworkInterface) {
     this.networkInterface = networkInterface
-    this.networkInterface?.setOnReceivedCallback { message, senderNetworkEndpoint ->
+    this.networkInterface?.setOnMessageReceivedCallback { message, senderNetworkEndpoint ->
       this.onMessageReceivedFromNetworkInterface(
         message, senderNetworkEndpoint
+      )
+    }
+    this.networkInterface?.setOnMessageDroppedCallback { message, recipientNetworkEndpoint ->
+      this.failedToSendMessageToNetworkInterface(
+        message, recipientNetworkEndpoint
       )
     }
   }

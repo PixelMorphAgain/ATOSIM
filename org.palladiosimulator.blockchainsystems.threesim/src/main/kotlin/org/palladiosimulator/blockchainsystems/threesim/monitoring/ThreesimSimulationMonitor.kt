@@ -28,7 +28,9 @@ class ThreesimSimulationMonitor(
   private val numberOfRequiredSecurityConfirmations: Int
 ) : SimulationMonitor {
 
-  private val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
+//  private val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
+
+  private val blocksProposedPerNode: MutableMap<String, Int> = mutableMapOf()
 
   // TODO: Is there a way to make them initialize once only
   private var includedBlocks: BlocksMap? = null
@@ -42,13 +44,15 @@ class ThreesimSimulationMonitor(
 
   private var numberOfSubmittedTransactions: Int = 0
 
+  private var throughputTimer: Long = 0L
+
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
 
-    nodes.forEach {
-      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it, numberOfRequiredSecurityConfirmations))
-    }
+//    nodes.forEach {
+//      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it, numberOfRequiredSecurityConfirmations))
+//    }
 
     includedBlocks = BlocksMap(calculateMajorityThreshold())
     confirmedBlocks = BlocksMap(calculateMajorityThreshold())
@@ -71,7 +75,7 @@ class ThreesimSimulationMonitor(
 //      meanTimeToRepair = TODO(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
-      tokensHeldPerNode = TODO()
+//      tokensHeldPerNode = TODO()
     )
   }
 
@@ -89,6 +93,8 @@ class ThreesimSimulationMonitor(
         if (BlockUtils.isBlockForked(block)) {
           forkedBlocks?.addNodeToBlock(block.hash, logOrigin.id, e.occurrenceTime)
         }
+
+        blocksProposedPerNode[logOrigin.id] = (blocksProposedPerNode[logOrigin.id] ?: 0) + 1
       }
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {
@@ -140,7 +146,7 @@ class ThreesimSimulationMonitor(
       }
     }
 
-    nodeTerminationStates[logOrigin.id]?.onTraceEventOccurred(event)
+//    nodeTerminationStates[logOrigin.id]?.onTraceEventOccurred(event)
   }
 
   override fun shouldTerminate(): Boolean {
@@ -180,7 +186,7 @@ class ThreesimSimulationMonitor(
     return confirmedBlocks?.getNumberOfValidBlocks() ?: throw IllegalStateException("confirmedBlocks not initialized")
   }
 
-  private fun getConfirmedTransactions(): List<Pair<Set<Transaction>, Long?>> {
+  private fun getConfirmedTransactions(): Collection<Pair<Set<Transaction>, Long?>> {
     return confirmedBlocks?.getValidBlocks()?.map { Pair(it.first.transactions, it.second) }
       ?: throw IllegalStateException("confirmedBlocks not initialized")
   }
@@ -194,11 +200,11 @@ class ThreesimSimulationMonitor(
       ?: throw IllegalStateException("staleBlocks not initialized")
   }
 
-  private fun calculateBlocksProposedPerNode(): List<Int> {
-    return nodeTerminationStates.map { it.value.blocksProposedByNode }
+  private fun calculateBlocksProposedPerNode(): Collection<Int> {
+    return blocksProposedPerNode.values
   }
 
-  private fun calculateHashPowerPerNode(): List<Double> {
+  private fun calculateHashPowerPerNode(): Collection<Double> {
     return nodes.map { it.resourcePower }
   }
 

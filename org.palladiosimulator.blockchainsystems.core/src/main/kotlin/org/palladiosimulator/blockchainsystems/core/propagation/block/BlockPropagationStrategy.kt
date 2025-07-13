@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.propagation.block
 
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
+import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.propagation.GossipPropagationStrategy
 import org.palladiosimulator.blockchainsystems.core.propagation.MessageImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
@@ -72,6 +73,25 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     logBlockReceived(block, senderNetworkEndpoint)
 
     notifyBlockReceived(block)
+  }
+
+  override fun handleMessageDropped(
+    message: Message,
+    recipientNetworkEndpoint: P2PNetworkEndpoint
+  ) {
+    if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) {
+      return
+    }
+    if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+
+    // TODO: Separate block and transaction dropped events?
+    val event = MessageDroppedTraceEvent(
+      message,
+      simulationContext.systemClock.currentTime,
+      recipientNetworkEndpoint,
+      networkInterface
+    )
+    traceEventLogger.logEvent(event)
   }
 
 
