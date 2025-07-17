@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim_plugin
 
-import org.eclipse.debug.ui.AbstractLaunchConfigurationTab
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup
 import org.eclipse.debug.ui.CommonTab
 import org.eclipse.debug.ui.ILaunchConfigurationDialog
@@ -12,6 +11,7 @@ class ThreesimTabGroup : AbstractLaunchConfigurationTabGroup() {
       ArchitecturalModelsTab(),
       SimulationTypeTab(),
       SimulationTerminationTab(),
+      ThreesimTab(),
       LoggingTab(),
       CommonTab()
     )

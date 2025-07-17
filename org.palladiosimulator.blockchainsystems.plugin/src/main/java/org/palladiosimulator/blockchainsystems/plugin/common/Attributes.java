@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.plugin.common;
 /**
  * This class contains all attributes used in the plugin.
  *
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  * @implNote This class is not meant to be instantiated.
  */
 public final class Attributes {
@@ -63,5 +63,10 @@ public final class Attributes {
 
         public static final String DATABASE_PASSWORD_ATTRIBUTE = "DatabasePassword";
         public static final String DATABASE_PASSWORD_ATTRIBUTE_DEFAULT = "";
+    }
+
+    public static class Threesim {
+        public static final String NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS = "NumberOfRequiredSecurityConfirmations";
+        public static final String NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT = "6";
     }
 }

@@ -100,11 +100,9 @@ object InitializationUtils {
 
   private fun getNetworkTopologyFromBlockchainSystem(designBlockchainSystem: BlockchainSystem): NetworkTopology {
     return designBlockchainSystem
-      .getNetwork()
-      .getTopology()
-      .stream()
-      .findFirst()
-      .get() // Gets the desired topology, because constraint limits number of topologies to 1.
+      .network
+      .topology
+      .first() // Gets the desired topology, because constraint limits number of topologies to 1.
   }
 
 
@@ -152,6 +150,9 @@ object InitializationUtils {
   }
 
   fun getNumberOfRequiredSecurityConfirmationsFromConfig(configuration: ILaunchConfiguration): Int {
-    TODO("Not yet implemented")
+    return configuration.getAttribute(
+      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
+      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+    ).toInt()
   }
 }
