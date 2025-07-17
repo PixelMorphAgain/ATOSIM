@@ -32,9 +32,9 @@ abstract class ThreesimBlockchainSystemFactory(
   protected val networkTopology: NetworkTopology,
 ) : BlockchainSystemFactory {
   protected abstract val networkFactory: P2PNetworkFactory
-  protected abstract val resourcePowerCalculator: ResourcePowerCalculator
 
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
+  protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
 
   override fun createBlockchainSystem(): BlockchainSystem {
     val networkCreationResult = networkFactory.createP2PNetwork()
@@ -44,6 +44,8 @@ abstract class ThreesimBlockchainSystemFactory(
       networkTopology,
       networkCreationResult
     )
+
+    val resourcePowerCalculator = getResourcePowerCalculator(networkCreationResult)
 
     val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
       designBlockchainSystem.geographicalRegionsSpecification,

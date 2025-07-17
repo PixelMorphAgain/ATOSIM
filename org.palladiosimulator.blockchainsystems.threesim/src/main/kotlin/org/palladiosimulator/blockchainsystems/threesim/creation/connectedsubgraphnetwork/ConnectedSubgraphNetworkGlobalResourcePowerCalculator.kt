@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgr
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent
 import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocation
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.SubgraphSpecification
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator
 
 /**
@@ -12,22 +11,20 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Resource
  * @author Yannik Sproll, Davis Riedel
  */
 class ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
-  connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology
+  private val connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology,
+  private val nodeIdToNodeTemplateIdMapping: HashMap<String, String>
 ) : ResourcePowerCalculator {
-  private val globalResourcePower: Double = connectedSubgraphsTopology.subgraphs
-    .sumOf { calculateResourcePowerOfSubgraph(it) }
-
-  private fun calculateResourcePowerOfSubgraph(subgraph: SubgraphSpecification): Double {
-    return subgraph.nodeTemplates
-      .sumOf { getResourcePowerOfAllocation(it.allocation) }
+  private val resourcePowerPerNodeTemplate: Map<String, Double> by lazy {
+    connectedSubgraphsTopology.subgraphs
+      .flatMap { it.nodeTemplates }
+      .associateBy { it.id }
+      .mapValues { getResourcePowerOfAllocation(it.value.allocation) }
   }
 
-  override fun calculateGlobalResourcePower(): Double {
-    return globalResourcePower
-  }
-
-  override fun getResourcePowerOfNode(nodeId: String): Double? {
-    TODO("Not yet implemented")
+  private val globalResourcePower: Double by lazy {
+    connectedSubgraphsTopology.subgraphs
+      .flatMap { it.nodeTemplates }
+      .sumOf { it.numberOfNodeOccurences * getResourcePowerOfAllocation(it.allocation) }
   }
 
   private fun getResourcePowerOfAllocation(nodeAllocation: NodeAllocation): Double {
@@ -35,5 +32,14 @@ class ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
       .allocationContexts
       .filter { it.assemblyContext.encapsulatedComponent is MiningProcessComponent }
       .sumOf { it.resourceContainer.resourcePower }
+  }
+
+  override fun calculateGlobalResourcePower(): Double {
+    return globalResourcePower
+  }
+
+  override fun getResourcePowerOfNode(nodeId: String): Double? {
+    val nodeTemplateId = nodeIdToNodeTemplateIdMapping[nodeId]
+    return resourcePowerPerNodeTemplate[nodeTemplateId]
   }
 }
