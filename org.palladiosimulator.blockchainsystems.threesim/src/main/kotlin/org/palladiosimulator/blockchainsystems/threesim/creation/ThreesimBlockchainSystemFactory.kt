@@ -125,11 +125,10 @@ abstract class ThreesimBlockchainSystemFactory(
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
 
     // Create factories dependent of the metamodel information
-    // TODO: Respect resource power in mining process
-    val miningProcessFactory = MiningProcessFactoryPluginImpl(
-      nodeAllocationResolver,
+    val miningProcessFactory = ThreesimMiningProcessFactory(
+      designBlockchainSystem.specification,
       resourcePowerCalculator,
-      designBlockchainSystem.specification
+      nodeAllocationResolver
     )
     val transactionSelectionProcessFactory = ThreesimTransactionSelectionProcessFactory(
       maxBlockSize = designBlockchainSystem.specification.maxBlockSize
