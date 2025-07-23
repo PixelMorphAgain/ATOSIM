@@ -149,10 +149,34 @@ object InitializationUtils {
     )
   }
 
+
+  // Threesim Simulation Parameters
+
   fun getNumberOfRequiredSecurityConfirmationsFromConfig(configuration: ILaunchConfiguration): Int {
     return configuration.getAttribute(
       Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
       Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
     ).toInt()
+  }
+
+  fun getShannonEntropyKFromConfig(configuration: ILaunchConfiguration): Double {
+    return configuration.getAttribute(
+      Attributes.Threesim.SHANNON_ENTROPY_K,
+      Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+    ).toDouble()
+  }
+
+  fun getNakamotoCoefficientThresholdFromConfig(configuration: ILaunchConfiguration): Double {
+    return configuration.getAttribute(
+      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
+      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+    ).toDouble()
+  }
+
+  fun getReliabilityObservationTimespanFromConfig(configuration: ILaunchConfiguration): Long {
+    return configuration.getAttribute(
+      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
+      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
+    ).toLong()
   }
 }

@@ -14,19 +14,21 @@ import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimul
 class ThreesimSimulationRound(
   blockchainSystem: BlockchainSystem,
   logOutputs: Set<TraceEventLogOutput>,
-  val maxAllowedBlockchainLength: Long,
-  val numberOfRequiredSecurityConfirmations: Int
+  maxAllowedBlockchainLength: Long,
+  val threesimSimulationParameters: ThreesimSimulationParameters
 ) : SimulationRound<ThreesimSimulationRoundResult>(blockchainSystem, logOutputs) {
   override val monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
     ),
-    numberOfRequiredSecurityConfirmations
+    threesimSimulationParameters.numberOfRequiredSecurityConfirmations
   )
 
   override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
     return ThreesimSimulationRoundResultFactory(
-      monitor, finalSystemTime
+      threesimSimulationParameters,
+      monitor,
+      finalSystemTime
     ).createSimulationRoundResult()
   }
 }

@@ -10,6 +10,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetr
  * @author Davis Riedel
  */
 class ThreesimSimulationRoundResultFactory(
+  private val threesimSimulationParameters: ThreesimSimulationParameters,
   private val monitor: ThreesimSimulationMonitor,
   private val finalSystemTime: Long,
 ) {
@@ -21,7 +22,7 @@ class ThreesimSimulationRoundResultFactory(
       outputMetrics = OutputMetricsSet.from(
 
         ShannonEntropyCalculator(
-          k = 1.0, // TODO: Make k configurable
+          k = threesimSimulationParameters.shannonEntropyK,
           blocksProposedPerNode = state.blocksProposedPerNode
         ),
 
@@ -33,7 +34,7 @@ class ThreesimSimulationRoundResultFactory(
 
         NakamotoCoefficientCalculator(
           state.hashPowerPerNode,
-          threshold = 0.51 // TODO: Make threshold configurable
+          threshold = threesimSimulationParameters.nakamotoCoefficientThreshold
         ),
 
         HerfindahlHirschmanIndexCalculator(
@@ -68,10 +69,10 @@ class ThreesimSimulationRoundResultFactory(
           blockProposalTimeAndConfirmationTimePerConfirmedBlock = state.blockProposalTimeAndConfirmationTimePerConfirmedBlock
         ),
 
-        FaultToleranceCalculator(TODO()),
+//        FaultToleranceCalculator(TODO()),
 
         ReliabilityCalculator(
-          timespan = 1000, // TODO: Find a suitable timespan or make it configurable
+          timespan = threesimSimulationParameters.reliabilityObservationTimespan,
           meanTimeBetweenFailures = state.meanTimeBetweenFailures
         ),
 

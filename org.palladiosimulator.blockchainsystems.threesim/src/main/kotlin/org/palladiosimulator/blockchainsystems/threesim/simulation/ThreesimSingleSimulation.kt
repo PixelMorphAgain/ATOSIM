@@ -14,14 +14,14 @@ class ThreesimSingleSimulation(
   private val blockchainSystemFactory: BlockchainSystemFactory,
   private val logOutputProvider: LogOutputProvider,
   private val maxAllowedBlockchainLength: Long,
-  private val numberOfRequiredSecurityConfirmations: Int
+  private val threesimSimulationParameters: ThreesimSimulationParameters
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
     val result = ThreesimSimulationRound(
       blockchainSystemFactory.createBlockchainSystem(),
       logOutputProvider.logOutputs,
       maxAllowedBlockchainLength,
-      numberOfRequiredSecurityConfirmations
+      threesimSimulationParameters
     ).run();
 
     return ThreesimSingleSimulationResult(result);

@@ -11,7 +11,8 @@ import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Group
 import org.eclipse.swt.widgets.Text
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
-import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils
+import org.palladiosimulator.blockchainsystems.plugin.utils.DoubleVerifier
+import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
 
 /**
  * Tab for configuring Threesim-specific simulation parameters.
@@ -20,10 +21,14 @@ import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils
  */
 class ThreesimTab : AbstractLaunchConfigurationTab() {
   companion object {
-    private const val MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS: Long = 1
+    private const val MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS = 1L
+    private const val MINIMUM_RELIABILITY_OBSERVATION_TIMESPAN = 1L
   }
 
   private var numberOfRequiredSecurityConfirmationsText: Text? = null
+  private var shannonEntropyKText: Text? = null
+  private var nakamotoCoefficientThresholdText: Text? = null
+  private var reliabilityObservationTimespanText: Text? = null
 
   override fun createControl(parent: Composite) {
     val root = Composite(parent, SWT.BORDER)
@@ -39,52 +44,115 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   private fun createSimulationTypeGroup(parent: Composite) {
     val group = Group(parent, SWT.NONE)
-    group.setText("Simulation Type")
+    group.setText("3SIM Simulation Parameters")
     GridLayoutFactory.swtDefaults().numColumns(1).spacing(0, 10).applyTo(group)
     group.setLayoutData(GridData(SWT.FILL, SWT.BEGINNING, true, false))
 
     numberOfRequiredSecurityConfirmationsText = Text(group, SWT.BORDER)
     numberOfRequiredSecurityConfirmationsText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
-    numberOfRequiredSecurityConfirmationsText?.addVerifyListener(NumberVerifier)
-    numberOfRequiredSecurityConfirmationsText?.addModifyListener {
-      updateLaunchConfigurationDialog()
-    }
+    numberOfRequiredSecurityConfirmationsText?.addVerifyListener(LongVerifier)
+    numberOfRequiredSecurityConfirmationsText?.addModifyListener { updateLaunchConfigurationDialog() }
+
+    shannonEntropyKText = Text(group, SWT.BORDER)
+    shannonEntropyKText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
+    shannonEntropyKText?.addVerifyListener(DoubleVerifier)
+    shannonEntropyKText?.addModifyListener { updateLaunchConfigurationDialog() }
+
+    nakamotoCoefficientThresholdText = Text(group, SWT.BORDER)
+    nakamotoCoefficientThresholdText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
+    nakamotoCoefficientThresholdText?.addVerifyListener(DoubleVerifier)
+    nakamotoCoefficientThresholdText?.addModifyListener { updateLaunchConfigurationDialog() }
+
+    reliabilityObservationTimespanText = Text(group, SWT.BORDER)
+    reliabilityObservationTimespanText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
+    reliabilityObservationTimespanText?.addVerifyListener(LongVerifier)
+    reliabilityObservationTimespanText?.addModifyListener { updateLaunchConfigurationDialog() }
   }
 
   private fun isNumberOfRequiredSecurityConfirmationsValid(): Boolean {
-    val text = numberOfRequiredSecurityConfirmationsText?.getText() ?: return false
+    val nr = numberOfRequiredSecurityConfirmationsText?.text?.toLongOrNull() ?: return false
+    return nr > MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS
+  }
 
-    return ValidationUtils.isStringPopulated(text)
-      && ValidationUtils.isNumber(text)
-      && ValidationUtils.isInRange(
-      text.toLong(),
-      MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-      Long.Companion.MAX_VALUE
-    )
+  private fun isShannonEntropyKValid(): Boolean {
+    val k = shannonEntropyKText?.text?.toDoubleOrNull() ?: return false
+    return k > 0.0
+  }
+
+  private fun isNakamotoCoefficientThresholdValid(): Boolean {
+    val threshold = nakamotoCoefficientThresholdText?.text?.toDoubleOrNull() ?: return false
+    return threshold in 0.0..1.0
+  }
+
+  private fun isReliabilityObservationTimespanValid(): Boolean {
+    val timespan = reliabilityObservationTimespanText?.text?.toLongOrNull() ?: return false
+    return timespan > MINIMUM_RELIABILITY_OBSERVATION_TIMESPAN
   }
 
   override fun getName(): String {
-    return "Simulation Type"
+    return "3SIM Simulation Parameters"
   }
 
   override fun initializeFrom(configuration: ILaunchConfiguration) {
     try {
-      numberOfRequiredSecurityConfirmationsText?.setText(
+      numberOfRequiredSecurityConfirmationsText?.text =
         configuration.getAttribute(
           Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
           Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
         )
-      )
     } catch (_: Exception) {
-      numberOfRequiredSecurityConfirmationsText?.setText(Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT)
+      numberOfRequiredSecurityConfirmationsText?.text =
+        Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+    }
+
+    try {
+      shannonEntropyKText?.text =
+        configuration.getAttribute(
+          Attributes.Threesim.SHANNON_ENTROPY_K,
+          Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+        )
+    } catch (_: Exception) {
+      shannonEntropyKText?.text = Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+    }
+
+    try {
+      nakamotoCoefficientThresholdText?.text =
+        configuration.getAttribute(
+          Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
+          Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+        )
+    } catch (_: Exception) {
+      nakamotoCoefficientThresholdText?.text = Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+    }
+
+    try {
+      reliabilityObservationTimespanText?.text =
+        configuration.getAttribute(
+          Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
+          Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
+        )
+    } catch (_: Exception) {
+      reliabilityObservationTimespanText?.text = Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
     }
   }
 
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
     configuration.setAttribute(
       Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-      numberOfRequiredSecurityConfirmationsText?.getText()
+      numberOfRequiredSecurityConfirmationsText?.text
         ?: Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.SHANNON_ENTROPY_K,
+      shannonEntropyKText?.text ?: Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
+      nakamotoCoefficientThresholdText?.text ?: Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
+      reliabilityObservationTimespanText?.text ?: Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
     )
   }
 
@@ -92,6 +160,18 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     configuration.setAttribute(
       Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
       Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.SHANNON_ENTROPY_K,
+      Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
+      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
+      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
     )
   }
 
@@ -101,17 +181,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun isValid(launchConfig: ILaunchConfiguration?): Boolean {
-    return this.isNumberOfRequiredSecurityConfirmationsValid()
-  }
-
-  object NumberVerifier : VerifyListener {
-    override fun verifyText(e: VerifyEvent) {
-      val oldText = (e.widget as Text).getText()
-      val newText = oldText.substring(0, e.start) + e.text + oldText.substring(e.end)
-
-      if (!ValidationUtils.isNumber(newText)) {
-        e.doit = false
-      }
-    }
+    return isNumberOfRequiredSecurityConfirmationsValid() && isShannonEntropyKValid() && isNakamotoCoefficientThresholdValid() && isReliabilityObservationTimespanValid()
   }
 }

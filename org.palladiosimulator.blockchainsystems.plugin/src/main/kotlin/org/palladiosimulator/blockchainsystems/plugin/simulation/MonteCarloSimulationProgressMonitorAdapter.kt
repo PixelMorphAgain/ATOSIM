@@ -1,11 +1,11 @@
-package org.palladiosimulator.blockchainsystems.plugin.utils
+package org.palladiosimulator.blockchainsystems.plugin.simulation
 
 import org.eclipse.core.runtime.IProgressMonitor
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.MonteCarloSimulationProgressMonitor
 
 /**
- * An adapter that implements the [MonteCarloSimulationProgressMonitor] interface
- * using an [IProgressMonitor] to report progress.
+ * An adapter that implements the [org.palladiosimulator.blockchainsystems.core.simulation.abstractions.MonteCarloSimulationProgressMonitor] interface
+ * using an [org.eclipse.core.runtime.IProgressMonitor] to report progress.
  *
  * @param progressMonitor The progress monitor to use for reporting progress.
  *

@@ -1,5 +1,6 @@
-package org.palladiosimulator.blockchainsystems.plugin.validation;
+package org.palladiosimulator.blockchainsystems.plugin.utils;
 
+// TODO: Needed in Java code, not in Kotlin code. Maybe replace completely with Kotlin code in the future.
 public final class ValidationUtils {
 
     public static final long MINIMUM_PORT = 1;
@@ -9,12 +10,17 @@ public final class ValidationUtils {
         return lowerBoundInclusive <= value && value <= upperBoundInclusive;
     }
 
-    public static boolean isNumber(String text) {
-        return text.matches("\\d*");
-    }
-
     public static boolean isStringPopulated(String text) {
         return text != null && !text.isEmpty();
+    }
+
+    public static boolean isNumber(String text) {
+        try {
+            Long.parseLong(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public static boolean isPort(String text) {
