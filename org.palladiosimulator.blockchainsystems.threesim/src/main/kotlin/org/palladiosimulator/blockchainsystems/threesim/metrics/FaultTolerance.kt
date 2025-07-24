@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 
 /**
@@ -9,6 +10,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
+@Serializable
 class FaultTolerance(
   value: Pair<Double, Double>
 ) : OutputMetric<Pair<Double, Double>>(value) {
@@ -17,16 +19,4 @@ class FaultTolerance(
   }
 
   override val name: String = NAME
-
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ ")
-      append(name)
-      append("={ throughputDelta=")
-      append(value.first)
-      append("; confirmationLatencyDelta=")
-      append(value.second)
-      append(" }")
-    }
-  }
 }

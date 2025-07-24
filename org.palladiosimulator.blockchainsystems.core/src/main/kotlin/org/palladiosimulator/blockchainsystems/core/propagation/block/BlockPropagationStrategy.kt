@@ -89,7 +89,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
       message,
       simulationContext.systemClock.currentTime,
       recipientNetworkEndpoint,
-      networkInterface
+      networkInterface!!
     )
     traceEventLogger.logEvent(event)
   }

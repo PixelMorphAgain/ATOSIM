@@ -1,12 +1,14 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
+import kotlinx.serialization.Serializable
 
 /**
  * Gini coefficient
  *
  * @author Davis Riedel
  */
+@Serializable
 class GiniCoefficient(
   value: Double,
 ) : OutputMetric<Double>(value) {

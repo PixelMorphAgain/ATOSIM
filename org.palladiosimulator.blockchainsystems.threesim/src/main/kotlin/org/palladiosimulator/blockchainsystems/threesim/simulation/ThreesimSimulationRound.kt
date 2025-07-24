@@ -5,6 +5,8 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.Longe
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
 
 /**
  * Single simulation round of 3SIM.

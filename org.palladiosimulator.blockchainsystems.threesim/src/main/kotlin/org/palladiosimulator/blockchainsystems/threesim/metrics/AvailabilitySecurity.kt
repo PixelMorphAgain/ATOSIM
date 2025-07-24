@@ -1,13 +1,14 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
  * Availability regarding security
  *
  * @author Davis Riedel
  */
+@Serializable
 class AvailabilitySecurity(
   value: Double
 ) : OutputMetric<Double>(value) {

@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Sing
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSingleSimulationResult
 
 /**
  * Single simulation of 3SIM.

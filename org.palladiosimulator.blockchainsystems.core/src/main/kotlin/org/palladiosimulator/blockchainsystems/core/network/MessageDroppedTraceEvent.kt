@@ -1,40 +1,28 @@
 package org.palladiosimulator.blockchainsystems.core.network
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
-import java.lang.StringBuilder
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
+import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 
 /**
  * Represents a trace event that is triggered when a message is dropped in the P2P network.
  *
  * @param message The message that was dropped.
  * @param occurrenceTime The time at which the event occurred.
- * @param target The target of the event, typically the component that handles the event.
- * @param recipientNode The node that was supposed to receive the message.
- * @param senderNode The node that sent the message.
+ * @param recipientNode The network endpoint (node) that was supposed to receive the message.
+ * @param senderNode The network endpoint (node) that sent the message.
  *
  * @author Davis Riedel
  */
+@Serializable
 data class MessageDroppedTraceEvent(
-  val message: P2PLinkMessageFrame,
+  val message: Message,
   override val occurrenceTime: Long,
-  val recipientNode: P2PNode,
-  val senderNode: P2PNode,
+  val recipientNode: P2PNetworkEndpoint,
+  val senderNode: P2PNetworkEndpoint,
 ) : TraceEvent {
   override val eventType = EVENT_TYPE
-
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("MessageDroppedTraceEvent: ")
-      append("Message content: ")
-      append(message.content)
-      append(", Occurrence time: ")
-      append(occurrenceTime)
-      append(", Sender node: ")
-      append(senderNode.endpointId)
-      append(", Recipient node: ")
-      append(recipientNode.endpointId)
-    }
-  }
 
   companion object {
     const val EVENT_TYPE = "MessageDroppedEvent"

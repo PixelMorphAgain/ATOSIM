@@ -124,7 +124,6 @@ class ThreesimSimulationMonitor(
     logOrigin: TraceEventLogOrigin
   ) {
     when (event.eventType) {
-      // TODO: Implement all trace event handling logic, e.g. check fails etc.
 
       ThroughputMonitoringTraceEvent.EVENT_TYPE -> {
         val numTrxs = includedBlocksSinceLastThroughputCheck
@@ -182,9 +181,9 @@ class ThreesimSimulationMonitor(
         numberOfSubmittedTransactions++
       }
 
-      MessageDroppedTraceEvent.EVENT_TYPE -> {
-        // TODO: Calculate the time the system was inoperative
-      }
+//      MessageDroppedTraceEvent.EVENT_TYPE -> {
+//        // TODO: Log dropped messages if needed
+//      }
     }
 
 //    nodeTerminationStates[logOrigin.id]?.onTraceEventOccurred(event)
@@ -194,30 +193,6 @@ class ThreesimSimulationMonitor(
     // TODO: Implement other termination conditions if needed
     return maxBlockchainLengthCondition.hasLengthExceeded()
   }
-
-//  fun getCanonicalChain(): List<AppendedBlock>? {
-//    return nodes
-//      .map { node ->
-//        // longest chain of each node, associated by the last block in the chain
-//        node.blockchain.getLongestChains().associateBy { it.last() }
-//      }
-//      // count how many nodes have a longest chain ending with the same block
-//      // returns a map where the last block of a longest chain is the key and the value is a pair of the corresponding longest chain (first found is used)
-//      // and the number of nodes that have this chain
-//      .fold(emptyMap<AppendedBlock, Pair<List<AppendedBlock>, Int>>()) { acc, map ->
-//        map.forEach {
-//          if (acc.containsKey(it.key)) {
-//            acc[it.key] = Pair(acc[it.key]!!.first, acc[it.key]!!.second + 1)
-//          } else {
-//            acc[it.key] = Pair(it.value, 1)
-//          }
-//        }
-//        acc
-//      }
-//      // find the longest chain that is present in the most nodes
-//      .maxByOrNull { it.value.second }
-//      ?.value?.first
-//  }
 
   private fun calculateMajorityThreshold(): Int {
     return (nodes.size / 2) + 1

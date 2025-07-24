@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 
 /**
@@ -10,6 +11,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
+@Serializable
 class NakamotoCoefficient(
   value: Int,
   val threshold: Double,
@@ -19,16 +21,4 @@ class NakamotoCoefficient(
   }
 
   override val name: String = NAME
-
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ ")
-      append(name)
-      append("=")
-      append(value)
-      append("; threshold=")
-      append(threshold)
-      append(" }")
-    }
-  }
 }

@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 
 /**
@@ -9,6 +10,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  *
  * @author Davis Riedel
  */
+@Serializable
 class AvailabilityScalability(
   value: Double,
   val observationTime: Long
