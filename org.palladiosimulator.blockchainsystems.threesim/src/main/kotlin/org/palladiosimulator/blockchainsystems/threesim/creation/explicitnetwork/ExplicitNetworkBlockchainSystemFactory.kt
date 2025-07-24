@@ -20,10 +20,10 @@ class ExplicitNetworkBlockchainSystemFactory(
   override val networkFactory = ExplicitTopologyP2PNetworkFactory(explicitTopology)
 
   override fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver {
-    return ExplicitNetworkNodeAllocationResolver(networkTopology)
+    return ExplicitNetworkNodeAllocationResolver(networkTopology as ExplicitNetworkTopology)
   }
 
   override fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator {
-    return ExplicitNetworkResourcePowerCalculator(networkTopology)
+    return ExplicitNetworkResourcePowerCalculator(networkTopology as ExplicitNetworkTopology)
   }
 }

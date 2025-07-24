@@ -23,7 +23,8 @@ class ThreesimSimulationRound(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
     ),
-    threesimSimulationParameters.numberOfRequiredSecurityConfirmations
+    threesimSimulationParameters.throughputMonitoringInterval,
+    threesimSimulationParameters.failureThroughputThreshold
   )
 
   override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {

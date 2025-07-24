@@ -35,7 +35,7 @@ class NakamotoCoefficientCalculator(
     override fun calculateAverage(measurements: List<NakamotoCoefficient>): NakamotoCoefficient {
       // NOTE: We assume the first threshold is the same for all measurements
       val threshold = measurements.firstOrNull()?.threshold ?: 0.5
-      return NakamotoCoefficient(measurements.averageOf { it.value }, threshold)
+      return NakamotoCoefficient(measurements.averageOf { it.value }.toInt(), threshold)
     }
   }
 }

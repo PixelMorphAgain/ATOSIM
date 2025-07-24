@@ -47,21 +47,22 @@ class ExplicitTopologyP2PNetworkFactory(
         RandomGenerator.of("Random")
       )
 
-      val fromP2PNode = p2pNodeMappings[fromDesignNode.id]
-      val toP2PNode = p2pNodeMappings[toDesignNode.id]
+      p2pNodeMappings[fromDesignNode.id]?.let { fromP2PNode ->
+        p2pNodeMappings[toDesignNode.id]?.let { toP2PNode ->
+          val link = P2PLink(
+            latencyValueProvider,
+            throughputValueProvider,
+            fromP2PNode,
+            toP2PNode
+          )
 
-      val link = P2PLink(
-        latencyValueProvider,
-        throughputValueProvider,
-        fromP2PNode,
-        toP2PNode
-      )
-
-      networkGraph.addEdge(
-        fromP2PNode,
-        toP2PNode,
-        link
-      )
+          networkGraph.addEdge(
+            fromP2PNode,
+            toP2PNode,
+            link
+          )
+        }
+      }
     }
 
     val networkImpl = P2PNetworkImpl.create(networkGraph)

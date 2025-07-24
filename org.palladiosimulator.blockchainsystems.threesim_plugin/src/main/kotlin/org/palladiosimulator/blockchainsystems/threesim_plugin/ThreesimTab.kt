@@ -20,11 +20,11 @@ import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
  */
 class ThreesimTab : AbstractLaunchConfigurationTab() {
   companion object {
-    private const val MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS = 1L
     private const val MINIMUM_RELIABILITY_OBSERVATION_TIMESPAN = 1L
   }
 
-  private var numberOfRequiredSecurityConfirmationsText: Text? = null
+  private var throughputMonitoringIntervalText: Text? = null
+  private var failureThroughputThresholdText: Text? = null
   private var shannonEntropyKText: Text? = null
   private var nakamotoCoefficientThresholdText: Text? = null
   private var reliabilityObservationTimespanText: Text? = null
@@ -47,10 +47,15 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     GridLayoutFactory.swtDefaults().numColumns(1).spacing(0, 10).applyTo(group)
     group.setLayoutData(GridData(SWT.FILL, SWT.BEGINNING, true, false))
 
-    numberOfRequiredSecurityConfirmationsText = Text(group, SWT.BORDER)
-    numberOfRequiredSecurityConfirmationsText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
-    numberOfRequiredSecurityConfirmationsText?.addVerifyListener(LongVerifier)
-    numberOfRequiredSecurityConfirmationsText?.addModifyListener { updateLaunchConfigurationDialog() }
+    throughputMonitoringIntervalText = Text(group, SWT.BORDER)
+    throughputMonitoringIntervalText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
+    throughputMonitoringIntervalText?.addVerifyListener(LongVerifier)
+    throughputMonitoringIntervalText?.addModifyListener { updateLaunchConfigurationDialog() }
+
+    failureThroughputThresholdText = Text(group, SWT.BORDER)
+    failureThroughputThresholdText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
+    failureThroughputThresholdText?.addVerifyListener(DoubleVerifier)
+    failureThroughputThresholdText?.addModifyListener { updateLaunchConfigurationDialog() }
 
     shannonEntropyKText = Text(group, SWT.BORDER)
     shannonEntropyKText?.setLayoutData(GridData(SWT.FILL, SWT.CENTER, true, false))
@@ -68,9 +73,14 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     reliabilityObservationTimespanText?.addModifyListener { updateLaunchConfigurationDialog() }
   }
 
-  private fun isNumberOfRequiredSecurityConfirmationsValid(): Boolean {
-    val nr = numberOfRequiredSecurityConfirmationsText?.text?.toLongOrNull() ?: return false
-    return nr > MINIMUM_NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS
+  private fun isThroughputMonitoringIntervalValid(): Boolean {
+    val interval = throughputMonitoringIntervalText?.text?.toLongOrNull() ?: return false
+    return interval > 0L
+  }
+
+  private fun isFailureThroughputThresholdValid(): Boolean {
+    val threshold = failureThroughputThresholdText?.text?.toDoubleOrNull() ?: return false
+    return threshold in 0.0..1.0
   }
 
   private fun isShannonEntropyKValid(): Boolean {
@@ -94,14 +104,23 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   override fun initializeFrom(configuration: ILaunchConfiguration) {
     try {
-      numberOfRequiredSecurityConfirmationsText?.text =
+      throughputMonitoringIntervalText?.text =
         configuration.getAttribute(
-          Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-          Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+          Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
+          Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
         )
     } catch (_: Exception) {
-      numberOfRequiredSecurityConfirmationsText?.text =
-        Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+      throughputMonitoringIntervalText?.text = Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
+    }
+
+    try {
+      failureThroughputThresholdText?.text =
+        configuration.getAttribute(
+          Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
+          Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
+        )
+    } catch (_: Exception) {
+      failureThroughputThresholdText?.text = Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
     }
 
     try {
@@ -137,9 +156,12 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
     configuration.setAttribute(
-      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-      numberOfRequiredSecurityConfirmationsText?.text
-        ?: Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
+      throughputMonitoringIntervalText?.text ?: Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
+      failureThroughputThresholdText?.text ?: Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
     )
     configuration.setAttribute(
       Attributes.Threesim.SHANNON_ENTROPY_K,
@@ -157,8 +179,12 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   override fun setDefaults(configuration: ILaunchConfigurationWorkingCopy) {
     configuration.setAttribute(
-      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
+      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
+      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
+    )
+    configuration.setAttribute(
+      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
+      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
     )
     configuration.setAttribute(
       Attributes.Threesim.SHANNON_ENTROPY_K,
@@ -180,6 +206,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun isValid(launchConfig: ILaunchConfiguration?): Boolean {
-    return isNumberOfRequiredSecurityConfirmationsValid() && isShannonEntropyKValid() && isNakamotoCoefficientThresholdValid() && isReliabilityObservationTimespanValid()
+    return isThroughputMonitoringIntervalValid() && isFailureThroughputThresholdValid() && isShannonEntropyKValid() && isNakamotoCoefficientThresholdValid() && isReliabilityObservationTimespanValid()
   }
 }

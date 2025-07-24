@@ -66,8 +66,12 @@ public final class Attributes {
     }
 
     public static class Threesim {
-        public static final String NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS = "NumberOfRequiredSecurityConfirmations";
-        public static final String NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT = "6";
+        public static final String THROUGHPUT_MONITORING_INTERVAL = "ThroughputMonitoringInterval";
+        public static final String THROUGHPUT_MONITORING_INTERVAL_DEFAULT = "1000";
+                // in milliseconds, TODO: find suitable default value
+
+        public static final String FAILURE_THROUGHPUT_THRESHOLD = "FailureThroughputThreshold";
+        public static final String FAILURE_THROUGHPUT_THRESHOLD_DEFAULT = "0.1"; // TODO: find suitable default value
 
         public static final String SHANNON_ENTROPY_K = "ShannonEntropyK";
         public static final String SHANNON_ENTROPY_K_DEFAULT = "1.0";

@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.plugin.results.ui
 
-import com.google.gson.JsonElement
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files

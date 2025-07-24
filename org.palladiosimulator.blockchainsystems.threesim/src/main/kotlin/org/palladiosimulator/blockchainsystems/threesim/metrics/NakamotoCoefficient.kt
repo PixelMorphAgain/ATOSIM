@@ -13,9 +13,9 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 @Serializable
 class NakamotoCoefficient(
-  value: Int,
+  override val value: Int,
   val threshold: Double,
-) : OutputMetric<Int>(value) {
+) : OutputMetric<Int>() {
   companion object {
     const val NAME = "NakamotoCoefficient"
   }

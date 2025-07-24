@@ -19,9 +19,9 @@ import java.time.format.DateTimeFormatter
  *
  * @author Yannik Sproll, Davis Riedel
  */
-object SummaryUtils {
+object SimulationResultUtils {
   @Throws(CoreException::class)
-  fun saveResultSummary(
+  fun saveResultFile(
     result: SimulationResult,
     configuration: ILaunchConfiguration
   ) {
@@ -30,7 +30,9 @@ object SummaryUtils {
       Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT
     )
 
-    val fileName: String = currentTimeFormatted + "-" + result.getSimulationType() + ".dssimresult"
+    val timestamp = getCurrentTimeFormatted()
+    val simType = result.simulationType
+    val fileName = "$timestamp-$simType.tsr"
     val fullFilePath = Path.of(path, fileName).toString()
 
     try {
@@ -38,22 +40,21 @@ object SummaryUtils {
         writer.write(Json.encodeToString(result))
       }
     } catch (e: IOException) {
-      System.err.println("An error occurred while writing to the file " + fullFilePath + ".")
+      System.err.println("An error occurred while writing to the file $fullFilePath.")
       e.printStackTrace()
     }
   }
 
-  private val currentTimeFormatted: String
-    get() {
-      val now = Instant.now()
+  private fun getCurrentTimeFormatted(): String {
+    val now = Instant.now()
 
-      // Convert Instant to ZonedDateTime in the system default time zone
-      val zonedDateTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault())
+    // Convert Instant to ZonedDateTime in the system default time zone
+    val zonedDateTime = ZonedDateTime.ofInstant(now, ZoneId.systemDefault())
 
-      // Define the desired format
-      val formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss")
+    // Define the desired format
+    val formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss")
 
-      // Format the ZonedDateTime
-      return zonedDateTime.format(formatter)
-    }
+    // Format the ZonedDateTime
+    return zonedDateTime.format(formatter)
+  }
 }

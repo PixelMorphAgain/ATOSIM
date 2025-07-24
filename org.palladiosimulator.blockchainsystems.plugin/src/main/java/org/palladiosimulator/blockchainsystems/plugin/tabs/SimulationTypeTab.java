@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType;
-import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils;
+import org.palladiosimulator.blockchainsystems.plugin.utils.ValidationUtils;
 
 public class SimulationTypeTab extends AbstractLaunchConfigurationTab {
 

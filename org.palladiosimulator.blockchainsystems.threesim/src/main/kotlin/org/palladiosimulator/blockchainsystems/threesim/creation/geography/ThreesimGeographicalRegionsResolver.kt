@@ -32,10 +32,12 @@ class ThreesimGeographicalRegionsResolver(
   override fun getGeographicalRegionOfNode(nodeId: String): GeographicalRegion {
     val regionName = nodeAllocationResolver
       .getNodeAllocation(nodeId)
-      .nodeGeographicalEnvironment
-      .nodeGeographicalRegionSpecification
-      .region
-      .regionName
+      ?.nodeGeographicalEnvironment
+      ?.nodeGeographicalRegionSpecification
+      ?.region
+      ?.regionName ?: throw IllegalArgumentException(
+      "Node with ID '$nodeId' does not have a geographical region defined in the node allocation."
+    )
 
     requireNotNull(geoRegions.getRegionByName(regionName)) {
       "Geographical region with name '$regionName' not found in the geographical regions specification."

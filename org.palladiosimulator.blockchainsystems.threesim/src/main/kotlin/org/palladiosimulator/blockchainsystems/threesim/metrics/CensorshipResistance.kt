@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class CensorshipResistance(
-  value: Double
-) : OutputMetric<Double>(value) {
+  override val value: Double
+) : OutputMetric<Double>() {
   companion object {
     const val NAME = "CensorshipResistance"
   }

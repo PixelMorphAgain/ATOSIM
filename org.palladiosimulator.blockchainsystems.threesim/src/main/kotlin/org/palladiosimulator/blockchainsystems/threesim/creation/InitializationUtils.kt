@@ -152,11 +152,18 @@ object InitializationUtils {
 
   // Threesim Simulation Parameters
 
-  fun getNumberOfRequiredSecurityConfirmationsFromConfig(configuration: ILaunchConfiguration): Int {
+  fun getThroughputMonitoringIntervalFromConfig(configuration: ILaunchConfiguration): Long {
     return configuration.getAttribute(
-      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS,
-      Attributes.Threesim.NUMBER_OF_REQUIRED_SECURITY_CONFIRMATIONS_DEFAULT
-    ).toInt()
+      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
+      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
+    ).toLong()
+  }
+
+  fun getFailureThroughputThresholdFromConfig(configuration: ILaunchConfiguration): Double {
+    return configuration.getAttribute(
+      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
+      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
+    ).toDouble()
   }
 
   fun getShannonEntropyKFromConfig(configuration: ILaunchConfiguration): Double {

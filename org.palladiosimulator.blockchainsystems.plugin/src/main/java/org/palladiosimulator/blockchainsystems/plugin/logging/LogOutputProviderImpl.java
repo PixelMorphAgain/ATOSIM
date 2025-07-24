@@ -6,7 +6,7 @@ import java.util.Set;
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider;
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput;
 import org.palladiosimulator.blockchainsystems.loggers.*;
-import org.palladiosimulator.blockchainsystems.loggers.abstractions.TraceEventFileLogger;
+import org.palladiosimulator.blockchainsystems.loggers.TraceEventFileLogger;
 
 /**
  * Implementation of the {@link LogOutputProvider} interface.

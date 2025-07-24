@@ -40,31 +40,28 @@ abstract class ThreesimBlockchainSystemFactory(
     val networkCreationResult = networkFactory.createP2PNetwork()
 
     // Create information provider based on the generated network
-    val nodeAllocationResolver = getNodeAllocationResolver(
-      networkTopology,
-      networkCreationResult
-    )
-
+    val nodeAllocationResolver = getNodeAllocationResolver(networkCreationResult)
     val resourcePowerCalculator = getResourcePowerCalculator(networkCreationResult)
-
     val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
       designBlockchainSystem.geographicalRegionsSpecification,
       nodeAllocationResolver
     );
 
     // Create factories based on information providers and metamodel
-    val blockFactory: BlockFactory = createBlockFactory(designBlockchainSystem)
+    val blockFactory: BlockFactory = createBlockFactory()
 
     val nodeFactory = createBlockchainSystemNodeFactory(
       nodeAllocationResolver,
       resourcePowerCalculator,
-      blockFactory
+      blockFactory,
+      geographicalRegionsResolver
     )
 
     return createBlockchainSystemInstance(
       networkCreationResult.createdNetwork,
       blockFactory,
-      nodeFactory
+      nodeFactory,
+      geographicalRegionsResolver
     )
   }
 
@@ -111,14 +108,15 @@ abstract class ThreesimBlockchainSystemFactory(
   }
 
   private fun createBlockchainSystemNodeFactory(
-//    maliciousNodesIdProvider: MaliciousNodesIdProvider?,
     nodeAllocationResolver: NodeAllocationResolver,
     resourcePowerCalculator: ResourcePowerCalculator,
     blockFactory: BlockFactory,
     geographicalRegionsResolver: ThreesimGeographicalRegionsResolver
   ): BlockchainSystemNodeFactory {
+    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
+
     // Create factories independent of the metamodel information
-    val blockchainFactory = BlockchainFactoryImpl()
+    val blockchainFactory = BlockchainFactoryImpl(numReqSecConfirmations)
     val blockPropagationStrategyFactory = BlockPropagationStrategyFactoryImpl()
     val transactionPropagationStrategyFactory = TransactionPropagationStrategyFactoryImpl()
     val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()

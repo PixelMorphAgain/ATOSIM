@@ -10,8 +10,8 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 @Serializable
 class AvailabilitySecurity(
-  value: Double
-) : OutputMetric<Double>(value) {
+  override val value: Double
+) : OutputMetric<Double>() {
   companion object {
     const val NAME = "AvailabilitySecurity"
   }

@@ -14,13 +14,13 @@ class ConnectedSubgraphNetworkBlockchainSystemFactory(
 
   override val networkFactory = ConnectedSubgraphP2PNetworkFactory(
     RandomGenerator.of("Random"),
-    networkTopology
+    networkTopology as ConnectedSubgraphsNetworkTopology
   )
 
   override fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver {
     networkCreationResult as ConnectedSubgraphNetworkCreationResult
     return ConnectedSubgraphNetworkNodeAllocationResolver(
-      networkTopology,
+      networkTopology as ConnectedSubgraphsNetworkTopology,
       networkCreationResult.nodeIdToNodeTemplateIdMapping
     )
   }
@@ -28,7 +28,7 @@ class ConnectedSubgraphNetworkBlockchainSystemFactory(
   override fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator {
     networkCreationResult as ConnectedSubgraphNetworkCreationResult
     return ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
-      networkTopology,
+      networkTopology as ConnectedSubgraphsNetworkTopology,
       networkCreationResult.nodeIdToNodeTemplateIdMapping
     )
   }

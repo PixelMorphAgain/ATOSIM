@@ -27,7 +27,6 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
  */
 class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition,
-  private val numberOfRequiredSecurityConfirmations: Int,
   private val throughputMonitoringInterval: Long,
   private val failureThroughputThreshold: Double
 ) : SimulationMonitor {
@@ -81,11 +80,11 @@ class ThreesimSimulationMonitor(
       numberOfConfirmedTransactions = calculateNumberOfConfirmedTransactions(),
       transactionConfirmationDurations = calculateTransactionConfirmationDurations(),
       blockProposalTimeAndConfirmationTimePerConfirmedBlock = calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(),
-      meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime),
-      meanTimeToRepair = failureLog.calculateMeanFailureDuration(),
+      meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime).toLong(),
+      meanTimeToRepair = failureLog.calculateMeanFailureDuration().toLong(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
-//      tokensHeldPerNode = TODO()
+      tokensHeldPerNode = TODO()
     )
   }
 
@@ -97,7 +96,7 @@ class ThreesimSimulationMonitor(
       BlockType.ForkingBlock -> forkedBlocks
     }?.addNodeToBlock(block, nodeId, occurrenceTime)
 
-    when (e.appendedBlockType) {
+    when (blockType) {
       BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
       BlockType.ConfirmedBlock -> includedBlocksSinceLastThroughputCheck
       else -> null
@@ -152,7 +151,7 @@ class ThreesimSimulationMonitor(
         val block = e.block
 
         if (BlockUtils.isBlockForked(block)) {
-          forkedBlocks?.addNodeToBlock(block.hash, logOrigin.id, e.occurrenceTime)
+          forkedBlocks?.addNodeToBlock(block, logOrigin.id, e.occurrenceTime)
         }
 
         blocksProposedPerNode[logOrigin.id] = (blocksProposedPerNode[logOrigin.id] ?: 0) + 1
@@ -163,7 +162,7 @@ class ThreesimSimulationMonitor(
 
         val nodeId = logOrigin.id
 
-        addBlock(e.appendedBlockType, e.block, nodeId, e.occurrenceTime)
+        addBlock(e.appendedBlockType, e.appendedBlock, nodeId, e.occurrenceTime)
 
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
       }

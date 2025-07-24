@@ -12,9 +12,12 @@ import kotlinx.serialization.Serializable
  * @author Davis Riedel
  */
 @Serializable
-abstract class OutputMetric<T>(
-  val value: T
-) {
+abstract class OutputMetric<T> {
+  /**
+   * The value of the output metric.
+   */
+  abstract val value: T
+
   /**
    * The name of the output metric, used for identification in results
    */

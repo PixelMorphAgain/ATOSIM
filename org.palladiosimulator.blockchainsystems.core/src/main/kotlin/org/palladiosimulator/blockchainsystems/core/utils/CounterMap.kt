@@ -25,6 +25,14 @@ class CounterMap<T> {
     }
   }
 
+  fun put(key: T, value: Int) {
+    if (value <= 0) {
+      map.remove(key)
+    } else {
+      map[key] = value
+    }
+  }
+
   fun get(key: T): Int {
     return map[key] ?: 0
   }

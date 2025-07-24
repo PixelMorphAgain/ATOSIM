@@ -22,10 +22,11 @@ class ThreesimSimulationFactory(
   ): Simulation {
     with(InitializationUtils) {
       val threesimSimulationParameters = ThreesimSimulationParameters(
-        getNumberOfRequiredSecurityConfirmationsFromConfig(configuration),
+        getThroughputMonitoringIntervalFromConfig(configuration),
+        getFailureThroughputThresholdFromConfig(configuration),
         getShannonEntropyKFromConfig(configuration),
         getNakamotoCoefficientThresholdFromConfig(configuration),
-        getReliabilityObservationTimespanFromConfig(configuration
+        getReliabilityObservationTimespanFromConfig(configuration)
       )
 
       return when (simulationType) {

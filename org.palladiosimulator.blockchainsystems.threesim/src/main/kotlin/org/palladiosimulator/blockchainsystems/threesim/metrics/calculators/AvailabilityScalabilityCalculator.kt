@@ -28,7 +28,7 @@ class AvailabilityScalabilityCalculator(
     override fun calculateAverage(measurements: List<AvailabilityScalability>): AvailabilityScalability {
       val avgValue = measurements.averageOf { it.value }
       val avgObservationTime = measurements.averageOf { it.observationTime }
-      return AvailabilityScalability(avgValue, avgObservationTime)
+      return AvailabilityScalability(avgValue, avgObservationTime.toLong())
     }
   }
 }

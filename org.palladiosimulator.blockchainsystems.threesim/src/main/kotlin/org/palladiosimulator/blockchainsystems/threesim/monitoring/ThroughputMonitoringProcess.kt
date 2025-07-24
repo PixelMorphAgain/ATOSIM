@@ -28,7 +28,7 @@ class ThroughputMonitoringProcess(
     simulationContext.eventCoordinator
       .raiseEvent(
         ThroughputMonitoringEvent(
-          simulationContext.time + throughputMeasurementInterval,
+          simulationContext.systemClock.currentTime + throughputMeasurementInterval,
           this
         )
       )

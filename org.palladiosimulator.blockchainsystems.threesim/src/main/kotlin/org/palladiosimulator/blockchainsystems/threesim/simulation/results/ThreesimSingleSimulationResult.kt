@@ -1,7 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
 import kotlinx.serialization.Serializable
-import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummary
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 
 /**

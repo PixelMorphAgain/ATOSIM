@@ -11,10 +11,10 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * @author Davis Riedel
  */
 @Serializable
-class AvailabilityScalability(
-  value: Double,
+data class AvailabilityScalability(
+  override val value: Double,
   val observationTime: Long
-) : OutputMetric<Double>(value) {
+) : OutputMetric<Double>() {
   companion object {
     const val NAME = "AvailabilityScalability"
   }

@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class ConfirmationLatency(
-  value: Long
-) : OutputMetric<Long>(value) {
+  override val value: Long
+) : OutputMetric<Long>() {
   companion object {
     const val NAME = "ConfirmationLatency"
   }
