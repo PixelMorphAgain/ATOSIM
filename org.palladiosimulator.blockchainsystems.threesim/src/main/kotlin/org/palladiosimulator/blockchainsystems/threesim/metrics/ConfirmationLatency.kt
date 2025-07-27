@@ -1,16 +1,17 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
+import kotlinx.serialization.Serializable
 
 /**
  * Confirmation latency
  *
  * @author Davis Riedel
  */
+@Serializable
 class ConfirmationLatency(
-  value: Duration
-) : OutputMetric<Duration>(value) {
+  override val value: Long
+) : OutputMetric<Long>() {
   companion object {
     const val NAME = "ConfirmationLatency"
   }

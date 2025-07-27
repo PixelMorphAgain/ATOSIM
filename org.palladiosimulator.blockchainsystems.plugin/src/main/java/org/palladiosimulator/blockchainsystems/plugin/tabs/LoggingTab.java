@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
-import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils;
+import org.palladiosimulator.blockchainsystems.plugin.utils.ValidationUtils;
 
 public class LoggingTab extends AbstractLaunchConfigurationTab {
 

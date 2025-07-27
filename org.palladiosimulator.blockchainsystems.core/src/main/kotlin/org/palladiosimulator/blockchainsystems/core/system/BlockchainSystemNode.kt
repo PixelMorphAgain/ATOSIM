@@ -7,7 +7,9 @@ import org.palladiosimulator.blockchainsystems.core.common.BlockchainSimulationO
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Taggable
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
+import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrategy
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPool
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSelectionProcess
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TransactionSubmittedCallbackSubscriber
@@ -30,7 +32,7 @@ class BlockchainSystemNode(
   val resourcePower: Double,
   private val miningProcess: MiningProcess,
   private val transactionSelectionProcess: TransactionSelectionProcess,
-  private val blockchain: Blockchain,
+  val blockchain: Blockchain,
   private val blockValidator: BlockValidator,
   private val trxMemPool: TrxMemPool,
   private val orphanBlockPool: OrphanBlockPool,
@@ -61,13 +63,13 @@ class BlockchainSystemNode(
     blockchain.initializeLogger(this)
 
     transactionPropagationStrategy.setNetworkInterface(networkInterface)
-    transactionPropagationStrategy.setBlockchain(blockchain)
+    transactionPropagationStrategy.setBlockchainSystemNodeContext(context)
     transactionPropagationStrategy.setOnReceivedCallback { behavior.onTransactionReceived(it, context) }
     transactionPropagationStrategy.initialize(simulationContext)
     transactionPropagationStrategy.initializeLogger(this)
 
     blockPropagationStrategy.setNetworkInterface(networkInterface)
-    blockPropagationStrategy.setBlockchain(blockchain)
+    blockPropagationStrategy.setBlockchainSystemNodeContext(context)
     blockPropagationStrategy.setOnReceivedCallback { behavior.onBlockReceived(it, context) }
     blockPropagationStrategy.initialize(simulationContext)
     blockPropagationStrategy.initializeLogger(this)

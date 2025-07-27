@@ -1,6 +1,8 @@
 **/target
 **/src-gen
 **/bin
+build
+*/lib
 
 docker-compose.*
 *.csv

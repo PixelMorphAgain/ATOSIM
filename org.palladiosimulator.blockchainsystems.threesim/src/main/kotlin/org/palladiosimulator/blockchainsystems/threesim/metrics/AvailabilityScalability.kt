@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
  * Availability regarding Scalability
@@ -10,10 +10,11 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
-class AvailabilityScalability(
-  value: Double,
-  val observationTime: Duration
-) : OutputMetric<Double>(value) {
+@Serializable
+data class AvailabilityScalability(
+  override val value: Double,
+  val observationTime: Long
+) : OutputMetric<Double>() {
   companion object {
     const val NAME = "AvailabilityScalability"
   }

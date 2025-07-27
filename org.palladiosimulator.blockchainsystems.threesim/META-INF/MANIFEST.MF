@@ -3,7 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: ThreeSim
 Bundle-SymbolicName: org.palladiosimulator.blockchainsystems.threesim
 Bundle-Version: 0.0.1.qualifier
-Export-Package: .
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ClassPath: .,
+ lib/kotlin-stdlib-2.2.0.jar,
+ lib/kotlinx-serialization-core-jvm-1.9.0.jar,
+ lib/kotlinx-serialization-json-1.9.0.jar,
+ lib/kotlinx-serialization-json-jvm-1.9.0.jar
+Export-Package: .,
+ org.palladiosimulator.blockchainsystems.threesim
 Import-Package: org.palladiosimulator.blockchainsystems.loggers
 Require-Bundle: org.junit,
  junit-jupiter-api,

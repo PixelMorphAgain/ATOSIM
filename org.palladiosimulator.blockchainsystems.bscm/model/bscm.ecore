@@ -205,10 +205,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="TransactionPropertiesSpecificationValue">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Size" lowerBound="1"
-          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="Fee" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="Fee" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Probability" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="Amount" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="nodeenvironment" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeEnvironment/1.0"

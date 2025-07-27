@@ -3,15 +3,18 @@ package org.palladiosimulator.blockchainsystems.core.transaction
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.TrxMemPool
+import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.TrxMemPool
 import java.util.TreeSet
 
 /**
+ * Implementation of a transaction memory pool (mempool) running on a blockchain node.
+ *
  * @author Davis Riedel
  */
 class TrxMemPoolImpl(
   val nodeId: String
 ) : BlockchainNodeObject(), TrxMemPool {
+
   /*
    * Stores transactions sorted by their fee rate in descending order.
    */
@@ -39,6 +42,11 @@ class TrxMemPoolImpl(
 
   override fun storeTransaction(transaction: Transaction) {
     transactions.add(transaction)
+    logTransactionStoredEvent(transaction)
+  }
+
+  override fun getTransactionById(txId: String): Transaction? {
+    return transactions.find { it.txId == txId }
   }
 
   override fun getTransactionsSortedByFeeRate(): TreeSet<Transaction> {

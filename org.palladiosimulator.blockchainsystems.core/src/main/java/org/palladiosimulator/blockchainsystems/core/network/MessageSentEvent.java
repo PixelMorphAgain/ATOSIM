@@ -11,7 +11,7 @@ public record MessageSentEvent(
         P2PNode senderNode
 ) implements Event {
 
-    public static final String EVENT_NAME = "MessageSentEvent";
+    public static final String EVENT_TYPE = "MessageSentEvent";
 
     @Override
     public long getOccurrenceTime() {
@@ -20,7 +20,7 @@ public record MessageSentEvent(
 
     @Override
     public String getEventType() {
-        return EVENT_NAME;
+        return EVENT_TYPE;
     }
 
     public P2PLinkMessageFrame getMessage() {

@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.plugin.common;
 /**
  * This class contains all attributes used in the plugin.
  *
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  * @implNote This class is not meant to be instantiated.
  */
 public final class Attributes {
@@ -63,5 +63,24 @@ public final class Attributes {
 
         public static final String DATABASE_PASSWORD_ATTRIBUTE = "DatabasePassword";
         public static final String DATABASE_PASSWORD_ATTRIBUTE_DEFAULT = "";
+    }
+
+    public static class Threesim {
+        public static final String THROUGHPUT_MONITORING_INTERVAL = "ThroughputMonitoringInterval";
+        public static final String THROUGHPUT_MONITORING_INTERVAL_DEFAULT = "1000";
+                // in milliseconds, TODO: find suitable default value
+
+        public static final String FAILURE_THROUGHPUT_THRESHOLD = "FailureThroughputThreshold";
+        public static final String FAILURE_THROUGHPUT_THRESHOLD_DEFAULT = "0.1"; // TODO: find suitable default value
+
+        public static final String SHANNON_ENTROPY_K = "ShannonEntropyK";
+        public static final String SHANNON_ENTROPY_K_DEFAULT = "1.0";
+
+        public static final String NAKAMOTO_COEFFICIENT_THRESHOLD = "NakamotoCoefficientThreshold";
+        public static final String NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT = "0.5";
+
+        public static final String RELIABILITY_OBSERVATION_TIMESPAN = "ReliabilityObservationTimespan";
+        public static final String RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT = "1000";
+                // in milliseconds, TODO: find suitable default value
     }
 }

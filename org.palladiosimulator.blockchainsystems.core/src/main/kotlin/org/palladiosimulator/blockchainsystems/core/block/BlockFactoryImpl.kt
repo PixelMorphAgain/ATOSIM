@@ -13,7 +13,7 @@ import java.util.UUID
  * @author Yannik Sproll, Davis Riedel
  */
 class BlockFactoryImpl : BlockFactory {
-  public override fun createBlock(
+  override fun createBlock(
     hash: String,
     previousHash: String,
     originId: String,

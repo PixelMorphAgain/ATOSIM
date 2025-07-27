@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.HerfindahlHirsch
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import kotlin.math.pow
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates the Herfindahl-Hirschman-Index (HHI)
@@ -13,7 +14,7 @@ import kotlin.math.pow
  * @author Davis Riedel
  */
 class HerfindahlHirschmanIndexCalculator(
-  private val tokensHeldPerNode: Array<Double>
+  private val tokensHeldPerNode: Collection<Double>
 ) : OutputMetricCalculator<HerfindahlHirschmanIndex> {
   override fun calculate(): HerfindahlHirschmanIndex {
     val n = tokensHeldPerNode.count()
@@ -23,7 +24,7 @@ class HerfindahlHirschmanIndexCalculator(
 
   companion object : OutputMetricAverageCalculator<HerfindahlHirschmanIndex> {
     override fun calculateAverage(measurements: List<HerfindahlHirschmanIndex>): HerfindahlHirschmanIndex {
-      return HerfindahlHirschmanIndex(measurements.sumOf { it.value } / measurements.size)
+      return HerfindahlHirschmanIndex(measurements.averageOf { it.value })
     }
   }
 }

@@ -5,6 +5,6 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 class ThreesimBlockchainSystemNodeTagProvider : BlockchainSystemNodeTagProvider {
   override fun getTags(nodeId: String): Set<String> {
     // TODO: Return tags of node with given nodeId
-    TODO("Not yet implemented")
+    return emptySet()
   }
 }

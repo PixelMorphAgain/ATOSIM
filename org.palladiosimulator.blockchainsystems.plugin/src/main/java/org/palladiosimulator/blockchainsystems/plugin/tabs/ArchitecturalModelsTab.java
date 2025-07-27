@@ -29,7 +29,7 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.palladiosimulator.blockchainsystems.plugin.resourcefiles.*;
-import org.palladiosimulator.blockchainsystems.plugin.validation.ValidationUtils;
+import org.palladiosimulator.blockchainsystems.plugin.utils.ValidationUtils;
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes;
 
 public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {

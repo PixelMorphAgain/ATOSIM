@@ -7,4 +7,4 @@ import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.Simu
  *
  * @author Davis Riedel
  */
-interface SimulationRoundResult {}
+interface SimulationRoundResult

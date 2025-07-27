@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import kotlin.time.Duration
 
 /**
  * Fault tolerance
@@ -10,24 +10,13 @@ import kotlin.time.Duration
  *
  * @author Davis Riedel
  */
+@Serializable
 class FaultTolerance(
-  value: Pair<Double, Duration>
-) : OutputMetric<Pair<Double, Duration>>(value) {
+  override val value: Pair<Double, Double>
+) : OutputMetric<Pair<Double, Double>>() {
   companion object {
     const val NAME = "FaultTolerance"
   }
 
   override val name: String = NAME
-
-  override fun formatDetails(stringBuilder: StringBuilder) {
-    with(stringBuilder) {
-      append("{ ")
-      append(name)
-      append("={ throughputDelta=")
-      append(value.first)
-      append("; confirmationLatencyDelta=")
-      append(value.second)
-      append(" }")
-    }
-  }
 }

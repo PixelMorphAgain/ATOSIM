@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.core.network
 import org.palladiosimulator.blockchainsystems.core.common.P2PNetworkObject
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
-import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
 
 /**
@@ -31,10 +30,10 @@ class P2PLink(
 
   fun send(messageContent: Message) {
     val msEvent = MessageSentEvent(
-      simulationContext.systemClock.getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       P2PLinkMessageFrame(
         messageContent,
-        simulationContext.systemClock.getCurrentTime()
+        simulationContext.systemClock.currentTime
       ),
       this,
       toNode,
@@ -47,9 +46,10 @@ class P2PLink(
   }
 
   override fun dispatchEvent(event: Event) {
-    when (event.getEventType()) {
-      "MessageReceivedEvent" -> handleMessageReceivedEvent(event as MessageReceivedEvent)
-      "MessageSentEvent" -> handleMessageSentEvent(event as MessageSentEvent)
+    when (event.eventType) {
+      MessageDroppedEvent.EVENT_TYPE -> handleMessageDroppedEvent(event as MessageDroppedEvent)
+      MessageReceivedEvent.EVENT_TYPE -> handleMessageReceivedEvent(event as MessageReceivedEvent)
+      MessageSentEvent.EVENT_TYPE -> handleMessageSentEvent(event as MessageSentEvent)
     }
   }
 
@@ -62,54 +62,46 @@ class P2PLink(
       )
   }
 
-  private fun handleMessageSentEvent(event: MessageSentEvent) {
-    val latency = latencyValueProvider.getValue()
-    val throughput = throughputValueProvider.getValue()
-    val messageSize = event.message.content.getSize().toLong()
+  private fun handleMessageDroppedEvent(event: MessageDroppedEvent) {
+    event
+      .senderNode
+      .onMessageDropped(
+        event.message.content,
+        event.recipientNode
+      )
+  }
 
-    if (throughput <= 0) {
-      // Link failed, log message dropped event
-      if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) return
-      traceEventLogger.logEvent(
-        MessageDroppedTraceEvent(
-          event.message,
-          simulationContext.systemClock.currentTime,
-          event.recipientNode,
-          event.senderNode
-        )
+  private fun handleMessageSentEvent(event: MessageSentEvent) {
+    val throughput = throughputValueProvider.getValue()
+
+    val event = if (throughput <= 0) {
+      // Link failed, raise message dropped event
+      MessageDroppedEvent(
+        event.message,
+        simulationContext.systemClock.currentTime,
+        this,
+        event.recipientNode,
+        event.senderNode
       )
     } else {
       // Link is operational, send message
 
+      val latency = latencyValueProvider.getValue()
+      val messageSize = event.message.content.getSize().toLong()
+
       val transmissionDuration = latency + messageSize / throughput
 
-      val event = MessageReceivedEvent(
+      MessageReceivedEvent(
         event.message,
         simulationContext.systemClock.currentTime + transmissionDuration,
         this,
         event.recipientNode,
         event.senderNode
       )
-
-      simulationContext
-        .eventCoordinator
-        .raiseEvent(event)
     }
-  }
 
-  companion object {
-    fun create(
-      latencyValueProvider: SimulationLifecycleAwareValueProvider<Long>,
-      throughputValueProvider: SimulationLifecycleAwareValueProvider<Int>,
-      fromNode: P2PNode,
-      toNode: P2PNode
-    ): P2PLink {
-      return P2PLink(
-        latencyValueProvider,
-        throughputValueProvider,
-        fromNode,
-        toNode
-      )
-    }
+    simulationContext
+      .eventCoordinator
+      .raiseEvent(event)
   }
 }

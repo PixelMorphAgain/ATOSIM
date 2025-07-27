@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Sing
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSingleSimulationResult
 
 /**
  * Single simulation of 3SIM.
@@ -11,15 +12,17 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
  * @author Davis Riedel
  */
 class ThreesimSingleSimulation(
-  val blockchainSystemFactory: BlockchainSystemFactory,
-  val logOutputProvider: LogOutputProvider,
-  val maxAllowedBlockchainLength: Long,
+  private val blockchainSystemFactory: BlockchainSystemFactory,
+  private val logOutputProvider: LogOutputProvider,
+  private val maxAllowedBlockchainLength: Long,
+  private val threesimSimulationParameters: ThreesimSimulationParameters
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
     val result = ThreesimSimulationRound(
       blockchainSystemFactory.createBlockchainSystem(),
       logOutputProvider.logOutputs,
-      maxAllowedBlockchainLength
+      maxAllowedBlockchainLength,
+      threesimSimulationParameters
     ).run();
 
     return ThreesimSingleSimulationResult(result);

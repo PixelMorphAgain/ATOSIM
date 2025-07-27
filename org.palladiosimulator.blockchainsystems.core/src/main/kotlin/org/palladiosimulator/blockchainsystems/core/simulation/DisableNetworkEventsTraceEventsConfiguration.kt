@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.core.simulation
 
-import org.palladiosimulator.blockchainsystems.core.blockpropagation.BlockReceivedTraceEvent
-import org.palladiosimulator.blockchainsystems.core.blockpropagation.BlockSentTraceEvent
+import org.palladiosimulator.blockchainsystems.core.propagation.block.BlockReceivedTraceEvent
+import org.palladiosimulator.blockchainsystems.core.propagation.block.BlockSentTraceEvent
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventConfiguration
 
 /**

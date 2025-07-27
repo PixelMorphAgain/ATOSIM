@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.transaction.abstractions
 
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.Propagatable
+import org.palladiosimulator.blockchainsystems.core.propagation.Propagatable
 
 interface Transaction : Propagatable {
   /**

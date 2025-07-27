@@ -3,14 +3,11 @@ package org.palladiosimulator.blockchainsystems.plugin.results.ui
 import org.eclipse.jface.action.Action
 import org.eclipse.jface.layout.GridDataFactory
 import org.eclipse.jface.layout.GridLayoutFactory
-import org.eclipse.jface.viewers.ITreeContentProvider
-import org.eclipse.jface.viewers.LabelProvider
 import org.eclipse.jface.viewers.TreeViewer
 import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.DirectoryDialog
 import org.eclipse.ui.part.ViewPart
-import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSummaryDeserializer
 import java.io.File
 
 /**
@@ -22,47 +19,54 @@ abstract class SimulationResultsExplorer : ViewPart() {
   private val repositoryContainer = ResultsRepositoryContainer()
   private var viewer: TreeViewer? = null
 
-  internal class DirectoryContentProvider : ITreeContentProvider {
-    override fun getElements(inputElement: Any?): Array<Any?> {
-      if (inputElement is ResultsRepositoryContainer) {
-        return inputElement.resultRepositories.toTypedArray()
+  /**
+   * Content provider for the tree viewer.
+   *
+   * This extends the `JsonTreeContentProvider` to display the JSON contents of different simulation result files.
+   */
+  internal class DirectoryContentProvider : JsonTreeContentProvider() {
+    override fun getElements(inputElement: Any?): Array<Any> {
+      return when (inputElement) {
+        is ResultsRepositoryContainer -> inputElement.resultRepositories.toTypedArray()
+        else -> emptyArray()
       }
-
-      return arrayOfNulls<Any>(0)
     }
 
-    override fun getChildren(parentElement: Any?): Array<Any?> {
-      if (parentElement is ResultsRepository) {
-        return parentElement.simulationResults.toTypedArray()
+    override fun getChildren(parentElement: Any?): Array<Any> {
+      return when (parentElement) {
+        is ResultsRepository -> parentElement.getSimulationResultFiles().toTypedArray()
+        is SimulationResultFile -> super.getElements(parentElement.jsonContent)
+        else -> super.getChildren(parentElement)
       }
-      if (parentElement is SimulationResultFile) {
-        return parentElement.getValues().values.toTypedArray()
-      }
-
-      return arrayOfNulls<Any>(0)
     }
 
     override fun getParent(element: Any?): Any? {
-      if (element is SimulationResultFile) {
-        return element.repository
+      return when (element) {
+        is ResultsRepositoryContainer -> null
+        is SimulationResultFile -> element.repository
+        is ResultsRepository -> element.container
+        else -> super.getParent(element)
       }
-      if (element is ResultsRepository) {
-        return element.container
-      }
-      if (element is ResultFileValue) {
-        return element.file
-      }
-      return null
     }
 
     override fun hasChildren(element: Any?): Boolean {
-      if (element is ResultsRepository) {
-        return !element.simulationResults.isEmpty()
+      return when (element) {
+        is ResultsRepositoryContainer -> element.resultRepositories.isNotEmpty()
+        is ResultsRepository -> element.getSimulationResultFiles().isNotEmpty()
+        is SimulationResultFile -> super.hasChildren(element.jsonContent)
+        else -> super.hasChildren(element)
       }
-      if (element is SimulationResultFile) {
-        return !element.values.isEmpty()
+    }
+  }
+
+  internal class DirectoryLabelProvider : JsonTreeLabelProvider() {
+    override fun getText(element: Any?): String {
+      return when (element) {
+        is ResultsRepositoryContainer -> "Repositories"
+        is ResultsRepository -> element.directory?.let { it.name + " (" + it.path + ")" } ?: "Unknown Repository"
+        is SimulationResultFile -> element.file?.name ?: "Unknown File"
+        else -> super.getText(element)
       }
-      return false
     }
   }
 
@@ -73,6 +77,7 @@ abstract class SimulationResultsExplorer : ViewPart() {
       .spacing(0, 0)
       .equalWidth(true)
       .applyTo(parent)
+
     // Create the tree viewer
     viewer = TreeViewer(parent, SWT.MULTI or SWT.H_SCROLL or SWT.V_SCROLL)
     GridDataFactory
@@ -80,31 +85,17 @@ abstract class SimulationResultsExplorer : ViewPart() {
       .grab(true, true)
       .align(SWT.FILL, SWT.FILL)
       .applyTo(viewer!!.tree)
-    viewer!!.setContentProvider(DirectoryContentProvider())
-    viewer!!.setLabelProvider(object : LabelProvider() {
-      override fun getText(element: Any?): String? {
-        if (element is ResultsRepository) {
-          return element.directory.getName() + " (" + element.directory.path + ")"
-        }
-        if (element is SimulationResultFile) {
-          return element.file.getName()
-        }
-        if (element is ResultFileValue) {
-          return element.format()
-        }
-        return super.getText(element)
-      }
-    })
-    viewer!!.setInput(repositoryContainer)
-
+    viewer?.setContentProvider(DirectoryContentProvider())
+    viewer?.setLabelProvider(DirectoryLabelProvider())
+    viewer?.setInput(repositoryContainer)
 
     val toolBarManager = viewSite.actionBars.toolBarManager
 
     toolBarManager.add(loadRepositoryAction(parent))
 
-    val refreshAction: Action = object : Action() {
+    val refreshAction = object : Action() {
       override fun run() {
-        viewer!!.refresh()
+        viewer?.refresh()
       }
     }
     refreshAction.setText("Refresh")
@@ -114,22 +105,17 @@ abstract class SimulationResultsExplorer : ViewPart() {
     parent.layout()
   }
 
-  abstract fun getSimulationResultSummaryDeserializerForDirectory(directory: File): SimulationResultSummaryDeserializer?
-
   private fun loadRepositoryAction(parent: Composite): Action {
-    val action: Action = object : Action() {
+    val action = object : Action() {
       override fun run() {
         val dialog = DirectoryDialog(parent.getShell(), SWT.OPEN)
         dialog.setText("Select a Directory")
         dialog.setFilterPath(System.getProperty("user.home"))
-        val directoryPath = dialog.open()
-        if (directoryPath != null) {
+        dialog.open()?.let { directoryPath ->
           val directory = File(directoryPath)
           if (directory.isDirectory()) {
-            getSimulationResultSummaryDeserializerForDirectory(directory)?.let { deserializer ->
-              repositoryContainer.addRepository(directory, deserializer)
-              viewer!!.refresh()
-            }
+            repositoryContainer.addRepository(directory)
+            viewer?.refresh()
           }
         }
       }
@@ -140,6 +126,6 @@ abstract class SimulationResultsExplorer : ViewPart() {
   }
 
   override fun setFocus() {
-    viewer!!.control.setFocus()
+    viewer?.control?.setFocus()
   }
 }

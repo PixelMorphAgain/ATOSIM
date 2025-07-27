@@ -5,7 +5,7 @@ import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simulation
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
-import org.palladiosimulator.blockchainsystems.plugin.utils.MonteCarloSimulationProgressMonitorAdapter
+import org.palladiosimulator.blockchainsystems.plugin.simulation.MonteCarloSimulationProgressMonitorAdapter
 import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 
 /**
@@ -20,23 +20,35 @@ class ThreesimSimulationFactory(
     configuration: ILaunchConfiguration,
     progressMonitor: IProgressMonitor
   ): Simulation {
-    return when (simulationType) {
-      SimulationType.Single -> {
-        ThreesimSingleSimulation(
-          InitializationUtils.createBlockchainSystemFactory(configuration),
-          InitializationUtils.createLogOutputProviderFromConfig(configuration),
-          InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration)
-        )
-      }
+    with(InitializationUtils) {
+      val threesimSimulationParameters = ThreesimSimulationParameters(
+        getThroughputMonitoringIntervalFromConfig(configuration),
+        getFailureThroughputThresholdFromConfig(configuration),
+        getShannonEntropyKFromConfig(configuration),
+        getNakamotoCoefficientThresholdFromConfig(configuration),
+        getReliabilityObservationTimespanFromConfig(configuration)
+      )
 
-      SimulationType.MonteCarlo -> {
-        ThreesimMonteCarloSimulation(
-          numberOfRounds = InitializationUtils.getNumberOfMonteCarloSimulationRoundsFromConfig(configuration),
-          progressMonitor = MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
-          blockchainSystemFactory = InitializationUtils.createBlockchainSystemFactory(configuration),
-          logOutputProvider = InitializationUtils.createLogOutputProviderFromConfig(configuration),
-          maxAllowedBlockchainLength = InitializationUtils.getMaximumAllowedBlockchainLengthFromConfig(configuration)
-        )
+      return when (simulationType) {
+        SimulationType.Single -> {
+          ThreesimSingleSimulation(
+            createBlockchainSystemFactory(configuration),
+            createLogOutputProviderFromConfig(configuration),
+            getMaximumAllowedBlockchainLengthFromConfig(configuration),
+            threesimSimulationParameters,
+          )
+        }
+
+        SimulationType.MonteCarlo -> {
+          ThreesimMonteCarloSimulation(
+            getNumberOfMonteCarloSimulationRoundsFromConfig(configuration),
+            MonteCarloSimulationProgressMonitorAdapter(progressMonitor),
+            createBlockchainSystemFactory(configuration),
+            createLogOutputProviderFromConfig(configuration),
+            getMaximumAllowedBlockchainLengthFromConfig(configuration),
+            threesimSimulationParameters,
+          )
+        }
       }
     }
   }

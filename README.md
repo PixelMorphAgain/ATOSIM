@@ -18,10 +18,16 @@ The package is structured as follows:
 
 ## Pre-requisites
 
-- Eclipse 2024-09 RAP
+- Eclipse 2025-06 RAP
 - Palladio Nightly Plugin
+- M2E Plugin (http://download.eclipse.org/technology/m2e/releases/latest/)
 - Java 17 or higher
 - Maven
+- Just
+
+## Building 3SIM
+
+Use `just clean`, `just verify`, and `just build` to clean, verify, and build the 3SIM project. `just` sets required arguments for maven.
 
 ## Acknowledgements
 

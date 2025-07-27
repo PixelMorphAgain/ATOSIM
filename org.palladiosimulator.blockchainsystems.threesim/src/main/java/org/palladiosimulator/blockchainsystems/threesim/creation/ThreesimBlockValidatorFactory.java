@@ -34,9 +34,7 @@ public class ThreesimBlockValidatorFactory implements BlockValidatorFactory {
                 .map(x -> (BlockValidatorComponent) x.getAssemblyContext().getEncapsulatedComponent())
                 .collect(Collectors.toSet());
 
-        // TODO: Implement proper error handling if no BlockValidatorComponent is found
         BlockValidatorComponent component = blockValidatorComponents.stream().findFirst().get();
-
 
         BlockValidationDurationProviderAdapter adapter = BlockValidationDurationProviderAdapter.create(
                 component.getValidationDuration(),

@@ -5,6 +5,8 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.Longe
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
 
 /**
  * Single simulation round of 3SIM.
@@ -14,15 +16,22 @@ import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimul
 class ThreesimSimulationRound(
   blockchainSystem: BlockchainSystem,
   logOutputs: Set<TraceEventLogOutput>,
-  val maxAllowedBlockchainLength: Long
+  maxAllowedBlockchainLength: Long,
+  val threesimSimulationParameters: ThreesimSimulationParameters
 ) : SimulationRound<ThreesimSimulationRoundResult>(blockchainSystem, logOutputs) {
   override val monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
-    )
+    ),
+    threesimSimulationParameters.throughputMonitoringInterval,
+    threesimSimulationParameters.failureThroughputThreshold
   )
 
-  override fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-    return ThreesimSimulationRoundResultFactory(monitor).createSimulationRoundResult()
+  override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
+    return ThreesimSimulationRoundResultFactory(
+      threesimSimulationParameters,
+      monitor,
+      finalSystemTime
+    ).createSimulationRoundResult()
   }
 }

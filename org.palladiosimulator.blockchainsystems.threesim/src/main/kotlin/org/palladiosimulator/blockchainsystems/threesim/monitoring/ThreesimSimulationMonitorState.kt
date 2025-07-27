@@ -1,15 +1,18 @@
 package org.palladiosimulator.blockchainsystems.threesim.monitoring
 
-import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
-import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegions
-import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
-import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
-
 class ThreesimSimulationMonitorState(
-  val forkedBlocks: Set<Block>,
-  val nodes: Set<BlockchainSystemNode>,
-  val blocksProposedPerNode: CounterMap<String>,
-  val geographicalRegions: GeographicalRegions,
+  val numberOfNodes: Int,
+  val hashPowerPerNode: Collection<Double>,
+  val blocksProposedPerNode: Collection<Int>,
+  val numberOfGeographicalRegions: Int,
+  val numberOfNodesPerRegion: Collection<Int>,
   val numberOfSubmittedTransactions: Int,
   val numberOfConfirmedTransactions: Int,
+  val transactionConfirmationDurations: Collection<Long>,
+  val tokensHeldPerNode: Collection<Double>,
+  val blockProposalTimeAndConfirmationTimePerConfirmedBlock: Collection<Pair<Long, Long>>,
+  val meanTimeBetweenFailures: Long,
+  val meanTimeToRepair: Long,
+  val numberOfStaleBlocks: Int,
+  val numberOfConfirmedBlocks: Int
 )

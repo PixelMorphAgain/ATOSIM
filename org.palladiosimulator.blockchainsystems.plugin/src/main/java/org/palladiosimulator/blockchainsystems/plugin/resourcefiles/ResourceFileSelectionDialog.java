@@ -36,7 +36,7 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
                 try {
                     return ((IContainer) element).members();
                 } catch (CoreException e) {
-                    // TODO: handle exception
+                    e.printStackTrace();
                 }
             }
             return null;
@@ -52,12 +52,6 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
 
         public Object[] getElements(Object input) {
             return (Object[]) input;
-        }
-
-        public void dispose() {
-        }
-
-        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
         }
     };
 
@@ -109,7 +103,7 @@ public class ResourceFileSelectionDialog extends ElementTreeSelectionDialog {
         try {
             ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_ONE, null);
         } catch (CoreException e) {
-            // TODO: handle exception
+            e.printStackTrace();
         }
         List<IProject> openProjects = new ArrayList<IProject>(projects.length);
         for (IProject project : projects) {

@@ -5,4 +5,4 @@ package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
  *
  * @author Davis Riedel
  */
-interface SingleSimulationResult : SimulationResult {}
+interface SingleSimulationResult : SimulationResult

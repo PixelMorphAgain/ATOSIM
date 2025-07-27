@@ -11,7 +11,7 @@ public record BlockValidationFinishedEvent(
         Block block
 ) implements Event {
 
-    public static final String EVENT_NAME = "BlockValidationFinishedEvent";
+    public static final String EVENT_TYPE = "BlockValidationFinishedEvent";
 
     @Override
     public long getOccurrenceTime() {
@@ -20,7 +20,7 @@ public record BlockValidationFinishedEvent(
 
     @Override
     public String getEventType() {
-        return EVENT_NAME;
+        return EVENT_TYPE;
     }
 
     @Override
