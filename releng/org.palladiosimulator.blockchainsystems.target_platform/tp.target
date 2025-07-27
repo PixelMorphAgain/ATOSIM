@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 <target name="org.palladiosimulator.blockchainsystems Target Platform" sequenceNumber="2">
-    <locations>
-        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true"
-                  type="InstallableUnit">
-            <repository location="https://download.eclipse.org/releases/2023-09/202309131000/"/>
-            <unit id="org.eclipse.jface" version="0.0.0"/>
-            <unit id="org.eclipse.swt" version="0.0.0"/>
-            <unit id="org.eclipse.ocl" version="0.0.0"/>
-            <unit id="org.eclipse.ocl.pivot" version="0.0.0"/>
-            <unit id="org.eclipse.ocl.examples" version="0.0.0"/>
-            <unit id="org.eclipse.ocl.examples.codegen" version="0.0.0"/>
-            <unit id="org.eclipse.emf.ecore" version="0.0.0"/>
-        </location>
-        <location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
-            <dependencies>
-                <dependency>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-stdlib</artifactId>
-                    <version>2.1.21</version>
-                    <type>jar</type>
-                </dependency>
-                <dependency>
-                    <groupId>org.jetbrains.kotlinx</groupId>
-                    <artifactId>kotlinx-serialization-json</artifactId>
-                    <version>1.9.0</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.jetbrains.kotlin</groupId>
-                    <artifactId>kotlin-osgi-bundle</artifactId>
-                    <version>2.1.21</version>
-                </dependency>
-            </dependencies>
-        </location>
-    </locations>
+	<locations>
+		<location includeDependencyDepth="none" includeSource="true" missingManifest="generate" type="Maven">
+
+			<feature id="maven.libs" label="Maven Libraries" version="1.0.0.qualifier">
+
+   
+
+   
+
+   
+				<description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+				<copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+				<license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+			</feature>
+			<dependencies>
+				<dependency>
+					<groupId>org.jetbrains.kotlin</groupId>
+					<artifactId>kotlin-osgi-bundle</artifactId>
+					<version>2.2.0</version>
+					<type>jar</type>
+				</dependency>
+				<dependency>
+					<groupId>org.jetbrains.kotlinx</groupId>
+					<artifactId>kotlinx-serialization-json</artifactId>
+					<version>1.9.0</version>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</location>
+	</locations>
 </target>

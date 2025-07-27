@@ -14,6 +14,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-osgi-bundle</artifactId>
+            <version>${kotlin.version}</version>
+            <type>eclipse-plugin</type>
+        </dependency>
+        <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
             <version>0.0.1-SNAPSHOT</version>

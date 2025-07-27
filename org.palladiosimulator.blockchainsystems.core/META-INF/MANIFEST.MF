@@ -4,7 +4,11 @@ Bundle-Name: Core
 Bundle-SymbolicName: org.palladiosimulator.blockchainsystems.core
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/kotlin-stdlib-2.2.0.jar,
+ lib/kotlinx-serialization-core-jvm-1.9.0.jar,
+ lib/kotlinx-serialization-json-1.9.0.jar,
+ lib/kotlinx-serialization-json-jvm-1.9.0.jar
 Export-Package: .
 Import-Package: org.jgrapht;version="1.5.0",
  org.jgrapht.graph;version="1.5.0"
