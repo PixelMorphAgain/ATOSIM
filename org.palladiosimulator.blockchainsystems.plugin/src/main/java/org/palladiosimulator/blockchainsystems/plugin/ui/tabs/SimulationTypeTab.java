@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.tabs;
+package org.palladiosimulator.blockchainsystems.plugin.ui.tabs;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;

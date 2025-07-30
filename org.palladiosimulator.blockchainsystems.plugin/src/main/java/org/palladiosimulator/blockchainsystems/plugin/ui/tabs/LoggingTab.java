@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.tabs;
+package org.palladiosimulator.blockchainsystems.plugin.ui.tabs;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
