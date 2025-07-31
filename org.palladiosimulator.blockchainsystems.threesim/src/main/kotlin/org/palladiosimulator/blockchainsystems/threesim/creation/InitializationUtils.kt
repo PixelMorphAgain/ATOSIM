@@ -10,8 +10,8 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl
-import org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork.ConnectedSubgraphNetworkBlockchainSystemFactory
-import org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork.ExplicitNetworkBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs.ConnectedSubgraphNetworkBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit.ExplicitNetworkBlockchainSystemFactory
 
 /**
  * Utility class for initialization tasks.
@@ -53,7 +53,7 @@ object InitializationUtils {
   private fun createBlockchainSystemFactoryForExplicitNetworkTopology(
     designBlockchainSystem: BlockchainSystem,
     explicitTopology: ExplicitNetworkTopology
-  ): BlockchainSystemFactory {
+  ): ThreesimBlockchainSystemFactory {
     return ExplicitNetworkBlockchainSystemFactory(
       designBlockchainSystem,
       explicitTopology
@@ -63,7 +63,7 @@ object InitializationUtils {
   private fun createBlockchainSystemFactoryForConnectedSubgraphsTopology(
     designBlockchainSystem: BlockchainSystem,
     connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology
-  ): BlockchainSystemFactory {
+  ): ThreesimBlockchainSystemFactory {
     return ConnectedSubgraphNetworkBlockchainSystemFactory(
       designBlockchainSystem,
       connectedSubgraphsTopology
@@ -71,7 +71,7 @@ object InitializationUtils {
   }
 
   @Throws(NumberFormatException::class, CoreException::class)
-  fun createBlockchainSystemFactory(configuration: ILaunchConfiguration): BlockchainSystemFactory {
+  fun createBlockchainSystemFactory(configuration: ILaunchConfiguration): ThreesimBlockchainSystemFactory {
     val designModelLoader = BlockchainSystemModelLoader()
 
     val designBlockchainSystem = designModelLoader.load(

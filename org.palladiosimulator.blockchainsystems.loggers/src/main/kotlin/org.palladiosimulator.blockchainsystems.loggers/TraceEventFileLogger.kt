@@ -17,11 +17,20 @@ import java.util.*
  * @author Davis Riedel
  */
 class TraceEventFileLogger(private val filePath: String) : AbstractJsonLogger() {
-  private var outFileWriter: BufferedWriter? = null
+  private lateinit var outFileWriter: BufferedWriter
+
+  override fun initialize() {
+    val p = Path.of(filePath, UUID.randomUUID().toString() + ".jsonl")
+    try {
+      outFileWriter = BufferedWriter(FileWriter(p.toString()))
+    } catch (e: IOException) {
+      e.printStackTrace()
+    }
+  }
 
   override fun onTraceEventOccurred(traceEvent: TraceEvent, logOrigin: TraceEventLogOrigin) {
     try {
-      outFileWriter?.write(getEventFormat(traceEvent, logOrigin) + "\n")
+      outFileWriter.write(getEventFormat(traceEvent, logOrigin) + "\n")
     } catch (e: IOException) {
       e.printStackTrace()
     }
@@ -29,7 +38,7 @@ class TraceEventFileLogger(private val filePath: String) : AbstractJsonLogger() 
 
   fun flush() {
     try {
-      outFileWriter?.flush()
+      outFileWriter.flush()
     } catch (e: IOException) {
       e.printStackTrace()
     }
@@ -37,16 +46,7 @@ class TraceEventFileLogger(private val filePath: String) : AbstractJsonLogger() 
 
   private fun close() {
     try {
-      outFileWriter?.close()
-    } catch (e: IOException) {
-      e.printStackTrace()
-    }
-  }
-
-  override fun initialize() {
-    val p = Path.of(filePath, UUID.randomUUID().toString() + ".jsonl")
-    try {
-      outFileWriter = BufferedWriter(FileWriter(p.toString()))
+      outFileWriter.close()
     } catch (e: IOException) {
       e.printStackTrace()
     }

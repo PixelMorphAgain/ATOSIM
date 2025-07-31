@@ -8,12 +8,12 @@ package org.palladiosimulator.blockchainsystems.core.common.abstractions
  */
 interface TraceEventLogOrigin {
   /**
-   * Unique identifier of the trace event logorigin.
+   * Unique identifier of the trace event log origin.
    */
   val id: String
 
   /**
-   * Name of the trace event logorigin.
+   * Name of the trace event log origin.
    */
   val name: String
 }

@@ -25,7 +25,7 @@ object MillisecondsSerializer : KSerializer<Long> {
   }
 
   override fun deserialize(decoder: Decoder): Long {
-    // TODO: We do not support deserializing formatted milliseconds yet.
+    // NOTE: We do not support deserializing formatted milliseconds yet.
     throw UnsupportedOperationException("Deserialization of formatted milliseconds is not implemented.")
   }
 

@@ -33,14 +33,18 @@ abstract class SimulationRound<R : SimulationRoundResult>(
     traceEventLoggerContainer,
   )
 
+
   init {
-    // Set up trace event subscribers
+    setUpTraceEventSubscribers()
+  }
+
+  private fun setUpTraceEventSubscribers() {
     traceEventLoggerContainer.addSubscriber(monitor)
     logOutputs.forEach { traceEventLoggerContainer.addSubscriber(it) }
   }
 
 
-  fun run(): R {
+  open fun run(): R {
     // Initialization
     logOutputs.forEach { it.initialize() }
     monitor.initialize(blockchainSystem)
@@ -55,5 +59,7 @@ abstract class SimulationRound<R : SimulationRoundResult>(
     return createSimulationRoundResult(clock.currentTime)
   }
 
+
   abstract fun createSimulationRoundResult(finalSystemTime: Long): R
+
 }

@@ -45,7 +45,6 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     }
     if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
 
-    // TODO: Separate block and transaction dropped events?
     val event = MessageDroppedTraceEvent(
       message,
       simulationContext.systemClock.currentTime,

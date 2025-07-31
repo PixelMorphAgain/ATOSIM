@@ -6,7 +6,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetr
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 
 /**
- * Factory for creating a [ThreesimSimulationRoundResult] based on the current state of the simulation.
+ * Factory for creating a [ThreesimSimulationRoundResult] based on the final state of the simulation.
  *
  * @author Davis Riedel
  */
@@ -14,10 +14,20 @@ class ThreesimSimulationRoundResultFactory(
   private val threesimSimulationParameters: ThreesimSimulationParameters,
   private val monitor: ThreesimSimulationMonitor,
   private val finalSystemTime: Long,
+  private val noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
 
     val state = monitor.getFinalState(finalSystemTime)
+
+    val throughput = AverageThroughputCalculator(
+      numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
+      observationTime = finalSystemTime
+    ).calculate()
+
+    val confirmationLatency = AverageConfirmationLatencyCalculator(
+      state.transactionConfirmationDurations
+    ).calculate()
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
@@ -25,62 +35,62 @@ class ThreesimSimulationRoundResultFactory(
         ShannonEntropyCalculator(
           k = threesimSimulationParameters.shannonEntropyK,
           blocksProposedPerNode = state.blocksProposedPerNode
-        ),
+        ).calculate(),
 
         GeographicalDiversityCalculator(
           numberOfNodes = state.numberOfNodes,
           numberOfRegions = state.numberOfGeographicalRegions,
           numberOfNodesPerRegion = state.numberOfNodesPerRegion
-        ),
+        ).calculate(),
 
         NakamotoCoefficientCalculator(
           state.hashPowerPerNode,
           threshold = threesimSimulationParameters.nakamotoCoefficientThreshold
-        ),
+        ).calculate(),
 
         HerfindahlHirschmanIndexCalculator(
           tokensHeldPerNode = state.tokensHeldPerNode
-        ),
+        ).calculate(),
 
         GiniCoefficientCalculator(
           tokensHeldPerNode = state.tokensHeldPerNode
-        ),
+        ).calculate(),
 
         AvailabilityScalabilityCalculator(
           observationTime = finalSystemTime,
           numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
           numberOfTransactions = state.numberOfSubmittedTransactions
-        ),
+        ).calculate(),
 
-        AverageConfirmationLatencyCalculator(
-          state.transactionConfirmationDurations
-        ),
+        confirmationLatency,
 
-        AverageThroughputCalculator(
-          numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
-          observationTime = finalSystemTime
-        ),
+        throughput,
 
         AvailabilitySecurityCalculator(
           meanTimeToFailure = state.meanTimeBetweenFailures,
           meanTimeToRepair = state.meanTimeToRepair
-        ),
+        ).calculate(),
 
         ConsistencyCalculator(
           blockProposalTimeAndConfirmationTimePerConfirmedBlock = state.blockProposalTimeAndConfirmationTimePerConfirmedBlock
-        ),
+        ).calculate(),
 
-//        FaultToleranceCalculator(TODO()),
+        FaultToleranceCalculator(
+          noFailuresPartialSimulationRoundResult.throughput,
+          throughput,
+          noFailuresPartialSimulationRoundResult.confirmationLatency,
+          confirmationLatency
+        ).calculate(),
 
         ReliabilityCalculator(
           timespan = threesimSimulationParameters.reliabilityObservationTimespan,
           meanTimeBetweenFailures = state.meanTimeBetweenFailures
-        ),
+        ).calculate(),
 
         StaleBlockRateCalculator(
           numberOfStaleBlocks = state.numberOfStaleBlocks,
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
-        )
+        ).calculate()
 
         // Cost of Attack (skipped) and Censorship Resistance (no longer part of the paper) not implemented
       )

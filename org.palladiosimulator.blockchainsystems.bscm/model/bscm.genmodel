@@ -129,6 +129,7 @@
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/LinkLatencySpecification">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/LinkLatencySpecification/Values"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//p2pnetwork/LinkLatencySpecification/StaticLatency"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/LinkLatencySpecificationValue">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//p2pnetwork/LinkLatencySpecificationValue/Latency"/>
@@ -138,6 +139,7 @@
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/LinkThroughputSpecification">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/LinkThroughputSpecification/Values"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//p2pnetwork/LinkThroughputSpecification/StaticThroughput"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/LinkThroughputSpecificationValue">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//p2pnetwork/LinkThroughputSpecificationValue/Throughput"/>

@@ -12,18 +12,15 @@ import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
  *
  * @author Davis Riedel
  */
-open class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
+abstract class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
   private val randomValueProvider: RandomValueProvider<T>
 ) : SimulationLifecycleAwareValueProvider<V> {
-  var simulationContext: SimulationContext? = null
+  protected lateinit var simulationContext: SimulationContext
 
-  var lastValue: V? = null
-  var lastValueValidUntil: Long? = null
+  protected var lastValue: V? = null
+  protected var lastValueValidUntil: Long? = null
 
   override fun getValue(): V {
-    val ctx = simulationContext
-      ?: throw IllegalStateException("SimulationContext is not initialized. Call initialize() before using this provider.")
-
     // Use local variables to access the cached values in a thread-safe manner.
     val currentValue = lastValue
     val currentValidUntil = lastValueValidUntil
@@ -31,7 +28,7 @@ open class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
     return if (
       currentValue != null &&
       currentValidUntil != null &&
-      currentValidUntil >= ctx.systemClock.currentTime
+      currentValidUntil >= simulationContext.systemClock.currentTime
     ) {
       // If all conditions are met, the cached value is valid, return it.
       currentValue
@@ -39,7 +36,7 @@ open class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
       // Otherwise, calculate a new value and cache it.
       val newValue = randomValueProvider.getValue()
       lastValue = newValue.value
-      lastValueValidUntil = ctx.systemClock.currentTime + newValue.duration
+      lastValueValidUntil = simulationContext.systemClock.currentTime + newValue.duration
       newValue.value
     }
   }
@@ -49,7 +46,7 @@ open class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
   }
 
   override fun cleanup() {
-    simulationContext = null
     lastValue = null
+    lastValueValidUntil = null
   }
 }

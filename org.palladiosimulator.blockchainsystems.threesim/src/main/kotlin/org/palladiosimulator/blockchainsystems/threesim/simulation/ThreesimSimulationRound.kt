@@ -4,7 +4,9 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
+import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimNoFailuresPartialSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
 
@@ -14,11 +16,17 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
  * @author Davis Riedel
  */
 class ThreesimSimulationRound(
-  blockchainSystem: BlockchainSystem,
+  private val blockchainSystemFactory: ThreesimBlockchainSystemFactory,
   logOutputs: Set<TraceEventLogOutput>,
-  maxAllowedBlockchainLength: Long,
-  val threesimSimulationParameters: ThreesimSimulationParameters
-) : SimulationRound<ThreesimSimulationRoundResult>(blockchainSystem, logOutputs) {
+  private val maxAllowedBlockchainLength: Long,
+  private val threesimSimulationParameters: ThreesimSimulationParameters
+) : SimulationRound<ThreesimSimulationRoundResult>(
+  blockchainSystemFactory.createBlockchainSystem(true),
+  logOutputs
+) {
+
+  private lateinit var noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
+
   override val monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
@@ -27,11 +35,27 @@ class ThreesimSimulationRound(
     threesimSimulationParameters.failureThroughputThreshold
   )
 
+  override fun run(): ThreesimSimulationRoundResult {
+    // First run a round without any node or link failures
+    // to gather the best case throughput and confirmation latency
+    noFailuresPartialSimulationRoundResult = ThreesimNoFailuresPartialSimulationRound(
+      // Create a new blockchain system without failures
+      blockchainSystemFactory.createBlockchainSystem(false),
+      logOutputs,
+      maxAllowedBlockchainLength,
+      threesimSimulationParameters
+    ).run()
+
+    // Run the actual simulation round
+    return super.run()
+  }
+
   override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
     return ThreesimSimulationRoundResultFactory(
       threesimSimulationParameters,
       monitor,
-      finalSystemTime
+      finalSystemTime,
+      noFailuresPartialSimulationRoundResult
     ).createSimulationRoundResult()
   }
 }

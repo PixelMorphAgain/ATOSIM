@@ -27,14 +27,14 @@ import java.util.*
  * @author Yannik Sproll, Davis Riedel
  */
 class TraceEventPostgresDbLogger(
-  private val server: String?,
+  private val server: String,
   private val port: Int,
-  private val database: String?,
-  private val databaseUser: String?,
-  private val databasePassword: String?
+  private val database: String,
+  private val databaseUser: String,
+  private val databasePassword: String
 ) : TraceEventLogOutput {
-  private var tempLogFileWriter: BufferedWriter? = null
-  private var logFilePath: Path? = null
+  private lateinit var tempLogFileWriter: BufferedWriter
+  private lateinit var logFilePath: Path
 
   override fun initialize() {
     logFilePath = getTempLogFullPath(UUID.randomUUID())
@@ -47,7 +47,7 @@ class TraceEventPostgresDbLogger(
     }
 
     try {
-      tempLogFileWriter?.append(TEMP_LOG_FILE_HEADER)
+      tempLogFileWriter.append(TEMP_LOG_FILE_HEADER)
     } catch (e: IOException) {
       e.printStackTrace()
     }
@@ -55,8 +55,8 @@ class TraceEventPostgresDbLogger(
 
   override fun cleanUp() {
     try {
-      tempLogFileWriter?.flush()
-      tempLogFileWriter?.close()
+      tempLogFileWriter.flush()
+      tempLogFileWriter.close()
     } catch (e: IOException) {
       e.printStackTrace()
     }
@@ -64,7 +64,7 @@ class TraceEventPostgresDbLogger(
     copyToDatabase()
 
     try {
-      logFilePath?.let { Files.deleteIfExists(it) }
+      Files.deleteIfExists(logFilePath)
     } catch (e: IOException) {
       e.printStackTrace()
     }
@@ -125,14 +125,16 @@ class TraceEventPostgresDbLogger(
 
   override fun onTraceEventOccurred(event: TraceEvent, logOrigin: TraceEventLogOrigin) {
     try {
-      tempLogFileWriter?.append(UUID.randomUUID().toString())
-      tempLogFileWriter?.append(",")
-      tempLogFileWriter?.append(logOrigin.name)
-      tempLogFileWriter?.append(",")
-      tempLogFileWriter?.append(event.occurrenceTime.toString())
-      tempLogFileWriter?.append(",")
-      tempLogFileWriter?.append(event.eventType)
-      tempLogFileWriter?.append(System.lineSeparator())
+      with(tempLogFileWriter) {
+        append(UUID.randomUUID().toString())
+        append(",")
+        append(logOrigin.name)
+        append(",")
+        append(event.occurrenceTime.toString())
+        append(",")
+        append(event.eventType)
+        append(System.lineSeparator())
+      }
     } catch (e: IOException) {
       e.printStackTrace()
     }

@@ -10,7 +10,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class AverageThroughput(
-  override val value: Double
+  override val value: Double,
+  val observationTime: Long
 ) : OutputMetric<Double>() {
   companion object {
     const val NAME = "AverageThroughput"
