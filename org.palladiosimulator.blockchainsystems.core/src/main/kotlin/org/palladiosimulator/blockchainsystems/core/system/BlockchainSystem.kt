@@ -19,7 +19,6 @@ class BlockchainSystem(
   val network: P2PNetwork,
   val geographicalRegions: GeographicalRegions,
   val nodes: HashSet<BlockchainSystemNode>,
-  val numberOfRequiredSecurityConfirmations: Int,
   val transactionSubmissionProcess: TransactionSubmissionProcess
 ) : BlockchainSimulationObject(id, name) {
   public override fun onInitialize() {

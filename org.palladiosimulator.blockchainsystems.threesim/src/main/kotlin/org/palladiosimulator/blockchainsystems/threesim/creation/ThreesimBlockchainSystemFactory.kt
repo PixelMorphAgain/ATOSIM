@@ -94,7 +94,6 @@ abstract class ThreesimBlockchainSystemFactory(
     )
 
     val geographicalRegions = geographicalRegionsResolver.resolveGeographicalRegions()
-    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
 
     return BlockchainSystem(
       blockchainSystemId,
@@ -102,7 +101,6 @@ abstract class ThreesimBlockchainSystemFactory(
       network,
       geographicalRegions,
       blockchainSystemNodes,
-      numReqSecConfirmations,
       transactionSubmissionProcess
     )
   }

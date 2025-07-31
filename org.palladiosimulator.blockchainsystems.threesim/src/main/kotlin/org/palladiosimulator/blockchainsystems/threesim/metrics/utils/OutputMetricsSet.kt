@@ -16,9 +16,5 @@ class OutputMetricsSet : TreeSet<OutputMetric<*>>(compareBy { it.name }) {
     fun from(vararg metrics: OutputMetric<*>): OutputMetricsSet {
       return OutputMetricsSet().apply { addAll(metrics) }
     }
-
-    fun from(vararg metricCalculators: OutputMetricCalculator<*>): OutputMetricsSet {
-      return OutputMetricsSet().apply { addAll(metricCalculators.map { it.calculate() }) }
-    }
   }
 }

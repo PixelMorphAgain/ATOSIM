@@ -19,12 +19,14 @@ class AverageThroughputCalculator(
 ) : OutputMetricCalculator<AverageThroughput> {
   override fun calculate(): AverageThroughput {
     val t = numberOfConfirmedTransactions.toDouble() / observationTime.toDouble()
-    return AverageThroughput(t)
+    return AverageThroughput(t, observationTime)
   }
 
   companion object : OutputMetricAverageCalculator<AverageThroughput> {
     override fun calculateAverage(measurements: List<AverageThroughput>): AverageThroughput {
-      return AverageThroughput(measurements.averageOf { it.value })
+      val observationTime =
+        measurements.first().observationTime // NOTE: Assuming all measurements have the same observation time
+      return AverageThroughput(measurements.averageOf { it.value }, observationTime)
     }
   }
 }
