@@ -68,7 +68,7 @@ public final class Attributes {
     public static class Threesim {
         public static final String THROUGHPUT_MONITORING_INTERVAL = "ThroughputMonitoringInterval";
         public static final String THROUGHPUT_MONITORING_INTERVAL_DEFAULT = "1000";
-                // in milliseconds, TODO: find suitable default value
+        // in milliseconds, TODO: find suitable default value
 
         public static final String FAILURE_THROUGHPUT_THRESHOLD = "FailureThroughputThreshold";
         public static final String FAILURE_THROUGHPUT_THRESHOLD_DEFAULT = "0.1"; // TODO: find suitable default value
@@ -80,7 +80,7 @@ public final class Attributes {
         public static final String NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT = "0.5";
 
         public static final String RELIABILITY_OBSERVATION_TIMESPAN = "ReliabilityObservationTimespan";
-        public static final String RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT = "1000";
-                // in milliseconds, TODO: find suitable default value
+        public static final String RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT = "10000";
+        // in milliseconds, TODO: find suitable default value
     }
 }

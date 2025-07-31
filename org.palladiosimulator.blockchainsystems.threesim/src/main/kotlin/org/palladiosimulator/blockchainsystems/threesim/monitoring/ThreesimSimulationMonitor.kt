@@ -31,8 +31,6 @@ class ThreesimSimulationMonitor(
   private val failureThroughputThreshold: Double
 ) : SimulationMonitor {
 
-//  private val nodeTerminationStates: MutableMap<String, ThreesimNodeTerminationState> = HashMap()
-
   private val blocksProposedPerNode: MutableMap<String, Int> = mutableMapOf()
 
   private lateinit var includedBlocks: BlocksMap
@@ -174,13 +172,7 @@ class ThreesimSimulationMonitor(
       TransactionSentTraceEvent.EVENT_TYPE -> {
         numberOfSubmittedTransactions++
       }
-
-//      MessageDroppedTraceEvent.EVENT_TYPE -> {
-//        // TODO: Log dropped messages if needed
-//      }
     }
-
-//    nodeTerminationStates[logOrigin.id]?.onTraceEventOccurred(event)
   }
 
   override fun shouldTerminate(): Boolean {
