@@ -35,29 +35,24 @@ class ThreesimSimulationMonitor(
 
   private val blocksProposedPerNode: MutableMap<String, Int> = mutableMapOf()
 
-  // TODO: Is there a way to make them initialize once only
-  private var includedBlocks: BlocksMap? = null
-  private var confirmedBlocks: BlocksMap? = null
-  private var staleBlocks: BlocksMap? = null
-  private var forkedBlocks: BlocksMap? = null
+  private lateinit var includedBlocks: BlocksMap
+  private lateinit var confirmedBlocks: BlocksMap
+  private lateinit var staleBlocks: BlocksMap
+  private lateinit var forkedBlocks: BlocksMap
 
-  private var nodes: MutableSet<BlockchainSystemNode> = mutableSetOf()
+  private lateinit var includedBlocksSinceLastThroughputCheck: BlocksMap
 
-  private var geographicalRegions: GeographicalRegions? = null
+  private lateinit var nodes: MutableSet<BlockchainSystemNode>
+
+  private lateinit var geographicalRegions: GeographicalRegions
 
   private var numberOfSubmittedTransactions: Int = 0
-
-  private var includedBlocksSinceLastThroughputCheck: BlocksMap? = null
 
   private val failureLog = BlockchainSystemFailureLog()
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
-
-//    nodes.forEach {
-//      nodeTerminationStates.put(it.id, ThreesimNodeTerminationState(it, numberOfRequiredSecurityConfirmations))
-//    }
 
     includedBlocks = BlocksMap(calculateMajorityThreshold())
     confirmedBlocks = BlocksMap(calculateMajorityThreshold())
@@ -94,7 +89,7 @@ class ThreesimSimulationMonitor(
       BlockType.ConfirmedBlock -> confirmedBlocks
       BlockType.StaleBlock -> staleBlocks
       BlockType.ForkingBlock -> forkedBlocks
-    }?.addNodeToBlock(block, nodeId, occurrenceTime)
+    }.addNodeToBlock(block, nodeId, occurrenceTime)
 
     when (blockType) {
       BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
@@ -109,7 +104,7 @@ class ThreesimSimulationMonitor(
       BlockType.ConfirmedBlock -> confirmedBlocks
       BlockType.StaleBlock -> staleBlocks
       BlockType.ForkingBlock -> forkedBlocks
-    }?.removeNodeFromBlock(blockHash, nodeId)
+    }.removeNodeFromBlock(blockHash, nodeId)
 
     when (blockType) {
       BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
@@ -126,8 +121,8 @@ class ThreesimSimulationMonitor(
 
       ThroughputMonitoringTraceEvent.EVENT_TYPE -> {
         val numTrxs = includedBlocksSinceLastThroughputCheck
-          ?.getValidBlocks()
-          ?.sumOf { it.first.transactions.size } ?: 0
+          .getValidBlocks()
+          .sumOf { it.first.transactions.size }
 
         val throughput = AverageThroughputCalculator(
           numTrxs,
@@ -143,7 +138,7 @@ class ThreesimSimulationMonitor(
         }
 
         // Clear for next measurement
-        includedBlocksSinceLastThroughputCheck?.clear()
+        includedBlocksSinceLastThroughputCheck.clear()
       }
 
       BlockMinedTraceEvent.EVENT_TYPE -> {
@@ -151,7 +146,7 @@ class ThreesimSimulationMonitor(
         val block = e.block
 
         if (BlockUtils.isBlockForked(block)) {
-          forkedBlocks?.addNodeToBlock(block, logOrigin.id, e.occurrenceTime)
+          forkedBlocks.addNodeToBlock(block, logOrigin.id, e.occurrenceTime)
         }
 
         blocksProposedPerNode[logOrigin.id] = (blocksProposedPerNode[logOrigin.id] ?: 0) + 1
@@ -198,12 +193,11 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateNumberOfConfirmedBlocks(): Int {
-    return confirmedBlocks?.getNumberOfValidBlocks() ?: throw IllegalStateException("confirmedBlocks not initialized")
+    return confirmedBlocks.getNumberOfValidBlocks()
   }
 
   private fun getConfirmedTransactions(): Collection<Pair<Set<Transaction>, Long?>> {
-    return confirmedBlocks?.getValidBlocks()?.map { Pair(it.first.transactions, it.second) }
-      ?: throw IllegalStateException("confirmedBlocks not initialized")
+    return confirmedBlocks.getValidBlocks().map { Pair(it.first.transactions, it.second) }
   }
 
   private fun calculateNumberOfConfirmedTransactions(): Int {
@@ -211,8 +205,7 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateNumberOfStaleBlocks(): Int {
-    return staleBlocks?.getNumberOfValidBlocks()
-      ?: throw IllegalStateException("staleBlocks not initialized")
+    return staleBlocks.getNumberOfValidBlocks()
   }
 
   private fun calculateBlocksProposedPerNode(): Collection<Int> {
@@ -230,17 +223,15 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateTransactionConfirmationDurations(): Collection<Long> {
-    return confirmedBlocks?.getValidBlocks()
-      ?.flatMap { (block, confirmationTime) ->
+    return confirmedBlocks.getValidBlocks()
+      .flatMap { (block, confirmationTime) ->
         block.transactions.map { confirmationTime - it.creationTime }
       }
-      ?: throw IllegalStateException("confirmedBlocks not initialized")
   }
 
   private fun calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(): Collection<Pair<Long, Long>> {
-    return confirmedBlocks?.getValidBlocks()
-      ?.map { Pair(it.first.blockMinedTimestamp, it.second) }
-      ?: throw IllegalStateException("confirmedBlocks not initialized")
+    return confirmedBlocks.getValidBlocks()
+      .map { Pair(it.first.blockMinedTimestamp, it.second) }
   }
 
   private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {
@@ -248,7 +239,6 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateNumberOfGeographicalRegions(): Int {
-    return geographicalRegions?.getNumberOfRegions()
-      ?: throw IllegalStateException("geographicalRegions not initialized")
+    return geographicalRegions.getNumberOfRegions()
   }
 }

@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.results.ui
+package org.palladiosimulator.blockchainsystems.plugin.ui.results
 
 import kotlinx.serialization.json.*
 import org.eclipse.jface.viewers.ITreeContentProvider

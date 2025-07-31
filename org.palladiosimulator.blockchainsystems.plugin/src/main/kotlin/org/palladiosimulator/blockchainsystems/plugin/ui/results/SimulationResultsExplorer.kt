@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.results.ui
+package org.palladiosimulator.blockchainsystems.plugin.ui.results
 
 import org.eclipse.jface.action.Action
 import org.eclipse.jface.layout.GridDataFactory
@@ -13,11 +13,11 @@ import java.io.File
 /**
  * This class provides a view for exploring simulation results.
  *
- * @author Yannik Sproll, Davis Riedel
+ * @author Davis Riedel
  */
 abstract class SimulationResultsExplorer : ViewPart() {
   private val repositoryContainer = ResultsRepositoryContainer()
-  private var viewer: TreeViewer? = null
+  private lateinit var viewer: TreeViewer
 
   /**
    * Content provider for the tree viewer.
@@ -84,10 +84,10 @@ abstract class SimulationResultsExplorer : ViewPart() {
       .swtDefaults()
       .grab(true, true)
       .align(SWT.FILL, SWT.FILL)
-      .applyTo(viewer!!.tree)
-    viewer?.setContentProvider(DirectoryContentProvider())
-    viewer?.setLabelProvider(DirectoryLabelProvider())
-    viewer?.setInput(repositoryContainer)
+      .applyTo(viewer.tree)
+    viewer.setContentProvider(DirectoryContentProvider())
+    viewer.setLabelProvider(DirectoryLabelProvider())
+    viewer.setInput(repositoryContainer)
 
     val toolBarManager = viewSite.actionBars.toolBarManager
 
@@ -95,7 +95,7 @@ abstract class SimulationResultsExplorer : ViewPart() {
 
     val refreshAction = object : Action() {
       override fun run() {
-        viewer?.refresh()
+        viewer.refresh()
       }
     }
     refreshAction.setText("Refresh")
@@ -115,7 +115,7 @@ abstract class SimulationResultsExplorer : ViewPart() {
           val directory = File(directoryPath)
           if (directory.isDirectory()) {
             repositoryContainer.addRepository(directory)
-            viewer?.refresh()
+            viewer.refresh()
           }
         }
       }
@@ -126,6 +126,6 @@ abstract class SimulationResultsExplorer : ViewPart() {
   }
 
   override fun setFocus() {
-    viewer?.control?.setFocus()
+    viewer.control?.setFocus()
   }
 }

@@ -5,9 +5,6 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event
 import org.palladiosimulator.blockchainsystems.core.stochastics.PoissonProcess
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess
-import java.util.function.BiFunction
-import java.util.function.Consumer
-import java.util.function.Supplier
 import java.util.random.RandomGenerator
 
 /**
@@ -23,9 +20,10 @@ class MiningProcessImpl(
   randomGenerator: RandomGenerator
 ) : BlockchainNodeObject(), MiningProcess {
   private val poissonProcess = PoissonProcess(1.0 / meanBlockTime, randomGenerator)
-  private var onCreatingBlockCallback: BiFunction<Long, String, Block>? = null
-  private var previousBlockSelectionCallback: Supplier<String>? = null
-  private var onBlockMinedCallback: Consumer<Block>? = null
+
+  private var onCreatingBlockCallback: ((Long, String) -> Block)? = null
+  private var previousBlockSelectionCallback: (() -> String)? = null
+  private var onBlockMinedCallback: ((Block) -> Unit)? = null
 
   private var isMining = false
 
@@ -106,15 +104,16 @@ class MiningProcessImpl(
     logMiningStopped()
   }
 
-  override fun setOnCreatingBlockCallback(onCreatingBlockCallback: BiFunction<Long, String, Block>) {
+
+  override fun setOnCreatingBlockCallback(onCreatingBlockCallback: ((Long, String) -> Block)?) {
     this.onCreatingBlockCallback = onCreatingBlockCallback
   }
 
-  override fun setPreviousBlockSelectionCallback(previousBlockSelectionCallback: Supplier<String>) {
+  override fun setPreviousBlockSelectionCallback(previousBlockSelectionCallback: (() -> String)?) {
     this.previousBlockSelectionCallback = previousBlockSelectionCallback
   }
 
-  override fun setOnBlockMinedCallback(onBlockMinedCallback: Consumer<Block>) {
+  override fun setOnBlockMinedCallback(onBlockMinedCallback: ((Block) -> Unit)?) {
     this.onBlockMinedCallback = onBlockMinedCallback
   }
 

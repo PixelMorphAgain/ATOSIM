@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 
 class P2PNode(private val id: String) : P2PNetworkObject(), NodeP2PNetworkInterface, P2PNetworkEndpoint {
-  private var network: P2PNetwork? = null
+  private lateinit var network: P2PNetwork
   private var onMessageReceivedCallback: ((Message, P2PNetworkEndpoint) -> Unit)? = null
   private var onMessageDroppedCallback: ((Message, P2PNetworkEndpoint) -> Unit)? = null
 
@@ -45,14 +45,11 @@ class P2PNode(private val id: String) : P2PNetworkObject(), NodeP2PNetworkInterf
     return id
   }
 
-
   override fun send(message: Message, recipient: P2PNetworkEndpoint) {
-    checkNotNull(network) { "P2PNode is missing an instance of a p2p network." }
-      .send(this, recipient as P2PNode, message)
+    network.send(this, recipient as P2PNode, message)
   }
 
   override fun getNeighbors(): MutableSet<P2PNetworkEndpoint> {
-    return checkNotNull(network) { "P2PNode is missing an instance of a p2p network." }
-      .getNeighbors(this)
+    return network.getNeighbors(this)
   }
 }
