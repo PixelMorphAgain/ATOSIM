@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs
 
 import org.jgrapht.graph.SimpleGraph
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
@@ -7,13 +7,11 @@ import org.palladiosimulator.blockchainsystems.core.network.P2PLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkFactory
 import java.util.random.RandomGenerator
 import java.util.UUID
 import kotlin.math.abs
-import org.palladiosimulator.blockchainsystems.threesim.creation.LatencyValueProviderAdapter
-import org.palladiosimulator.blockchainsystems.threesim.creation.ThroughputValueProviderAdapter
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
+import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
 import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEdge
 
 /**
@@ -22,9 +20,10 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEd
  * @author Yannik Sproll, Davis Riedel
  */
 class ConnectedSubgraphP2PNetworkFactory(
+  areFailuresEnabled: Boolean,
   private val randomGenerator: RandomGenerator,
   private val topology: ConnectedSubgraphsNetworkTopology
-) : P2PNetworkFactory {
+) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val nodeIdToNodeTemplateIdMapping = HashMap<String, String>()
 
@@ -72,14 +71,8 @@ class ConnectedSubgraphP2PNetworkFactory(
       // Get link specification for subgraph internal links
       val subgraphLinkSpecification = subgraphSpec.linkSpecification
 
-      val latencyValueProvider = LatencyValueProviderAdapter.create(
-        subgraphLinkSpecification.latencySpecification,
-        RandomGenerator.of("Random")
-      )
-      val throughputValueProvider = ThroughputValueProviderAdapter.create(
-        subgraphLinkSpecification.throughputSpecification,
-        RandomGenerator.of("Random")
-      )
+      val latencyValueProvider = createLatencyValueProvider(subgraphLinkSpecification.latencySpecification)
+      val throughputValueProvider = createThroughputValueProvider(subgraphLinkSpecification.throughputSpecification)
 
       // Create a bidirectional spanning tree in subgraph
       for (i in 0..<subgraphNodes.size - 1) {
@@ -154,17 +147,11 @@ class ConnectedSubgraphP2PNetworkFactory(
 
       val subgraphLinkSpecification = subgraphLink.specification
 
-      val latencyValueProvider = LatencyValueProviderAdapter.create(
-        subgraphLinkSpecification.latencySpecification,
-        RandomGenerator.of("Random")
-      )
-      val throughputValueProvider = ThroughputValueProviderAdapter.create(
-        subgraphLinkSpecification.throughputSpecification,
-        RandomGenerator.of("Random")
-      )
+      val latencyValueProvider = createLatencyValueProvider(subgraphLinkSpecification.latencySpecification)
+      val throughputValueProvider = createThroughputValueProvider(subgraphLinkSpecification.throughputSpecification)
 
-      firstSubgraphProxies?.forEach { firstSubgraphProxy ->
-        secondSubgraphProxies?.forEach { secondSubgraphProxy ->
+      firstSubgraphProxies.forEach { firstSubgraphProxy ->
+        secondSubgraphProxies.forEach { secondSubgraphProxy ->
           networkGraph.addBidirectionalEdge(
             firstSubgraphProxy,
             secondSubgraphProxy,

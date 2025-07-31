@@ -11,6 +11,6 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Temporal
  * @author Davis Riedel
  */
 data class LinkThroughput(
-  override val value: Int,
+  override val value: Long,
   override val duration: Long
-) : TemporalValue<Int>
+) : TemporalValue<Long>

@@ -1,9 +1,10 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs
 
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent
 import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocation
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator
+import kotlin.collections.get
 
 /**
  * This class calculates the global resource power of a connected subgraph network topology.

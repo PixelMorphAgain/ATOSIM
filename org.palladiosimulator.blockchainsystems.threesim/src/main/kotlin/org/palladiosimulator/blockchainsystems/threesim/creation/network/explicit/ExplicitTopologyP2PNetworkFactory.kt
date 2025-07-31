@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit
 
 import org.jgrapht.Graph
 import org.jgrapht.graph.SimpleGraph
@@ -8,10 +8,7 @@ import org.palladiosimulator.blockchainsystems.core.network.P2PLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkFactory
-import org.palladiosimulator.blockchainsystems.threesim.creation.LatencyValueProviderAdapter
-import org.palladiosimulator.blockchainsystems.threesim.creation.ThroughputValueProviderAdapter
-import java.util.random.RandomGenerator
+import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
 
 /**
  * Factory for creating a P2P network based on an explicit network topology from the metamodel.
@@ -21,8 +18,9 @@ import java.util.random.RandomGenerator
  * @author Davis Riedel
  */
 class ExplicitTopologyP2PNetworkFactory(
-  private val topology: ExplicitNetworkTopology
-) : P2PNetworkFactory {
+  areFailuresEnabled: Boolean,
+  private val topology: ExplicitNetworkTopology,
+) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val networkGraph: Graph<P2PNode, P2PLink> = SimpleGraph(P2PLink::class.java)
 
@@ -38,14 +36,8 @@ class ExplicitTopologyP2PNetworkFactory(
       val fromDesignNode: Node = designLink.getFromNode()
       val toDesignNode: Node = designLink.getToNode()
 
-      val latencyValueProvider = LatencyValueProviderAdapter.create(
-        designLink.specification.latencySpecification,
-        RandomGenerator.of("Random")
-      )
-      val throughputValueProvider = ThroughputValueProviderAdapter.create(
-        designLink.specification.throughputSpecification,
-        RandomGenerator.of("Random")
-      )
+      val latencyValueProvider = createLatencyValueProvider(designLink.specification.latencySpecification)
+      val throughputValueProvider = createThroughputValueProvider(designLink.specification.throughputSpecification)
 
       p2pNodeMappings[fromDesignNode.id]?.let { fromP2PNode ->
         p2pNodeMappings[toDesignNode.id]?.let { toP2PNode ->

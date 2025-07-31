@@ -4,6 +4,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
+import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimNoFailuresPartialSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
@@ -15,11 +16,14 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
  * @author Davis Riedel
  */
 class ThreesimSimulationRound(
-  blockchainSystem: BlockchainSystem,
+  private val blockchainSystemFactory: ThreesimBlockchainSystemFactory,
   logOutputs: Set<TraceEventLogOutput>,
   private val maxAllowedBlockchainLength: Long,
   private val threesimSimulationParameters: ThreesimSimulationParameters
-) : SimulationRound<ThreesimSimulationRoundResult>(blockchainSystem, logOutputs) {
+) : SimulationRound<ThreesimSimulationRoundResult>(
+  blockchainSystemFactory.createBlockchainSystem(true),
+  logOutputs
+) {
 
   private lateinit var noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
 
@@ -35,14 +39,12 @@ class ThreesimSimulationRound(
     // First run a round without any node or link failures
     // to gather the best case throughput and confirmation latency
     noFailuresPartialSimulationRoundResult = ThreesimNoFailuresPartialSimulationRound(
-      blockchainSystem,
+      // Create a new blockchain system without failures
+      blockchainSystemFactory.createBlockchainSystem(false),
       logOutputs,
       maxAllowedBlockchainLength,
       threesimSimulationParameters
     ).run()
-
-    // Reset the blockchain system for the actual simulation round
-    blockchainSystem.cleanup()
 
     // Run the actual simulation round
     return super.run()

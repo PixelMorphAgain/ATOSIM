@@ -12,7 +12,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
  */
 class P2PLink(
   private val latencyValueProvider: SimulationLifecycleAwareValueProvider<Long>,
-  private val throughputValueProvider: SimulationLifecycleAwareValueProvider<Int>,
+  private val throughputValueProvider: SimulationLifecycleAwareValueProvider<Long>,
   private val fromNode: P2PNode,
   private val toNode: P2PNode
 ) : P2PNetworkObject() {

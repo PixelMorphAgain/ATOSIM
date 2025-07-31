@@ -7,7 +7,9 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.NodeP2PN
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwork
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 
-class P2PNode(private val id: String) : P2PNetworkObject(), NodeP2PNetworkInterface, P2PNetworkEndpoint {
+class P2PNode(
+  override val endpointId: String
+) : P2PNetworkObject(), NodeP2PNetworkInterface, P2PNetworkEndpoint {
   private lateinit var network: P2PNetwork
   private var onMessageReceivedCallback: ((Message, P2PNetworkEndpoint) -> Unit)? = null
   private var onMessageDroppedCallback: ((Message, P2PNetworkEndpoint) -> Unit)? = null
@@ -38,11 +40,6 @@ class P2PNode(private val id: String) : P2PNetworkObject(), NodeP2PNetworkInterf
 
   override fun setOnMessageDroppedCallback(onMessageDroppedCallback: ((Message, P2PNetworkEndpoint) -> Unit)?) {
     this.onMessageDroppedCallback = onMessageDroppedCallback
-  }
-
-
-  override fun getEndpointId(): String {
-    return id
   }
 
   override fun send(message: Message, recipient: P2PNetworkEndpoint) {

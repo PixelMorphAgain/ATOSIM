@@ -11,3 +11,4 @@ docker-compose.*
 .idea
 .vscode
 *.iml
+.settings

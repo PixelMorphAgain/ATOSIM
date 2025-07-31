@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.explicitnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit
 
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwork
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult

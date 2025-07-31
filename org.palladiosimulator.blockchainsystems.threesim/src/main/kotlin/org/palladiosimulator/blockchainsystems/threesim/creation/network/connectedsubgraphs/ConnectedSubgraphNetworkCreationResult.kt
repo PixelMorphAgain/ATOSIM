@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs
 
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwork
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult

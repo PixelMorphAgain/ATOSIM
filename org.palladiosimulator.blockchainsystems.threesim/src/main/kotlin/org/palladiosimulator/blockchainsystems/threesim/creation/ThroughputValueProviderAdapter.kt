@@ -16,7 +16,7 @@ import java.util.random.RandomGenerator
  */
 class ThroughputValueProviderAdapter(
   randomValueProvider: RandomValueProvider<LinkThroughput>,
-) : TemporalValueProviderAdapter<Int, LinkThroughput>(randomValueProvider) {
+) : TemporalValueProviderAdapter<Long, LinkThroughput>(randomValueProvider) {
   companion object {
     fun create(
       linkThroughputSpecification: LinkThroughputSpecification,

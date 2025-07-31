@@ -30,13 +30,15 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
 abstract class ThreesimBlockchainSystemFactory(
   protected val designBlockchainSystem: DesignBlockchainSystem,
   protected val networkTopology: NetworkTopology,
-) : BlockchainSystemFactory {
-  protected abstract val networkFactory: P2PNetworkFactory
+) {
+  protected abstract fun createP2PNetworkFactory(areFailuresEnabled: Boolean): P2PNetworkFactory
 
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
   protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
 
-  override fun createBlockchainSystem(): BlockchainSystem {
+  fun createBlockchainSystem(areFailuresEnabled: Boolean): BlockchainSystem {
+    val networkFactory = createP2PNetworkFactory(areFailuresEnabled)
+
     val networkCreationResult = networkFactory.createP2PNetwork()
 
     // Create information provider based on the generated network

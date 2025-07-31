@@ -19,7 +19,7 @@ class ThreesimNoFailuresPartialSimulationRound(
   blockchainSystem: BlockchainSystem,
   logOutputs: Set<TraceEventLogOutput>,
   maxAllowedBlockchainLength: Long,
-  val threesimSimulationParameters: ThreesimSimulationParameters
+  threesimSimulationParameters: ThreesimSimulationParameters
 ) : SimulationRound<ThreesimNoFailuresPartialSimulationRoundResult>(blockchainSystem, logOutputs) {
   override val monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(

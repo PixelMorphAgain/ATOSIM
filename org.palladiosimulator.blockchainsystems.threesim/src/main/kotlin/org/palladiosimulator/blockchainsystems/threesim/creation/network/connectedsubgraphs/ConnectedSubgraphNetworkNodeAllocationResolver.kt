@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation.connectedsubgraphnetwork
+package org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs
 
 import org.palladiosimulator.blockchainsystems.bscm.nodeallocation.NodeAllocation
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology

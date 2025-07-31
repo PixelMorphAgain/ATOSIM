@@ -35,7 +35,8 @@ class BlockchainSystemNodeFactory(
     networkInterface: NodeP2PNetworkInterface,
     genesisBlock: Block
   ): BlockchainSystemNode {
-    val nodeId = networkInterface.getEndpointId()
+    val nodeId = networkInterface.endpointId
+
     return BlockchainSystemNode(
       nodeId,
       "BlockchainSystemNode_$nodeId",
