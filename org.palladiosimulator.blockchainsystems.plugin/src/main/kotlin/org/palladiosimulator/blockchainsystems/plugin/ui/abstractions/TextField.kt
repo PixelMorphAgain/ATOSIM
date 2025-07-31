@@ -28,7 +28,7 @@ class TextField(
   verifier: VerifyListener,
   private val attributeKey: String,
   private val defaultValue: String,
-  val isValueValid: (String) -> Boolean
+  private val isValueValid: (String) -> Boolean
 ) {
   /**
    * Label associated with the text field.
@@ -51,6 +51,10 @@ class TextField(
     textControl = Text(parent, SWT.BORDER)
     textControl.layoutData = GridData(SWT.FILL, SWT.CENTER, true, false)
     textControl.addVerifyListener(verifier)
+  }
+
+  fun isValid(): Boolean {
+    return isValueValid(label.text)
   }
 
   /**

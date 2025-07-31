@@ -124,10 +124,10 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun isValid(launchConfig: ILaunchConfiguration?): Boolean {
-    return throughputMonitoringIntervalField.isValueValid() &&
-      failureThroughputThresholdField.isValueValid() &&
-      shannonEntropyKField.isValueValid() &&
-      nakamotoCoefficientThresholdField.isValueValid() &&
-      reliabilityObservationTimespanField.isValueValid()
+    return throughputMonitoringIntervalField.isValid() &&
+      failureThroughputThresholdField.isValid() &&
+      shannonEntropyKField.isValid() &&
+      nakamotoCoefficientThresholdField.isValid() &&
+      reliabilityObservationTimespanField.isValid()
   }
 }

@@ -33,10 +33,10 @@ class MiningProcessImpl(
 
       val blockMinedEvent = event as BlockMinedEvent
 
-      val block = onCreatingBlockCallback!!.apply(
+      val block = onCreatingBlockCallback?.invoke(
         blockMinedEvent.occurrenceTime,
         blockMinedEvent.previousBlockHash
-      )
+      ) ?: return
 
       logBlockMined(block)
 
@@ -48,7 +48,9 @@ class MiningProcessImpl(
 
 
   private fun scheduleNewBlockMinedEvent(): String {
-    val previousBlockHash = previousBlockSelectionCallback!!.get()
+    val previousBlockHash = previousBlockSelectionCallback?.invoke() ?: throw IllegalStateException(
+      "Previous block selection callback must be set before scheduling a new block mined event."
+    )
 
     simulationContext.eventCoordinator
       .raiseEvent(
@@ -68,7 +70,7 @@ class MiningProcessImpl(
   }
 
   private fun notifyBlockMined(block: Block) {
-    onBlockMinedCallback?.accept(block)
+    onBlockMinedCallback?.invoke(block)
   }
 
   private fun cancelPendingEvent() {

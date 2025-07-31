@@ -46,7 +46,7 @@ abstract class TemporalValueProviderAdapter<V, T : TemporalValue<V>>(
   }
 
   override fun cleanup() {
-    simulationContext = null
     lastValue = null
+    lastValueValidUntil = null
   }
 }
