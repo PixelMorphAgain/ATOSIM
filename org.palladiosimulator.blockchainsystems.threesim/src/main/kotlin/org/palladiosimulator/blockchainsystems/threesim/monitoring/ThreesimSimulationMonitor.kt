@@ -4,7 +4,6 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockTypeChangedTraceEvent
-import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEventLogOrigin
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegions
@@ -19,6 +18,7 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
+import kotlin.properties.Delegates
 
 /**
  * Monitor for the 3SIM simulation.
@@ -30,6 +30,8 @@ class ThreesimSimulationMonitor(
   private val throughputMonitoringInterval: Long,
   private val failureThroughputThreshold: Double
 ) : SimulationMonitor {
+
+  private var blockReward: Double? = null
 
   private val blocksProposedPerNode: MutableMap<String, Int> = mutableMapOf()
 
@@ -51,6 +53,7 @@ class ThreesimSimulationMonitor(
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
+    blockReward = blockchainSystem.blockReward
 
     includedBlocks = BlocksMap(calculateMajorityThreshold())
     confirmedBlocks = BlocksMap(calculateMajorityThreshold())
@@ -77,7 +80,7 @@ class ThreesimSimulationMonitor(
       meanTimeToRepair = failureLog.calculateMeanFailureDuration().toLong(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
-      tokensHeldPerNode = TODO()
+      tokensHeldPerNode = calculateTokensHeldPerNode()
     )
   }
 
@@ -224,6 +227,23 @@ class ThreesimSimulationMonitor(
   private fun calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(): Collection<Pair<Long, Long>> {
     return confirmedBlocks.getValidBlocks()
       .map { Pair(it.first.blockMinedTimestamp, it.second) }
+  }
+
+  private fun calculateTokensHeldPerNode(): Collection<Double> {
+    // lateinit not possible for primitive types, so use a nullable type and manually check that it was initialized
+    val blockReward = this.blockReward ?: throw IllegalStateException("Block reward is not set")
+
+    return confirmedBlocks.getValidBlocks()
+      .filter { it.first.originId != null } // Filter out the genesis block
+      .groupingBy { it.first.originId!! } // Group blocks by the node that created them
+      .fold(0.0) { acc, block ->
+        // Calculate the total tokens held by each node, based on the blocks they created
+        // Each block contributes its reward and the sum of transaction fees
+        acc + blockReward + block.first.transactions.sumOf { it.fee }
+      }.values
+
+    // NOTE: The fee does not need to be deducted anywhere, because miners do not send transactions between each other,
+    // rather, 3SIM creates random transactions sent from anonymous users to the miners.
   }
 
   private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {

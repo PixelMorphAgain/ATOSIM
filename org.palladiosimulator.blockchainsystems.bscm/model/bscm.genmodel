@@ -160,8 +160,8 @@
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/BlockchainSystemSpecification">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MeanBlockTime"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/NumOfRequiredSecurityConfirmations"/>
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/RequiredHashPower"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MaxBlockSize"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/BlockReward"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/TransactionsSpecification">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/MeanTransactionCreationInterval"/>
