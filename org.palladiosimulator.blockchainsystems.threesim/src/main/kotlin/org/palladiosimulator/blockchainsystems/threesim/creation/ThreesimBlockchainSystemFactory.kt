@@ -63,7 +63,8 @@ abstract class ThreesimBlockchainSystemFactory(
       networkCreationResult.createdNetwork,
       blockFactory,
       nodeFactory,
-      geographicalRegionsResolver
+      geographicalRegionsResolver,
+      designBlockchainSystem.specification.blockReward
     )
   }
 
@@ -71,7 +72,8 @@ abstract class ThreesimBlockchainSystemFactory(
     network: P2PNetwork,
     blockFactory: BlockFactory,
     nodeFactory: BlockchainSystemNodeFactory,
-    geographicalRegionsResolver: GeographicalRegionsResolver
+    geographicalRegionsResolver: GeographicalRegionsResolver,
+    blockReward: Double
   ): BlockchainSystem {
     val blockchainSystemId = UUID.randomUUID().toString()
     val blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.substring(0, 8)
@@ -103,7 +105,8 @@ abstract class ThreesimBlockchainSystemFactory(
       network,
       geographicalRegions,
       blockchainSystemNodes,
-      transactionSubmissionProcess
+      transactionSubmissionProcess,
+      blockReward
     )
   }
 
@@ -113,18 +116,15 @@ abstract class ThreesimBlockchainSystemFactory(
     blockFactory: BlockFactory,
     geographicalRegionsResolver: ThreesimGeographicalRegionsResolver
   ): BlockchainSystemNodeFactory {
-    val numReqSecConfirmations = designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
-
-    // Create factories independent of the metamodel information
-    val blockchainFactory = BlockchainFactoryImpl(numReqSecConfirmations)
+    val blockchainFactory = BlockchainFactoryImpl(
+      designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
+    )
     val blockPropagationStrategyFactory = BlockPropagationStrategyFactoryImpl()
     val transactionPropagationStrategyFactory = TransactionPropagationStrategyFactoryImpl()
     val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
-
-    // Create factories dependent of the metamodel information
     val miningProcessFactory = ThreesimMiningProcessFactory(
-      designBlockchainSystem.specification,
+      designBlockchainSystem.specification.meanBlockTime,
       resourcePowerCalculator,
       nodeAllocationResolver
     )

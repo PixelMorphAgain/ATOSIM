@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
  * Implementation of the [BlockchainFactory] interface.
  * This factory is responsible for creating a new blockchain with a given genesis block.
  *
- * @author Yannik Sproll
+ * @author Yannik Sproll, Davis Riedel
  */
 class BlockchainFactoryImpl(
   private val numberOfRequiredSecurityConfirmations: Int,

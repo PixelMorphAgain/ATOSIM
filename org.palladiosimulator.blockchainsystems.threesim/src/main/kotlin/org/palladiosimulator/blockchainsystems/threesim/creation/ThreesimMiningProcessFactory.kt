@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation
 
-import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainSystemSpecification
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent
 import org.palladiosimulator.blockchainsystems.core.mining.MiningProcessImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess
@@ -16,7 +15,7 @@ import java.util.random.RandomGenerator
  * @author Davis Riedel
  */
 class ThreesimMiningProcessFactory(
-  private val blockchainSystemSpecification: BlockchainSystemSpecification,
+  private val meanBlockTime: Double,
   private val resourcePowerCalculator: ResourcePowerCalculator,
   private val nodeAllocationResolver: NodeAllocationResolver
 ) : MiningProcessFactory {
@@ -30,8 +29,7 @@ class ThreesimMiningProcessFactory(
 
     val nodeResourcePowerShare = nodeResourcePower / resourcePowerCalculator.calculateGlobalResourcePower()
 
-    val globalAverageBlockArrivalTime = blockchainSystemSpecification.meanBlockTime
-    val nodeAverageBlockArrivalTime = globalAverageBlockArrivalTime / nodeResourcePowerShare
+    val nodeAverageBlockArrivalTime = meanBlockTime / nodeResourcePowerShare
 
     return MiningProcessImpl(
       nodeAverageBlockArrivalTime,
