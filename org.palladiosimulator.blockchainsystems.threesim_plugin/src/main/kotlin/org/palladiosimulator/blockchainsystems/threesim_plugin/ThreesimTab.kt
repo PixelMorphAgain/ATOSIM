@@ -37,11 +37,9 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   override fun createControl(parent: Composite) {
     val root = Composite(parent, SWT.BORDER)
-    setControl(root)
-
     GridLayoutFactory.swtDefaults().numColumns(1).applyTo(root)
 
-    val group = Group(parent, SWT.NONE)
+    val group = Group(root, SWT.NONE)
     group.text = "3SIM Parameters"
     GridLayoutFactory.swtDefaults().numColumns(2).spacing(0, 10).applyTo(group)
     group.layoutData = GridData(SWT.FILL, SWT.BEGINNING, true, false)
@@ -91,6 +89,7 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       isValueValid = { it.toLongOrNull()?.let { it > MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
 
+    control = root
     isInitialized = true
   }
 
