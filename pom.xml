@@ -60,44 +60,6 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.5.0</version>
-                    <configuration>
-                        <filesets>
-                            <fileset>
-                                <directory>${project.basedir}/lib</directory>
-                                <includes>
-                                    <include>*.jar</include>
-                                </includes>
-                                <followSymlinks>false</followSymlinks>
-                            </fileset>
-                        </filesets>
-                    </configuration>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.8.1</version>
-                    <executions>
-                        <execution>
-                            <id>copy-kotlin-deps</id>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>copy-dependencies</goal>
-                            </goals>
-                            <configuration>
-                                <includeGroupIds>org.jetbrains.kotlin</includeGroupIds>
-                                <outputDirectory>${project.basedir}/lib</outputDirectory>
-                                <overWriteReleases>false</overWriteReleases>
-                                <includeScope>compile</includeScope>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
                     <groupId>org.jetbrains.kotlin</groupId>
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <version>${kotlin.version}</version>
