@@ -27,6 +27,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     private const val MIN_THROUGHPUT_MONITORING_INTERVAL = 1L
   }
 
+  private var isInitialized = false
+
   private lateinit var throughputMonitoringIntervalField: TextField
   private lateinit var failureThroughputThresholdField: TextField
   private lateinit var shannonEntropyKField: TextField
@@ -88,6 +90,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT,
       isValueValid = { it.toLongOrNull()?.let { it > MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
+
+    isInitialized = true
   }
 
   override fun getName(): String {
@@ -95,6 +99,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun initializeFrom(configuration: ILaunchConfiguration) {
+    if (!isInitialized) return
+
     throughputMonitoringIntervalField.initializeFrom(configuration)
     failureThroughputThresholdField.initializeFrom(configuration)
     shannonEntropyKField.initializeFrom(configuration)
@@ -103,6 +109,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
+    if (!isInitialized) return
+
     throughputMonitoringIntervalField.performApply(configuration)
     failureThroughputThresholdField.performApply(configuration)
     shannonEntropyKField.performApply(configuration)
@@ -111,6 +119,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   }
 
   override fun setDefaults(configuration: ILaunchConfigurationWorkingCopy) {
+    if (!isInitialized) return
+
     throughputMonitoringIntervalField.setDefaults(configuration)
     failureThroughputThresholdField.setDefaults(configuration)
     shannonEntropyKField.setDefaults(configuration)
@@ -118,12 +128,14 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     reliabilityObservationTimespanField.setDefaults(configuration)
   }
 
-  override fun activated(workingCopy: ILaunchConfigurationWorkingCopy?) {
+  override fun activated(workingCopy: ILaunchConfigurationWorkingCopy) {
     super.activated(workingCopy)
     updateLaunchConfigurationDialog()
   }
 
-  override fun isValid(launchConfig: ILaunchConfiguration?): Boolean {
+  override fun isValid(launchConfig: ILaunchConfiguration): Boolean {
+    if (!isInitialized) return false
+
     return throughputMonitoringIntervalField.isValid() &&
       failureThroughputThresholdField.isValid() &&
       shannonEntropyKField.isValid() &&

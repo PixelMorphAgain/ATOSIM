@@ -14,7 +14,7 @@ class ConnectedSubgraphNetworkNodeAllocationResolver(
   connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology,
   nodeIdToNodeTemplateIdMapping: HashMap<String, String>
 ) : NodeAllocationResolver {
-  private val nodeIdToNodeTemplatesMappings: MutableMap<String, SubgraphNodeTemplate>
+  private val nodeIdToNodeTemplatesMappings: Map<String, SubgraphNodeTemplate>
 
   init {
     val nodeTemplatesByIds = connectedSubgraphsTopology
@@ -23,10 +23,9 @@ class ConnectedSubgraphNetworkNodeAllocationResolver(
       .associateBy { it.id }
 
     nodeIdToNodeTemplatesMappings =
-      nodeIdToNodeTemplateIdMapping
-        .mapValues { nodeTemplatesByIds[it.value] }
-        .filter { it.value != null }
-        .toMutableMap() as MutableMap<String, SubgraphNodeTemplate> // NOTE: Safe because we filter out nulls
+      nodeIdToNodeTemplateIdMapping.mapNotNull { (nodeId, templateId) ->
+        nodeTemplatesByIds[templateId]?.let { nodeId to it }
+      }.toMap()
   }
 
   override fun getNodeAllocation(nodeId: String): NodeAllocation? {
