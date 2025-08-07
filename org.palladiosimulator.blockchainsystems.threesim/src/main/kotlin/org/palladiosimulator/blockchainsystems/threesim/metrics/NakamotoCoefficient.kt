@@ -7,7 +7,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  * Nakamoto Coefficient
  *
  * @property value the nakamoto coefficient for the threshold
- * @property threshold the threshold for which the nakamoto coefficient (value) was computed
+ * @property threshold the threshold for which the nakamoto coefficient (value) was computed, 0.0 .. 100.0 %
  *
  * @author Davis Riedel
  */

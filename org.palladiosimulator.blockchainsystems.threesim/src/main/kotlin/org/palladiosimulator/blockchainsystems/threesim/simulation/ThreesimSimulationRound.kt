@@ -6,9 +6,11 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
+import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThroughputMonitoringProcess
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimNoFailuresPartialSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
+import java.util.UUID
 
 /**
  * Single simulation round of 3SIM.
@@ -27,6 +29,12 @@ class ThreesimSimulationRound(
 
   private lateinit var noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
 
+  private val throughputMonitoringProcess = ThroughputMonitoringProcess(
+    UUID.randomUUID().toString(),
+    "Throughput monitoring process",
+    threesimSimulationParameters.throughputMonitoringInterval
+  )
+
   override val monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
@@ -34,6 +42,16 @@ class ThreesimSimulationRound(
     threesimSimulationParameters.throughputMonitoringInterval,
     threesimSimulationParameters.failureThroughputThreshold
   )
+
+  override fun initialize() {
+    super.initialize()
+    throughputMonitoringProcess.initialize(context)
+  }
+
+  override fun cleanup() {
+    throughputMonitoringProcess.cleanup()
+    super.cleanup()
+  }
 
   override fun run(): ThreesimSimulationRoundResult {
     // First run a round without any node or link failures

@@ -14,7 +14,8 @@ import org.eclipse.swt.widgets.Text
  * configuration handling.
  *
  * @param parent The parent composite in which the text field and label will be created.
- * @param labelText The text to display on the label associated with the text field.
+ * @param labelBeforeText The text to display on the label before the text field.
+ * @param labelAfterText The text to display on the label after the text field.
  * @param verifier The listener to handle verification events for the text field.
  * @property attributeKey The key used to store and retrieve the text field's value in the launch configuration.
  * @property defaultValue The default value to use if the launch configuration does not specify a value.
@@ -24,37 +25,41 @@ import org.eclipse.swt.widgets.Text
  */
 class TextField(
   parent: Composite,
-  labelText: String,
+  labelBeforeText: String,
+  labelAfterText: String,
   verifier: VerifyListener,
   private val attributeKey: String,
   private val defaultValue: String,
   private val isValueValid: (String) -> Boolean
 ) {
-  /**
-   * Label associated with the text field.
-   */
-  val label: Label
-
-  /**
-   * Text control for user input.
-   */
+  val beforeLabel: Label
   val textControl: Text
+  val afterLabel: Label
 
   /**
    * Constructor to initialize the label and text control.
    */
   init {
-    label = Label(parent, SWT.NONE)
-    label.text = labelText
-    label.layoutData = GridData(SWT.BEGINNING, SWT.CENTER, false, false)
+    beforeLabel = Label(parent, SWT.NONE)
+    beforeLabel.text = labelBeforeText
+    beforeLabel.layoutData = GridData(SWT.BEGINNING, SWT.CENTER, false, false)
 
     textControl = Text(parent, SWT.BORDER)
     textControl.layoutData = GridData(SWT.FILL, SWT.CENTER, true, false)
     textControl.addVerifyListener(verifier)
+
+    afterLabel = Label(parent, SWT.NONE)
+    afterLabel.text = labelAfterText
+    afterLabel.layoutData = GridData(SWT.BEGINNING, SWT.CENTER, false, false)
   }
 
+  /**
+   * Checks if the current text in the text control is valid.
+   *
+   * @return true if the text is valid according to the validation function, false otherwise.
+   */
   fun isValid(): Boolean {
-    return isValueValid(label.text)
+    return isValueValid(textControl.text)
   }
 
   /**

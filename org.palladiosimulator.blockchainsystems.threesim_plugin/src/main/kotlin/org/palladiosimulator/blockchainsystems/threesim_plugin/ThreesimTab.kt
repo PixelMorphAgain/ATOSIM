@@ -21,9 +21,10 @@ import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
 class ThreesimTab : AbstractLaunchConfigurationTab() {
   companion object {
     private const val MIN_RELIABILITY_OBSERVATION_TIMESPAN = 1L
-    private val NAKAMOTO_COEFFICIENT_THRESHOLD_RANGE = 0.0..1.0
+    private const val MIN_NAKAMOTO_COEFFICIENT_THRESHOLD = 0.0
+    private const val MAX_NAKAMOTO_COEFFICIENT_THRESHOLD = 100.0
     private const val MIN_SHANNON_ENTROPY_K = 0.0
-    private val FAILURE_THROUGHPUT_THRESHOLD_RANGE = 0.0..1.0
+    private const val MIN_FAILURE_THROUGHPUT_THRESHOLD = 0.0
     private const val MIN_THROUGHPUT_MONITORING_INTERVAL = 1L
   }
 
@@ -41,30 +42,33 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
     val group = Group(root, SWT.NONE)
     group.text = "3SIM Parameters"
-    GridLayoutFactory.swtDefaults().numColumns(2).spacing(0, 10).applyTo(group)
+    GridLayoutFactory.swtDefaults().numColumns(3).spacing(0, 10).applyTo(group)
     group.layoutData = GridData(SWT.FILL, SWT.BEGINNING, true, false)
 
     throughputMonitoringIntervalField = TextField(
       group,
       "Throughput Monitoring Interval:",
+      " ms",
       LongVerifier,
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT,
-      isValueValid = { it.toLongOrNull()?.let { it > MIN_THROUGHPUT_MONITORING_INTERVAL } ?: false }
+      isValueValid = { it.toLongOrNull()?.let { it >= MIN_THROUGHPUT_MONITORING_INTERVAL } ?: false }
     )
 
     failureThroughputThresholdField = TextField(
       group,
       "Failure Throughput Threshold:",
+      "trx/s",
       DoubleVerifier,
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT,
-      isValueValid = { it.toDoubleOrNull()?.let { it in FAILURE_THROUGHPUT_THRESHOLD_RANGE } ?: false }
+      isValueValid = { it.toDoubleOrNull()?.let { it >= MIN_FAILURE_THROUGHPUT_THRESHOLD } ?: false }
     )
 
     shannonEntropyKField = TextField(
       group,
       "Shannon Entropy K:",
+      "",
       DoubleVerifier,
       Attributes.Threesim.SHANNON_ENTROPY_K,
       Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT,
@@ -74,19 +78,25 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     nakamotoCoefficientThresholdField = TextField(
       group,
       "Nakamoto Coefficient Threshold:",
+      " %",
       DoubleVerifier,
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT,
-      isValueValid = { it.toDoubleOrNull()?.let { it in NAKAMOTO_COEFFICIENT_THRESHOLD_RANGE } ?: false }
+      isValueValid = {
+        it.toDoubleOrNull()?.let {
+          it in MIN_NAKAMOTO_COEFFICIENT_THRESHOLD..MAX_NAKAMOTO_COEFFICIENT_THRESHOLD
+        } ?: false
+      }
     )
 
     reliabilityObservationTimespanField = TextField(
       group,
       "Reliability Observation Timespan:",
+      " ms",
       LongVerifier,
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT,
-      isValueValid = { it.toLongOrNull()?.let { it > MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
+      isValueValid = { it.toLongOrNull()?.let { it >= MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
 
     control = root

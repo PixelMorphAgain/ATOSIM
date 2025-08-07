@@ -156,34 +156,34 @@ object InitializationUtils {
     return configuration.getAttribute(
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
-    ).toLong()
+    ).toLong() // ms
   }
 
   fun getFailureThroughputThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
-    ).toDouble()
+    ).toDouble() // trx / s
   }
 
   fun getShannonEntropyKFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.SHANNON_ENTROPY_K,
       Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
-    ).toDouble()
+    ).toDouble() // 0.0..1.0
   }
 
   fun getNakamotoCoefficientThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
-    ).toDouble()
+    ).toDouble() // 0.0 .. 100.0 %
   }
 
   fun getReliabilityObservationTimespanFromConfig(configuration: ILaunchConfiguration): Long {
     return configuration.getAttribute(
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
-    ).toLong()
+    ).toLong() // ms
   }
 }

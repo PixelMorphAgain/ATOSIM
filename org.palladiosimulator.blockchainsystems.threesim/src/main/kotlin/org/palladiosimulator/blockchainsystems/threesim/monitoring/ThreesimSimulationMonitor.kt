@@ -15,13 +15,16 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionSentTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
-import kotlin.properties.Delegates
 
 /**
  * Monitor for the 3SIM simulation.
+ *
+ * @property maxBlockchainLengthCondition Condition to check if the maximum blockchain length has been exceeded.
+ * @property throughputMonitoringInterval Interval for monitoring throughput in milliseconds.
+ * @property failureThroughputThreshold Throughput threshold below which a failure is considered to have occurred, in transactions per second.
  *
  * @author Davis Riedel
  */
@@ -125,12 +128,12 @@ class ThreesimSimulationMonitor(
           .getValidBlocks()
           .sumOf { it.first.transactions.size }
 
-        val throughput = AverageThroughputCalculator(
+        val trxPerSec = ThroughputCalculator(
           numTrxs,
           throughputMonitoringInterval
         ).calculate().value
 
-        if (throughput <= failureThroughputThreshold) {
+        if (trxPerSec <= failureThroughputThreshold) {
           // Failure occurred
           failureLog.failureStarted(event.occurrenceTime)
         } else if (failureLog.isFailureOngoing()) {
