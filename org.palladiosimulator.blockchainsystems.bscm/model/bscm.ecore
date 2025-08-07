@@ -72,12 +72,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsMiningProcessEnabled"
           lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BlockValiationDurationSpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="BlockValiationDurationSpecification"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Values" lowerBound="1"
           upperBound="-1" eType="#//blockchainsystemComponentRepository/BlockValidationDurationValue"
           containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="BlockValidationDurationValue">
+    <eClassifiers xsi:type="ecore:EClass" name="BlockValidationDurationValue" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Duration" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Probability" lowerBound="1"
@@ -146,12 +147,12 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsSubgraphProxy" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="LinkLatencySpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="LinkLatencySpecification" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Values" upperBound="-1"
-          eType="#//p2pnetwork/LinkLatencySpecificationValue"/>
+          eType="#//p2pnetwork/LinkLatencySpecificationValue" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="StaticLatency" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="LinkLatencySpecificationValue">
+    <eClassifiers xsi:type="ecore:EClass" name="LinkLatencySpecificationValue" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Latency" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Probability" lowerBound="1"
@@ -159,12 +160,13 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Duration" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="LinkThroughputSpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="LinkThroughputSpecification" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Values" lowerBound="1"
-          upperBound="-1" eType="#//p2pnetwork/LinkThroughputSpecificationValue"/>
+          upperBound="-1" eType="#//p2pnetwork/LinkThroughputSpecificationValue" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="StaticThroughput" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="LinkThroughputSpecificationValue">
+    <eClassifiers xsi:type="ecore:EClass" name="LinkThroughputSpecificationValue"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Throughput" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//ELong"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Probability" lowerBound="1"
@@ -177,13 +179,13 @@
       nsPrefix="blockchainsystem">
     <eClassifiers xsi:type="ecore:EClass" name="BlockchainSystem" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Network" lowerBound="1"
-          eType="#//p2pnetwork/P2PNetwork"/>
+          eType="#//p2pnetwork/P2PNetwork" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="Specification" lowerBound="1"
           eType="#//blockchainsystem/BlockchainSystemSpecification" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="TransactionsSpecification"
           lowerBound="1" eType="#//blockchainsystem/TransactionsSpecification" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="GeographicalRegionsSpecification"
-          lowerBound="1" eType="#//geography/GeographicalRegionsSpecification"/>
+          lowerBound="1" eType="#//geography/GeographicalRegionsSpecification" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BlockchainSystemSpecification" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="MeanBlockTime" lowerBound="1"
@@ -198,13 +200,17 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="MeanTransactionCreationInterval"
           lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="TransactionPropertiesSpecification"
-          lowerBound="1" eType="#//blockchainsystem/TransactionPropertiesSpecification"/>
+          lowerBound="1" eType="#//blockchainsystem/TransactionPropertiesSpecification"
+          containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransactionPropertiesSpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="TransactionPropertiesSpecification"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Values" lowerBound="1"
-          upperBound="-1" eType="#//blockchainsystem/TransactionPropertiesSpecificationValue"/>
+          upperBound="-1" eType="#//blockchainsystem/TransactionPropertiesSpecificationValue"
+          containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="TransactionPropertiesSpecificationValue">
+    <eClassifiers xsi:type="ecore:EClass" name="TransactionPropertiesSpecificationValue"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Size" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EInt"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Fee" lowerBound="1" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
@@ -226,19 +232,21 @@
   </eSubpackages>
   <eSubpackages name="geography" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/Geography/1.0"
       nsPrefix="geography">
-    <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalEnvironment">
+    <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalEnvironment" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="NodeGeographicalRegionSpecification"
           lowerBound="1" eType="#//geography/NodeGeographicalRegionSpecification"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalRegionSpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="NodeGeographicalRegionSpecification"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Region" lowerBound="1"
           eType="#//geography/GeographicalRegion"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegionsSpecification">
+    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegionsSpecification"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Regions" lowerBound="1"
-          upperBound="-1" eType="#//geography/GeographicalRegion"/>
+          upperBound="-1" eType="#//geography/GeographicalRegion" containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegion">
+    <eClassifiers xsi:type="ecore:EClass" name="GeographicalRegion" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="RegionName" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
