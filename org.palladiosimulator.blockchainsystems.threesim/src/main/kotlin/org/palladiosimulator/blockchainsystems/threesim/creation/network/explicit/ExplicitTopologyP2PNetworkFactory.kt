@@ -36,8 +36,9 @@ class ExplicitTopologyP2PNetworkFactory(
       val fromDesignNode: Node = designLink.getFromNode()
       val toDesignNode: Node = designLink.getToNode()
 
-      val latencyValueProvider = createLatencyValueProvider(designLink.specification.latencySpecification)
-      val throughputValueProvider = createThroughputValueProvider(designLink.specification.throughputSpecification)
+      val linkSpecification = designLink.allocation
+      val latencyValueProvider = createLatencyValueProvider(linkSpecification.latencySpecification)
+      val throughputValueProvider = createThroughputValueProvider(linkSpecification.throughputSpecification)
 
       p2pNodeMappings[fromDesignNode.id]?.let { fromP2PNode ->
         p2pNodeMappings[toDesignNode.id]?.let { toP2PNode ->

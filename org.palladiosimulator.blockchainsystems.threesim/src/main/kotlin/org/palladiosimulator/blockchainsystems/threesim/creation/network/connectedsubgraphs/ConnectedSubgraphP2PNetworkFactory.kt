@@ -69,7 +69,7 @@ class ConnectedSubgraphP2PNetworkFactory(
       val subgraphNodes = initialDegrees.keys.toTypedArray()
 
       // Get link specification for subgraph internal links
-      val subgraphLinkSpecification = subgraphSpec.linkSpecification
+      val subgraphLinkSpecification = subgraphSpec.linkAllocation
 
       val latencyValueProvider = createLatencyValueProvider(subgraphLinkSpecification.latencySpecification)
       val throughputValueProvider = createThroughputValueProvider(subgraphLinkSpecification.throughputSpecification)
@@ -145,7 +145,7 @@ class ConnectedSubgraphP2PNetworkFactory(
       val secondSubgraphProxies =
         subGraphIdToProxyNodesMapping.get(secondSubgraphSpec.id)?.toTypedArray() ?: return@forEach
 
-      val subgraphLinkSpecification = subgraphLink.specification
+      val subgraphLinkSpecification = subgraphLink.allocation
 
       val latencyValueProvider = createLatencyValueProvider(subgraphLinkSpecification.latencySpecification)
       val throughputValueProvider = createThroughputValueProvider(subgraphLinkSpecification.throughputSpecification)

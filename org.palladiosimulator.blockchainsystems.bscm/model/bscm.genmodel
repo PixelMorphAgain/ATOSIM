@@ -110,7 +110,8 @@
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/SubgraphSpecification/LinkAllocation"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/SubgraphLink">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/SubgraphLink/Allocation"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/SubgraphLink/Allocation"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/SubgraphLink/ConnectedSubgraphs"/>
       </genClasses>
