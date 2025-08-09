@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation.geography
 
-import org.palladiosimulator.blockchainsystems.bscm.geography.GeographicalRegionsSpecification
+import org.palladiosimulator.blockchainsystems.bscm.geographicalregions.GeographicalRegionsSpecification
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegion
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegions
 import org.palladiosimulator.blockchainsystems.core.geography.GeographicalRegionsResolver
@@ -19,7 +19,7 @@ class ThreesimGeographicalRegionsResolver(
   private val nodeAllocationResolver: NodeAllocationResolver
 ) : GeographicalRegionsResolver {
   private val geoRegions = GeographicalRegions(
-    geoRegionsSpec.getRegions()
+    geoRegionsSpec.regions
       .map { region -> GeographicalRegion(region.regionName) }
       .toSet()
   )
@@ -32,9 +32,7 @@ class ThreesimGeographicalRegionsResolver(
   override fun getGeographicalRegionOfNode(nodeId: String): GeographicalRegion {
     val regionName = nodeAllocationResolver
       .getNodeAllocation(nodeId)
-      ?.nodeGeographicalEnvironment
-      ?.nodeGeographicalRegionSpecification
-      ?.region
+      ?.geographicalRegion
       ?.regionName ?: throw IllegalArgumentException(
       "Node with ID '$nodeId' does not have a geographical region defined in the node allocation."
     )

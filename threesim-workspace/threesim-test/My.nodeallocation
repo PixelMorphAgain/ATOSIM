@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nodeallocation:NodeAllocationRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" xmlns:nodeallocation="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeAllocation/1.0" id="_59fmIHVoEfC55JynHANxpg">
+  <NodeAllocations id="_g5ET0HVyEfCmspZxTM-O5A">
+    <AllocationContexts id="_mzOlIHVyEfCmspZxTM-O5A" AssemblyContext="_tAdjcHVyEfCmspZxTM-O5A" ResourceContainer="_qJf9YHVyEfCmspZxTM-O5A"/>
+    <AllocationContexts id="_o5fHAHVyEfCmspZxTM-O5A" AssemblyContext="_uj_LsHVyEfCmspZxTM-O5A" ResourceContainer="_qJf9YHVyEfCmspZxTM-O5A"/>
+    <NodeAllocationEnvironment id="_pjQcwXVyEfCmspZxTM-O5A">
+      <ResourceContainers id="_qJf9YHVyEfCmspZxTM-O5A"/>
+    </NodeAllocationEnvironment>
+    <NodeSystem id="_sSEMYnVyEfCmspZxTM-O5A">
+      <AssemblyContexts id="_tAdjcHVyEfCmspZxTM-O5A">
+        <EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="My.blockchainsystemcomponentrepository#_ZTH2IHVyEfCmspZxTM-O5A"/>
+      </AssemblyContexts>
+      <AssemblyContexts id="_uj_LsHVyEfCmspZxTM-O5A">
+        <EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="My.blockchainsystemcomponentrepository#_aBc7wXVyEfCmspZxTM-O5A"/>
+      </AssemblyContexts>
+      <Behavior id="_uFFCIXVyEfCmspZxTM-O5A"/>
+    </NodeSystem>
+    <GeographicalRegion href="My.blockchainsystem#_U2boYHVyEfCmspZxTM-O5A"/>
+  </NodeAllocations>
+</nodeallocation:NodeAllocationRepository>

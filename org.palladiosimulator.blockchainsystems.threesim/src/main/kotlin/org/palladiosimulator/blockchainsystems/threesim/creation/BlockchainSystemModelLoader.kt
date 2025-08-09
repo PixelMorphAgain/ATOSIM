@@ -26,7 +26,7 @@ class BlockchainSystemModelLoader {
       put("blockchainsystemComponentRepository", XMIResourceFactoryImpl())
       put("nodesystem", XMIResourceFactoryImpl())
       put("nodeenvironment", XMIResourceFactoryImpl())
-      put("geography", XMIResourceFactoryImpl())
+      put("geographcalregions", XMIResourceFactoryImpl())
       put("linkallocation", XMIResourceFactoryImpl())
     }
 

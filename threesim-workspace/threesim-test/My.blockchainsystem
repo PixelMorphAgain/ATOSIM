@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blockchainsystem:BlockchainSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:P2PNetwork="http://palladiosimulator.org/BlockchainSystemComponentModel/P2PNetwork/1.0" xmlns:blockchainsystem="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystem/1.0" id="_rxQw8HVoEfC55JynHANxpg">
+  <Network id="_DuwVwHVyEfCmspZxTM-O5A">
+    <Topology xsi:type="P2PNetwork:ExplicitNetworkTopology" id="_GUJqsHVyEfCmspZxTM-O5A">
+      <Nodes id="_O6EXoHVyEfCmspZxTM-O5A">
+        <Allocation href="My.nodeallocation#_g5ET0HVyEfCmspZxTM-O5A"/>
+      </Nodes>
+      <Nodes id="_PaHJoHVyEfCmspZxTM-O5A">
+        <Allocation href="My.nodeallocation#_g5ET0HVyEfCmspZxTM-O5A"/>
+      </Nodes>
+      <Links id="_Py-8oXVyEfCmspZxTM-O5A" FromNode="_O6EXoHVyEfCmspZxTM-O5A" ToNode="_PaHJoHVyEfCmspZxTM-O5A">
+        <Allocation href="My.linkallocation#_ifJFUHVoEfC55JynHANxpg"/>
+      </Links>
+      <Links id="_QOUNwXVyEfCmspZxTM-O5A" FromNode="_PaHJoHVyEfCmspZxTM-O5A" ToNode="_O6EXoHVyEfCmspZxTM-O5A">
+        <Allocation href="My.linkallocation#_ifJFUHVoEfC55JynHANxpg"/>
+      </Links>
+    </Topology>
+  </Network>
+  <Specification id="_EauD4XVyEfCmspZxTM-O5A"/>
+  <TransactionsSpecification id="_E0LFsHVyEfCmspZxTM-O5A">
+    <TransactionPropertiesSpecification id="_SLnn8HVyEfCmspZxTM-O5A">
+      <Values id="_ShACEHVyEfCmspZxTM-O5A"/>
+      <Values id="_TevcsHVyEfCmspZxTM-O5A"/>
+    </TransactionPropertiesSpecification>
+  </TransactionsSpecification>
+  <GeographicalRegionsSpecification id="_FfFD43VyEfCmspZxTM-O5A">
+    <Regions id="_UDyDcHVyEfCmspZxTM-O5A"/>
+    <Regions id="_UijDEHVyEfCmspZxTM-O5A"/>
+    <Regions id="_U2boYHVyEfCmspZxTM-O5A"/>
+  </GeographicalRegionsSpecification>
+</blockchainsystem:BlockchainSystem>

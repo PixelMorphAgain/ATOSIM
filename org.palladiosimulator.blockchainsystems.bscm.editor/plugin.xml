@@ -181,12 +181,12 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="org.palladiosimulator.blockchainsystems.bscm.geography.presentation.GeographyModelWizardID"
-            name="%_UI_GeographyModelWizard_label"
-            class="org.palladiosimulator.blockchainsystems.bscm.geography.presentation.GeographyModelWizard"
+            id="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.presentation.GeographicalregionsModelWizardID"
+            name="%_UI_GeographicalregionsModelWizard_label"
+            class="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.presentation.GeographicalregionsModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/GeographyModelFile.gif">
-         <description>%_UI_GeographyModelWizard_description</description>
+            icon="icons/full/obj16/GeographicalregionsModelFile.gif">
+         <description>%_UI_GeographicalregionsModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
    </extension>
@@ -194,12 +194,12 @@
    <extension point="org.eclipse.ui.editors">
       <!-- @generated bscm -->
       <editor
-            id="org.palladiosimulator.blockchainsystems.bscm.geography.presentation.GeographyEditorID"
-            name="%_UI_GeographyEditor_label"
-            icon="icons/full/obj16/GeographyModelFile.gif"
-            extensions="geography"
-            class="org.palladiosimulator.blockchainsystems.bscm.geography.presentation.GeographyEditor"
-            contributorClass="org.palladiosimulator.blockchainsystems.bscm.geography.presentation.GeographyActionBarContributor">
+            id="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.presentation.GeographicalregionsEditorID"
+            name="%_UI_GeographicalregionsEditor_label"
+            icon="icons/full/obj16/GeographicalregionsModelFile.gif"
+            extensions="geographicalregions"
+            class="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.presentation.GeographicalregionsEditor"
+            contributorClass="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.presentation.GeographicalregionsActionBarContributor">
       </editor>
    </extension>
 
