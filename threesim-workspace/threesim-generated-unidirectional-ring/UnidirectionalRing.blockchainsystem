@@ -1,0 +1,69 @@
+<blockchainsystem:BlockchainSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:P2PNetwork="http://palladiosimulator.org/BlockchainSystemComponentModel/P2PNetwork/1.0" xmlns:blockchainsystem="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystem/1.0" id="_7f12902255b1451ba8756e99f48b872e">
+	<Network id="_d7ab591916cd4f07b291a1fa53ca79be">
+		<Topology xsi:type="P2PNetwork:ExplicitNetworkTopology" id="_92b427e085274dc691f84942af261ceb">
+			<Nodes id="_afdb297ee925414795ed8884814b8582">
+				<Allocation href="UnidirectionalRing.nodeallocation#_bbac2a23743e46efab2bb2e60739541f"/>
+			</Nodes>
+			<Nodes id="_cc63d864bb45403c87636b105fd149f3">
+				<Allocation href="UnidirectionalRing.nodeallocation#_67f1e3f217694ce3af6f9adc5d5bcc15"/>
+			</Nodes>
+			<Nodes id="_810ed47ec7b94e67b57752c6ff2035a4">
+				<Allocation href="UnidirectionalRing.nodeallocation#_adbadc58c1314ac8825003f597a6ee39"/>
+			</Nodes>
+			<Nodes id="_43c6d3937f294b4297a655091770fdf9">
+				<Allocation href="UnidirectionalRing.nodeallocation#_bbac2a23743e46efab2bb2e60739541f"/>
+			</Nodes>
+			<Nodes id="_142a3983ebdf4b76bdbf130b1ccd2a4d">
+				<Allocation href="UnidirectionalRing.nodeallocation#_adbadc58c1314ac8825003f597a6ee39"/>
+			</Nodes>
+			<Nodes id="_4b4079865cca49e78031f7c201b8bf7f">
+				<Allocation href="UnidirectionalRing.nodeallocation#_adbadc58c1314ac8825003f597a6ee39"/>
+			</Nodes>
+			<Nodes id="_2e4512dafa6744c8902bf6a2955df96f">
+				<Allocation href="UnidirectionalRing.nodeallocation#_67f1e3f217694ce3af6f9adc5d5bcc15"/>
+			</Nodes>
+			<Nodes id="_edb2b27e4f954a27b4d861a80eab8cda">
+				<Allocation href="UnidirectionalRing.nodeallocation#_251b1094219341f6b3b3d4aa613978d5"/>
+			</Nodes>
+			<Links id="_7e2b0c6c7b8348998717210a0e03c65d" FromNode="_afdb297ee925414795ed8884814b8582" ToNode="_cc63d864bb45403c87636b105fd149f3">
+				<Allocation href="UnidirectionalRing.linkallocation#_2d76b22670c148d78b9e6013d9281167"/>
+			</Links>
+			<Links id="_46771c96fcf644659d6d000d1d809ce9" FromNode="_cc63d864bb45403c87636b105fd149f3" ToNode="_810ed47ec7b94e67b57752c6ff2035a4">
+				<Allocation href="UnidirectionalRing.linkallocation#_17ec238987a54802b40101f5e7dc2c9e"/>
+			</Links>
+			<Links id="_1f5c01abadf8495192e1814f15dbb556" FromNode="_810ed47ec7b94e67b57752c6ff2035a4" ToNode="_43c6d3937f294b4297a655091770fdf9">
+				<Allocation href="UnidirectionalRing.linkallocation#_17ec238987a54802b40101f5e7dc2c9e"/>
+			</Links>
+			<Links id="_bf18690c17e64cdeb4d397230a6389f3" FromNode="_43c6d3937f294b4297a655091770fdf9" ToNode="_142a3983ebdf4b76bdbf130b1ccd2a4d">
+				<Allocation href="UnidirectionalRing.linkallocation#_2d76b22670c148d78b9e6013d9281167"/>
+			</Links>
+			<Links id="_96a04537361c47c4ba74370ebfb3f2cc" FromNode="_142a3983ebdf4b76bdbf130b1ccd2a4d" ToNode="_4b4079865cca49e78031f7c201b8bf7f">
+				<Allocation href="UnidirectionalRing.linkallocation#_2d76b22670c148d78b9e6013d9281167"/>
+			</Links>
+			<Links id="_2a5841e0cc8149e98fa9fb926c1d2b2c" FromNode="_4b4079865cca49e78031f7c201b8bf7f" ToNode="_2e4512dafa6744c8902bf6a2955df96f">
+				<Allocation href="UnidirectionalRing.linkallocation#_17ec238987a54802b40101f5e7dc2c9e"/>
+			</Links>
+			<Links id="_6b780aeca9634e6886f55724f2ff0851" FromNode="_2e4512dafa6744c8902bf6a2955df96f" ToNode="_edb2b27e4f954a27b4d861a80eab8cda">
+				<Allocation href="UnidirectionalRing.linkallocation#_2d76b22670c148d78b9e6013d9281167"/>
+			</Links>
+			<Links id="_9e955248f845464da54a867a1f68d545" FromNode="_edb2b27e4f954a27b4d861a80eab8cda" ToNode="_afdb297ee925414795ed8884814b8582">
+				<Allocation href="UnidirectionalRing.linkallocation#_17ec238987a54802b40101f5e7dc2c9e"/>
+			</Links>
+		</Topology>
+	</Network>
+	<Specification id="_c06ef650ed80427ba4edc9123066c39f" BlockReward="6.25" MaxBlockSize="1024" MeanBlockTime="60000.0" NumOfRequiredSecurityConfirmations="6"/>
+	<TransactionsSpecification id="_63cca9bb70d84322a876705496324164" MeanTransactionCreationInterval="30.0">
+		<TransactionPropertiesSpecification id="_7d86af447a6047c5b692ae976e1c6da4">
+			<Values id="_de8dcf299c734138bfb9e8b99781df78" Probability="0.2" Size="1000" Amount="10.0" Fee="0.01"/>
+			<Values id="_543c390a97744e9dadeeffedfabdd2e9" Probability="0.2" Size="250" Amount="1.0" Fee="0.01"/>
+			<Values id="_5a024c1c26a446c0b63c10c85e62998a" Probability="0.2" Size="1000" Amount="1.0" Fee="0.005"/>
+			<Values id="_cfa07d8b1a784693be661a9b85a16a30" Probability="0.2" Size="500" Amount="0.1" Fee="0.005"/>
+			<Values id="_84443421b0d448148bf73d033856f095" Probability="0.2" Size="1000" Amount="10.0" Fee="0.001"/>
+		</TransactionPropertiesSpecification>
+	</TransactionsSpecification>
+	<GeographicalRegionsSpecification id="_1053c3bb40974620a70ff0c47d5f5b65">
+		<Regions id="_57d16ef8da57472699042232e571ea88" RegionName="ap-south-2"/>
+		<Regions id="_fe34e32d862e4eb7bf7d2d2630a13477" RegionName="ap-southeast-1"/>
+		<Regions id="_f200bc1488354cafa220fc5390c4414f" RegionName="il-central-1"/>
+	</GeographicalRegionsSpecification>
+</blockchainsystem:BlockchainSystem>
