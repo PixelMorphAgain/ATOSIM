@@ -6,7 +6,6 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainS
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl

@@ -23,7 +23,10 @@ Export-Package: .,
  org.palladiosimulator.blockchainsystems.threesim.simulation.results,
  org.palladiosimulator.blockchainsystems.threesim.utils
 Require-Bundle: org.palladiosimulator.blockchainsystems.kotlin-deps,
+ org.palladiosimulator.blockchainsystems.core,
  org.palladiosimulator.blockchainsystems.loggers,
+ org.palladiosimulator.blockchainsystems.bscm,
+ org.palladiosimulator.blockchainsystems.plugin,
  org.junit,
  junit-jupiter-api,
- org.palladiosimulator.blockchainsystems.core
+ org.eclipse.debug.core;bundle-version="3.20.100"
