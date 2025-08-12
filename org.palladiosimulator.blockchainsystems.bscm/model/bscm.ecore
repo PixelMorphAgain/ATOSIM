@@ -101,13 +101,9 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="Allocation" lowerBound="1"
           eType="#//nodeallocation/NodeAllocation"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="Link" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+    <eClassifiers xsi:type="ecore:EClass" name="Link" abstract="true" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EReference" name="Allocation" lowerBound="1"
           eType="#//linkallocation/LinkAllocation"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="FromNode" lowerBound="1"
-          eType="#//p2pnetwork/Node"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="ToNode" lowerBound="1"
-          eType="#//p2pnetwork/Node"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="ConnectedSubgraphsNetworkTopology"
         eSuperTypes="#//p2pnetwork/ConstraintNetworkTopology">
@@ -137,6 +133,16 @@
           eType="#//nodeallocation/NodeAllocation"/>
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="IsSubgraphProxy" lowerBound="1"
           eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="BidirectionalLink" eSuperTypes="#//p2pnetwork/Link">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ConnectedNodes" lowerBound="2"
+          upperBound="2" eType="#//p2pnetwork/Node"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="UnidirectionalLink" eSuperTypes="#//p2pnetwork/Link">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="FromNode" lowerBound="1"
+          eType="#//p2pnetwork/Node"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="ToNode" lowerBound="1"
+          eType="#//p2pnetwork/Node"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="blockchainsystem" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystem/1.0"

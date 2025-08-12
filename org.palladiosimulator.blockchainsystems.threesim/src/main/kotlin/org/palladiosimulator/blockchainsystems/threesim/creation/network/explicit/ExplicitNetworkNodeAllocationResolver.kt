@@ -16,6 +16,6 @@ class ExplicitNetworkNodeAllocationResolver(
   private val nodeIdToNodeMappings: Map<String, Node> = networkTopology.nodes.associateBy { it.id }
 
   override fun getNodeAllocation(nodeId: String): NodeAllocation? {
-    return nodeIdToNodeMappings[nodeId]?.getAllocation()
+    return nodeIdToNodeMappings[nodeId]?.allocation
   }
 }

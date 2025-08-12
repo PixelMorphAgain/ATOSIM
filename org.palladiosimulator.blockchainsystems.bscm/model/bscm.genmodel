@@ -92,10 +92,6 @@
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/Link">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/Link/Allocation"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/Link/FromNode"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/Link/ToNode"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//p2pnetwork/ConnectedSubgraphsNetworkTopology">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/ConnectedSubgraphsNetworkTopology/Subgraphs"/>
@@ -118,6 +114,16 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/SubgraphNodeTemplate/Allocation"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//p2pnetwork/SubgraphNodeTemplate/IsSubgraphProxy"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//p2pnetwork/BidirectionalLink">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/BidirectionalLink/ConnectedNodes"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//p2pnetwork/UnidirectionalLink">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/UnidirectionalLink/FromNode"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference bscm.ecore#//p2pnetwork/UnidirectionalLink/ToNode"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Blockchainsystem" basePackage="org.palladiosimulator.blockchainsystems.bscm"

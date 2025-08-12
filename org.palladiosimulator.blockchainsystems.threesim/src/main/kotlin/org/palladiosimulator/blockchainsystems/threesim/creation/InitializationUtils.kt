@@ -102,7 +102,6 @@ object InitializationUtils {
     return designBlockchainSystem
       .network
       .topology
-      .first() // Gets the desired topology, because constraint limits number of topologies to 1.
   }
 
 

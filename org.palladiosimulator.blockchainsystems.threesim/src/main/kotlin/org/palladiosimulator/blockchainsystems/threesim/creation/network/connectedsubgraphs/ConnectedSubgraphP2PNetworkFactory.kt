@@ -33,8 +33,8 @@ class ConnectedSubgraphP2PNetworkFactory(
 
     // Fill mappings and create P2PNode instances
     topology.subgraphs.forEach { subgraphSpec ->
-      subgraphIdToSubgraphNodesMapping.put(subgraphSpec.id, HashSet<P2PNode>())
-      subGraphIdToProxyNodesMapping.put(subgraphSpec.id, HashSet<P2PNode>())
+      subgraphIdToSubgraphNodesMapping.put(subgraphSpec.id, HashSet())
+      subGraphIdToProxyNodesMapping.put(subgraphSpec.id, HashSet())
       subGraphIdToLinkSpecificationMapping.put(subgraphSpec.id, subgraphSpec)
 
       subgraphSpec.nodeTemplates.forEach { nodeTemplate ->
