@@ -1,10 +1,10 @@
-<blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" id="_7617c38696b147e4afc3412e172feb0e">
-	<Components xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" id="_9f9be0a7b8aa43009026a00d347cc27b">
-		<ValidationDuration id="_cc8f22b7eb814825a69c49d8ef573de8">
-			<Values id="_d9690cf4b2034dc8973e849693fa0605" Probability="0.5" Duration="10"/>
-			<Values id="_1dc8415da7a94a16ba120605ba6232a5" Probability="0.3" Duration="20"/>
-			<Values id="_285605cbbfd441c181efd956991e6d11" Probability="0.2" Duration="30"/>
+<blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" id="_bbcf3f8dba1148d2a59572428d04868a">
+	<Components xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" id="_a46898699e0546118a6e7ebc78c43f81">
+		<ValidationDuration id="_cf33a22e691a4ddfb0e76a6cab13676f">
+			<Values id="_c3f9cad3dc2348cb91fbc83026c32bb5" Probability="0.5" Duration="10"/>
+			<Values id="_c23738a5f62a4ceca13fd2c465ba0c8c" Probability="0.3" Duration="20"/>
+			<Values id="_6cb05a2262174933928898fbad0095db" Probability="0.2" Duration="30"/>
 		</ValidationDuration>
 	</Components>
-	<Components xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" id="_2ba8218ab7c043c8a359fde8c2fa837a" IsMiningProcessEnabled="true"/>
+	<Components xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" id="_2e52d05787e04cd28ee867d7bfbbdd96" IsMiningProcessEnabled="true"/>
 </blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository>
