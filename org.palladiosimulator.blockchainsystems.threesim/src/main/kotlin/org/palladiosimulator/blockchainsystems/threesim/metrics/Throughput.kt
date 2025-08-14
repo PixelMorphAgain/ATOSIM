@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Throughput(
   override val value: Double,
-) : OutputMetric<Double>() {
+) : OutputMetric<Double> {
   companion object {
     const val NAME = "Throughput"
   }

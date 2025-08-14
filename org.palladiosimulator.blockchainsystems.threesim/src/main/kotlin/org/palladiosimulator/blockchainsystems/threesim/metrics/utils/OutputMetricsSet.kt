@@ -2,7 +2,7 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.utils
 
 import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.serialization.OutputMetricsSetSerializer
 import java.util.TreeSet
 
 /**
@@ -10,7 +10,7 @@ import java.util.TreeSet
  *
  * @author Davis Riedel
  */
-@Serializable
+@Serializable(with = OutputMetricsSetSerializer::class)
 class OutputMetricsSet : TreeSet<OutputMetric<*>>(compareBy { it.name }) {
   companion object {
     fun from(vararg metrics: OutputMetric<*>): OutputMetricsSet {
