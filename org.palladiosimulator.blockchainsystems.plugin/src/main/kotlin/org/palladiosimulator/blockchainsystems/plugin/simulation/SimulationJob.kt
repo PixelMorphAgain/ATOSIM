@@ -6,8 +6,8 @@ import org.eclipse.core.runtime.IStatus
 import org.eclipse.core.runtime.Status
 import org.eclipse.core.runtime.jobs.Job
 import org.eclipse.debug.core.ILaunchConfiguration
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSerializer
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
-import org.palladiosimulator.blockchainsystems.plugin.utils.SimulationResultUtils
 
 /**
  * Job that executes a simulation based on the provided launch configuration.
@@ -20,7 +20,8 @@ import org.palladiosimulator.blockchainsystems.plugin.utils.SimulationResultUtil
 class SimulationJob(
   private val configuration: ILaunchConfiguration,
   private val simulationFactory: SimulationFactory,
-  val jobName: String
+  jobName: String,
+  private val simulationResultSerializer: SimulationResultSerializer
 ) : Job(jobName) {
   override fun run(progressMonitor: IProgressMonitor): IStatus {
     val simulation = simulationFactory.create(configuration, progressMonitor)
@@ -28,7 +29,7 @@ class SimulationJob(
     val result = simulation.run()
 
     try {
-      SimulationResultUtils.saveResultFile(result, configuration)
+      SimulationResultsWriter(simulationResultSerializer).saveResultFile(result, configuration)
     } catch (e: CoreException) {
       e.printStackTrace()
       return Status.OK_STATUS

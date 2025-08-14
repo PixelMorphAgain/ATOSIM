@@ -20,9 +20,9 @@ class ThreesimBlockValidatorFactory(
     val component = nodeAllocationResolver
       .getNodeAllocation(nodeId)
       ?.allocationContexts
-      ?.filter { it.assemblyContext.encapsulatedComponent is BlockValidatorComponent }
-      ?.toSet()
-      ?.firstOrNull() as? BlockValidatorComponent
+      ?.map { it.assemblyContext.encapsulatedComponent }
+      ?.firstOrNull { it is BlockValidatorComponent }
+      as? BlockValidatorComponent
       ?: throw IllegalArgumentException(
         "No BlockValidatorComponent found for node with ID: $nodeId"
       )

@@ -2,7 +2,6 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
 
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRound
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
-import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
@@ -21,10 +20,17 @@ class ThreesimSimulationRound(
   private val blockchainSystemFactory: ThreesimBlockchainSystemFactory,
   logOutputs: Set<TraceEventLogOutput>,
   private val maxAllowedBlockchainLength: Long,
-  private val threesimSimulationParameters: ThreesimSimulationParameters
-) : SimulationRound<ThreesimSimulationRoundResult>(
+  private val threesimSimulationParameters: ThreesimSimulationParameters,
+) : SimulationRound<ThreesimSimulationMonitor, ThreesimSimulationRoundResult>(
   blockchainSystemFactory.createBlockchainSystem(true),
-  logOutputs
+  logOutputs,
+  monitor = ThreesimSimulationMonitor(
+    LongestChainExceededMaxLengthCondition(
+      maxAllowedBlockchainLength
+    ),
+    threesimSimulationParameters.throughputMonitoringInterval,
+    threesimSimulationParameters.failureThroughputThreshold
+  )
 ) {
 
   private lateinit var noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
@@ -33,14 +39,6 @@ class ThreesimSimulationRound(
     UUID.randomUUID().toString(),
     "Throughput monitoring process",
     threesimSimulationParameters.throughputMonitoringInterval
-  )
-
-  override val monitor = ThreesimSimulationMonitor(
-    LongestChainExceededMaxLengthCondition(
-      maxAllowedBlockchainLength
-    ),
-    threesimSimulationParameters.throughputMonitoringInterval,
-    threesimSimulationParameters.failureThroughputThreshold
   )
 
   override fun initialize() {
@@ -76,4 +74,5 @@ class ThreesimSimulationRound(
       noFailuresPartialSimulationRoundResult
     ).createSimulationRoundResult()
   }
+
 }

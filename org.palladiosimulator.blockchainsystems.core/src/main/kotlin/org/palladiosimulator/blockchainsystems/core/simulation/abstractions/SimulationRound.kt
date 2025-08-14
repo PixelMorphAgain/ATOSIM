@@ -14,25 +14,24 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLoggerCont
  *
  * @author Davis Riedel
  */
-abstract class SimulationRound<R : SimulationRoundResult>(
+abstract class SimulationRound<M : SimulationMonitor, R : SimulationRoundResult>(
   protected val blockchainSystem: BlockchainSystem,
-  protected val logOutputs: Set<TraceEventLogOutput>
+  protected val logOutputs: Set<TraceEventLogOutput>,
+  protected val monitor: M
 ) {
-  protected abstract val monitor: SimulationMonitor
-
   protected val clock = SimulationClock()
+  protected val traceEventLoggerContainer = TraceEventLoggerContainerImpl()
+
   protected val eventCoordinator = EventCoordinatorImpl(
     clock,
     monitor
   )
-  protected val traceEventLoggerContainer = TraceEventLoggerContainerImpl()
 
   protected val context = SimulationContextImpl(
     eventCoordinator,
     clock,
     traceEventLoggerContainer,
   )
-
 
   init {
     setUpTraceEventSubscribers()

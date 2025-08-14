@@ -1,14 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" uid="_42d5096756804834832621430d8c41c3" version="15.4.1.202403191723">
-	<semanticResources>
-		UnidirectionalRing.linkallocation
-	</semanticResources>
-	<semanticResources>
-		UnidirectionalRing.blockchainsystem
-	</semanticResources>
-	<semanticResources>
-		UnidirectionalRing.blockchainsystemcomponentrepository
-	</semanticResources>
-	<semanticResources>
-		UnidirectionalRing.nodeallocation
-	</semanticResources>
+  <semanticResources>UnidirectionalRing.blockchainsystem</semanticResources>
+  <semanticResources>UnidirectionalRing.nodeallocation</semanticResources>
+  <semanticResources>UnidirectionalRing.blockchainsystemcomponentrepository</semanticResources>
+  <semanticResources>UnidirectionalRing.linkallocation</semanticResources>
 </viewpoint:DAnalysis>

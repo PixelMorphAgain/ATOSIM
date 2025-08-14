@@ -5,7 +5,9 @@ import org.palladiosimulator.blockchainsystems.plugin.PluginLaunch
 import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 import org.palladiosimulator.blockchainsystems.plugin.simulation.SimulationJob
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
+import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationResultSerializer
 
 /**
  * Launch configuration delegate for the 3SIM blockchain simulator plugin.
@@ -29,7 +31,10 @@ class ThreesimPluginLaunch : PluginLaunch() {
     val job = SimulationJob(
       configuration,
       ThreesimSimulationFactory(simulationType),
-      "3SIM $jobName Job"
+      "3SIM $jobName Job",
+      ThreesimSimulationResultSerializer(
+        ThreesimSerializers.json
+      )
     );
 
     job.schedule()

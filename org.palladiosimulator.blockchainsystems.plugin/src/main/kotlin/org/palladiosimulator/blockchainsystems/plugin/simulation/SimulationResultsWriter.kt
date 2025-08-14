@@ -1,9 +1,9 @@
-package org.palladiosimulator.blockchainsystems.plugin.utils
+package org.palladiosimulator.blockchainsystems.plugin.simulation
 
-import kotlinx.serialization.json.Json
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResult
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSerializer
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -19,7 +19,9 @@ import java.time.format.DateTimeFormatter
  *
  * @author Yannik Sproll, Davis Riedel
  */
-object SimulationResultUtils {
+class SimulationResultsWriter(
+  private val simulationResultSerializer: SimulationResultSerializer
+) {
   @Throws(CoreException::class)
   fun saveResultFile(
     result: SimulationResult,
@@ -32,12 +34,14 @@ object SimulationResultUtils {
 
     val timestamp = getCurrentTimeFormatted()
     val simType = result.simulationType
-    val fileName = "$timestamp-$simType.tsr"
+    val fileName = "$timestamp-$simType.tsr.json"
     val fullFilePath = Path.of(path, fileName).toString()
+
+    val serializedResult = simulationResultSerializer.serialize(result)
 
     try {
       BufferedWriter(FileWriter(fullFilePath)).use { writer ->
-        writer.write(Json.encodeToString(result))
+        writer.write(serializedResult)
       }
     } catch (e: IOException) {
       System.err.println("An error occurred while writing to the file $fullFilePath.")

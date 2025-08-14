@@ -11,6 +11,7 @@ import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs.ConnectedSubgraphNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit.ExplicitNetworkBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
 
 /**
  * Utility class for initialization tasks.
@@ -108,6 +109,8 @@ object InitializationUtils {
   @Throws(NumberFormatException::class, CoreException::class)
   fun createLogOutputProviderFromConfig(configuration: ILaunchConfiguration): LogOutputProviderImpl {
     return LogOutputProviderImpl(
+      ThreesimSerializers.json,
+
       configuration.getAttribute(
         Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE,
         Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE_DEFAULT
@@ -131,7 +134,7 @@ object InitializationUtils {
       configuration.getAttribute(
         Attributes.Logging.DATABASE_PORT_ATTRIBUTE,
         Attributes.Logging.DATABASE_PORT_ATTRIBUTE_DEFAULT
-      ).toInt(),
+      ),
       configuration.getAttribute(
         Attributes.Logging.DATABASE_NAME_ATTRIBUTE,
         Attributes.Logging.DATABASE_NAME_ATTRIBUTE_DEFAULT

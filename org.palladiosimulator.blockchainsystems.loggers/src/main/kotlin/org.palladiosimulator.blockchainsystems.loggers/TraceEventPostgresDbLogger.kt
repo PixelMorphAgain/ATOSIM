@@ -28,7 +28,7 @@ import java.util.*
  */
 class TraceEventPostgresDbLogger(
   private val server: String,
-  private val port: Int,
+  private val port: String,
   private val database: String,
   private val databaseUser: String,
   private val databasePassword: String

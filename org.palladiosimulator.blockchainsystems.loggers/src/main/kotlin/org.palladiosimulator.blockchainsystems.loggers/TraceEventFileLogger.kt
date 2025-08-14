@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.loggers
 
+import kotlinx.serialization.json.Json
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEventLogOrigin
 import org.palladiosimulator.blockchainsystems.loggers.abstractions.AbstractJsonLogger
@@ -16,7 +17,11 @@ import java.util.*
  *
  * @author Davis Riedel
  */
-class TraceEventFileLogger(private val filePath: String) : AbstractJsonLogger() {
+class TraceEventFileLogger(
+  jsonSerializer: Json,
+  private val filePath: String,
+) : AbstractJsonLogger(jsonSerializer) {
+
   private lateinit var outFileWriter: BufferedWriter
 
   override fun initialize() {

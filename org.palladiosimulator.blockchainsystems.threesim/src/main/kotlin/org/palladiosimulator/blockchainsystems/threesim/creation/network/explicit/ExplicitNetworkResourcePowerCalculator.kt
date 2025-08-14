@@ -32,7 +32,7 @@ class ExplicitNetworkResourcePowerCalculator(
 
   private fun getResourcePowerOfNode(node: Node): Double {
     return node.allocation.allocationContexts
-      .filter { it!!.getAssemblyContext().getEncapsulatedComponent() is MiningProcessComponent }
-      .sumOf { it!!.getResourceContainer().getResourcePower() }
+      .filter { it.assemblyContext.encapsulatedComponent is MiningProcessComponent }
+      .sumOf { it.resourceContainer.resourcePower }
   }
 }
