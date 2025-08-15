@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit
 
 import org.jgrapht.Graph
-import org.jgrapht.graph.SimpleGraph
+import org.jgrapht.graph.SimpleDirectedGraph
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.BidirectionalLink
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.UnidirectionalLink
@@ -23,7 +23,7 @@ class ExplicitTopologyP2PNetworkFactory(
   private val topology: ExplicitNetworkTopology,
 ) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
-    val networkGraph: Graph<P2PNode, P2PLink> = SimpleGraph(P2PLink::class.java)
+    val networkGraph: Graph<P2PNode, P2PLink> = SimpleDirectedGraph(P2PLink::class.java)
 
     // Add nodes to the graph
     val p2pNodeMappings = topology.nodes.associate {

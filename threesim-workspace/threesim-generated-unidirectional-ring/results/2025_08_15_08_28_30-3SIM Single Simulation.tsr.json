@@ -1,0 +1,59 @@
+{
+    "type": "org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSingleSimulationResult",
+    "simulationRoundResult": {
+        "outputMetrics": [
+            {
+                "name": "AvailabilityScalability",
+                "value": "7.464101404296038E-7"
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": "1.0"
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": "NaN"
+            },
+            {
+                "name": "Consistency",
+                "value": "-6640851.0"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": "(-1.689705119809665E-6, NaN)"
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": "1.4983766181402192"
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": "NaN"
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": "0.0"
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": "4"
+            },
+            {
+                "name": "Reliability",
+                "value": "0.0014941112592937456"
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": "2.0711200184124086"
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": "0.0"
+            },
+            {
+                "name": "Throughput",
+                "value": "2.4901854321562425E-5"
+            }
+        ]
+    }
+}

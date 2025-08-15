@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs
 
-import org.jgrapht.graph.SimpleGraph
+import org.jgrapht.graph.SimpleDirectedGraph
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.SubgraphSpecification
 import org.palladiosimulator.blockchainsystems.core.network.P2PLink
@@ -53,7 +53,7 @@ class ConnectedSubgraphP2PNetworkFactory(
       }
     }
 
-    val networkGraph = SimpleGraph<P2PNode, P2PLink>(P2PLink::class.java)
+    val networkGraph = SimpleDirectedGraph<P2PNode, P2PLink>(P2PLink::class.java)
 
     // Create each subgraph and add it to the networkGraph
     subgraphIdToSubgraphNodesMapping.entries.forEach { entry ->
