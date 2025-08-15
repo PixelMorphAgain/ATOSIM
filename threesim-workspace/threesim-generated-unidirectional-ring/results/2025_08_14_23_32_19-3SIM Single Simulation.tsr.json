@@ -4,7 +4,7 @@
         "outputMetrics": [
             {
                 "name": "AvailabilityScalability",
-                "value": "Infinity"
+                "value": "6.934634825597401E-7"
             },
             {
                 "name": "AvailabilitySecurity",
@@ -16,11 +16,11 @@
             },
             {
                 "name": "Consistency",
-                "value": "-4496507.0"
+                "value": "-4667957.0"
             },
             {
                 "name": "FaultTolerance",
-                "value": "(4.221676901709478E-6, NaN)"
+                "value": "(4.553584201037276E-6, NaN)"
             },
             {
                 "name": "GeographicalDiversity",
@@ -40,11 +40,11 @@
             },
             {
                 "name": "Reliability",
-                "value": "0.0013178060637528217"
+                "value": "0.0013857349625296111"
             },
             {
                 "name": "ShannonEntropy",
-                "value": "2.077692882481255"
+                "value": "2.0695743655223615"
             },
             {
                 "name": "StaleBlockRate",
@@ -52,7 +52,7 @@
             },
             {
                 "name": "Throughput",
-                "value": "2.196343439588036E-5"
+                "value": "2.3095582708826854E-5"
             }
         ]
     }

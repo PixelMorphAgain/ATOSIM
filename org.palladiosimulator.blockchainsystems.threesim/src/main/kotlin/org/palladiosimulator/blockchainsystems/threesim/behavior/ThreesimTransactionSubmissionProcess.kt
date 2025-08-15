@@ -90,10 +90,6 @@ class ThreesimTransactionSubmissionProcess(
   }
 
   private fun logTrxSubmitted(trx: Transaction) {
-    if (!traceEventLogger.isEventTypeEnabled(TransactionSubmittedTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = TransactionSubmittedTraceEvent(
       simulationContext.getSystemClock().getCurrentTime(),
       trx

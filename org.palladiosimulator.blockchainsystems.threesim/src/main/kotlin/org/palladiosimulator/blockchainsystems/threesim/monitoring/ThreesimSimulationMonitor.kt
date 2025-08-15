@@ -13,7 +13,7 @@ import org.palladiosimulator.blockchainsystems.core.simulation.termination.Longe
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
-import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionSentTraceEvent
+import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
@@ -175,7 +175,7 @@ class ThreesimSimulationMonitor(
         addBlock(e.newBlockType, e.block, nodeId, e.occurrenceTime)
       }
 
-      TransactionSentTraceEvent.EVENT_TYPE -> {
+      TransactionSubmittedTraceEvent.EVENT_TYPE -> {
         numberOfSubmittedTransactions++
       }
     }
