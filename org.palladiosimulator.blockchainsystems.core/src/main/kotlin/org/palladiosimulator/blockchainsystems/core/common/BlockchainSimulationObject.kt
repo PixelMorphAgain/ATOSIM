@@ -9,6 +9,9 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.*
  * and implements their initialization.
  * It also can be used as a log origin.
  *
+ * @param id unique identifier of the simulation object
+ * @param name name of the simulation object
+ *
  * @author Yannik Sproll
  * @implNote Do not call the initializeLogger method on child classes of this class. The class sets up the correct trace event logger by itself when calling initialize.
  */

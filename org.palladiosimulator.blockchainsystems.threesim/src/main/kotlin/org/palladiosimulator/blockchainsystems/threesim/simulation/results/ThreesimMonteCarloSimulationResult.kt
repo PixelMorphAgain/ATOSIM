@@ -6,10 +6,12 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Mont
 /**
  * Result of a Monte Carlo simulation of 3SIM.
  *
+ * NOTE: Cannot be a data class, because then only the properties defined in the primary constructor are serialized
+ *
  * @author Davis Riedel
  */
 @Serializable
-data class ThreesimMonteCarloSimulationResult(
+class ThreesimMonteCarloSimulationResult(
   val simulationRoundResults: List<ThreesimSimulationRoundResult>
 ) : MonteCarloSimulationResult {
   val averageSimulationRoundResult =

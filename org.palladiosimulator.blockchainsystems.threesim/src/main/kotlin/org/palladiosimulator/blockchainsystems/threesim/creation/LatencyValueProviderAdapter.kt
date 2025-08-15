@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation
 
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkLatencySpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.DynamicLinkLatencySpecification
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.network.LinkLatency
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.Te
 import java.util.random.RandomGenerator
 
 /**
- * Adapter for a [ValueProvider] that provides [LinkLatency] values based on the [LinkLatencySpecification] from the metamodel.
+ * Adapter for a [ValueProvider] that provides [LinkLatency] values based on the [DynamicLinkLatencySpecification] from the metamodel.
  *
  * @param randomValueProvider the underlying random value provider that provides the latency values.
  *
@@ -19,10 +19,10 @@ class LatencyValueProviderAdapter(
 ) : TemporalValueProviderAdapter<Long, LinkLatency>(randomValueProvider) {
   companion object {
     fun create(
-      linkLatencySpecification: LinkLatencySpecification,
+      dynamicLinkLatencySpecification: DynamicLinkLatencySpecification,
       randomGenerator: RandomGenerator
     ): LatencyValueProviderAdapter {
-      val valuesToProbabilitiesMapping = linkLatencySpecification.values.associate {
+      val valuesToProbabilitiesMapping = dynamicLinkLatencySpecification.values.associate {
         LinkLatency(it.latency, it.duration) to it.probability
       }
 

@@ -1,7 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions
 
-import kotlinx.serialization.Serializable
-
 /**
  * Represents an output metric in 3SIM
  *
@@ -11,15 +9,14 @@ import kotlinx.serialization.Serializable
  *
  * @author Davis Riedel
  */
-@Serializable
-abstract class OutputMetric<T> {
+interface OutputMetric<T> {
   /**
    * The value of the output metric.
    */
-  abstract val value: T
+  val value: T
 
   /**
    * The name of the output metric, used for identification in results
    */
-  abstract val name: String
+  val name: String
 }

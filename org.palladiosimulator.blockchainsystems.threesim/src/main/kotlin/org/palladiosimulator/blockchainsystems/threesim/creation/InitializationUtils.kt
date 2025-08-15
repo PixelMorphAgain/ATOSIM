@@ -6,12 +6,12 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainS
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
-import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs.ConnectedSubgraphNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit.ExplicitNetworkBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
 
 /**
  * Utility class for initialization tasks.
@@ -102,7 +102,6 @@ object InitializationUtils {
     return designBlockchainSystem
       .network
       .topology
-      .first() // Gets the desired topology, because constraint limits number of topologies to 1.
   }
 
 
@@ -110,6 +109,8 @@ object InitializationUtils {
   @Throws(NumberFormatException::class, CoreException::class)
   fun createLogOutputProviderFromConfig(configuration: ILaunchConfiguration): LogOutputProviderImpl {
     return LogOutputProviderImpl(
+      ThreesimSerializers.json,
+
       configuration.getAttribute(
         Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE,
         Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE_DEFAULT
@@ -133,7 +134,7 @@ object InitializationUtils {
       configuration.getAttribute(
         Attributes.Logging.DATABASE_PORT_ATTRIBUTE,
         Attributes.Logging.DATABASE_PORT_ATTRIBUTE_DEFAULT
-      ).toInt(),
+      ),
       configuration.getAttribute(
         Attributes.Logging.DATABASE_NAME_ATTRIBUTE,
         Attributes.Logging.DATABASE_NAME_ATTRIBUTE_DEFAULT
@@ -156,34 +157,34 @@ object InitializationUtils {
     return configuration.getAttribute(
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
       Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
-    ).toLong()
+    ).toLong() // ms
   }
 
   fun getFailureThroughputThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
       Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
-    ).toDouble()
+    ).toDouble() // trx / s
   }
 
   fun getShannonEntropyKFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.SHANNON_ENTROPY_K,
       Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
-    ).toDouble()
+    ).toDouble() // 0.0..1.0
   }
 
   fun getNakamotoCoefficientThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
       Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
-    ).toDouble()
+    ).toDouble() // 0.0 .. 100.0 %
   }
 
   fun getReliabilityObservationTimespanFromConfig(configuration: ILaunchConfiguration): Long {
     return configuration.getAttribute(
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
       Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
-    ).toLong()
+    ).toLong() // ms
   }
 }

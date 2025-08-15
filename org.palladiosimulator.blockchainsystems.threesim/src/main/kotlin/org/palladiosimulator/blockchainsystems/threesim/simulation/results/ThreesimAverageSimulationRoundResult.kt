@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageThroughput
+import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.CensorshipResistance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
@@ -18,7 +18,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.StaleBlockRate
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilityScalabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilitySecurityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.CensorshipResistanceCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ConsistencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.FaultToleranceCalculator
@@ -70,7 +70,7 @@ data class ThreesimAverageSimulationRoundResult(
             Reliability.Companion.NAME -> ReliabilityCalculator.Companion.calculateAverage(it.value as List<Reliability>)
             ShannonEntropy.Companion.NAME -> ShannonEntropyCalculator.Companion.calculateAverage(it.value as List<ShannonEntropy>)
             StaleBlockRate.Companion.NAME -> StaleBlockRateCalculator.Companion.calculateAverage(it.value as List<StaleBlockRate>)
-            AverageThroughput.Companion.NAME -> AverageThroughputCalculator.Companion.calculateAverage(it.value as List<AverageThroughput>)
+            Throughput.Companion.NAME -> ThroughputCalculator.Companion.calculateAverage(it.value as List<Throughput>)
             else -> null
           }
         }

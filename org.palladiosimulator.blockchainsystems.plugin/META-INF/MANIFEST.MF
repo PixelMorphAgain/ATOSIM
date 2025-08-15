@@ -4,18 +4,15 @@ Bundle-Name: Palladio-BCS-Plugin
 Bundle-SymbolicName: org.palladiosimulator.blockchainsystems.plugin;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Bundle-ClassPath: .,
- lib/kotlin-stdlib-2.2.0.jar,
- lib/kotlinx-serialization-core-jvm-1.9.0.jar,
- lib/kotlinx-serialization-json-1.9.0.jar,
- lib/kotlinx-serialization-json-jvm-1.9.0.jar
-Export-Package: org.palladiosimulator.blockchainsystems.plugin.common,
+Export-Package: .,
+ org.palladiosimulator.blockchainsystems.plugin,
+ org.palladiosimulator.blockchainsystems.plugin.common,
  org.palladiosimulator.blockchainsystems.plugin.logging,
  org.palladiosimulator.blockchainsystems.plugin.resourcefiles,
  org.palladiosimulator.blockchainsystems.plugin.ui.results,
- org.palladiosimulator.blockchainsystems.plugin.tabs,
+ org.palladiosimulator.blockchainsystems.plugin.ui.abstractions,
+ org.palladiosimulator.blockchainsystems.plugin.ui.tabs,
  org.palladiosimulator.blockchainsystems.plugin.utils,
- org.palladiosimulator.blockchainsystems.plugin.validation,
  org.palladiosimulator.blockchainsystems.plugin.simulation,
  org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions
 Import-Package: com.google.inject,
@@ -24,9 +21,9 @@ Import-Package: com.google.inject,
  org.eclipse.ui.dialogs,
  org.jgrapht;version="1.5.0",
  org.jgrapht.graph;version="1.5.0",
- org.palladiosimulator.blockchainsystems.loggers,
  org.palladiosimulator.pcm
-Require-Bundle: org.eclipse.debug.core;bundle-version="3.20.100",
+Require-Bundle: org.palladiosimulator.blockchainsystems.kotlin-deps,
+ org.eclipse.debug.core;bundle-version="3.20.100",
  org.eclipse.core.runtime;bundle-version="3.26.100",
  org.eclipse.debug.ui;bundle-version="3.17.200",
  org.eclipse.swt;bundle-version="3.123.0",
@@ -40,5 +37,6 @@ Require-Bundle: org.eclipse.debug.core;bundle-version="3.20.100",
  org.palladiosimulator.blockchainsystems.bscm;bundle-version="0.0.0",
  org.palladiosimulator.blockchainsystems.bscm.editor;bundle-version="0.0.0",
  org.palladiosimulator.blockchainsystems.core;bundle-version="0.0.0",
+ org.palladiosimulator.blockchainsystems.loggers,
  org.palladiosimulator.pcm.resources;bundle-version="5.2.0"
 Automatic-Module-Name: org.palladiosimulator.blockchainsystems.plugin

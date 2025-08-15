@@ -10,6 +10,13 @@
     </description>
 
     <plugin
+            id="org.palladiosimulator.blockchainsystems.kotlin-deps"
+            version="0.0.1.qualifier"
+            download-size="0"
+            install-size="0"
+            unpack="false"
+    />
+    <plugin
             id="org.palladiosimulator.blockchainsystems.bscm"
             version="0.0.1.qualifier"
             download-size="0"

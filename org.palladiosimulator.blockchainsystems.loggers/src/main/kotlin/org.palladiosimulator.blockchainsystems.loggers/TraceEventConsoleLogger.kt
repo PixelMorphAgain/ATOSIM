@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.loggers
 
+import kotlinx.serialization.json.Json
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEventLogOrigin
 import org.palladiosimulator.blockchainsystems.loggers.abstractions.AbstractJsonLogger
@@ -9,7 +10,7 @@ import org.palladiosimulator.blockchainsystems.loggers.abstractions.AbstractJson
  *
  * @author Davis Riedel
  */
-class TraceEventConsoleLogger : AbstractJsonLogger() {
+class TraceEventConsoleLogger(jsonSerializer: Json) : AbstractJsonLogger(jsonSerializer) {
   override fun onTraceEventOccurred(traceEvent: TraceEvent, logOrigin: TraceEventLogOrigin) {
     println(getEventFormat(traceEvent, logOrigin))
   }

@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation
 
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkThroughputSpecification
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.network.LinkThroughput
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider

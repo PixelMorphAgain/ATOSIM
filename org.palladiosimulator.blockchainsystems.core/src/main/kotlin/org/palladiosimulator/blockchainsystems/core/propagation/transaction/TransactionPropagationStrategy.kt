@@ -40,9 +40,6 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     message: Message,
     recipientNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) {
-      return
-    }
     if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
 
     val event = MessageDroppedTraceEvent(
@@ -105,10 +102,6 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   }
 
   private fun logTrxSent(trx: Transaction, receiverNetworkEndpoint: P2PNetworkEndpoint) {
-    if (!traceEventLogger.isEventTypeEnabled(TransactionSentTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = TransactionSentTraceEvent(
       simulationContext.systemClock.currentTime,
       trx,
@@ -118,10 +111,6 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   }
 
   private fun logTrxReceived(trx: Transaction, senderNetworkEndpoint: P2PNetworkEndpoint) {
-    if (!traceEventLogger.isEventTypeEnabled(TransactionReceivedTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = TransactionReceivedTraceEvent(
       simulationContext.systemClock.currentTime,
       trx,

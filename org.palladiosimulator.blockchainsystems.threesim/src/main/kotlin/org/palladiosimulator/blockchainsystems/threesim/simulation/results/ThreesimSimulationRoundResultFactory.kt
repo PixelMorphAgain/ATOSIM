@@ -20,7 +20,7 @@ class ThreesimSimulationRoundResultFactory(
 
     val state = monitor.getFinalState(finalSystemTime)
 
-    val throughput = AverageThroughputCalculator(
+    val throughput = ThroughputCalculator(
       numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
       observationTime = finalSystemTime
     ).calculate()

@@ -88,8 +88,21 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <!-- @generated bscm -->
       <factory
-            uri="http://palladiosimulator.org/BlockchainSystemComponentModel/Geography/1.0"
-            class="org.palladiosimulator.blockchainsystems.bscm.geography.provider.GeographyItemProviderAdapterFactory"
+            uri="http://palladiosimulator.org/BlockchainSystemComponentModel/GeographicalRegions/1.0"
+            class="org.palladiosimulator.blockchainsystems.bscm.geographicalregions.provider.GeographicalregionsItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated bscm -->
+      <factory
+            uri="http://palladiosimulator.org/BlockchainSystemComponentModel/LinkAllocation/1.0"
+            class="org.palladiosimulator.blockchainsystems.bscm.linkallocation.provider.LinkallocationItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

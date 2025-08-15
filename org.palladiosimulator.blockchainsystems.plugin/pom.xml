@@ -13,16 +13,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-
-            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
             </plugin>
@@ -42,17 +32,17 @@
     <dependencies>
         <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
+            <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.palladiosimulator.blockchainsystems</groupId>
             <artifactId>org.palladiosimulator.blockchainsystems.loggers</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.palladiosimulator.blockchainsystems</groupId>
-            <artifactId>org.palladiosimulator.blockchainsystems.bscm</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

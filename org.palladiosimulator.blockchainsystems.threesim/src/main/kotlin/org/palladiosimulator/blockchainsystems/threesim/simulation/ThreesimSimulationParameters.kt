@@ -6,9 +6,9 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
  * @author Davis Riedel
  */
 data class ThreesimSimulationParameters(
-  val throughputMonitoringInterval: Long,
-  val failureThroughputThreshold: Double,
-  val shannonEntropyK: Double,
-  val nakamotoCoefficientThreshold: Double,
-  val reliabilityObservationTimespan: Long
+  val throughputMonitoringInterval: Long, // ms
+  val failureThroughputThreshold: Double, // trx / s
+  val shannonEntropyK: Double, // 0.0..1.0
+  val nakamotoCoefficientThreshold: Double, // 0.0 .. 100.0 %
+  val reliabilityObservationTimespan: Long // ms
 )

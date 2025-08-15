@@ -1,7 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation.network
 
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkLatencySpecification
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.LinkThroughputSpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.LinkLatencySpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.LinkThroughputSpecification
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.LatencyValueProviderAdapter
@@ -25,11 +25,11 @@ abstract class AbstractThreesimP2PNetworkFactory(
   ): SimulationLifecycleAwareValueProvider<Long> {
     if (areFailuresEnabled) {
       return LatencyValueProviderAdapter.create(
-        latencySpecification,
+        latencySpecification.dynamicLatency,
         RandomGenerator.of("Random")
       )
     }
-    return StaticLatencyValueProvider.create(latencySpecification)
+    return StaticLatencyValueProvider(latencySpecification.staticLatency)
   }
 
   protected fun createThroughputValueProvider(
@@ -37,10 +37,10 @@ abstract class AbstractThreesimP2PNetworkFactory(
   ): SimulationLifecycleAwareValueProvider<Long> {
     if (areFailuresEnabled) {
       return ThroughputValueProviderAdapter.create(
-        throughputSpecification,
+        throughputSpecification.dynamicThroughput,
         RandomGenerator.of("Random")
       )
     }
-    return StaticThroughputValueProvider.create(throughputSpecification)
+    return StaticThroughputValueProvider(throughputSpecification.staticThroughput)
   }
 }

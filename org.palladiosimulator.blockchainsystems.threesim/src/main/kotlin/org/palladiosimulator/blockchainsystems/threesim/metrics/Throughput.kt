@@ -4,17 +4,18 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 import kotlinx.serialization.Serializable
 
 /**
- * Average Throughput
+ * Throughput
+ *
+ * @property value the throughput value in transactions per second
  *
  * @author Davis Riedel
  */
 @Serializable
-class AverageThroughput(
+class Throughput(
   override val value: Double,
-  val observationTime: Long
-) : OutputMetric<Double>() {
+) : OutputMetric<Double> {
   companion object {
-    const val NAME = "AverageThroughput"
+    const val NAME = "Throughput"
   }
 
   override val name: String = NAME

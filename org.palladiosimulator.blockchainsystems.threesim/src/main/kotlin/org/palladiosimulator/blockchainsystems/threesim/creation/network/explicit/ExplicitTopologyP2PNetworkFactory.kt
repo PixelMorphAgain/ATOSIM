@@ -2,8 +2,9 @@ package org.palladiosimulator.blockchainsystems.threesim.creation.network.explic
 
 import org.jgrapht.Graph
 import org.jgrapht.graph.SimpleGraph
+import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.BidirectionalLink
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
-import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.Node
+import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.UnidirectionalLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
@@ -33,28 +34,48 @@ class ExplicitTopologyP2PNetworkFactory(
 
     // Add links to the graph
     topology.links.forEach { designLink ->
-      val fromDesignNode: Node = designLink.getFromNode()
-      val toDesignNode: Node = designLink.getToNode()
+      val linkSpecification = designLink.allocation
+      val latencyValueProvider = createLatencyValueProvider(linkSpecification.latencySpecification)
+      val throughputValueProvider = createThroughputValueProvider(linkSpecification.throughputSpecification)
 
-      val latencyValueProvider = createLatencyValueProvider(designLink.specification.latencySpecification)
-      val throughputValueProvider = createThroughputValueProvider(designLink.specification.throughputSpecification)
+      when (designLink) {
+        is UnidirectionalLink -> {
+          listOf(Pair(designLink.fromNode.id, designLink.toNode.id))
+        }
 
-      p2pNodeMappings[fromDesignNode.id]?.let { fromP2PNode ->
-        p2pNodeMappings[toDesignNode.id]?.let { toP2PNode ->
-          val link = P2PLink(
+        is BidirectionalLink -> {
+          require(designLink.connectedNodes.size == 2) {
+            "Bidirectional link must connect exactly two nodes."
+          } // This is ensured in the ecore metamodel
+
+          listOf(
+            Pair(designLink.connectedNodes[0].id, designLink.connectedNodes[1].id),
+            Pair(designLink.connectedNodes[1].id, designLink.connectedNodes[0].id)
+          )
+        }
+
+        else -> throw IllegalArgumentException("Unsupported link type: ${designLink::class.java.name}")
+      }
+        // Create P2PLink instances for each link
+        .mapNotNull { (fromNodeId, toNodeId) ->
+          val fromP2PNode = p2pNodeMappings[fromNodeId] ?: return@mapNotNull null
+          val toP2PNode = p2pNodeMappings[toNodeId] ?: return@mapNotNull null
+
+          P2PLink(
             latencyValueProvider,
             throughputValueProvider,
             fromP2PNode,
             toP2PNode
           )
-
+        }
+        // Add the P2PLinks to the graph
+        .forEach {
           networkGraph.addEdge(
-            fromP2PNode,
-            toP2PNode,
-            link
+            it.fromNode,
+            it.toNode,
+            it
           )
         }
-      }
     }
 
     val networkImpl = P2PNetworkImpl.create(networkGraph)

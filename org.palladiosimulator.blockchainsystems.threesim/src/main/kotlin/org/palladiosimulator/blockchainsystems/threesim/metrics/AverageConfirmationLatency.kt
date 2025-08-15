@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class AverageConfirmationLatency(
   override val value: Double
-) : OutputMetric<Double>() {
+) : OutputMetric<Double> {
   companion object {
     const val NAME = "AverageConfirmationLatency"
   }

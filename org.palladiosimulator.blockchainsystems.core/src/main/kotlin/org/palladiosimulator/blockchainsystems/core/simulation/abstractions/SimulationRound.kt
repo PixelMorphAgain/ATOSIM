@@ -14,25 +14,24 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLoggerCont
  *
  * @author Davis Riedel
  */
-abstract class SimulationRound<R : SimulationRoundResult>(
+abstract class SimulationRound<M : SimulationMonitor, R : SimulationRoundResult>(
   protected val blockchainSystem: BlockchainSystem,
-  protected val logOutputs: Set<TraceEventLogOutput>
+  protected val logOutputs: Set<TraceEventLogOutput>,
+  protected val monitor: M
 ) {
-  protected abstract val monitor: SimulationMonitor
-
   protected val clock = SimulationClock()
+  protected val traceEventLoggerContainer = TraceEventLoggerContainerImpl()
+
   protected val eventCoordinator = EventCoordinatorImpl(
     clock,
     monitor
   )
-  protected val traceEventLoggerContainer = TraceEventLoggerContainerImpl()
 
   protected val context = SimulationContextImpl(
     eventCoordinator,
     clock,
     traceEventLoggerContainer,
   )
-
 
   init {
     setUpTraceEventSubscribers()
@@ -44,17 +43,23 @@ abstract class SimulationRound<R : SimulationRoundResult>(
   }
 
 
-  open fun run(): R {
-    // Initialization
+  open fun initialize() {
     logOutputs.forEach { it.initialize() }
     monitor.initialize(blockchainSystem)
     blockchainSystem.initialize(context)
+  }
+
+  open fun cleanup() {
+    logOutputs.forEach { it.cleanUp() }
+  }
+
+  open fun run(): R {
+    initialize()
 
     // Start processing events - processing will stop if termination condition is met
     eventCoordinator.processEvents()
 
-    // Clean up log outputs
-    logOutputs.forEach { it.cleanUp() }
+    cleanup()
 
     return createSimulationRoundResult(clock.currentTime)
   }

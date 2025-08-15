@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.transaction
 
+import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
 /**
@@ -15,6 +16,7 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
  *
  * @author Davis Riedel
  */
+@Serializable
 class TransactionImpl(
   override val txId: String,
   override val size: Int,

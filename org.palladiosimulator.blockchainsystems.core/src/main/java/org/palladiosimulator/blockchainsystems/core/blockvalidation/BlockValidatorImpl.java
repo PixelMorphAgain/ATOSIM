@@ -8,6 +8,12 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValuePro
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator;
 
+/**
+ * Implementation of the BlockValidator interface that handles the validation of blocks
+ * in a blockchain system.
+ *
+ * @author Yannik Sproll
+ */
 public class BlockValidatorImpl extends BlockchainNodeObject implements BlockValidator {
 
     private final ValueProvider<Long> _blockValidationDurationProvider;
