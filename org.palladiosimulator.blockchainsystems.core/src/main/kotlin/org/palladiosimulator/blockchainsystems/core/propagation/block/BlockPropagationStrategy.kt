@@ -79,9 +79,6 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     message: Message,
     recipientNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    if (!traceEventLogger.isEventTypeEnabled(MessageDroppedTraceEvent.EVENT_TYPE)) {
-      return
-    }
     if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
 
     // TODO: Separate block and transaction dropped events?

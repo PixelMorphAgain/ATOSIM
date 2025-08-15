@@ -24,11 +24,11 @@ class P2PNetworkImpl internal constructor(
   override fun dispatchEvent(event: Event) {
   }
 
-  override fun multicast(sendingNode: NodeP2PNetworkInterface, content: Message) {
-    val linksToNeighbors = networkGraph.edgesOf(sendingNode as P2PNode)
-    for (link in linksToNeighbors) {
-      link.send(content)
-    }
+  override fun multicast(sendingNetworkInterface: NodeP2PNetworkInterface, content: Message) {
+    networkGraph
+      .edgesOf(sendingNetworkInterface as P2PNode)
+      .filter { it.fromNode.endpointId == sendingNetworkInterface.endpointId }
+      .forEach { it.send(content) }
   }
 
   public override fun onInitialize() {
@@ -44,12 +44,13 @@ class P2PNetworkImpl internal constructor(
   override val nodes: MutableSet<NodeP2PNetworkInterface> = Collections.unmodifiableSet(networkGraph.vertexSet())
 
   override fun send(
-    sendingNode: NodeP2PNetworkInterface,
-    recipientNode: NodeP2PNetworkInterface,
+    sendingNetworkInterface: NodeP2PNetworkInterface,
+    receivingNetworkInterface: NodeP2PNetworkInterface,
     content: Message
   ) {
-    val link = networkGraph.getEdge(sendingNode as P2PNode, recipientNode as P2PNode)
-    link.send(content)
+    networkGraph
+      .getEdge(sendingNetworkInterface as P2PNode, receivingNetworkInterface as P2PNode)
+      .send(content)
   }
 
   override fun getNeighbors(networkInterface: NodeP2PNetworkInterface): MutableSet<P2PNetworkEndpoint> {
