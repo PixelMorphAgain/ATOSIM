@@ -1,0 +1,272 @@
+# Code Review 15.08.2025
+
+## Metamodel
+
+- nodesystem, nodeenvironment und blockchainComponentRepository unverändert
+
+- Neues package: geographicalregionsreg
+  - GeographicalRegionsSpecification hat alle "auf der Welt" verfügbaren GeographicalRegions
+  - NodeAllocation bekommt Referenz zu GeographicalRegion
+
+- Neues package linkallocation
+  - Erlaubt es Blaupausen für die Eigenschaften von Links zu erstellen
+
+- p2pnetwork
+  - Link jetzt abstract
+  - Link hat eine Referenz zu einer LinkAllocation
+  - BidirectionalLink und UnidirectionalLink erben von Link
+  - BidirectionalLink hat Referenz zu zwei ConnectedNodes
+  - UnidirectionalLink hat FromNode und ToNode
+    - erlaubt für Hin- und Rückrichtung eine unterschiedliche LinkAllocation festzulegen
+    - Differenzierte Betrachtung von Inbound und Outbound, wie gewünscht
+  - SubgraphLink hat eine Referenz zu einer LinkAllocation und zwei Referenzen zu ConnectedSubgraphs
+
+- package linkallocation
+  - LinkAllocationRepository speichert alle LinkAllocations
+  - LinkAllocation hat latencySpecification und throughputSpecification
+  - LinkLatencySpecification hat eine StaticLatency und eine DynamicLatency
+    - StaticLatency wird im ersten Simulationsdurchgang benutzt, in dem das System ohne Fehler simuliert wird
+    - DynamicLinkLatencySpecification hat ein Array aus Probability, Latency und Duration
+    - So kann festgelegt werden, mit welcher Wahrscheinlichkeit ein Link welche Latency und für wie lange hat
+  - Analog für LinkThroughput
+
+- package blockchainsystem
+  - erhält Referenz zu GeographicalRegionsSpecification
+  - erhält TransactionsSpecification
+    - hat MeanTransactionCreationInterval
+    - hat TransactionPropertiesSpecification
+      - hat ein Array von Values mit Probability, Size, Fee, Amount
+      - Das System simuliert keine LightNodes, die Transactions senden. Transactions werden zufällig generiert und an Validating NOdes geschickt.
+      - hier kann festgelegt werden, mit welcher Wahrscheinlichkeit welche Art von Transaktion generiert wird.
+
+## Packages
+
+- Helpers
+  - org.palladiosimulator.blockchainsystems.kotlin-deps
+    - Enthält kotlin-stdlib und kotlinx.serialization
+    - Macht die packages in OSGi verfügbar
+  - org.palladiosimulator.blockchainsystems.threesim_feature
+    - eclipse feature das von Maven Tycho gebaut wird, mit dem alle von 3SIM benötigten sub-plugins installiert werden können
+  - releng
+    - org.palladiosimulator.blockchainsystems.target_platform
+      - Target platform für Maven Tycho
+    - org.palladiosimulator.blockchainsystems.updatesite
+      - Erlaubt es 3SIM zu installieren
+
+- Von Ecore generiert (Java)
+  - org.palladiosimulator.blockchainsystems.bscm
+  - org.palladiosimulator.blockchainsystems.bscm.edit
+  - org.palladiosimulator.blockchainsystems.bscm.editor
+
+- org.palladiosimulator.blockchainsystems.loggers
+  - erlaubt logging in Console, File oder Postgres DB
+  - kaum Änderungen, nur um Logging von JSON zu erlauben
+
+- org.palladiosimulator.blockchainsystems.plugin
+  - Hat frührer komplettes doublespendingplugin enthalten
+  - Jetzt aufgeteilt auf plugin und threesim_plugin
+  - Während Proposalvortrag: In Zukunft Vorteile von 3SIM auch in SM-SIM nutzen
+  - plugin enthält jetzt nur noch Teile, die alle Blockchain Simulatoren brauchen, z.B. Dateidialoge, gemeinsame Tabs, wie LoggingTab, ResultsView um JSON anzuzeigen, SimulationJob, ...
+- org.palladiosimulator.blockchainsystems.threesim_plugin
+  - ThreesimPluginLaunch
+    - erbt von PluginLaunch aus plugin package, abstrahiert tatsächliche Ausführung
+    - hier wird der SimulationJob ausgeführt
+    - SimulationJob erhält eine SimulationFactory, mit der festgelegt wird, welche Art von Simultion der Job ausführt (ThreesimSimulationJob, später vielleicht mal SmSimSimulationJob)
+  - ThreesimTab enthält 3SIM spezifische Konfigurationen
+  - ThreesimTabGroup kombiniert den ThreesimTab mit den allgemeinen Tabs aus dem plugin package
+  - ThreesimSimulationResultsExplorer erbt vom SimulationResultsExplorer aus plugin, ohne Änderung, da er einfach JSON anzeigt
+
+- org.palladiosimulator.blockchainsystems.core
+  - enthält allgemeine Dinge, die von allen Blockchainsimulatoren benötigt werden
+  - zahlreiche Anpassungen, hier nur ein Auszug
+  - geänderte Dateien wurden in Kotlin überführt
+  - HonestBlockchainSystemNodeBehavior
+    - zusätzliche Funktionen, um Transactions zu behandeln
+    - beim Erhalt einer Transaction wird sie im TransactionMemPool gespeichert und weiter propagiert
+  - Block / BlockImpl erhalten zusätzliches Feld das die im Block gespeicherten Transactions enthält
+  - blockchain
+    - BlockchainImpl akzeptiert numberOfRequiredSecurityConfirmations als constructor parameter
+    - wird ein neuer Block hinzugefügt, werden die letzten numberOfRequiredSecurityConfirmations IncludedBlocks als ConfirmedBlocks markiert
+    - BlockchainFactoryImpl analog geändert
+  - common
+    - SimulationLifecycleAwareValueProvider kombiniert SimulationLifecycleAware und ValueProvider, um einen ValueProvider zu schaffen, der Zugriff auf den SimulationContext hat, also auch auf die systemClock. Das wird benötigt, um einen neuen LatencyWert basierend auf der Duration für die der Wert gültig ist, auszugeben.
+    - TemporalValue ist ein Value zusammen mit einer Duration für die der Wert gültig ist
+  - geography
+    - Neues package
+    - GeographicalRegion entpsricht einer Region aus dem metamodel
+    - GeographicalRegions speichert das Set aller "in der Welt" verfügbarer Regionen
+    - GeographicalRegionsResolver ist ein Interface, dessen Implementationen helfen GeographicalRegions aus dem Metamodel zu laden und die Region einer Node basierend auf ihrer ID auszugeben.
+  - network
+    - LinkLatency und LinkThroughput sind TemporalValues
+    - P2PLink
+      - benötigt für latency und throughput je einen SimulationLifecycleAwareValueProvider und hat fromNode und toNode
+      - Behandelt das schicken von Nachrichten (jetzt unidirectional)
+      - MessageDroppedEvent wird geraised, wenn der Throughput des Links (vorübergehend) 0 ist und versucht wird eine Nachricht zu schicken
+    - P2PNetworkImpl angepasst, um unidirectional Nachrichten zu behandeln
+  - propagation
+    - Grundlegend überarbeitet, um möglichst viel Code zwischen Block-Propagation und der neuen Transaction Propagation zu teilen
+    - Propagatable ist gemeinsames Interface von Block und Transaction
+    - PropagationStrategy ist jetzt generisch für ein Propagatable
+    - Analog die PropagationStrategyFactory
+    - GossipPropagationStrategy
+      - ist eine abstrakte Klasse, die das vereinfachte Gossip-Protocol implementiert, welches von SM-SIM für die Blockpropagation genutzt wurde.
+      - erlaubt es Subklassen bestimmte Daten, wie die Nachrichten größe und das behandeln der verschiedenen Nachrichten-Arten zu spezifizieren
+      - fügt Behandlung des MessageDroppedEvents hinzu
+    - BlockPropagationStrategy analog zur bisherigen Block propagation in SM-SIM, aber jetzt aufgeteilt auf die GossipPropagationStrategy
+    - TransactionPropagationStrategy
+      - neu für das propagieren von Transactions
+      - bisher gleiche Nachrichtengrößen wie bei Blocks verwendet
+      - prüft ob eine erhaltene Transaction bereits im MemPool ist, fügt sie andernfalls hinzu
+      - schickt einem Nachbar die erhaltene Transaction weiter
+  - simulation
+    - es gibt jetzt ein interface Simulation das eine run() methode spezifiziert
+    - es gibt eine abstracte Klasse SimulationRound, die alles einrichtet um eine Simulationsrunde auszuführen und ein SimulationRoundResult zu erstellen
+    - SingleSimulation und MonteCarloSimulation erben von Simulation
+    - MonteCarloSimulation ist eine abstrakte Klasse, die dabei hilft mehrere Runden auszuführen, und deren Ergebnisse zu einem Gesamtergebnis zusammenzuführen
+  - system
+    - BlockchainSystem
+      - Constructor erweitert: erwartet nun zusätzlich GeographicalRegions, TransactionSubmissionProcess, blockReward
+      - richtet den TransactionSubmissionProcess ein
+        - hier wird dem onSelectRecipientNodeIdCallback bei jedem Aufruf die Id einer zufälligen Node übergeben, d.h. eine zufällige Node erhält die neu generierte Transaction als erstes, und propagiert sie dann
+    - BlockchainSystemNode
+      - Constructor erweitert
+        - erhält separate blockPropagationStrategy und transactionPropagationStrategy
+        - neu: trxMemPool
+        - neu: TransactionSelectionProcess
+        - erwartet GeographicalRegion
+    - BlockchainSystemNodeContextImpl erhält analog die zusätzlichen Properties
+    - BlockchainSystemNodeFactory analog angepasst
+    - interface BlockchainSystemNodeBehavior spezifiziert neue Funktion onTransactionReceived
+    - interface NodeP2PNetworkInterface spezifiziert zusätzlich setOnMessageDroppedCallback
+  - neues package: transaction
+    - Transaction ist Propagatable, spezifiziert alle relevanten Transaktionsdaten
+    - TransactionFactory zum Erstellen von Transactions
+    - TransactionSelectionProcess ist ein interface das die Methode selectTransactionsForBlock spezifiziert, sie wird genutzt, um zu entscheiden welche Transactions in einen zu minenden Block inkludiert werden
+    - TransactionSelectionProcessFactory
+    - TransactionSubmissionProcess ist ein interface, das Funktionen spezifiziert, die benötigt werden um random Transactions in das System zu geben
+    - TransactionSubmittedCallbackSubscriber ist ein interface, für Objekte, die Transactions aus dem TransactionSubmissionProcess annehmen möchten
+    - TrxMemPool
+      - ist ein interface für einen MemPool, der Transactions speichert
+      - getTransactionsSortedByFeeRate erlaubt es einfach die ersten N transactionen mit der höchsten FeeRate auszuwählen
+    - TrxMemPoolFactory zum Erstellen eines TrxMemPools
+    - TransactionProperties ist eine Klasse, die die zufällig generierten Attribute einer Transaktion zusammenfasst
+    - TransactionSelectionResult ist eine Klasse, die das Ergebnis einer TransactionSelection ausgibt, namentlich, ein Set an gewählten Transaktionen und die Gesamtgröße der gewählten Transaktionen
+    - TrxMemPoolImpl
+      - nutzt ein TreeSet, das Transactionen nach ihrer FeeRate sortiert (also Fee / Size)
+      - erlaubt es die häufig aufgerufene Funktion getTransactionsSortedByFeeRate in O(1) auszuführen
+  - utils
+    - CounterMap
+      - eine Map die für jeden Key einen Int speichert, der inkrementiert oder dekrementiert werden kann
+    - RandomValueProvider
+      - ein ValueProvider der basierend auf einer sortierten Liste an items mit wahrscheinlichkeit und einem randomGenerator einen zufallswert ausgibt
+
+
+- org.palladiosimulator.blockchainsystems.threesim
+  - Hauptpackage von 3SIM, in dem 3SIM spezifische Implementationen zu finden sind
+  - Alles hier ist komplett neu
+  - metrics
+    - Klassen für alle Metriken, die 3SIM ausgibt
+    - interface OutputMetric hat ein value und einen name (Bezeichnung der Metrik), alle Metriken implementieren es
+    - OutputMetricCalculator ist interface für Factories, die OutputMetrics erstellen
+    - calculators
+      - Klassen die OutputMetricCalculator implementieren, um aus Daten die während der Simulationsrunde gesammelt werden, die entsprechende OutputMetric zu berechnen
+      - Berechnungen wie in Mansurs Paper beschrieben
+      - exemplarisch mal durchschauen
+    - OutputMetricAverageCalculator
+      - interface, um aus einer Liste von OutputMetrics einen Durchschnitt zu berechnen, für Monte-Carlo-Simulationen
+      - von statischer Methode in jedem OutputMetricCalculator implementiert
+  - behavior
+    - ThreesimBlockchainSystemNodeBehaviorFactory gibt aktuell nur HonestBlockchainSystemNodeBehavior zurück, da 3SIM kein selfish-mining simuliert
+    - ThreesimTransactionSelectionProcess
+      - wählt so lange die Transaction mit der nächst-höchsten FeeRate aus dem TrxMemPool, bis die maxBlockSize erreicht ist
+      - gibt die gewählten Transaktionen und deren Gesamtgröße zurück
+    - ThreesimTransactionSubmissionProcess
+      - nimmt zusäötzlich zu den Konstruktor-Parametern des TransactionSubmissionProcess einen transactionPropertiesProvider entgegen
+      - generiert alle meanTransactionCreationTime eine Transaktion mit zufälligen Properties aus dem transactionPropertiesProvider basierend auf einem PoissonProcess
+      - Transaktionen werden von einem anonymen Teilnehmer (random UUID) an eine zufällige Validating Node geschickt
+  - creation
+    - Dieses Package erlaubt es das Metamodel in 3SIM zu laden
+    - interface NodeAllocationResolver gibt die NodeAllocation aus, die zur Node mit der Id gehört
+    - TemporalValueProviderAdapter
+      - abstrakte Klasse
+      - implementiert SimulationLifecycleAwareValueProvider
+      - cached den zuletzt zufällig generierten Wert, so lange dessen Duration noch nicht um ist
+      - sobald der wert nicht mehr gültig ist, wird ein neues TemporalValue (Wert mit Gültigkeitsdauer) zufällig generiert
+    - ThreesimGeographicalRegionsResolver implementiert GeographicalRegionsResolver basierend auf einer GeographicalRegionsSpecification aus dem Metamodell und eines NodeAllocationResolver
+    - AbstractThreesimP2PNetworkFactory
+      - stellt zwei Funktionen bereit, um basierend auf dem Constructor-Parameter areFailuresEnabled einen ValueProvider für Latency bzw. Throughput auszugeben, der entweder die statische Latency ausgibt (no failures) oder dynamisch die Werte generiert
+    - ExplicitTopologyP2PNetworkFactory / ConnectedSubgraphP2PNetworkFactory erben von AbstractThreesimP2PNetworkFactory und erstellen das P2P Network (den Graph) anhand des Metamodells
+    - ExplicitNetworkResourcePowerCalculator / ConnectedSubgraphNetworkResourcePowerCalculator implementieren ResourcePowerCalculator für die jeweiligen Netzwerkarten
+    - ExplicitNetworkBlockchainSystemFactory / ConnectedSubgraphNetworkBlockchainSystemFactory erben von ThreesimBlockchainSystemFactory und spezifizieren Methoden um die konkreten P2PNetworkFactory, NodeAllocationResolver, und ResourcePowerCalculator für die entsprechende Topologie zu erstellen
+    - InitializationUtils hilft Parameter aus der ILaunchConfiguration zu lesen
+    - LatencyValueProviderAdapter
+      - implementiert TemporalValueProviderAdapter für Latencies
+      - statische Methode create nimmt die DynamicLinkLatencySpecification aus dem Metamodell und ein RandomGenerator entgegen, und erstellt daraus einen LatencyValueProviderAdapter
+    - Analog für ThroughputValueProviderAdapter
+    - StaticLatencyValueProvider ist ein SimulationLifecycleAwareValueProvider der jedoch immer einfach die gleiche statische Latency ausgibt
+    - StaticThroughputValueProvider analog
+    - ThreesimBlockValidatorFactory erstellt basierend auf einem NodeAllocationResolver einen BlockValidator
+    - ThreesimMiningProcessFactory erstellt basierend auf der meanBlockTime, dem ResourcePowerCalculator und NodeAllocationResolver einen MiningProcess
+    - ThreesimBlockchainSystemFactory
+      - erstellt aus einem BlockchainSystem (hier DesignBlockchainSystem) und einer NetworkTopology aus dem Metamodell ein konkretes BlockchainSystem
+      - hier laufen alle creations zusammen
+  - monitoring
+    - ThroughputMonitoringProcess
+      - Ein process der alle throughputMonitoringInterval ein ThroughputMonitoringEvent raised, um den Throughput des Gesamtsystems alle throughputMonitoringInterval zu berechnen
+    - ThreesimSimulationMonitor
+      - implementiert SimulationMonitor
+      - nimmt maxBlockchainLengthCondition, throughputMonitoringInterval und failureThroughputThreshold im Konstruktor entgegen
+      - hört TraceEvents ab
+        - ThroughputMonitoringTraceEvent
+          - wird alle throughputMonitoringInterval automatisch geraised
+          - der throughput seit dem letzten intervall wird berechnet, ist dieser niedriger als der failureThroughputThreshold erachten wir das System als failed und loggen dies im failureLog, sobald der Throughput wieder besser ist loggen wir das System als repariert
+        - BlockMinedTraceEvent
+          - speichert welche ValidatingNode wie viele blocks vorgeschlagen hat
+        - BlockAppendedTraceEvent und BlockTypeChangedTraceEvent
+          - ordnet Block in includedBlocks, confirmedBlocks, staleBlocks und forkedBlocks BlocksMap ein
+          - trackt somit welcher Block welcher art von wie vielen Nodes anerkannt ist
+        - TransactionSubmittedTraceEvent
+          - zählt wie viele Transactions im System submitted wurden
+      - berechnet den final state (ThreesimSimulationMonitorState)
+        - zahlreiche Funktionen, die Daten aggregieren
+        - am besten einzeln durchschauen
+  - simulation
+    - ThreesimSimulationFactory
+      - holt nötige Parameter von der ILaunchConfiguration
+      - lädt das Metamodell aus der Configuration
+      - startet je nach Auswahl eine ThreesimSingleSimulation oder ThreesimMonteCarloSimulation
+    - ThreesimSimulationParameters
+      - Klasse die alle im 3SIM Tab festgelegten Parameter enthält
+    - ThreesimSingleSimulation
+      - implementiert SingleSimulation
+      - führt eine einzelne ThreesimSimulationRound aus
+      - erstellt ein ThreesimSingleSimulationResult
+    - ThreesimMonteCarloSimulation
+      - implementiert eine MonteCarloSimulation
+      - führt ThreesimSimulationRound aus und aggregiert ThreesimSimulationRoundResult
+      - erstellt am Ende ein ThreesimMonteCarloSimulationResult aus allen Round results
+    - ThreesimSimulationRoundResult enthält ein OutputMetricsSet zur Ausgabe an den Nutzer
+    - ThreesimSimulationRoundResultFactory
+      - holt sich das finale State vom SimulationMonitor
+      - berechnet alle OutputMetrics basierend auf dem final state und den ThreesimParameters
+      - benötigt ein ThreesimNoFailuresPartialSimulationRoundResult um zu wissen, wie sich das System im besten Fall verhält
+    - ThreesimNoFailuresPartialSimulationRoundResult enthält nur confirmationLatency und throughput
+    - ThreesimNoFailuresPartialSimulationRoundResultFactory berechnet die confirmationLatency und throughput
+    - ThreesimAverageSimulationRoundResult
+      - enthält eine Liste durchschnittlicher OutputMetrics
+      - fromSimulationRoundResults berechnet für jede OutputMetric aus jeder Runde den durchschnitt
+    - ThreesimMonteCarloSimulationResult enthält die Einzelergebnisse von jeder Runde und das durchschnittliche Ergebnis über alle Runden
+  - utils
+    - BlockchainSystemFailureLog
+      - hilft zu speichern, wann ein Fehler im System aufgetreten ist und wann er zu Ende war
+      - calculateMeanFailureDuration gibt die durchschnittliche Dauer von Fehlern aus
+    - BlocksMap
+      - Speichert blocks anhand ihres Hashes
+      - Für jeden Block werden die nodeIds der Nodes, die diesen Block anerkennen gespeichert
+      - Haben mehr als threshold nodes den Block, so erachten wir ihn als valid
+      - Mit getValidBlocks bekommen wir alle Blocks, über die die Mehrheit (threshold) der Nodes sich einig ist
+  - serialization
+    - helpers für kotlinx.serialization, e.g. um OutputMetrics zu serialisieren
+
+- threesim-config-generator
+  - Kotlin Notebooks mit denen schnell instanzen des Metamodels generiert werden können, für schnelles Testen

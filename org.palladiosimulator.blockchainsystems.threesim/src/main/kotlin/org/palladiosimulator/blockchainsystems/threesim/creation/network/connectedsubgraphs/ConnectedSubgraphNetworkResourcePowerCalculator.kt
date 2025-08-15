@@ -11,7 +11,7 @@ import kotlin.collections.get
  *
  * @author Yannik Sproll, Davis Riedel
  */
-class ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
+class ConnectedSubgraphNetworkResourcePowerCalculator(
   private val connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology,
   private val nodeIdToNodeTemplateIdMapping: HashMap<String, String>
 ) : ResourcePowerCalculator {

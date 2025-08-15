@@ -65,6 +65,7 @@ public final class Attributes {
         public static final String DATABASE_PASSWORD_ATTRIBUTE_DEFAULT = "";
     }
 
+    // TODO: Move to threesim_plugin !
     public static class Threesim {
         public static final String THROUGHPUT_MONITORING_INTERVAL = "ThroughputMonitoringInterval";
         public static final String THROUGHPUT_MONITORING_INTERVAL_DEFAULT = "1000";

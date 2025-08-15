@@ -53,24 +53,23 @@ data class ThreesimAverageSimulationRoundResult(
         .groupBy { it.name }
         .mapNotNull {
           when (it.key) {
-            AvailabilityScalability.Companion.NAME -> AvailabilityScalabilityCalculator.Companion.calculateAverage(it.value as List<AvailabilityScalability>)
-            AvailabilitySecurity.Companion.NAME -> AvailabilitySecurityCalculator.Companion.calculateAverage(it.value as List<AvailabilitySecurity>)
-            AverageConfirmationLatency.Companion.NAME -> AverageConfirmationLatencyCalculator.Companion.calculateAverage(
+            AvailabilityScalability.Companion.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value as List<AvailabilityScalability>)
+            AvailabilitySecurity.Companion.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
+            AverageConfirmationLatency.Companion.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(
               it.value as List<AverageConfirmationLatency>
             )
 
-            CensorshipResistance.Companion.NAME -> CensorshipResistanceCalculator.Companion.calculateAverage(it.value as List<CensorshipResistance>)
-            Consistency.Companion.NAME -> ConsistencyCalculator.Companion.calculateAverage(it.value as List<Consistency>)
-//            CostOfAttack.NAME -> CostOfAttackCalculator.calculateAverage(it.value as List<CostOfAttack>)
-            FaultTolerance.Companion.NAME -> FaultToleranceCalculator.Companion.calculateAverage(it.value as List<FaultTolerance>)
-            GeographicalDiversity.Companion.NAME -> GeographicalDiversityCalculator.Companion.calculateAverage(it.value as List<GeographicalDiversity>)
-            GiniCoefficient.Companion.NAME -> GiniCoefficientCalculator.Companion.calculateAverage(it.value as List<GiniCoefficient>)
-            HerfindahlHirschmanIndex.Companion.NAME -> HerfindahlHirschmanIndexCalculator.Companion.calculateAverage(it.value as List<HerfindahlHirschmanIndex>)
-            NakamotoCoefficient.Companion.NAME -> NakamotoCoefficientCalculator.Companion.calculateAverage(it.value as List<NakamotoCoefficient>)
-            Reliability.Companion.NAME -> ReliabilityCalculator.Companion.calculateAverage(it.value as List<Reliability>)
-            ShannonEntropy.Companion.NAME -> ShannonEntropyCalculator.Companion.calculateAverage(it.value as List<ShannonEntropy>)
-            StaleBlockRate.Companion.NAME -> StaleBlockRateCalculator.Companion.calculateAverage(it.value as List<StaleBlockRate>)
-            Throughput.Companion.NAME -> ThroughputCalculator.Companion.calculateAverage(it.value as List<Throughput>)
+            CensorshipResistance.Companion.NAME -> CensorshipResistanceCalculator.calculateAverage(it.value as List<CensorshipResistance>)
+            Consistency.Companion.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
+            FaultTolerance.Companion.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
+            GeographicalDiversity.Companion.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value as List<GeographicalDiversity>)
+            GiniCoefficient.Companion.NAME -> GiniCoefficientCalculator.calculateAverage(it.value as List<GiniCoefficient>)
+            HerfindahlHirschmanIndex.Companion.NAME -> HerfindahlHirschmanIndexCalculator.calculateAverage(it.value as List<HerfindahlHirschmanIndex>)
+            NakamotoCoefficient.Companion.NAME -> NakamotoCoefficientCalculator.calculateAverage(it.value as List<NakamotoCoefficient>)
+            Reliability.Companion.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
+            ShannonEntropy.Companion.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
+            StaleBlockRate.Companion.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
+            Throughput.Companion.NAME -> ThroughputCalculator.calculateAverage(it.value as List<Throughput>)
             else -> null
           }
         }
