@@ -33,7 +33,7 @@ class SimulationResultsWriter(
     )
 
     val timestamp = getCurrentTimeFormatted()
-    val simType = result.simulationType
+    val simType = result.simulationType.replace(" ", "_")
     val fileName = "$timestamp-$simType.tsr.json"
     val fullFilePath = Path.of(path, fileName).toString()
 
