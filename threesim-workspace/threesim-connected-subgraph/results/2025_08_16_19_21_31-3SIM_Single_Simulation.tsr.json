@@ -1,0 +1,58 @@
+{
+    "type": "ThreesimSingleSimulationResult",
+    "simulationType": "3SIM Single Simulation",
+    "simulationRoundResult": [
+        {
+            "name": "AvailabilityScalability",
+            "value": "3.9385584875935406E-4"
+        },
+        {
+            "name": "AvailabilitySecurity",
+            "value": "0.5022401834253825"
+        },
+        {
+            "name": "AverageConfirmationLatency",
+            "value": "1.2952867379629629E7"
+        },
+        {
+            "name": "Consistency",
+            "value": "-4288602.75"
+        },
+        {
+            "name": "FaultTolerance",
+            "value": "(1.2056016017423371E-4, -879563.0992557965)"
+        },
+        {
+            "name": "GeographicalDiversity",
+            "value": "1.8370527713149267"
+        },
+        {
+            "name": "GiniCoefficient",
+            "value": "38.91333333333333"
+        },
+        {
+            "name": "HerfindahlHirschmanIndex",
+            "value": "6.26151111111111"
+        },
+        {
+            "name": "NakamotoCoefficient",
+            "value": "13"
+        },
+        {
+            "name": "Reliability",
+            "value": "0.0861354882518372"
+        },
+        {
+            "name": "ShannonEntropy",
+            "value": "2.9401437834560737"
+        },
+        {
+            "name": "StaleBlockRate",
+            "value": "0.0"
+        },
+        {
+            "name": "Throughput",
+            "value": "0.0011822505515726614"
+        }
+    ]
+}

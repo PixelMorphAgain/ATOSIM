@@ -26,19 +26,18 @@ class P2PNetworkImpl internal constructor(
 
   override fun multicast(sendingNetworkInterface: NodeP2PNetworkInterface, content: Message) {
     networkGraph
-      .edgesOf(sendingNetworkInterface as P2PNode)
-      .filter { it.fromNode.endpointId == sendingNetworkInterface.endpointId }
+      .outgoingEdgesOf(sendingNetworkInterface as P2PNode)
       .forEach { it.send(content) }
   }
 
   public override fun onInitialize() {
-    networkGraph.vertexSet().forEach(Consumer { x -> x.initialize(simulationContext) })
-    networkGraph.edgeSet().forEach(Consumer { x -> x.initialize(simulationContext) })
+    networkGraph.vertexSet().forEach(Consumer { it.initialize(simulationContext) })
+    networkGraph.edgeSet().forEach(Consumer { it.initialize(simulationContext) })
   }
 
   public override fun onCleanup() {
-    networkGraph.edgeSet().forEach(Consumer { obj -> obj.cleanup() })
-    networkGraph.vertexSet().forEach(Consumer { obj -> obj.cleanup() })
+    networkGraph.edgeSet().forEach(Consumer { it.cleanup() })
+    networkGraph.vertexSet().forEach(Consumer { it.cleanup() })
   }
 
   override val nodes: MutableSet<NodeP2PNetworkInterface> = Collections.unmodifiableSet(networkGraph.vertexSet())
@@ -48,20 +47,28 @@ class P2PNetworkImpl internal constructor(
     receivingNetworkInterface: NodeP2PNetworkInterface,
     content: Message
   ) {
-    networkGraph
-      .getEdge(sendingNetworkInterface as P2PNode, receivingNetworkInterface as P2PNode)
-      .send(content)
+    val link = networkGraph.getEdge(sendingNetworkInterface as P2PNode, receivingNetworkInterface as P2PNode)
+
+    if (link == null) {
+      val neighbors = getNeighbors(sendingNetworkInterface)
+      val neighborIds = neighbors.joinToString(", ") { it.endpointId }
+      // TODO: Raise message dropped event
+      return
+    }
+
+    link.send(content)
   }
 
   override fun getNeighbors(networkInterface: NodeP2PNetworkInterface): MutableSet<P2PNetworkEndpoint> {
-    val neighborNodes = Graphs.neighborListOf(networkGraph, networkInterface as P2PNode)
-    return HashSet<P2PNetworkEndpoint>(neighborNodes)
+    return networkGraph
+      .outgoingEdgesOf(networkInterface as P2PNode)
+      .map { it.toNode as P2PNetworkEndpoint }
+      .toMutableSet()
   }
 
   companion object {
     fun create(networkGraph: Graph<P2PNode, P2PLink>): P2PNetworkImpl {
       val p2pNetworkId = UUID.randomUUID().toString()
-
       return P2PNetworkImpl(p2pNetworkId, networkGraph, "P2PNetwork_" + networkGraph.hashCode())
     }
   }

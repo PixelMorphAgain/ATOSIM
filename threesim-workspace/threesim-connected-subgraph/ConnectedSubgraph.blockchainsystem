@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blockchainsystem:BlockchainSystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:P2PNetwork="http://palladiosimulator.org/BlockchainSystemComponentModel/P2PNetwork/1.0" xmlns:blockchainsystem="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystem/1.0" id="_c860391c0b58492c8073c82db963a08f">
+  <Network id="_dba5956736a4429abe533f1cc1ffa639">
+    <Topology xsi:type="P2PNetwork:ConnectedSubgraphsNetworkTopology" id="_LyyVoXqsEfCCAuuvqdl4kg">
+      <Subgraphs id="_MWpQoHqsEfCCAuuvqdl4kg" Connectivity="8">
+        <NodeTemplates id="_NnUOUHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_17cf4832191e42f695702d048cdba721"/>
+        </NodeTemplates>
+        <NodeTemplates id="_P9qaoHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_31378cf589db4119b885302dec7db969"/>
+        </NodeTemplates>
+        <NodeTemplates id="_S62kgHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_5dd9fe01de7f4b7b940e8b3ba3e1d8aa"/>
+        </NodeTemplates>
+        <NodeTemplates id="_UIkU0HqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_732b86fc9f8d45f898364310e40e2d07"/>
+        </NodeTemplates>
+        <NodeTemplates id="_VLqwkHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_8be3bba2f65e401093639c6be6be8b23"/>
+        </NodeTemplates>
+        <NodeTemplates id="_WPm50HqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_a91264912a464646b5b929163c69b20e"/>
+        </NodeTemplates>
+        <NodeTemplates id="_XwL7wHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_c40cda37035a46abae9790104e047edb"/>
+        </NodeTemplates>
+        <NodeTemplates id="_Y39cIHqsEfCCAuuvqdl4kg" NumberOfNodeOccurences="4">
+          <Allocation href="ConnectedSubgraph.nodeallocation#_e88fecacbc254899a9ccf77c4bb4ac56"/>
+        </NodeTemplates>
+        <LinkAllocation href="ConnectedSubgraph.linkallocation#_2b387d3998c74b44aed7cc1b4679fc4e"/>
+      </Subgraphs>
+    </Topology>
+  </Network>
+  <Specification id="_0e909f7d4630424e8474c37716297de8" MeanBlockTime="600000.0" NumOfRequiredSecurityConfirmations="6" MaxBlockSize="75000" BlockReward="6.25"/>
+  <TransactionsSpecification id="_3a42c37c020442589a2e868b90cfdd62" MeanTransactionCreationInterval="333.33">
+    <TransactionPropertiesSpecification id="_171f663a643c4b5ca0314c000f7ec62a">
+      <Values id="_ee4043678ab04b59b577b8d909a2bd1e" Size="50" Fee="0.01" Probability="0.2" Amount="0.1"/>
+      <Values id="_c794c84e778c4a5a97c0698ca7b097ee" Size="100" Fee="0.02" Probability="0.2" Amount="1.0"/>
+      <Values id="_7d6298dafdfe44cea588f3db6556668f" Size="150" Fee="0.01" Probability="0.2" Amount="0.1"/>
+      <Values id="_e9680bafe62e443092f83d0a2fde37e1" Size="200" Fee="0.01" Probability="0.2" Amount="10.0"/>
+      <Values id="_4714021a2a6c46d5b71c54ff124c8f54" Size="150" Fee="0.02" Probability="0.2" Amount="1.0"/>
+    </TransactionPropertiesSpecification>
+  </TransactionsSpecification>
+  <GeographicalRegionsSpecification id="_a27e4fccb1bc4a1494e1ff03160bf3cc">
+    <Regions id="_d0cd1780292a4532a77a77999c95abb2" RegionName="ap-northeast-1"/>
+    <Regions id="_bb3d94c0585340b5ac151f62d02525c6" RegionName="ap-south-1"/>
+    <Regions id="_2c48c8f906474dafa9d09cada1e61e53" RegionName="il-central-1"/>
+  </GeographicalRegionsSpecification>
+</blockchainsystem:BlockchainSystem>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<linkallocation:LinkAllocationRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:linkallocation="http://palladiosimulator.org/BlockchainSystemComponentModel/LinkAllocation/1.0" id="_a45df653b75342478586e08309c40d2f">
+  <LinkAllocations id="_2b387d3998c74b44aed7cc1b4679fc4e">
+    <latencySpecification id="_12d2574dc932476c831360c328053f08" StaticLatency="25">
+      <DynamicLatency>
+        <Values id="_f00d55a66dbf46e09f88c0b2b0cd071e" Latency="100" Probability="0.5" Duration="1000"/>
+        <Values id="_4deea0c65d99472fbeebb18481138efc" Latency="40" Probability="0.2" Duration="1000"/>
+        <Values id="_8966e5b291724b4b95f796e948bbb3ab" Latency="60" Probability="0.3" Duration="1000"/>
+      </DynamicLatency>
+    </latencySpecification>
+    <throughputSpecification id="_f43c3201e337426085794de6978f8980" StaticThroughput="207">
+      <DynamicThroughput>
+        <Values id="_b9a0cee13cb1474bb97e43c1a2629bbb" Throughput="800" Probability="0.4" Duration="2000"/>
+        <Values id="_b744ffce1748410086cf630faec2c797" Throughput="600" Probability="0.4" Duration="3000"/>
+        <Values id="_c375d606c34c4f02b9fb489dbb0da99f" Throughput="300" Probability="0.2" Duration="1000"/>
+      </DynamicThroughput>
+    </throughputSpecification>
+  </LinkAllocations>
+  <LinkAllocations id="_7b604cfb03404cff994ac40382b783ff">
+    <latencySpecification id="_7a308405b47f4510a365a2e4d9ddb083" StaticLatency="19">
+      <DynamicLatency>
+        <Values id="_d4812b8e6f3a402eaf467769bb351e01" Latency="80" Probability="0.4" Duration="1000"/>
+        <Values id="_964a4aa1026a4edebf1d0313c44b62de" Latency="50" Probability="0.4" Duration="2000"/>
+        <Values id="_c49757aef2a840f6bd1147e8890dd292" Latency="30" Probability="0.2" Duration="2000"/>
+      </DynamicLatency>
+    </latencySpecification>
+    <throughputSpecification id="_bbcba6f60033420ebececfcc0d704647" StaticThroughput="207">
+      <DynamicThroughput>
+        <Values id="_56dbf805ee424308b4990b2676b24c47" Throughput="800" Probability="0.4" Duration="1000"/>
+        <Values id="_7eefb0f4b5dd44ed92aa2596bdb1e0d8" Throughput="600" Probability="0.4" Duration="1000"/>
+        <Values id="_e0e0c9e739c44bc797ef3885f8cf8be8" Throughput="300" Probability="0.2" Duration="3000"/>
+      </DynamicThroughput>
+    </throughputSpecification>
+  </LinkAllocations>
+</linkallocation:LinkAllocationRepository>
