@@ -4,35 +4,35 @@
         "outputMetrics": [
             {
                 "name": "AvailabilityScalability",
-                "value": "7.239661763002432E-7"
+                "value": "5.252397465294643E-4"
             },
             {
                 "name": "AvailabilitySecurity",
-                "value": "1.0"
+                "value": "0.502293479289839"
             },
             {
                 "name": "AverageConfirmationLatency",
-                "value": "NaN"
+                "value": "2742766.0108695654"
             },
             {
                 "name": "Consistency",
-                "value": "-5298333.0"
+                "value": "-333485.376344086"
             },
             {
                 "name": "FaultTolerance",
-                "value": "(2.9213557198991014E-7, NaN)"
+                "value": "(-0.0014699262821566035, 692751.2989130435)"
             },
             {
                 "name": "GeographicalDiversity",
-                "value": "1.4983766181402192"
+                "value": "1.7187689804787585"
             },
             {
                 "name": "GiniCoefficient",
-                "value": "NaN"
+                "value": "112.77000000000001"
             },
             {
                 "name": "HerfindahlHirschmanIndex",
-                "value": "0.0"
+                "value": "728.5823015625001"
             },
             {
                 "name": "NakamotoCoefficient",
@@ -40,11 +40,11 @@
             },
             {
                 "name": "Reliability",
-                "value": "0.001448711729472787"
+                "value": "1.0279957509508961"
             },
             {
                 "name": "ShannonEntropy",
-                "value": "2.0717784872932072"
+                "value": "2.0102516645570403"
             },
             {
                 "name": "StaleBlockRate",
@@ -52,7 +52,7 @@
             },
             {
                 "name": "Throughput",
-                "value": "2.4145195491213116E-5"
+                "value": "0.01750964960555278"
             }
         ]
     }

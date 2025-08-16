@@ -38,7 +38,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetr
  */
 @Serializable
 data class ThreesimAverageSimulationRoundResult(
-  private val outputMetrics: OutputMetricsSet
+  val outputMetrics: OutputMetricsSet
 ) {
   companion object {
     /**

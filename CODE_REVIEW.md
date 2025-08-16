@@ -1,5 +1,9 @@
 # Code Review 15.08.2025
 
+## Meeting Link
+
+https://uni-ulm.zoom-x.de/j/6219027857?pwd=sGEs8cBBH6Tnp1Wx0wqvmijb6VbqaT.1
+
 ## Metamodel
 
 - nodesystem, nodeenvironment und blockchainComponentRepository unverändert

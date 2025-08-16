@@ -4,7 +4,7 @@ import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.plugin.PluginLaunch
 import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
 import org.palladiosimulator.blockchainsystems.plugin.simulation.SimulationJob
-import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
+import org.palladiosimulator.blockchainsystems.plugin.config.SimulationType
 import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationFactory
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationResultSerializer

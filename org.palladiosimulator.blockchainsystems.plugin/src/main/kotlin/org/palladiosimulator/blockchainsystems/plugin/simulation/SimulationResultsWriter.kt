@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.CoreException
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSerializer
-import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
+import org.palladiosimulator.blockchainsystems.plugin.config.Attributes
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.io.IOException

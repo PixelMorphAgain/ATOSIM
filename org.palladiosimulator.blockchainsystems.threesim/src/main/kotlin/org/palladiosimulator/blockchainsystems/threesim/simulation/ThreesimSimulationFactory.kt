@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simulation
-import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
+import org.palladiosimulator.blockchainsystems.plugin.config.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
 import org.palladiosimulator.blockchainsystems.plugin.simulation.MonteCarloSimulationProgressMonitorAdapter
 import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils

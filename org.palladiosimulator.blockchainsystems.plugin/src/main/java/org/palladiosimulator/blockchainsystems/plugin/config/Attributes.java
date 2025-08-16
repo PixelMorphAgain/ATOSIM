@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.common;
+package org.palladiosimulator.blockchainsystems.plugin.config;
 
 /**
  * This class contains all attributes used in the plugin.
@@ -22,7 +22,7 @@ public final class Attributes {
     public static class SimulationType {
         public static final String SIMULATION_TYPE_ATTRIBUTE = "SimulationType";
         public static final String SIMULATION_TYPE_ATTRIBUTE_DEFAULT =
-                org.palladiosimulator.blockchainsystems.plugin.common.SimulationType.Single.toString();
+                org.palladiosimulator.blockchainsystems.plugin.config.SimulationType.Single.toString();
 
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS = "NumberOfMonteCarloSimulationRounds";
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT = "10000";
@@ -63,26 +63,5 @@ public final class Attributes {
 
         public static final String DATABASE_PASSWORD_ATTRIBUTE = "DatabasePassword";
         public static final String DATABASE_PASSWORD_ATTRIBUTE_DEFAULT = "";
-    }
-
-    // TODO: Move to threesim_plugin !
-    public static class Threesim {
-        public static final String THROUGHPUT_MONITORING_INTERVAL = "ThroughputMonitoringInterval";
-        public static final String THROUGHPUT_MONITORING_INTERVAL_DEFAULT = "1000";
-        // in milliseconds, equals 1 sec TODO: find suitable default value
-
-        public static final String FAILURE_THROUGHPUT_THRESHOLD = "FailureThroughputThreshold";
-        public static final String FAILURE_THROUGHPUT_THRESHOLD_DEFAULT = "1";
-        // in trx per sec TODO: find suitable default value
-
-        public static final String SHANNON_ENTROPY_K = "ShannonEntropyK";
-        public static final String SHANNON_ENTROPY_K_DEFAULT = "1.0";
-
-        public static final String NAKAMOTO_COEFFICIENT_THRESHOLD = "NakamotoCoefficientThreshold";
-        public static final String NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT = "50.0"; // in percent
-
-        public static final String RELIABILITY_OBSERVATION_TIMESPAN = "ReliabilityObservationTimespan";
-        public static final String RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT = "60000";
-        // in milliseconds, equals 60 sec TODO: find suitable default value
     }
 }

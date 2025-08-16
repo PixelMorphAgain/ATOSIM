@@ -4,35 +4,35 @@
         "outputMetrics": [
             {
                 "name": "AvailabilityScalability",
-                "value": "8.060602836364926E-7"
+                "value": "4.8159579095635605E-4"
             },
             {
                 "name": "AvailabilitySecurity",
-                "value": "1.0"
+                "value": "0.5068379544349019"
             },
             {
                 "name": "AverageConfirmationLatency",
-                "value": "NaN"
+                "value": "3175447.4891304346"
             },
             {
                 "name": "Consistency",
-                "value": "-4417581.0"
+                "value": "-351444.8494623656"
             },
             {
                 "name": "FaultTolerance",
-                "value": "(8.477535598058133E-7, NaN)"
+                "value": "(-0.0011742472002235337, 320643.2771739131)"
             },
             {
                 "name": "GeographicalDiversity",
-                "value": "1.4983766181402192"
+                "value": "1.7187689804787585"
             },
             {
                 "name": "GiniCoefficient",
-                "value": "NaN"
+                "value": "129.99875"
             },
             {
                 "name": "HerfindahlHirschmanIndex",
-                "value": "0.0"
+                "value": "760.4731093750003"
             },
             {
                 "name": "NakamotoCoefficient",
@@ -40,11 +40,11 @@
             },
             {
                 "name": "Reliability",
-                "value": "0.0016121945536198713"
+                "value": "0.944004782957567"
             },
             {
                 "name": "ShannonEntropy",
-                "value": "2.0697249767219192"
+                "value": "1.9743560538689913"
             },
             {
                 "name": "StaleBlockRate",
@@ -52,7 +52,7 @@
             },
             {
                 "name": "Throughput",
-                "value": "2.6869909226997853E-5"
+                "value": "0.01607899384917973"
             }
         ]
     }

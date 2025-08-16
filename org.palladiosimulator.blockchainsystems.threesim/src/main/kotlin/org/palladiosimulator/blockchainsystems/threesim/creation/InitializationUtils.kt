@@ -6,12 +6,13 @@ import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.BlockchainS
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ConnectedSubgraphsNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.ExplicitNetworkTopology
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
-import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
-import org.palladiosimulator.blockchainsystems.plugin.common.SimulationType
+import org.palladiosimulator.blockchainsystems.plugin.config.Attributes
+import org.palladiosimulator.blockchainsystems.plugin.config.SimulationType
 import org.palladiosimulator.blockchainsystems.plugin.logging.LogOutputProviderImpl
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.connectedsubgraphs.ConnectedSubgraphNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit.ExplicitNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
+import org.palladiosimulator.blockchainsystems.threesim.config.ThreesimAttributes
 
 /**
  * Utility class for initialization tasks.
@@ -155,36 +156,36 @@ object InitializationUtils {
 
   fun getThroughputMonitoringIntervalFromConfig(configuration: ILaunchConfiguration): Long {
     return configuration.getAttribute(
-      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
-      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
+      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL,
+      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
     ).toLong() // ms
   }
 
   fun getFailureThroughputThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
-      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
-      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
+      ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
+      ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
     ).toDouble() // trx / s
   }
 
   fun getShannonEntropyKFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
-      Attributes.Threesim.SHANNON_ENTROPY_K,
-      Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT
+      ThreesimAttributes.SHANNON_ENTROPY_K,
+      ThreesimAttributes.SHANNON_ENTROPY_K_DEFAULT
     ).toDouble() // 0.0..1.0
   }
 
   fun getNakamotoCoefficientThresholdFromConfig(configuration: ILaunchConfiguration): Double {
     return configuration.getAttribute(
-      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
-      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
+      ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD,
+      ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
     ).toDouble() // 0.0 .. 100.0 %
   }
 
   fun getReliabilityObservationTimespanFromConfig(configuration: ILaunchConfiguration): Long {
     return configuration.getAttribute(
-      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
-      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
+      ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
+      ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
     ).toLong() // ms
   }
 }

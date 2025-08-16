@@ -8,10 +8,10 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.layout.GridData
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Group
-import org.palladiosimulator.blockchainsystems.plugin.common.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.ui.abstractions.TextField
 import org.palladiosimulator.blockchainsystems.plugin.utils.DoubleVerifier
 import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
+import org.palladiosimulator.blockchainsystems.threesim.config.ThreesimAttributes
 
 /**
  * Tab for configuring Threesim-specific simulation parameters.
@@ -50,8 +50,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       "Throughput Monitoring Interval:",
       " ms",
       LongVerifier,
-      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL,
-      Attributes.Threesim.THROUGHPUT_MONITORING_INTERVAL_DEFAULT,
+      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL,
+      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL_DEFAULT,
       isValueValid = { it.toLongOrNull()?.let { it >= MIN_THROUGHPUT_MONITORING_INTERVAL } ?: false }
     )
 
@@ -60,8 +60,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       "Failure Throughput Threshold:",
       "trx/s",
       DoubleVerifier,
-      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD,
-      Attributes.Threesim.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT,
+      ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
+      ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT,
       isValueValid = { it.toDoubleOrNull()?.let { it >= MIN_FAILURE_THROUGHPUT_THRESHOLD } ?: false }
     )
 
@@ -70,8 +70,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       "Shannon Entropy K:",
       "",
       DoubleVerifier,
-      Attributes.Threesim.SHANNON_ENTROPY_K,
-      Attributes.Threesim.SHANNON_ENTROPY_K_DEFAULT,
+      ThreesimAttributes.SHANNON_ENTROPY_K,
+      ThreesimAttributes.SHANNON_ENTROPY_K_DEFAULT,
       isValueValid = { it.toDoubleOrNull()?.let { it > MIN_SHANNON_ENTROPY_K } ?: false }
     )
 
@@ -80,8 +80,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       "Nakamoto Coefficient Threshold:",
       " %",
       DoubleVerifier,
-      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD,
-      Attributes.Threesim.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT,
+      ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD,
+      ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT,
       isValueValid = {
         it.toDoubleOrNull()?.let {
           it in MIN_NAKAMOTO_COEFFICIENT_THRESHOLD..MAX_NAKAMOTO_COEFFICIENT_THRESHOLD
@@ -94,8 +94,8 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       "Reliability Observation Timespan:",
       " ms",
       LongVerifier,
-      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN,
-      Attributes.Threesim.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT,
+      ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
+      ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT,
       isValueValid = { it.toLongOrNull()?.let { it >= MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
 

@@ -1,0 +1,117 @@
+{
+    "type": "org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult",
+    "simulationRoundResults": [
+        {
+            "outputMetrics": [
+                {
+                    "name": "AvailabilityScalability",
+                    "value": "4.6177909084138134E-4"
+                },
+                {
+                    "name": "AvailabilitySecurity",
+                    "value": "0.505425624636839"
+                },
+                {
+                    "name": "AverageConfirmationLatency",
+                    "value": "3198871.0054347827"
+                },
+                {
+                    "name": "Consistency",
+                    "value": "-369884.98924731184"
+                },
+                {
+                    "name": "FaultTolerance",
+                    "value": "(-0.0012688133295240302, 220910.51086956495)"
+                },
+                {
+                    "name": "GeographicalDiversity",
+                    "value": "1.7187689804787585"
+                },
+                {
+                    "name": "GiniCoefficient",
+                    "value": "92.40875000000001"
+                },
+                {
+                    "name": "HerfindahlHirschmanIndex",
+                    "value": "705.2774804687501"
+                },
+                {
+                    "name": "NakamotoCoefficient",
+                    "value": "4"
+                },
+                {
+                    "name": "Reliability",
+                    "value": "0.8622300142267952"
+                },
+                {
+                    "name": "ShannonEntropy",
+                    "value": "2.0299304806384426"
+                },
+                {
+                    "name": "StaleBlockRate",
+                    "value": "0.0"
+                },
+                {
+                    "name": "Throughput",
+                    "value": "0.015361462649099098"
+                }
+            ]
+        },
+        {
+            "outputMetrics": [
+                {
+                    "name": "AvailabilityScalability",
+                    "value": "4.289173296437219E-4"
+                },
+                {
+                    "name": "AvailabilitySecurity",
+                    "value": "0.5030049773163797"
+                },
+                {
+                    "name": "AverageConfirmationLatency",
+                    "value": "3458037.6032608696"
+                },
+                {
+                    "name": "Consistency",
+                    "value": "-390033.0430107527"
+                },
+                {
+                    "name": "FaultTolerance",
+                    "value": "(4.598696135084974E-4, -303873.5108695654)"
+                },
+                {
+                    "name": "GeographicalDiversity",
+                    "value": "1.7187689804787585"
+                },
+                {
+                    "name": "GiniCoefficient",
+                    "value": "134.69750000000002"
+                },
+                {
+                    "name": "HerfindahlHirschmanIndex",
+                    "value": "761.6996789062501"
+                },
+                {
+                    "name": "NakamotoCoefficient",
+                    "value": "4"
+                },
+                {
+                    "name": "Reliability",
+                    "value": "0.8211753756877344"
+                },
+                {
+                    "name": "ShannonEntropy",
+                    "value": "1.9842206276398802"
+                },
+                {
+                    "name": "StaleBlockRate",
+                    "value": "0.0"
+                },
+                {
+                    "name": "Throughput",
+                    "value": "0.014301320519350149"
+                }
+            ]
+        }
+    ]
+}

@@ -14,3 +14,5 @@ docker-compose.*
 .settings
 
 .env
+
+kls_database.db
