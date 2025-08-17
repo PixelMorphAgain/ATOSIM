@@ -4,55 +4,55 @@
     "simulationRoundResult": [
         {
             "name": "AvailabilityScalability",
-            "value": "3.9385584875935406E-4"
+            "value": "4.2397904332157295E-4"
         },
         {
             "name": "AvailabilitySecurity",
-            "value": "0.5022401834253825"
+            "value": "1.0"
         },
         {
             "name": "AverageConfirmationLatency",
-            "value": "1.2952867379629629E7"
+            "value": "1128541.5679012346"
         },
         {
             "name": "Consistency",
-            "value": "-4288602.75"
+            "value": "-363140.14285714284"
         },
         {
             "name": "FaultTolerance",
-            "value": "(1.2056016017423371E-4, -879563.0992557965)"
+            "value": "(0.014134275618374558, 1128449.3456790124)"
         },
         {
             "name": "GeographicalDiversity",
-            "value": "1.8370527713149267"
+            "value": "1.2543104810303627"
         },
         {
             "name": "GiniCoefficient",
-            "value": "38.91333333333333"
+            "value": "29.003375"
         },
         {
             "name": "HerfindahlHirschmanIndex",
-            "value": "6.26151111111111"
+            "value": "62.060461578125015"
         },
         {
             "name": "NakamotoCoefficient",
-            "value": "13"
+            "value": "4"
         },
         {
             "name": "Reliability",
-            "value": "0.0861354882518372"
+            "value": "0.030275904316032"
         },
         {
             "name": "ShannonEntropy",
-            "value": "2.9401437834560737"
+            "value": "1.986473169040901"
         },
         {
             "name": "StaleBlockRate",
-            "value": "0.0"
+            "value": "0.03571428571428571"
         },
         {
             "name": "Throughput",
-            "value": "0.0011822505515726614"
+            "value": "0.0141287553474816"
         }
     ]
 }

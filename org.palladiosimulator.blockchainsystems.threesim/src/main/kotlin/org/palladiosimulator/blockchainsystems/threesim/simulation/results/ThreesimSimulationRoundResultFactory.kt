@@ -13,21 +13,11 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimul
 class ThreesimSimulationRoundResultFactory(
   private val threesimSimulationParameters: ThreesimSimulationParameters,
   private val monitor: ThreesimSimulationMonitor,
-  private val finalSystemTime: Long,
-  private val noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
+  private val finalSystemTime: Long
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
 
     val state = monitor.getFinalState(finalSystemTime)
-
-    val throughput = ThroughputCalculator(
-      numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
-      observationTime = finalSystemTime
-    ).calculate()
-
-    val confirmationLatency = AverageConfirmationLatencyCalculator(
-      state.transactionConfirmationDurations
-    ).calculate()
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
@@ -62,9 +52,14 @@ class ThreesimSimulationRoundResultFactory(
           numberOfTransactions = state.numberOfSubmittedTransactions
         ).calculate(),
 
-        confirmationLatency,
+        AverageConfirmationLatencyCalculator(
+          state.transactionConfirmationDurations
+        ).calculate(),
 
-        throughput,
+        ThroughputCalculator(
+          numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
+          observationTime = finalSystemTime
+        ).calculate(),
 
         AvailabilitySecurityCalculator(
           meanTimeToFailure = state.meanTimeBetweenFailures,
@@ -76,10 +71,10 @@ class ThreesimSimulationRoundResultFactory(
         ).calculate(),
 
         FaultToleranceCalculator(
-          noFailuresPartialSimulationRoundResult.throughput,
-          throughput,
-          noFailuresPartialSimulationRoundResult.confirmationLatency,
-          confirmationLatency
+          averageThroughputWithoutFailures = state.averageThroughputDuringNormalOperation,
+          averageThroughputWithFailures = state.averageThroughputDuringFailure,
+          averageConfirmationLatencyWithoutFailures = state.averageConfirmationLatencyDuringNormalOperation,
+          averageConfirmationLatencyWithFailures = state.averageConfirmationLatencyDuringFailure
         ).calculate(),
 
         ReliabilityCalculator(
@@ -91,8 +86,6 @@ class ThreesimSimulationRoundResultFactory(
           numberOfStaleBlocks = state.numberOfStaleBlocks,
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
         ).calculate()
-
-        // Cost of Attack (skipped) and Censorship Resistance (no longer part of the paper) not implemented
       )
     )
   }

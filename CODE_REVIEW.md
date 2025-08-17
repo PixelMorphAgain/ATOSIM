@@ -197,8 +197,6 @@ https://uni-ulm.zoom-x.de/j/6219027857?pwd=sGEs8cBBH6Tnp1Wx0wqvmijb6VbqaT.1
       - cached den zuletzt zufällig generierten Wert, so lange dessen Duration noch nicht um ist
       - sobald der wert nicht mehr gültig ist, wird ein neues TemporalValue (Wert mit Gültigkeitsdauer) zufällig generiert
     - ThreesimGeographicalRegionsResolver implementiert GeographicalRegionsResolver basierend auf einer GeographicalRegionsSpecification aus dem Metamodell und eines NodeAllocationResolver
-    - AbstractThreesimP2PNetworkFactory
-      - stellt zwei Funktionen bereit, um basierend auf dem Constructor-Parameter areFailuresEnabled einen ValueProvider für Latency bzw. Throughput auszugeben, der entweder die statische Latency ausgibt (no failures) oder dynamisch die Werte generiert
     - ExplicitTopologyP2PNetworkFactory / ConnectedSubgraphP2PNetworkFactory erben von AbstractThreesimP2PNetworkFactory und erstellen das P2P Network (den Graph) anhand des Metamodells
     - ExplicitNetworkResourcePowerCalculator / ConnectedSubgraphNetworkResourcePowerCalculator implementieren ResourcePowerCalculator für die jeweiligen Netzwerkarten
     - ExplicitNetworkBlockchainSystemFactory / ConnectedSubgraphNetworkBlockchainSystemFactory erben von ThreesimBlockchainSystemFactory und spezifizieren Methoden um die konkreten P2PNetworkFactory, NodeAllocationResolver, und ResourcePowerCalculator für die entsprechende Topologie zu erstellen
@@ -253,9 +251,6 @@ https://uni-ulm.zoom-x.de/j/6219027857?pwd=sGEs8cBBH6Tnp1Wx0wqvmijb6VbqaT.1
     - ThreesimSimulationRoundResultFactory
       - holt sich das finale State vom SimulationMonitor
       - berechnet alle OutputMetrics basierend auf dem final state und den ThreesimParameters
-      - benötigt ein ThreesimNoFailuresPartialSimulationRoundResult um zu wissen, wie sich das System im besten Fall verhält
-    - ThreesimNoFailuresPartialSimulationRoundResult enthält nur confirmationLatency und throughput
-    - ThreesimNoFailuresPartialSimulationRoundResultFactory berechnet die confirmationLatency und throughput
     - ThreesimAverageSimulationRoundResult
       - enthält eine Liste durchschnittlicher OutputMetrics
       - fromSimulationRoundResults berechnet für jede OutputMetric aus jeder Runde den durchschnitt

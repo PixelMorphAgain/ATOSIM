@@ -31,13 +31,13 @@ abstract class ThreesimBlockchainSystemFactory(
   protected val designBlockchainSystem: DesignBlockchainSystem,
   protected val networkTopology: NetworkTopology,
 ) {
-  protected abstract fun createP2PNetworkFactory(areFailuresEnabled: Boolean): P2PNetworkFactory
+  protected abstract fun createP2PNetworkFactory(): P2PNetworkFactory
 
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
   protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
 
-  fun createBlockchainSystem(areFailuresEnabled: Boolean): BlockchainSystem {
-    val networkFactory = createP2PNetworkFactory(areFailuresEnabled)
+  fun createBlockchainSystem(): BlockchainSystem {
+    val networkFactory = createP2PNetworkFactory()
 
     val networkCreationResult = networkFactory.createP2PNetwork()
 

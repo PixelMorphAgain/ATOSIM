@@ -16,10 +16,8 @@ class ConnectedSubgraphNetworkBlockchainSystemFactory(
   designBlockchainSystem: DesignBlockchainSystem,
   connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology
 ) : ThreesimBlockchainSystemFactory(designBlockchainSystem, connectedSubgraphsTopology) {
-  override fun createP2PNetworkFactory(areFailuresEnabled: Boolean): P2PNetworkFactory {
+  override fun createP2PNetworkFactory(): P2PNetworkFactory {
     return ConnectedSubgraphP2PNetworkFactory(
-      areFailuresEnabled,
-      RandomGenerator.of("Random"),
       networkTopology as ConnectedSubgraphsNetworkTopology
     )
   }

@@ -19,9 +19,8 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.network.Abstrac
  * @author Davis Riedel
  */
 class ExplicitTopologyP2PNetworkFactory(
-  areFailuresEnabled: Boolean,
   private val topology: ExplicitNetworkTopology,
-) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
+) : AbstractThreesimP2PNetworkFactory() {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val networkGraph: Graph<P2PNode, P2PLink> = SimpleDirectedGraph(P2PLink::class.java)
 

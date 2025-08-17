@@ -1,7 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation.network
 
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.DynamicLinkLatencySpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.DynamicLinkThroughputSpecification
 import org.palladiosimulator.blockchainsystems.bscm.linkallocation.LinkLatencySpecification
 import org.palladiosimulator.blockchainsystems.bscm.linkallocation.LinkThroughputSpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.StaticLinkLatencySpecification
+import org.palladiosimulator.blockchainsystems.bscm.linkallocation.StaticLinkThroughputSpecification
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkFactory
 import org.palladiosimulator.blockchainsystems.threesim.creation.LatencyValueProviderAdapter
@@ -13,34 +17,54 @@ import java.util.random.RandomGenerator
 /**
  * Abstract factory for creating a P2P network in 3SIM. Stores common methods for explicit and connected subgraphs network factories.
  *
- * @param areFailuresEnabled Indicates whether the simulation run simulates failed links.
- *
  * @author Davis Riedel
  */
-abstract class AbstractThreesimP2PNetworkFactory(
-  protected val areFailuresEnabled: Boolean
-) : P2PNetworkFactory {
+abstract class AbstractThreesimP2PNetworkFactory() : P2PNetworkFactory {
+
   protected fun createLatencyValueProvider(
     latencySpecification: LinkLatencySpecification
   ): SimulationLifecycleAwareValueProvider<Long> {
-    if (areFailuresEnabled) {
-      return LatencyValueProviderAdapter.create(
-        latencySpecification.dynamicLatency,
-        RandomGenerator.of("Random")
-      )
+    return when (latencySpecification) {
+      is StaticLinkLatencySpecification -> {
+        StaticLatencyValueProvider(latencySpecification.latency)
+      }
+
+      is DynamicLinkLatencySpecification -> {
+        LatencyValueProviderAdapter.create(
+          latencySpecification,
+          RandomGenerator.of("Random")
+        )
+      }
+
+      else -> {
+        throw IllegalArgumentException(
+          "Unsupported latency specification type: ${latencySpecification::class.java.name}"
+        )
+      }
     }
-    return StaticLatencyValueProvider(latencySpecification.staticLatency)
   }
 
   protected fun createThroughputValueProvider(
     throughputSpecification: LinkThroughputSpecification
   ): SimulationLifecycleAwareValueProvider<Long> {
-    if (areFailuresEnabled) {
-      return ThroughputValueProviderAdapter.create(
-        throughputSpecification.dynamicThroughput,
-        RandomGenerator.of("Random")
-      )
+    return when (throughputSpecification) {
+      is StaticLinkThroughputSpecification -> {
+        StaticThroughputValueProvider(throughputSpecification.throughput)
+      }
+
+      is DynamicLinkThroughputSpecification -> {
+        ThroughputValueProviderAdapter.create(
+          throughputSpecification,
+          RandomGenerator.of("Random")
+        )
+      }
+
+      else -> {
+        throw IllegalArgumentException(
+          "Unsupported throughput specification type: ${throughputSpecification::class.java.name}"
+        )
+      }
     }
-    return StaticThroughputValueProvider(throughputSpecification.staticThroughput)
   }
+
 }

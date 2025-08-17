@@ -7,7 +7,6 @@ import org.palladiosimulator.blockchainsystems.core.network.P2PLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult
-import java.util.random.RandomGenerator
 import java.util.UUID
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
@@ -19,10 +18,8 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEd
  * @author Yannik Sproll, Davis Riedel
  */
 class ConnectedSubgraphP2PNetworkFactory(
-  areFailuresEnabled: Boolean,
-  private val randomGenerator: RandomGenerator,
   private val topology: ConnectedSubgraphsNetworkTopology
-) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
+) : AbstractThreesimP2PNetworkFactory() {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val nodeIdToNodeTemplateIdMapping = HashMap<String, String>()
 

@@ -180,19 +180,13 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/LinkAllocation/latencySpecification"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/LinkAllocation/throughputSpecification"/>
       </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkLatencySpecification">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/LinkLatencySpecification/StaticLatency"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/LinkLatencySpecification/DynamicLatency"/>
-      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkLatencySpecification"/>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/DynamicLinkLatencySpecificationValue">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkLatencySpecificationValue/Latency"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkLatencySpecificationValue/Probability"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkLatencySpecificationValue/Duration"/>
       </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkThroughputSpecification">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/LinkThroughputSpecification/StaticThroughput"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/LinkThroughputSpecification/DynamicThroughput"/>
-      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkThroughputSpecification"/>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Throughput"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Probability"/>
@@ -203,6 +197,12 @@
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/DynamicLinkThroughputSpecification">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/DynamicLinkThroughputSpecification/Values"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//linkallocation/StaticLinkLatencySpecification">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkLatencySpecification/Latency"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//linkallocation/StaticLinkThroughputSpecification">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkThroughputSpecification/Throughput"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>
