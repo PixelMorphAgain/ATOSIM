@@ -16,10 +16,8 @@ class ConnectedSubgraphNetworkBlockchainSystemFactory(
   designBlockchainSystem: DesignBlockchainSystem,
   connectedSubgraphsTopology: ConnectedSubgraphsNetworkTopology
 ) : ThreesimBlockchainSystemFactory(designBlockchainSystem, connectedSubgraphsTopology) {
-  override fun createP2PNetworkFactory(areFailuresEnabled: Boolean): P2PNetworkFactory {
+  override fun createP2PNetworkFactory(): P2PNetworkFactory {
     return ConnectedSubgraphP2PNetworkFactory(
-      areFailuresEnabled,
-      RandomGenerator.of("Random"),
       networkTopology as ConnectedSubgraphsNetworkTopology
     )
   }
@@ -34,7 +32,7 @@ class ConnectedSubgraphNetworkBlockchainSystemFactory(
 
   override fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator {
     networkCreationResult as ConnectedSubgraphNetworkCreationResult
-    return ConnectedSubgraphNetworkGlobalResourcePowerCalculator(
+    return ConnectedSubgraphNetworkResourcePowerCalculator(
       networkTopology as ConnectedSubgraphsNetworkTopology,
       networkCreationResult.nodeIdToNodeTemplateIdMapping
     )

@@ -15,6 +15,7 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
@@ -43,7 +44,7 @@ class ThreesimSimulationMonitor(
   private lateinit var staleBlocks: BlocksMap
   private lateinit var forkedBlocks: BlocksMap
 
-  private lateinit var includedBlocksSinceLastThroughputCheck: BlocksMap
+  private lateinit var confirmedBlocksSinceLastThroughputCheck: BlocksMap
 
   private lateinit var nodes: MutableSet<BlockchainSystemNode>
 
@@ -52,6 +53,13 @@ class ThreesimSimulationMonitor(
   private var numberOfSubmittedTransactions: Int = 0
 
   private val failureLog = BlockchainSystemFailureLog()
+
+  private val throughputsDuringFailure: MutableList<Double> = mutableListOf()
+  private val confirmationLatenciesDuringFailure: MutableList<Double> = mutableListOf()
+
+  private val throughputsWithoutFailure: MutableList<Double> = mutableListOf()
+  private val confirmationLatenciesWithoutFailure: MutableList<Double> = mutableListOf()
+
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
@@ -63,7 +71,7 @@ class ThreesimSimulationMonitor(
     staleBlocks = BlocksMap(calculateMajorityThreshold())
     forkedBlocks = BlocksMap(calculateMajorityThreshold())
 
-    includedBlocksSinceLastThroughputCheck = BlocksMap(calculateMajorityThreshold())
+    confirmedBlocksSinceLastThroughputCheck = BlocksMap(calculateMajorityThreshold())
   }
 
   fun getFinalState(
@@ -83,7 +91,11 @@ class ThreesimSimulationMonitor(
       meanTimeToRepair = failureLog.calculateMeanFailureDuration().toLong(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
-      tokensHeldPerNode = calculateTokensHeldPerNode()
+      tokensHeldPerNode = calculateTokensHeldPerNode(),
+      averageThroughputDuringFailure = calculateAverageThroughputDuringFailure(),
+      averageThroughputDuringNormalOperation = calculateAverageThroughputWithoutFailure(),
+      averageConfirmationLatencyDuringFailure = calculateAverageConfirmationLatencyDuringFailure(),
+      averageConfirmationLatencyDuringNormalOperation = calculateAverageConfirmationLatencyWithoutFailure()
     )
   }
 
@@ -96,8 +108,7 @@ class ThreesimSimulationMonitor(
     }.addNodeToBlock(block, nodeId, occurrenceTime)
 
     when (blockType) {
-      BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
-      BlockType.ConfirmedBlock -> includedBlocksSinceLastThroughputCheck
+      BlockType.ConfirmedBlock -> confirmedBlocksSinceLastThroughputCheck
       else -> null
     }?.addNodeToBlock(block, nodeId, occurrenceTime)
   }
@@ -111,8 +122,7 @@ class ThreesimSimulationMonitor(
     }.removeNodeFromBlock(blockHash, nodeId)
 
     when (blockType) {
-      BlockType.IncludedBlock -> includedBlocksSinceLastThroughputCheck
-      BlockType.ConfirmedBlock -> includedBlocksSinceLastThroughputCheck
+      BlockType.ConfirmedBlock -> confirmedBlocksSinceLastThroughputCheck
       else -> null
     }?.removeNodeFromBlock(blockHash, nodeId)
   }
@@ -124,25 +134,46 @@ class ThreesimSimulationMonitor(
     when (event.eventType) {
 
       ThroughputMonitoringTraceEvent.EVENT_TYPE -> {
-        val numTrxs = includedBlocksSinceLastThroughputCheck
-          .getValidBlocks()
-          .sumOf { it.first.transactions.size }
-
-        val trxPerSec = ThroughputCalculator(
-          numTrxs,
+        val throughput = ThroughputCalculator(
+          calculateNumberOfConfirmedTransactions(
+            sinceLastThroughputCheck = true
+          ),
           throughputMonitoringInterval
-        ).calculate().value
+        ).calculate().value // in transactions per second
 
-        if (trxPerSec <= failureThroughputThreshold) {
-          // Failure occurred
-          failureLog.failureStarted(event.occurrenceTime)
-        } else if (failureLog.isFailureOngoing()) {
-          // Failure ended
-          failureLog.failureEnded(event.occurrenceTime)
+        val trxConfDurations = calculateTransactionConfirmationDurations(
+          sinceLastThroughputCheck = true
+        )
+        val confirmationLatency = if (trxConfDurations.isNotEmpty()) {
+          AverageConfirmationLatencyCalculator(trxConfDurations).calculate().value
+        } else {
+          null
+        }
+
+        if (failureLog.isFailureOngoing()) {
+          if (throughput > failureThroughputThreshold) {
+            // Failure ended
+            failureLog.failureEnded(event.occurrenceTime)
+          }
+        } else {
+          // Failure not ongoing, check if it started
+          if (throughput <= failureThroughputThreshold) {
+            // Failure started
+            failureLog.failureStarted(event.occurrenceTime)
+          }
+        }
+
+        // Track the throughput and confirmation latency during the failure or without failure
+        if (failureLog.isFailureOngoing()) {
+          throughputsDuringFailure.add(throughput)
+          confirmationLatency?.let { confirmationLatenciesDuringFailure.add(it) }
+        } else {
+          throughputsWithoutFailure.add(throughput)
+          confirmationLatency?.let { confirmationLatenciesWithoutFailure.add(it) }
         }
 
         // Clear for next measurement
-        includedBlocksSinceLastThroughputCheck.clear()
+        confirmedBlocksSinceLastThroughputCheck.clear()
       }
 
       BlockMinedTraceEvent.EVENT_TYPE -> {
@@ -182,8 +213,17 @@ class ThreesimSimulationMonitor(
   }
 
   override fun shouldTerminate(): Boolean {
-    // TODO: Implement other termination conditions if needed
     return maxBlockchainLengthCondition.hasLengthExceeded()
+  }
+
+  private fun getConfirmedValidBlocks(
+    sinceLastThroughputCheck: Boolean = false
+  ): Collection<Pair<Block, Long>> {
+    return if (sinceLastThroughputCheck) {
+      confirmedBlocksSinceLastThroughputCheck.getValidBlocks()
+    } else {
+      confirmedBlocks.getValidBlocks()
+    }
   }
 
   private fun calculateMajorityThreshold(): Int {
@@ -194,12 +234,17 @@ class ThreesimSimulationMonitor(
     return confirmedBlocks.getNumberOfValidBlocks()
   }
 
-  private fun getConfirmedTransactions(): Collection<Pair<Set<Transaction>, Long?>> {
-    return confirmedBlocks.getValidBlocks().map { Pair(it.first.transactions, it.second) }
+  private fun getConfirmedTransactions(
+    sinceLastThroughputCheck: Boolean = false
+  ): Collection<Pair<Set<Transaction>, Long?>> {
+    return getConfirmedValidBlocks(sinceLastThroughputCheck)
+      .map { Pair(it.first.transactions, it.second) }
   }
 
-  private fun calculateNumberOfConfirmedTransactions(): Int {
-    return getConfirmedTransactions().size
+  private fun calculateNumberOfConfirmedTransactions(
+    sinceLastThroughputCheck: Boolean = false
+  ): Int {
+    return getConfirmedTransactions(sinceLastThroughputCheck).size
   }
 
   private fun calculateNumberOfStaleBlocks(): Int {
@@ -220,8 +265,10 @@ class ThreesimSimulationMonitor(
       .eachCount().values
   }
 
-  private fun calculateTransactionConfirmationDurations(): Collection<Long> {
-    return confirmedBlocks.getValidBlocks()
+  private fun calculateTransactionConfirmationDurations(
+    sinceLastThroughputCheck: Boolean = false
+  ): Collection<Long> {
+    return getConfirmedValidBlocks(sinceLastThroughputCheck)
       .flatMap { (block, confirmationTime) ->
         block.transactions.map { confirmationTime - it.creationTime }
       }
@@ -255,5 +302,37 @@ class ThreesimSimulationMonitor(
 
   private fun calculateNumberOfGeographicalRegions(): Int {
     return geographicalRegions.getNumberOfRegions()
+  }
+
+  private fun calculateAverageThroughputDuringFailure(): Double {
+    return if (throughputsDuringFailure.isEmpty()) {
+      0.0
+    } else {
+      throughputsDuringFailure.average()
+    }
+  }
+
+  private fun calculateAverageConfirmationLatencyDuringFailure(): Double {
+    return if (confirmationLatenciesDuringFailure.isEmpty()) {
+      0.0
+    } else {
+      confirmationLatenciesDuringFailure.average()
+    }
+  }
+
+  private fun calculateAverageThroughputWithoutFailure(): Double {
+    return if (throughputsWithoutFailure.isEmpty()) {
+      0.0
+    } else {
+      throughputsWithoutFailure.average()
+    }
+  }
+
+  private fun calculateAverageConfirmationLatencyWithoutFailure(): Double {
+    return if (confirmationLatenciesWithoutFailure.isEmpty()) {
+      0.0
+    } else {
+      confirmationLatenciesWithoutFailure.average()
+    }
   }
 }

@@ -7,9 +7,7 @@ import org.palladiosimulator.blockchainsystems.core.network.P2PLink
 import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult
-import java.util.random.RandomGenerator
 import java.util.UUID
-import kotlin.math.abs
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
 import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEdge
@@ -20,10 +18,8 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEd
  * @author Yannik Sproll, Davis Riedel
  */
 class ConnectedSubgraphP2PNetworkFactory(
-  areFailuresEnabled: Boolean,
-  private val randomGenerator: RandomGenerator,
   private val topology: ConnectedSubgraphsNetworkTopology
-) : AbstractThreesimP2PNetworkFactory(areFailuresEnabled) {
+) : AbstractThreesimP2PNetworkFactory() {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val nodeIdToNodeTemplateIdMapping = HashMap<String, String>()
 
@@ -38,7 +34,7 @@ class ConnectedSubgraphP2PNetworkFactory(
       subGraphIdToLinkSpecificationMapping.put(subgraphSpec.id, subgraphSpec)
 
       subgraphSpec.nodeTemplates.forEach { nodeTemplate ->
-        (0..<nodeTemplate.numberOfNodeOccurences).forEach { _ ->
+        (0 until nodeTemplate.numberOfNodeOccurences).forEach { _ ->
           val p2pNodeId = UUID.randomUUID().toString()
           val node = P2PNode(p2pNodeId)
 
@@ -56,86 +52,80 @@ class ConnectedSubgraphP2PNetworkFactory(
     val networkGraph = SimpleDirectedGraph<P2PNode, P2PLink>(P2PLink::class.java)
 
     // Create each subgraph and add it to the networkGraph
-    subgraphIdToSubgraphNodesMapping.entries.forEach { entry ->
+    subgraphIdToSubgraphNodesMapping.entries.forEach { (subgraphId, subgraphNodes) ->
       val initialDegrees = CounterMap<P2PNode>()
-      val subgraphSpec = subGraphIdToLinkSpecificationMapping.get(entry.key) ?: return@forEach
+      val subgraphSpec = subGraphIdToLinkSpecificationMapping.get(subgraphId) ?: return@forEach
 
       // Add vertices of subgraph
-      entry.value.forEach { node ->
+      subgraphNodes.forEach { node ->
         networkGraph.addVertex(node)
         initialDegrees.put(node, subgraphSpec.connectivity)
       }
 
-      val subgraphNodes = initialDegrees.keys.toTypedArray()
-
-      // Get link specification for subgraph internal links
+      // Get link allocation for subgraph internal links
       val subgraphLinkSpecification = subgraphSpec.linkAllocation
 
       val latencyValueProvider = createLatencyValueProvider(subgraphLinkSpecification.latencySpecification)
       val throughputValueProvider = createThroughputValueProvider(subgraphLinkSpecification.throughputSpecification)
 
       // Create a bidirectional spanning tree in subgraph
-      for (i in 0..<subgraphNodes.size - 1) {
-        val firstNode = subgraphNodes[i]
-        val secondNode = subgraphNodes[i + 1]
-
-        networkGraph.addBidirectionalEdge(
-          firstNode,
-          secondNode,
-          P2PLink(
-            latencyValueProvider,
-            throughputValueProvider,
+      subgraphNodes
+        .windowed(2)
+        .forEach { (firstNode, secondNode) ->
+          networkGraph.addBidirectionalEdge(
             firstNode,
-            secondNode
+            secondNode,
+            fun(fromVertex: P2PNode, toVertex: P2PNode) = P2PLink(
+              latencyValueProvider,
+              throughputValueProvider,
+              fromVertex,
+              toVertex
+            )
           )
-        )
 
-        initialDegrees.decrement(firstNode)
-        initialDegrees.decrement(secondNode)
-      }
+          initialDegrees.decrement(firstNode)
+          initialDegrees.decrement(secondNode)
+        }
 
       // Enhance with random bidirectional edges
       val nodesToEnhance = initialDegrees.keys.toTypedArray()
 
       nodesToEnhance.forEach { currentNode ->
-        var remainingDegree = initialDegrees.get(currentNode)
-
-        while (remainingDegree > 0) {
+        while (initialDegrees.get(currentNode) > 0) {
           val potentialNodes = initialDegrees.keys
-            .filter { it != currentNode }
-            .filter { !networkGraph.containsEdge(it, currentNode) }
+            .filterNot {
+              it == currentNode
+                || networkGraph.containsEdge(it, currentNode)
+                || networkGraph.containsEdge(currentNode, it)
+            }
 
           if (potentialNodes.isEmpty()) {
             // Sometimes each node except for the last one has reached the maximum degree
             // The strategy here is to neglect the range parameters for the last node
             initialDegrees.decrement(currentNode)
-            remainingDegree--
             continue
           }
 
-          val randomPotentialNodeIndex = randomGenerator.nextInt(0, potentialNodes.size)
-          val selectedNode = potentialNodes[randomPotentialNodeIndex]
+          val selectedNode = potentialNodes.random()
 
           networkGraph.addBidirectionalEdge(
             currentNode,
             selectedNode,
-            P2PLink(
+            fun(fromVertex: P2PNode, toVertex: P2PNode) = P2PLink(
               latencyValueProvider,
               throughputValueProvider,
-              currentNode,
-              selectedNode
+              fromVertex,
+              toVertex
             )
           )
 
           initialDegrees.decrement(currentNode)
           initialDegrees.decrement(selectedNode)
-
-          remainingDegree--
         }
       }
     }
 
-    // Add connections between the proxies of the subgraph;
+    // Add connections between the proxies of the subgraph
     topology.subgraphLinks.forEach { subgraphLink ->
       val firstSubgraphSpec = subgraphLink.connectedSubgraphs[0]
       val secondSubgraphSpec = subgraphLink.connectedSubgraphs[1]
@@ -155,11 +145,11 @@ class ConnectedSubgraphP2PNetworkFactory(
           networkGraph.addBidirectionalEdge(
             firstSubgraphProxy,
             secondSubgraphProxy,
-            P2PLink(
+            fun(fromVertex: P2PNode, toVertex: P2PNode) = P2PLink(
               latencyValueProvider,
               throughputValueProvider,
-              firstSubgraphProxy,
-              secondSubgraphProxy
+              fromVertex,
+              toVertex
             )
           )
         }
@@ -169,13 +159,6 @@ class ConnectedSubgraphP2PNetworkFactory(
     val networkImpl = P2PNetworkImpl.create(networkGraph)
 
     networkGraph.vertexSet().forEach { it.initNetwork(networkImpl) }
-
-    for (e in networkGraph.edgeSet()) {
-      println(
-        (abs(networkGraph.getEdgeSource(e).endpointId.hashCode()).toString() + "-"
-          + abs(networkGraph.getEdgeTarget(e).endpointId.hashCode()))
-      )
-    }
 
     return ConnectedSubgraphNetworkCreationResult(
       networkImpl,

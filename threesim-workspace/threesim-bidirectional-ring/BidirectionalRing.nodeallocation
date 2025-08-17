@@ -1,0 +1,138 @@
+<nodeallocation:NodeAllocationRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" xmlns:nodeallocation="http://palladiosimulator.org/BlockchainSystemComponentModel/NodeAllocation/1.0" id="_419a46b95df24577a1721b0087fdab53">
+	<NodeAllocations id="_e31d564f2b2744f09783860bc2d1531c">
+		<AllocationContexts id="_1f78ddb3cea5473c94a23596793b4254" AssemblyContext="_6199020ecb534b0581706882acb8a190" ResourceContainer="_a595095580e141bebfe828fedbaf380f"/>
+		<AllocationContexts id="_dab03ca0bebf4a20aa6a6e782b59cb81" AssemblyContext="_366e8993c8dd45039e77e2b9945e66e4" ResourceContainer="_a595095580e141bebfe828fedbaf380f"/>
+		<NodeAllocationEnvironment id="_adea988922864fa7b0ebe13824210a2c">
+			<ResourceContainers id="_a595095580e141bebfe828fedbaf380f" ResourcePower="90"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_21593638271c478ab75a2dbcd6ad017d" BlockValidatorAssembly="_6199020ecb534b0581706882acb8a190" MiningProcessAssembly="_366e8993c8dd45039e77e2b9945e66e4">
+			<AssemblyContexts id="_6199020ecb534b0581706882acb8a190">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_366e8993c8dd45039e77e2b9945e66e4">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_eedaca003ef44e29a274eee6199a808b"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_d9ebabaaa6a4401d91e54014f58d5e6b"/>
+	</NodeAllocations>
+	<NodeAllocations id="_b62c1ef5be9a48169c0c22d762bf1cad">
+		<AllocationContexts id="_39e8d64d0f5f4db6aba1886669d97fc2" AssemblyContext="_d0b3df605a584e7db42fc376de243918" ResourceContainer="_d41e413448b547048378721aca1327a4"/>
+		<AllocationContexts id="_1a256c7571044428b36e0128856a4ad3" AssemblyContext="_50e3271f3d1d45508a8efcb7010e3baf" ResourceContainer="_d41e413448b547048378721aca1327a4"/>
+		<NodeAllocationEnvironment id="_7199a426c77a4683a6682282d55cf419">
+			<ResourceContainers id="_d41e413448b547048378721aca1327a4" ResourcePower="160"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_84baeb860b394dd6ad373986664b4c0a" BlockValidatorAssembly="_d0b3df605a584e7db42fc376de243918" MiningProcessAssembly="_50e3271f3d1d45508a8efcb7010e3baf">
+			<AssemblyContexts id="_d0b3df605a584e7db42fc376de243918">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_50e3271f3d1d45508a8efcb7010e3baf">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_f684f6f3de3341f2a623aebc94218dd7"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_2145d8d127474410b70b1c61b133ba13"/>
+	</NodeAllocations>
+	<NodeAllocations id="_a1d44dafc2cd409fb3cb481e03db4bf8">
+		<AllocationContexts id="_08e8b67aa33547449d926dae9188282c" AssemblyContext="_327986845bf444bb85d2ced94b2044c6" ResourceContainer="_1965b58430bd4d76b5964eee7c730714"/>
+		<AllocationContexts id="_055cf032ac6c4668921eeb41316ed86e" AssemblyContext="_08424ad64b514d51aead99ab3a98d74a" ResourceContainer="_1965b58430bd4d76b5964eee7c730714"/>
+		<NodeAllocationEnvironment id="_f5148ac074004873a68ad42ce0732793">
+			<ResourceContainers id="_1965b58430bd4d76b5964eee7c730714" ResourcePower="120"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_de756baa4d9c4e7bbae54960fa830b09" BlockValidatorAssembly="_327986845bf444bb85d2ced94b2044c6" MiningProcessAssembly="_08424ad64b514d51aead99ab3a98d74a">
+			<AssemblyContexts id="_327986845bf444bb85d2ced94b2044c6">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_08424ad64b514d51aead99ab3a98d74a">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_6f11219a8f7448f68adc89e68031071e"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_2145d8d127474410b70b1c61b133ba13"/>
+	</NodeAllocations>
+	<NodeAllocations id="_f5e7a80e03ed4a54b8910d5cb4e4b634">
+		<AllocationContexts id="_48385fbd41ad41b6b0effbd6d971144f" AssemblyContext="_7f192d4643454586bc5435033ad5454d" ResourceContainer="_45337026db5a493098213c14809294da"/>
+		<AllocationContexts id="_d834d736dbc748729c811b95dd6351b3" AssemblyContext="_a75b7e8f9380489f860e5e9640c50bc3" ResourceContainer="_45337026db5a493098213c14809294da"/>
+		<NodeAllocationEnvironment id="_57c185aa0e204bdfb676956d4c6560a5">
+			<ResourceContainers id="_45337026db5a493098213c14809294da" ResourcePower="110"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_154aac50252c4a14a84051fca1f3d942" BlockValidatorAssembly="_7f192d4643454586bc5435033ad5454d" MiningProcessAssembly="_a75b7e8f9380489f860e5e9640c50bc3">
+			<AssemblyContexts id="_7f192d4643454586bc5435033ad5454d">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_a75b7e8f9380489f860e5e9640c50bc3">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_fd76ade30e0d4426ba5583f267b67aa3"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_bacbbb01662c42bb9f26cb806493ca80"/>
+	</NodeAllocations>
+	<NodeAllocations id="_5707be6a6bc844aba0f0575a78ac682d">
+		<AllocationContexts id="_9feb31d278984542b8cd8cef3c7333f0" AssemblyContext="_49b5259c4118423492a68a847bc06178" ResourceContainer="_663d9b366a654b718c6fb87f1ea8a3a2"/>
+		<AllocationContexts id="_830a215b20684f05b85c4e8196ac0db7" AssemblyContext="_11f73c5860914891b056e8d91c0802b6" ResourceContainer="_663d9b366a654b718c6fb87f1ea8a3a2"/>
+		<NodeAllocationEnvironment id="_d0fadd90b5c54e5599eda840c3153f6b">
+			<ResourceContainers id="_663d9b366a654b718c6fb87f1ea8a3a2" ResourcePower="160"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_354a49c690e54beba0f67af077dcfb4d" BlockValidatorAssembly="_49b5259c4118423492a68a847bc06178" MiningProcessAssembly="_11f73c5860914891b056e8d91c0802b6">
+			<AssemblyContexts id="_49b5259c4118423492a68a847bc06178">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_11f73c5860914891b056e8d91c0802b6">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_18ecf3a1b05b4171ac62011b41a274e4"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_d9ebabaaa6a4401d91e54014f58d5e6b"/>
+	</NodeAllocations>
+	<NodeAllocations id="_1e08cea95a8f4616b246bbcc09b2dc52">
+		<AllocationContexts id="_a0833600e11d4a05a8b7047c68f089db" AssemblyContext="_9152f90b233645978e12c436fe35ddfd" ResourceContainer="_eb8d7d3d333645da80005263d9a01774"/>
+		<AllocationContexts id="_ec22a94b59d34f7a9a3b7fdab47cb59c" AssemblyContext="_33acbdb2c5f643448c66fdded9391458" ResourceContainer="_eb8d7d3d333645da80005263d9a01774"/>
+		<NodeAllocationEnvironment id="_19b3ecf13c224bcab2f3d8589a71ddc8">
+			<ResourceContainers id="_eb8d7d3d333645da80005263d9a01774" ResourcePower="100"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_dc824c1b766840a9a1a36f9368865024" BlockValidatorAssembly="_9152f90b233645978e12c436fe35ddfd" MiningProcessAssembly="_33acbdb2c5f643448c66fdded9391458">
+			<AssemblyContexts id="_9152f90b233645978e12c436fe35ddfd">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_33acbdb2c5f643448c66fdded9391458">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_f9c53ea094914997a61017f1e69d019b"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_d9ebabaaa6a4401d91e54014f58d5e6b"/>
+	</NodeAllocations>
+	<NodeAllocations id="_f78bcfd3624447189bdcf36fcdba19db">
+		<AllocationContexts id="_bc89f41d86934322951d066457db68e7" AssemblyContext="_f70dba5f54b1467d964932ccac8b09c9" ResourceContainer="_f93d5d2016704ed9b12f298186eb887d"/>
+		<AllocationContexts id="_697257d4acad4405a419f2c0b9a5c877" AssemblyContext="_3c39f4b5f5634a2ebb3ea1392c1a5a2b" ResourceContainer="_f93d5d2016704ed9b12f298186eb887d"/>
+		<NodeAllocationEnvironment id="_405e4f1b17af42bd90aa9eb2b35601f3">
+			<ResourceContainers id="_f93d5d2016704ed9b12f298186eb887d" ResourcePower="180"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_eb5540151f444efc8c4684e7d4d19141" BlockValidatorAssembly="_f70dba5f54b1467d964932ccac8b09c9" MiningProcessAssembly="_3c39f4b5f5634a2ebb3ea1392c1a5a2b">
+			<AssemblyContexts id="_f70dba5f54b1467d964932ccac8b09c9">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_3c39f4b5f5634a2ebb3ea1392c1a5a2b">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_cf1c605b2c5d492ead721d1735a989ed"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_bacbbb01662c42bb9f26cb806493ca80"/>
+	</NodeAllocations>
+	<NodeAllocations id="_0477cb55dafc49e491854183eb2700d6">
+		<AllocationContexts id="_3d0b6a65a977457cb86533faf6aef4be" AssemblyContext="_7f459630827f41ab9a04897a514938de" ResourceContainer="_ef80e5e9033a4336890d8598ab1f614d"/>
+		<AllocationContexts id="_73c0d483b97b49ff9c6b94715dfa46f1" AssemblyContext="_30d07d61d99041e997db93763dddcf22" ResourceContainer="_ef80e5e9033a4336890d8598ab1f614d"/>
+		<NodeAllocationEnvironment id="_89d7f228d5b149fe86997f75162c740d">
+			<ResourceContainers id="_ef80e5e9033a4336890d8598ab1f614d" ResourcePower="120"/>
+		</NodeAllocationEnvironment>
+		<NodeSystem id="_da1904f7365342ff98e5507f349baa15" BlockValidatorAssembly="_7f459630827f41ab9a04897a514938de" MiningProcessAssembly="_30d07d61d99041e997db93763dddcf22">
+			<AssemblyContexts id="_7f459630827f41ab9a04897a514938de">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_8315ede2881e4181bb58a2ae5de8d724"/>
+			</AssemblyContexts>
+			<AssemblyContexts id="_30d07d61d99041e997db93763dddcf22">
+				<EncapsulatedComponent xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" href="BidirectionalRing.blockchainsystemcomponentrepository#_906347f872764bbc96ae4ac0569f098a"/>
+			</AssemblyContexts>
+			<Behavior id="_3ac95a5735af485dbdc4cd6557a722bc"/>
+		</NodeSystem>
+		<GeographicalRegion href="BidirectionalRing.blockchainsystem#_bacbbb01662c42bb9f26cb806493ca80"/>
+	</NodeAllocations>
+</nodeallocation:NodeAllocationRepository>

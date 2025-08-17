@@ -1,11 +1,10 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
-import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import kotlin.math.abs
 
 /**
  * Calculates fault tolerance
@@ -13,15 +12,15 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
  * @author Davis Riedel
  */
 class FaultToleranceCalculator(
-  private val noFailuresThroughput: Throughput,
-  private val throughput: Throughput,
-  private val noFailuresConfirmationLatency: AverageConfirmationLatency,
-  private val confirmationLatency: AverageConfirmationLatency
+  private val averageThroughputWithoutFailures: Double,
+  private val averageThroughputWithFailures: Double,
+  private val averageConfirmationLatencyWithoutFailures: Double,
+  private val averageConfirmationLatencyWithFailures: Double,
 ) : OutputMetricCalculator<FaultTolerance> {
   override fun calculate(): FaultTolerance {
-    // TODO: Is this the right way around?
-    val throughputDelta = noFailuresThroughput.value - throughput.value
-    val confirmationLatencyDelta = noFailuresConfirmationLatency.value - confirmationLatency.value
+    val throughputDelta = abs(averageThroughputWithoutFailures - averageThroughputWithFailures)
+    val confirmationLatencyDelta =
+      abs(averageConfirmationLatencyWithoutFailures - averageConfirmationLatencyWithFailures)
     return FaultTolerance(Pair(throughputDelta, confirmationLatencyDelta))
   }
 

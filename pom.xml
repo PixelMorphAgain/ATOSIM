@@ -144,8 +144,8 @@
 
     <modules>
         <module>releng</module>
+        <module>features</module>
         <module>org.palladiosimulator.blockchainsystems.kotlin-deps</module>
-        <module>org.palladiosimulator.blockchainsystems.threesim_feature</module>
         <module>org.palladiosimulator.blockchainsystems.core</module>
         <module>org.palladiosimulator.blockchainsystems.loggers</module>
         <module>org.palladiosimulator.blockchainsystems.bscm</module>

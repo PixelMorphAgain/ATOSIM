@@ -6,7 +6,6 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThroughputMonitoringProcess
-import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimNoFailuresPartialSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
 import java.util.UUID
@@ -22,7 +21,7 @@ class ThreesimSimulationRound(
   private val maxAllowedBlockchainLength: Long,
   private val threesimSimulationParameters: ThreesimSimulationParameters,
 ) : SimulationRound<ThreesimSimulationMonitor, ThreesimSimulationRoundResult>(
-  blockchainSystemFactory.createBlockchainSystem(true),
+  blockchainSystemFactory.createBlockchainSystem(),
   logOutputs,
   monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(
@@ -32,9 +31,6 @@ class ThreesimSimulationRound(
     threesimSimulationParameters.failureThroughputThreshold
   )
 ) {
-
-  private lateinit var noFailuresPartialSimulationRoundResult: ThreesimNoFailuresPartialSimulationRoundResult
-
   private val throughputMonitoringProcess = ThroughputMonitoringProcess(
     UUID.randomUUID().toString(),
     "Throughput monitoring process",
@@ -51,27 +47,11 @@ class ThreesimSimulationRound(
     super.cleanup()
   }
 
-  override fun run(): ThreesimSimulationRoundResult {
-    // First run a round without any node or link failures
-    // to gather the best case throughput and confirmation latency
-    noFailuresPartialSimulationRoundResult = ThreesimNoFailuresPartialSimulationRound(
-      // Create a new blockchain system without failures
-      blockchainSystemFactory.createBlockchainSystem(false),
-      logOutputs,
-      maxAllowedBlockchainLength,
-      threesimSimulationParameters
-    ).run()
-
-    // Run the actual simulation round
-    return super.run()
-  }
-
   override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
     return ThreesimSimulationRoundResultFactory(
       threesimSimulationParameters,
       monitor,
-      finalSystemTime,
-      noFailuresPartialSimulationRoundResult
+      finalSystemTime
     ).createSimulationRoundResult()
   }
 

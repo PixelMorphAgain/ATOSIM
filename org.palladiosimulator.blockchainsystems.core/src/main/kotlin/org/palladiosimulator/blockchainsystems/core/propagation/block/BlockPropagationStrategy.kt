@@ -41,7 +41,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
     context?.blockchain?.let { blockchain ->
-      val hash = message.getContent() as String
+      val hash = message.content as String
       if (blockchain.hasBlockWithHash(hash)) {
         // Block already exists, no need to request it
         return
@@ -81,7 +81,6 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
   ) {
     if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
 
-    // TODO: Separate block and transaction dropped events?
     val event = MessageDroppedTraceEvent(
       message,
       simulationContext.systemClock.currentTime,
@@ -97,10 +96,6 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
   }
 
   private fun logBlockSent(block: Block, receiverNetworkEndpoint: P2PNetworkEndpoint) {
-    if (!traceEventLogger.isEventTypeEnabled(BlockSentTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = BlockSentTraceEvent(
       simulationContext.getSystemClock().getCurrentTime(),
       block,
@@ -110,10 +105,6 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
   }
 
   private fun logBlockReceived(block: Block, senderNetworkEndpoint: P2PNetworkEndpoint) {
-    if (!traceEventLogger.isEventTypeEnabled(BlockReceivedTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = BlockReceivedTraceEvent(
       simulationContext.getSystemClock().getCurrentTime(),
       block,

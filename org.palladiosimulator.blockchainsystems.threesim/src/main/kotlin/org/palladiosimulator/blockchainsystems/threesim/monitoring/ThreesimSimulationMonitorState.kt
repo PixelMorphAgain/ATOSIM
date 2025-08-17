@@ -14,5 +14,9 @@ class ThreesimSimulationMonitorState(
   val meanTimeBetweenFailures: Long,
   val meanTimeToRepair: Long,
   val numberOfStaleBlocks: Int,
-  val numberOfConfirmedBlocks: Int
+  val numberOfConfirmedBlocks: Int,
+  val averageThroughputDuringFailure: Double,
+  val averageThroughputDuringNormalOperation: Double,
+  val averageConfirmationLatencyDuringFailure: Double,
+  val averageConfirmationLatencyDuringNormalOperation: Double
 )

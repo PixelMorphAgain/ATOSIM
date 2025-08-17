@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.serialization
 
-import kotlinx.serialization.modules.*
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.*
@@ -28,8 +27,10 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
-import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimNoFailuresPartialSimulationRoundResult
+
+import kotlinx.serialization.modules.*
 import kotlinx.serialization.json.Json
+
 
 object ThreesimSerializers {
   val json = Json {
@@ -81,7 +82,6 @@ object ThreesimSerializers {
       }
       polymorphic(SimulationRoundResult::class) {
         subclass(ThreesimSimulationRoundResult::class)
-        subclass(ThreesimNoFailuresPartialSimulationRoundResult::class)
       }
     }
   }
