@@ -56,13 +56,13 @@ class ThreesimSimulationRoundResultFactory(
           state.transactionConfirmationDurations
         ).calculate(),
 
-        ThroughputCalculator(
+        TransactionThroughputCalculator(
           numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
           observationTime = finalSystemTime
         ).calculate(),
 
         AvailabilitySecurityCalculator(
-          meanTimeToFailure = state.meanTimeBetweenFailures,
+          meanTimeBetweenFailures = state.meanTimeBetweenFailures,
           meanTimeToRepair = state.meanTimeToRepair
         ).calculate(),
 

@@ -17,4 +17,5 @@ class AvailabilitySecurity(
   }
 
   override val name: String = NAME
+  override val unit: String? = null
 }

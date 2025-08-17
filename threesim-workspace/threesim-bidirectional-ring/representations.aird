@@ -1,4 +1,4 @@
-<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" uid="_948d87f60fad42db9afe5673eb930eff" version="15.4.1.202403191723">
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" uid="_8a9d49e18f7242d8a78415691a7205fb" version="15.4.1.202403191723">
 	<semanticResources>
 		BidirectionalRing.linkallocation
 	</semanticResources>

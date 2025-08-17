@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 /**
  * Calculates availability regarding scalability
  *
- * @property observationTime the observed timespan
+ * @property observationTime the observed timespan in ms
  * @property numberOfConfirmedTransactions the number of confirmed transactions within the observation time
  * @property numberOfTransactions the total number of transactions within the observation time
  *

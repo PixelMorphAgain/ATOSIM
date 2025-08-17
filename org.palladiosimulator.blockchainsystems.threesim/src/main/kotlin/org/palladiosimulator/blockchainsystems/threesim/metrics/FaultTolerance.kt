@@ -12,11 +12,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
  */
 @Serializable
 class FaultTolerance(
-  override val value: Pair<Double, Double>
-) : OutputMetric<Pair<Double, Double>> {
+  override val value: FaultToleranceValue
+) : OutputMetric<FaultToleranceValue> {
   companion object {
     const val NAME = "FaultTolerance"
   }
 
   override val name: String = NAME
+  override val unit: String? = null
 }

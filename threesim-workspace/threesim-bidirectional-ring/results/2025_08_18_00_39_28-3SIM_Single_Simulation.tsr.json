@@ -4,55 +4,68 @@
     "simulationRoundResult": [
         {
             "name": "AvailabilityScalability",
-            "value": "4.2397904332157295E-4"
+            "value": 0.0013347966659745499
         },
         {
             "name": "AvailabilitySecurity",
-            "value": "1.0"
+            "value": 0.6367426083383855
         },
         {
             "name": "AverageConfirmationLatency",
-            "value": "1128541.5679012346"
+            "value": 1871153.525925926,
+            "unit": "ms"
         },
         {
             "name": "Consistency",
-            "value": "-363140.14285714284"
+            "value": 583312.4642857142,
+            "unit": "ms"
         },
         {
             "name": "FaultTolerance",
-            "value": "(0.014134275618374558, 1128449.3456790124)"
+            "value": {
+                "throughputDelta": {
+                    "value": 5.714285714285714,
+                    "unit": "transactions/min"
+                },
+                "confirmationLatencyDelta": {
+                    "value": 1872060.6714285715,
+                    "unit": "ms"
+                }
+            }
         },
         {
             "name": "GeographicalDiversity",
-            "value": "1.2543104810303627"
+            "value": 0.5
         },
         {
             "name": "GiniCoefficient",
-            "value": "29.003375"
+            "value": 0.6157407407407407
         },
         {
             "name": "HerfindahlHirschmanIndex",
-            "value": "62.060461578125015"
+            "value": 0.2255535959239663
         },
         {
             "name": "NakamotoCoefficient",
-            "value": "4"
+            "value": 4
         },
         {
             "name": "Reliability",
-            "value": "0.030275904316032"
+            "value": 0.25573837570721497
         },
         {
             "name": "ShannonEntropy",
-            "value": "1.986473169040901"
+            "value": 2.6621972079898706
         },
         {
             "name": "StaleBlockRate",
-            "value": "0.03571428571428571"
+            "value": 0.5357142857142857,
+            "unit": "blocks/min"
         },
         {
             "name": "Throughput",
-            "value": "0.0141287553474816"
+            "value": 2.655744670805694,
+            "unit": "transactions/min"
         }
     ]
 }

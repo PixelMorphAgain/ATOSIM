@@ -1,0 +1,31 @@
+package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
+
+import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+
+/**
+ * Calculates transaction throughput
+ *
+ * @property numberOfConfirmedTransactions number of successfully processed transactions
+ * @property observationTime observation time in milliseconds
+ *
+ * @author Davis Riedel
+ */
+class TransactionThroughputCalculator(
+  private val numberOfConfirmedTransactions: Int,
+  private val observationTime: Long,
+) : OutputMetricCalculator<TransactionThroughput> {
+  override fun calculate(): TransactionThroughput {
+    return TransactionThroughput(
+      (numberOfConfirmedTransactions.toDouble() / observationTime.toDouble()) * 60 * 1000 // Convert ms to min
+    )
+  }
+
+  companion object : OutputMetricAverageCalculator<TransactionThroughput> {
+    override fun calculateAverage(measurements: List<TransactionThroughput>): TransactionThroughput {
+      return TransactionThroughput(measurements.averageOf { it.value })
+    }
+  }
+}

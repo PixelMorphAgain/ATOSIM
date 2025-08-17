@@ -1,16 +1,15 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
-import org.palladiosimulator.blockchainsystems.core.network.LinkThroughput
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
 import java.util.random.RandomGenerator
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.TransactionPropertiesSpecification
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionProperties
 
 /**
- * Adapter for a [ValueProvider] that provides [LinkThroughput] values based on the [LinkThroughputSpecification] from the metamodel.
+ * Adapter for a [ValueProvider] that provides [TransactionProperties]
  *
- * @param randomValueProvider the underlying random value provider that provides the throughput values.
+ * @param randomValueProvider the underlying random value provider that provides the transaction properties.
  *
  * @author Davis Riedel
  */

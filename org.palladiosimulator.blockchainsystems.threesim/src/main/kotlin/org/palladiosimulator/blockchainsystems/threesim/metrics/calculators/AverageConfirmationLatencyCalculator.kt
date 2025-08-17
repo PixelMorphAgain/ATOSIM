@@ -8,7 +8,7 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 /**
  * Calculates average confirmation latency that occurred during a single simulation round.
  *
- * @property confirmationLatencies each item is a duration between inclusion and confirmation of a transaction
+ * @property confirmationLatencies each item is a duration between inclusion and confirmation of a transaction, in ms
  *
  * @author Davis Riedel
  */

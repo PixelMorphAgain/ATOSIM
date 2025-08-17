@@ -4,7 +4,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.ShannonEntropy
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
-import kotlin.math.ln
+import kotlin.math.log
 
 /**
  * Calculates Shannon Entropy
@@ -22,7 +22,7 @@ class ShannonEntropyCalculator(
     val totalNumOfBlocksProposed = blocksProposedPerNode.sum();
     val sum = blocksProposedPerNode.sumOf {
       val b = it.toDouble() / totalNumOfBlocksProposed // Probability of block proposed by node i
-      b * ln(b)
+      b * log(b, 2.0)
     }
     val result = -1 * k * sum
     return ShannonEntropy(result)

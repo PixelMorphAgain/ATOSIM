@@ -17,4 +17,5 @@ class Consistency(
   }
 
   override val name: String = NAME
+  override val unit: String? = "ms"
 }

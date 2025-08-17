@@ -23,7 +23,10 @@ class ThroughputValueProviderAdapter(
       randomGenerator: RandomGenerator
     ): ThroughputValueProviderAdapter {
       val valuesToProbabilitiesMapping = dynamicLinkThroughputSpecification.values.associate {
-        LinkThroughput(it.throughput, it.duration) to it.probability
+        LinkThroughput(
+          it.throughput, // in Mbps
+          it.duration
+        ) to it.probability
       }
 
       val valueProvider = RandomValueProvider.create(

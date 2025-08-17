@@ -23,8 +23,9 @@ interface BlockFactory {
    * @param originId            the id of the origin blockchain system node
    * @param blockMinedTimestamp the timestamp at which the block was mined
    * @param transactions        the set of transactions included in the block
-   * @param blockSize           the size of the block
+   * @param blockSize           the size of the block in bytes
    * @param transactions        the set of transactions included in the block
+   *
    * @return a @code{Block} instance
    */
   fun createBlock(

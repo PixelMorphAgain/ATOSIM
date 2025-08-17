@@ -13,12 +13,16 @@ abstract class NumberVerifier : VerifyListener {
 
 object LongVerifier : NumberVerifier() {
   override fun verifyText(e: VerifyEvent) {
-    getNewText(e).toLongOrNull() ?: run { e.doit = false }
+    val text = getNewText(e)
+    if (text.isEmpty()) return
+    text.toLongOrNull() ?: run { e.doit = false }
   }
 }
 
 object DoubleVerifier : NumberVerifier() {
   override fun verifyText(e: VerifyEvent) {
-    getNewText(e).toDoubleOrNull() ?: run { e.doit = false }
+    val text = getNewText(e)
+    if (text.isEmpty()) return
+    text.toDoubleOrNull() ?: run { e.doit = false }
   }
 }

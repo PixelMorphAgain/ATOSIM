@@ -15,7 +15,7 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
  */
 class ReliabilityCalculator(
   private val timespan: Long,
-  private val meanTimeBetweenFailures: Long,
+  private val meanTimeBetweenFailures: Double,
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
     val r = timespan.toDouble() / meanTimeBetweenFailures

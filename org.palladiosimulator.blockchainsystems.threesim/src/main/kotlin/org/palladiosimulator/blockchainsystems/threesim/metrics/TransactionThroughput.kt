@@ -4,14 +4,14 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 import kotlinx.serialization.Serializable
 
 /**
- * Throughput
+ * Transaction Throughput
  *
- * @property value the throughput value in transactions per second
+ * @property value the throughput value in transactions per minute
  *
  * @author Davis Riedel
  */
 @Serializable
-class Throughput(
+class TransactionThroughput(
   override val value: Double,
 ) : OutputMetric<Double> {
   companion object {
@@ -19,4 +19,5 @@ class Throughput(
   }
 
   override val name: String = NAME
+  override val unit: String? = "transactions/min"
 }

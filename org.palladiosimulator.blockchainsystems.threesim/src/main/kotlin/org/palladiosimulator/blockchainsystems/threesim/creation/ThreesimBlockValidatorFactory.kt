@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.creation
 import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.BlockValidatorComponent
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidator
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockValidatorFactory
-import org.palladiosimulator.blockchainsystems.core.blockvalidation.BlockValidatorImpl
+import org.palladiosimulator.blockchainsystems.core.block.BlockValidatorImpl
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
 import java.util.random.RandomGenerator
 
@@ -28,7 +28,7 @@ class ThreesimBlockValidatorFactory(
       )
 
     val adapter = BlockValidationDurationProviderAdapter.create(
-      component.validationDuration,
+      component.validationDuration, // in ms
       RandomGenerator.of("Random")
     )
 

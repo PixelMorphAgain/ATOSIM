@@ -17,4 +17,5 @@ class StaleBlockRate(
   }
 
   override val name: String = NAME
+  override val unit: String? = "blocks/min"
 }

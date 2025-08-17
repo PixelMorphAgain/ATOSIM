@@ -16,3 +16,4 @@ docker-compose.*
 .env
 
 kls_database.db
+.tycho-consumer-pom.xml
