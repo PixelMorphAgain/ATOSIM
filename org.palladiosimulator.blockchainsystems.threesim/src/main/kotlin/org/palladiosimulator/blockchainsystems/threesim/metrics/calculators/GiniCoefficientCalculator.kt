@@ -14,13 +14,16 @@ import kotlin.math.abs
  * @author Davis Riedel
  */
 class GiniCoefficientCalculator(
-  private val tokensHeldPerNode: Collection<Double>
+  private val tokensHeldPerNode: List<Double>
 ) : OutputMetricCalculator<GiniCoefficient> {
   override fun calculate(): GiniCoefficient {
-    val sum = tokensHeldPerNode.sumOf { pi ->
-      tokensHeldPerNode.sumOf { pj -> abs(pi - pj) }
+    val range = (0 until tokensHeldPerNode.size)
+    val sum = range.sumOf { i ->
+      range.sumOf { j ->
+        abs(tokensHeldPerNode[i] - tokensHeldPerNode[j])
+      }
     }
-    val gini = sum / (2 * tokensHeldPerNode.count())
+    val gini = sum / (2 * tokensHeldPerNode.size * tokensHeldPerNode.sum())
     return GiniCoefficient(gini)
   }
 

@@ -8,22 +8,20 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 /**
  * Calculates availability regarding security
  *
- * @property meanTimeToFailure average time blockchain system operates correctly
+ * @property meanTimeBetweenFailures average time between consecutive failures
  * @property meanTimeToRepair average time to recover from failure
  *
  * @author Davis Riedel
  */
 class AvailabilitySecurityCalculator(
-  private val meanTimeToFailure: Long,
-  private val meanTimeToRepair: Long,
+  private val meanTimeBetweenFailures: Double,
+  private val meanTimeToRepair: Double,
 ) : OutputMetricCalculator<AvailabilitySecurity> {
   override fun calculate(): AvailabilitySecurity {
-    // average time between consecutive failures
-    val meanTimeBetweenFailure = meanTimeToFailure + meanTimeToRepair
-    val a = meanTimeToFailure.toDouble() / meanTimeBetweenFailure
-    return AvailabilitySecurity(a)
+    return AvailabilitySecurity(
+      meanTimeBetweenFailures / (meanTimeBetweenFailures + meanTimeToRepair)
+    )
   }
-
 
   companion object : OutputMetricAverageCalculator<AvailabilitySecurity> {
     override fun calculateAverage(measurements: List<AvailabilitySecurity>): AvailabilitySecurity {

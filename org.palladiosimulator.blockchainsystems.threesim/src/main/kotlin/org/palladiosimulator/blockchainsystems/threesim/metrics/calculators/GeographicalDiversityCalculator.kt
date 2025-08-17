@@ -22,65 +22,66 @@ class GeographicalDiversityCalculator(
    * Calculates the geographical diversity based on the number of nodes, regions, and nodes per region.
    */
   override fun calculate(): GeographicalDiversity {
-    val dqGeoTarget = calculateDqGeoTarget()
-    val dqGeoExcl = calculateDqGeoExcl()
-    val dqGeoEqual = calculateDqGeoEqual()
+    val gTarget = calculateGTarget()
+    val gExcl = calculateGExcl()
+    val gEqual = calculateGEqual()
 
-    val result = (dqGeoExcl - dqGeoTarget - dqGeoEqual) / (dqGeoExcl - dqGeoEqual)
+    val result = (gExcl - gTarget - gEqual) / (gExcl - gEqual)
 
     return GeographicalDiversity(result)
   }
 
   /**
-   * Calculates the first factor of the geographical diversity formula.
-   *
-   * @param numberOfRegionsWithNodes the number of regions that have at least one node
-   * @return the first factor of the geographical diversity formula
+   * Calculates G_aux which is used to compute G_excl, G_target, and G_equal.
    */
-  private fun calculateFirstFactor(numberOfRegionsWithNodes: Double): Double {
-    val a = log(numberOfRegions.toDouble(), numberOfRegionsWithNodes + 1.0)
-    val b = log(numberOfRegions.toDouble(), numberOfRegions + 1.0)
-    val c = log(numberOfRegions.toDouble(), 2.0)
-    val d = log(numberOfRegions + 1.0, numberOfRegions.toDouble())
-    return 2.0 - (a - b) / (c - d)
+  private fun calculateGAux(
+    numberOfNodesPerRegion: List<Double>
+  ): Double {
+    val r = numberOfRegions.toDouble()
+
+    val numberOfRegionsWithNodes = numberOfNodesPerRegion.count { it > 0 }.toDouble()
+
+    val a = log(r, numberOfRegionsWithNodes + 1.0)
+    val b = log(r, r + 1.0)
+    val c = log(r, 2.0)
+    val first = 2.0 - (a - b) / (c - b)
+
+    val mu = numberOfNodes.toDouble() / r
+    val sum = (0 until numberOfRegions).sumOf { i ->
+      // Used so that for G_excl an array with a single element can be passed
+      val noOfNodesInRegion = if (i < numberOfNodesPerRegion.size) {
+        numberOfNodesPerRegion[i]
+      } else {
+        0.0
+      }
+      (noOfNodesInRegion - mu).pow(2)
+    }
+    val second = sqrt(sum / r)
+
+    return first * second
   }
 
   /**
    * @return the geographical diversity target
    */
-  private fun calculateDqGeoTarget(): Double {
-    val numberOfRegionsWithNodes = numberOfNodesPerRegion.count { it > 0 }.toDouble()
-    val mu = numberOfNodes.toDouble() / numberOfRegions.toDouble()
-
-    val first = calculateFirstFactor(numberOfRegionsWithNodes)
-
-    val e = numberOfNodesPerRegion.sumOf { (it - mu).pow(2) }
-    val second = sqrt(e / numberOfRegions)
-
-    return first * second
+  private fun calculateGTarget(): Double {
+    return calculateGAux(numberOfNodesPerRegion.map { it.toDouble() })
   }
 
   /**
-   * @return the geographical diversity, if all nodes were located in a single country
+   * @return the geographical diversity, if all nodes were located in a single region
    */
-  private fun calculateDqGeoExcl(): Double {
-    val numberOfRegionsWithNodes = 1.0
-    val mu = numberOfNodes / numberOfRegions.toDouble()
-
-    val first = calculateFirstFactor(numberOfRegionsWithNodes)
-
-    val e = (numberOfNodes - mu).pow(2) + (numberOfRegions - 1) * (0 - mu).pow(2)
-    val second = sqrt(e / numberOfRegions)
-
-    return first * second
+  private fun calculateGExcl(): Double {
+    return calculateGAux(listOf(numberOfNodes.toDouble()))
   }
 
   /**
-   * @return the geographical diversity, if all nodes are equally distributed across all countries
+   * @return the geographical diversity, if all nodes are equally distributed across all regions
    */
-  private fun calculateDqGeoEqual(): Double {
-    // NOTE: the second factor evaluates to 0
-    return calculateFirstFactor(numberOfRegions.toDouble())
+  private fun calculateGEqual(): Double {
+    return calculateGAux(
+      List(numberOfRegions) { numberOfNodes.toDouble() / numberOfRegions.toDouble() }
+    )
   }
 
   companion object : OutputMetricAverageCalculator<GeographicalDiversity> {

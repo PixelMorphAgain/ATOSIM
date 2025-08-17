@@ -20,4 +20,5 @@ data class AvailabilityScalability(
   }
 
   override val name: String = NAME
+  override val unit: String? = null
 }

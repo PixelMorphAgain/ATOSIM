@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.Throughput
+import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.CensorshipResistance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
@@ -18,7 +18,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.StaleBlockRate
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilityScalabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilitySecurityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.CensorshipResistanceCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ConsistencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.FaultToleranceCalculator
@@ -53,23 +53,19 @@ data class ThreesimAverageSimulationRoundResult(
         .groupBy { it.name }
         .mapNotNull {
           when (it.key) {
-            AvailabilityScalability.Companion.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value as List<AvailabilityScalability>)
-            AvailabilitySecurity.Companion.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
-            AverageConfirmationLatency.Companion.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(
-              it.value as List<AverageConfirmationLatency>
-            )
-
-            CensorshipResistance.Companion.NAME -> CensorshipResistanceCalculator.calculateAverage(it.value as List<CensorshipResistance>)
-            Consistency.Companion.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
-            FaultTolerance.Companion.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
-            GeographicalDiversity.Companion.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value as List<GeographicalDiversity>)
-            GiniCoefficient.Companion.NAME -> GiniCoefficientCalculator.calculateAverage(it.value as List<GiniCoefficient>)
-            HerfindahlHirschmanIndex.Companion.NAME -> HerfindahlHirschmanIndexCalculator.calculateAverage(it.value as List<HerfindahlHirschmanIndex>)
-            NakamotoCoefficient.Companion.NAME -> NakamotoCoefficientCalculator.calculateAverage(it.value as List<NakamotoCoefficient>)
-            Reliability.Companion.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
-            ShannonEntropy.Companion.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
-            StaleBlockRate.Companion.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
-            Throughput.Companion.NAME -> ThroughputCalculator.calculateAverage(it.value as List<Throughput>)
+            AvailabilityScalability.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value as List<AvailabilityScalability>)
+            AvailabilitySecurity.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
+            AverageConfirmationLatency.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(it.value as List<AverageConfirmationLatency>)
+            Consistency.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
+            FaultTolerance.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
+            GeographicalDiversity.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value as List<GeographicalDiversity>)
+            GiniCoefficient.NAME -> GiniCoefficientCalculator.calculateAverage(it.value as List<GiniCoefficient>)
+            HerfindahlHirschmanIndex.NAME -> HerfindahlHirschmanIndexCalculator.calculateAverage(it.value as List<HerfindahlHirschmanIndex>)
+            NakamotoCoefficient.NAME -> NakamotoCoefficientCalculator.calculateAverage(it.value as List<NakamotoCoefficient>)
+            Reliability.NAME -> ReliabilityCalculator.calculateAverage(it.value as List<Reliability>)
+            ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
+            StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
+            TransactionThroughput.NAME -> TransactionThroughputCalculator.calculateAverage(it.value as List<TransactionThroughput>)
             else -> null
           }
         }

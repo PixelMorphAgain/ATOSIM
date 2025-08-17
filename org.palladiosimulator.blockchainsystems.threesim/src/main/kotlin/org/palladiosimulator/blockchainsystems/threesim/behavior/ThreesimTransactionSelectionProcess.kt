@@ -13,7 +13,7 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
  * @author Davis Riedel
  */
 class ThreesimTransactionSelectionProcess(
-  private val maxBlockSize: Int
+  private val maxBlockSize: Int // in byte
 ) : BlockchainNodeObject(), TransactionSelectionProcess {
   override fun selectTransactionsForBlock(
     context: BlockchainSystemNodeContext

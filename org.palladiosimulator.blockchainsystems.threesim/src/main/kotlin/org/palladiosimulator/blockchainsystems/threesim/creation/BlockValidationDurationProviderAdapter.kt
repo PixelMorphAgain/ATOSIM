@@ -7,7 +7,7 @@ import java.util.random.RandomGenerator
 
 /**
  * Adapter for providing block validation durations based on a
- * [BlockValiationDurationSpecification] using a [RandomValueProvider].
+ * [BlockValidationDurationSpecification] using a [RandomValueProvider].
  *
  * @author Yannik Sproll, Davis Riedel
  */
@@ -15,7 +15,7 @@ class BlockValidationDurationProviderAdapter private constructor(
   private val randomValueProvider: RandomValueProvider<Long>
 ) : ValueProvider<Long> {
   override fun getValue(): Long {
-    return randomValueProvider.value
+    return randomValueProvider.value // in ms
   }
 
   companion object {

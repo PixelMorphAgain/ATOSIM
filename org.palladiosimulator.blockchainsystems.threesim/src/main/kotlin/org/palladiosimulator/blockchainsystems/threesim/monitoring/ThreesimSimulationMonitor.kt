@@ -14,9 +14,8 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
-import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
 
@@ -25,7 +24,7 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
  *
  * @property maxBlockchainLengthCondition Condition to check if the maximum blockchain length has been exceeded.
  * @property throughputMonitoringInterval Interval for monitoring throughput in milliseconds.
- * @property failureThroughputThreshold Throughput threshold below which a failure is considered to have occurred, in transactions per second.
+ * @property failureThroughputThreshold Throughput threshold below which a failure is considered to have occurred, in transactions per minute.
  *
  * @author Davis Riedel
  */
@@ -87,8 +86,8 @@ class ThreesimSimulationMonitor(
       numberOfConfirmedTransactions = calculateNumberOfConfirmedTransactions(),
       transactionConfirmationDurations = calculateTransactionConfirmationDurations(),
       blockProposalTimeAndConfirmationTimePerConfirmedBlock = calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(),
-      meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime).toLong(),
-      meanTimeToRepair = failureLog.calculateMeanFailureDuration().toLong(),
+      meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime),
+      meanTimeToRepair = failureLog.calculateMeanFailureDuration(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
       tokensHeldPerNode = calculateTokensHeldPerNode(),
@@ -134,12 +133,12 @@ class ThreesimSimulationMonitor(
     when (event.eventType) {
 
       ThroughputMonitoringTraceEvent.EVENT_TYPE -> {
-        val throughput = ThroughputCalculator(
+        val throughput = TransactionThroughputCalculator(
           calculateNumberOfConfirmedTransactions(
             sinceLastThroughputCheck = true
           ),
           throughputMonitoringInterval
-        ).calculate().value // in transactions per second
+        ).calculate().value // in transactions per minute
 
         val trxConfDurations = calculateTransactionConfirmationDurations(
           sinceLastThroughputCheck = true
@@ -234,17 +233,12 @@ class ThreesimSimulationMonitor(
     return confirmedBlocks.getNumberOfValidBlocks()
   }
 
-  private fun getConfirmedTransactions(
-    sinceLastThroughputCheck: Boolean = false
-  ): Collection<Pair<Set<Transaction>, Long?>> {
-    return getConfirmedValidBlocks(sinceLastThroughputCheck)
-      .map { Pair(it.first.transactions, it.second) }
-  }
-
   private fun calculateNumberOfConfirmedTransactions(
     sinceLastThroughputCheck: Boolean = false
   ): Int {
-    return getConfirmedTransactions(sinceLastThroughputCheck).size
+    return getConfirmedValidBlocks(sinceLastThroughputCheck)
+      .flatMap { it.first.transactions }
+      .size
   }
 
   private fun calculateNumberOfStaleBlocks(): Int {
@@ -279,18 +273,22 @@ class ThreesimSimulationMonitor(
       .map { Pair(it.first.blockMinedTimestamp, it.second) }
   }
 
-  private fun calculateTokensHeldPerNode(): Collection<Double> {
+  private fun calculateTokensHeldPerNode(): List<Double> {
     // lateinit not possible for primitive types, so use a nullable type and manually check that it was initialized
     val blockReward = this.blockReward ?: throw IllegalStateException("Block reward is not set")
 
-    return confirmedBlocks.getValidBlocks()
-      .filter { it.first.originId != null } // Filter out the genesis block
-      .groupingBy { it.first.originId!! } // Group blocks by the node that created them
-      .fold(0.0) { acc, block ->
+    val blocks = confirmedBlocks.getValidBlocks()
+      .filter { it.first.originId != null } // Filter out genesis block
+      .groupBy { it.first.originId }
+
+    // NOTE: cannot do a grouping on blocks, because then nodes that did not propose any blocks would be excluded
+    return nodes.map { node ->
+      blocks[node.id]?.fold(0.0) { acc, block ->
         // Calculate the total tokens held by each node, based on the blocks they created
         // Each block contributes its reward and the sum of transaction fees
         acc + blockReward + block.first.transactions.sumOf { it.fee }
-      }.values
+      } ?: 0.0 // If no blocks were proposed, the node holds 0 tokens
+    }
 
     // NOTE: The fee does not need to be deducted anywhere, because miners do not send transactions between each other,
     // rather, 3SIM creates random transactions sent from anonymous users to the miners.

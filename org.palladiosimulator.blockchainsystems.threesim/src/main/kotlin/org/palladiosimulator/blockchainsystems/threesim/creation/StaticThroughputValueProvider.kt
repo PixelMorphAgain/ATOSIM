@@ -3,6 +3,13 @@ package org.palladiosimulator.blockchainsystems.threesim.creation
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationContext
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
 
+/**
+ * A static value provider for throughput that returns a fixed value.
+ *
+ * @property throughput The fixed throughput value to be returned, in Megabits per second (Mbps).
+ *
+ * @author Davis Riedel
+ */
 class StaticThroughputValueProvider(
   private val throughput: Long
 ) : SimulationLifecycleAwareValueProvider<Long> {

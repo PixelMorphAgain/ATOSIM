@@ -1,10 +1,10 @@
-<blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" id="_90301abc08cf4130bcc9981f9599aa9e">
-	<Components xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" id="_8315ede2881e4181bb58a2ae5de8d724">
-		<ValidationDuration id="_c4fdc43300b941c58f07584f944ccbac">
-			<Values id="_dfcd00ed22d641d7b473178f2ee11aa1" Probability="0.5" Duration="10"/>
-			<Values id="_39b7f98d0c444c388e3f29a0e8308356" Probability="0.3" Duration="20"/>
-			<Values id="_33c2572c52524a19a9600a903ce14a4b" Probability="0.2" Duration="30"/>
+<blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:blockchainsystemComponentRepository="http://palladiosimulator.org/BlockchainSystemComponentModel/BlockchainSystemComponentRepository/1.0" id="_b6f4d35f0ffa49259efdfe0c0b62bf36">
+	<Components xsi:type="blockchainsystemComponentRepository:BlockValidatorComponent" id="_709337d906a64339bf9ff5349953f38a">
+		<ValidationDuration id="_1d2ca9a3859244cc9d74cca4618849d4">
+			<Values id="_fbf36ecd82e64e8f902b49b37f87b99e" Probability="0.5" Duration="10000"/>
+			<Values id="_fc244b2a73b9446ca7cd26bba2fd93ca" Probability="0.3" Duration="20000"/>
+			<Values id="_0f112527d4d14f96bd647da5d1bac4f4" Probability="0.2" Duration="30000"/>
 		</ValidationDuration>
 	</Components>
-	<Components xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" id="_906347f872764bbc96ae4ac0569f098a" IsMiningProcessEnabled="true"/>
+	<Components xsi:type="blockchainsystemComponentRepository:MiningProcessComponent" id="_b5c0247b0e564c4599c4e9870d3413e6" IsMiningProcessEnabled="true"/>
 </blockchainsystemComponentRepository:BlockchainSystemNodeComponentRepository>

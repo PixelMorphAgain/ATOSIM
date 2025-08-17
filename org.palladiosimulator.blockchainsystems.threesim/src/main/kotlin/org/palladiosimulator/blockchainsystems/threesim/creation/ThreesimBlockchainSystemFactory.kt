@@ -129,7 +129,7 @@ abstract class ThreesimBlockchainSystemFactory(
       nodeAllocationResolver
     )
     val transactionSelectionProcessFactory = ThreesimTransactionSelectionProcessFactory(
-      maxBlockSize = designBlockchainSystem.specification.maxBlockSize
+      maxBlockSize = designBlockchainSystem.specification.maxBlockSize // in byte
     )
     val blockValidatorFactory = ThreesimBlockValidatorFactory(nodeAllocationResolver)
     val behaviorFactory = ThreesimBlockchainSystemNodeBehaviorFactory()

@@ -5,8 +5,6 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions
  *
  * @param T the type of the value of the output metric
  *
- * @property value the computed value of the output metric
- *
  * @author Davis Riedel
  */
 interface OutputMetric<T> {
@@ -16,7 +14,12 @@ interface OutputMetric<T> {
   val value: T
 
   /**
-   * The name of the output metric, used for identification in results
+   * The name of the output metric, used in results
    */
   val name: String
+
+  /**
+   * The unit of the output metric, used in results
+   */
+  val unit: String?
 }

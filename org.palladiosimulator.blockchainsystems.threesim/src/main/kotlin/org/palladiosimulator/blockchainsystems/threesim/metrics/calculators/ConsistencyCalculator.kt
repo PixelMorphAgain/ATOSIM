@@ -19,7 +19,7 @@ class ConsistencyCalculator(
     val n = blockProposalTimeAndConfirmationTimePerConfirmedBlock.size
     val result = (1.0 / n) *
       blockProposalTimeAndConfirmationTimePerConfirmedBlock
-        .sumOf { (blockConfirmationTime, blockProposalTime) ->
+        .sumOf { (blockProposalTime, blockConfirmationTime) ->
           blockConfirmationTime - blockProposalTime
         }
 

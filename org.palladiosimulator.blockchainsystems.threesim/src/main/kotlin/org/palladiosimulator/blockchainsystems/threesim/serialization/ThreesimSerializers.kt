@@ -51,7 +51,7 @@ object ThreesimSerializers {
         subclass(Reliability::class)
         subclass(ShannonEntropy::class)
         subclass(StaleBlockRate::class)
-        subclass(Throughput::class)
+        subclass(TransactionThroughput::class)
       }
       polymorphic(TraceEvent::class) {
         subclass(ThroughputMonitoringTraceEvent::class)

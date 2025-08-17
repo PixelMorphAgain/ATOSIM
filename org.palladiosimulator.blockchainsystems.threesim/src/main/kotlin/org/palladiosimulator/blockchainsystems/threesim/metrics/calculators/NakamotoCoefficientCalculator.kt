@@ -9,7 +9,7 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
  * Calculates the Nakamoto coefficient
  *
  * @property hashingPowerPerNode the hashing power of each validating node in the system
- * @property threshold the threshold to compute the Nakamoto coefficient for, 0.0 .. 100.0 %
+ * @property threshold the threshold to compute the Nakamoto coefficient for, 0.0 ... 100.0 %
  *
  * @author Davis Riedel
  */

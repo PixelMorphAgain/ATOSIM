@@ -46,7 +46,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
       message,
       simulationContext.systemClock.currentTime,
       recipientNetworkEndpoint,
-      networkInterface!!
+      networkInterface!! // save because checked above
     )
     traceEventLogger.logEvent(event)
   }
