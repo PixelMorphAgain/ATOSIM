@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
         id="org.palladiosimulator.blockchainsystems.feature.bscm"
-        label="BSCM"
+        label="Blockchain Systems Component Model (BSCM)"
         version="0.0.1.qualifier"
         provider-name="Palladio Blockchain Systems">
 
