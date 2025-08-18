@@ -4,7 +4,7 @@
     <extension
             point="org.eclipse.debug.core.launchConfigurationTypes">
         <launchConfigurationType
-                name="Blockchain System Simulation"
+                name="3SIM Simulation"
                 delegate="org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimPluginLaunch"
                 modes="run, debug"
                 id="org.palladiosimulator.blockchainsystems.threesim_plugin.PluginLaunchConfigurationType">
@@ -14,7 +14,7 @@
     <extension
             point="org.eclipse.ui.views">
         <view
-                name="Simulation Results Explorer"
+                name="3SIM Results Explorer"
                 class="org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimSimulationResultsExplorer"
                 id="org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimSimulationResultsExplorer">
         </view>

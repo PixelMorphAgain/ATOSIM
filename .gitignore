@@ -17,3 +17,5 @@ docker-compose.*
 
 kls_database.db
 .tycho-consumer-pom.xml
+
+.build-cache

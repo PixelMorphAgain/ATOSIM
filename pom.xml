@@ -24,6 +24,11 @@
             <layout>p2</layout>
         </repository>
         <repository>
+            <id>local-cache-repo</id>
+            <url>file://${maven.multiModuleProjectDirectory}/.build-cache/local-cache-repo/</url>
+            <layout>p2</layout>
+        </repository>
+        <repository>
             <id>mavenCentral</id>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
@@ -46,6 +51,77 @@
             ${project.basedir}/releng/org.palladiosimulator.blockchainsystems.target_platform/tp.target
         </org.palladiosimulator.maven.tychotprefresh.tplocation.2>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>build-all</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>releng</module>
+                <module>features</module>
+                <module>org.palladiosimulator.blockchainsystems.kotlin-deps</module>
+                <module>org.palladiosimulator.blockchainsystems.core</module>
+                <module>org.palladiosimulator.blockchainsystems.loggers</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm.edit</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm.editor</module>
+                <module>org.palladiosimulator.blockchainsystems.plugin</module>
+                <module>org.palladiosimulator.blockchainsystems.threesim</module>
+                <module>org.palladiosimulator.blockchainsystems.threesim_plugin</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>build-kotlin-deps-feature</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>releng</module>
+                <module>features</module>
+                <module>org.palladiosimulator.blockchainsystems.kotlin-deps</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>build-model-feature</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>releng</module>
+                <module>features</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm.edit</module>
+                <module>org.palladiosimulator.blockchainsystems.bscm.editor</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>build-core-feature</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>releng</module>
+                <module>features</module>
+                <module>org.palladiosimulator.blockchainsystems.core</module>
+                <module>org.palladiosimulator.blockchainsystems.loggers</module>
+                <module>org.palladiosimulator.blockchainsystems.plugin</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>build-threesim-feature</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>releng</module>
+                <module>features</module>
+                <module>org.palladiosimulator.blockchainsystems.threesim</module>
+                <module>org.palladiosimulator.blockchainsystems.threesim_plugin</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -141,20 +217,6 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <modules>
-        <module>releng</module>
-        <module>features</module>
-        <module>org.palladiosimulator.blockchainsystems.kotlin-deps</module>
-        <module>org.palladiosimulator.blockchainsystems.core</module>
-        <module>org.palladiosimulator.blockchainsystems.loggers</module>
-        <module>org.palladiosimulator.blockchainsystems.bscm</module>
-        <module>org.palladiosimulator.blockchainsystems.bscm.edit</module>
-        <module>org.palladiosimulator.blockchainsystems.bscm.editor</module>
-        <module>org.palladiosimulator.blockchainsystems.plugin</module>
-        <module>org.palladiosimulator.blockchainsystems.threesim</module>
-        <module>org.palladiosimulator.blockchainsystems.threesim_plugin</module>
-    </modules>
 
     <dependencies>
         <dependency>
