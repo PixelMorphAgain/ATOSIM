@@ -125,8 +125,7 @@ abstract class ThreesimBlockchainSystemFactory(
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
     val miningProcessFactory = ThreesimMiningProcessFactory(
       designBlockchainSystem.specification.meanBlockTime,
-      resourcePowerCalculator,
-      nodeAllocationResolver
+      resourcePowerCalculator
     )
     val transactionSelectionProcessFactory = ThreesimTransactionSelectionProcessFactory(
       maxBlockSize = designBlockchainSystem.specification.maxBlockSize // in byte

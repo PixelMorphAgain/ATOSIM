@@ -6,7 +6,7 @@ import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.Node
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator
 
 /**
- * Calculates the global resource power of a blockchain system with an explicit network topology.
+ * Calculates the global resource power (MH/s) of a blockchain system with an explicit network topology.
  * Allows to retrieve resource power of specific nodes in the network.
  *
  * @author Yannik Sproll, Davis Riedel
@@ -23,11 +23,11 @@ class ExplicitNetworkResourcePowerCalculator(
 
   override fun calculateGlobalResourcePower(): Double {
     // Returns the pre-calculated global resource power
-    return globalResourcePower
+    return globalResourcePower // in MH/s
   }
 
   override fun getResourcePowerOfNode(nodeId: String): Double? {
-    return resourcePowerPerNode[nodeId]
+    return resourcePowerPerNode[nodeId] // in MH/s
   }
 
   private fun getResourcePowerOfNode(node: Node): Double {

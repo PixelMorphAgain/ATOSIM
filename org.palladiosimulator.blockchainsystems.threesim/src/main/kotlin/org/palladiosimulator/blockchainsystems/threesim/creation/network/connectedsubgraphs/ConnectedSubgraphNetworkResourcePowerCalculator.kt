@@ -36,11 +36,11 @@ class ConnectedSubgraphNetworkResourcePowerCalculator(
   }
 
   override fun calculateGlobalResourcePower(): Double {
-    return globalResourcePower
+    return globalResourcePower // in MH/s
   }
 
   override fun getResourcePowerOfNode(nodeId: String): Double? {
     val nodeTemplateId = nodeIdToNodeTemplateIdMapping[nodeId]
-    return resourcePowerPerNodeTemplate[nodeTemplateId]
+    return resourcePowerPerNodeTemplate[nodeTemplateId] // in MH/s
   }
 }

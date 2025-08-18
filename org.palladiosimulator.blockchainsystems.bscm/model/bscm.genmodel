@@ -160,7 +160,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//nodeenvironment/NodeEnvironment/ResourceContainers"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//nodeenvironment/NodeResourceContainer">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
+        <genFeatures documentation="Unit: MH/s" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Geographicalregions" disposableProviderFactory="true"
