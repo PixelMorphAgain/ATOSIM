@@ -1,0 +1,1774 @@
+{
+    "type": "ThreesimMonteCarloSimulationResult",
+    "simulationType": "3SIM Monte-Carlo Simulation",
+    "simulationRoundResults": [
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002187136901100403
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5485653831095174
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2652084.515625,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 805156.6363636364,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2653002.0588235296,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.53515625
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.06875000000000006
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.1131538039651493
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.789710527861113
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.6666666666666667,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.316698809776283,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0031368473721686586
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.556035980388372
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2898063.3312883438,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 754510.0714285714,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.235294117647059,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2792942.8970588236,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4801829201369231
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05072377769714431
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.150431623041496
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.803932550583285
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.8571428571428571,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.8861811196741418,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002646041115408101
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5421205967264051
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3241911.717948718,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 834802.5750000001,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3300418.611111111,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4663461538461538
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04764409379794
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.09130897502970078
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.794706595318657
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.0,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.5826889005148137,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.003252935576007617
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5191591880178591
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2885511.286585366,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 780315.9523809523,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.4,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2738060.5375,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.32164634146341453
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.02534205829863175
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.1190817605444418
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8961520982760938
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.9523809523809523,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.9529408729288458,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0018298261665141812
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.6423257038170167
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3837238.970588235,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 1212922.7714285713,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2898686.03125,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4669117647058823
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04775086505190314
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.07302853387103973
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.865595327304867
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.1428571428571428,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.1035422896068223,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002555350721886579
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.532367431768755
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2935968.9857142856,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 821686.75,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2974159.7954545454,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4767857142857143
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05610884353741497
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.09882021473632661
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.7794040502423707
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.8888888888888888,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.5372033403428584,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.003013619240799768
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.4975559158041732
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3235656.685897436,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 844088.025,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3305513.4166666665,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.47275641025641024
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05325443786982247
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.07012669166033902
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.7632618047122315
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.975,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.8232939831688146,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0017689461503309404
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5555191171145913
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2947805.7083333335,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 875581.1290322581,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2711468.3125,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.475
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05185185185185183
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.10603974399060251
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8114028684070456
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.967741935483871,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.060397439906025,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0026986112025274797
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5396198450865217
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3255568.3963414636,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 913886.857142857,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2620119.625,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.3673780487804879
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.029149315883402756
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.06917484782768743
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.866373382059274
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.0714285714285714,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.6206678633915341,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0026902310983242103
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.526305960153903
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3054301.173611111,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 805675.1891891892,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3407703.0535714286,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.39930555555555575
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05514403292181072
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.13378905850781347
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.77117996875604
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.5405405405405406,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.6054687020937615,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0019982827257825305
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.6474373456651915
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3063413.5,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 1173553.9090909092,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 1817338.5,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.5429687500000001
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.07083333333333336
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.018777620706457904
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.795987896850874
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.606060606060606,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.2017677252133059,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 3.995405283923488E-4
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.8067412283165168
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 1436307.8125,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 991555.0,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 1013088.75,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.7656249999999998
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.2
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.01497217795032381
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.9151738927068425
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 2.4444444444444446,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 0.239554847205181,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002363547346918103
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.6134541160372089
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3183599.4285714286,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 839536.3055555555,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2312516.625,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4446428571428571
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04740136054421766
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.10126828398867416
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8628139785821602
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.0555555555555556,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.4177559758414382,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 8.901921767816935E-4
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.779278118869156
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 2119375.5147058824,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 990360.7222222221,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 1185444.5,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.525735294117647
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.06251441753171857
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.01573549472592112
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.856011620322465
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.9444444444444444,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 0.535006820681318,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0023524414748501135
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.6095996588190203
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3479180.673611111,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 834822.0,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3090187.875,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4409722222222222
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04362139917695476
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.11741049202986598
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.830361099185815
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.5405405405405406,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.4089259043583917,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.003214236716774788
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5427381995864035
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3059736.7195121953,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 741236.0238095238,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2710092.3653846155,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.5137195121951218
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.06722189173111243
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.11866323492591262
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.855757976231046
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.0238095238095237,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.9460770527849667,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0029842902456877944
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.521221900636112
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3307545.6226415094,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 758396.5853658537,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3428068.1458333335,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.49687500768217674
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.0600000038888325
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.1469709845360145
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.7568542777683214
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.975609756097561,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.7975681954789464,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002311111111111111
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5865066702294272
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3892389.576923077,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 1152057.85,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2297624.75,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4342948717948718
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.046241507779969306
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.062206804150615705
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8812793402238963
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.425,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.3863230639280073,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 7.90429720157478E-4
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.7606095090066336
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3265985.4423076925,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 1257851.7857142857,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 1258352.5,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.5624999999999999
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.07850098619329395
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.02736826740621807
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.799821252034856
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 2.7857142857142856,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 0.47438330170777987,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0024471304089022637
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5843648284244829
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3059103.0202702703,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 820739.5789473684,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.222222222222222,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2823073.152777778,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.43750000000000006
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.05254443632822021
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.1592372535554693
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.6624822851887764
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.1578947368421053,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.4729445953880909,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.003089035806445537
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5025731007925386
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3336094.6829268294,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 883702.6666666666,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3175416.3571428573,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.3887195121951219
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.03676383105294471
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.08997820840265248
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8113153544513585
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.8095238095238095,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.8445532722543758,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002876072107236403
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5367750585755197
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3487037.839285714,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 832232.8139534884,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3468753.09375,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.43452380952380937
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04096749811035525
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.15489344535686245
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.7672961768643
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.8837209302325582,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.7348065879968595,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002294089533216505
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.660993364576241
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3255858.2708333335,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 953088.3513513514,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.0,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 2086840.107142857,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.39583333333333337
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.035390946502057624
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.07638556249214264
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.8405151047273924
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.7837837837837838,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.3749401248585673,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.002527878374986554
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5737543287404516
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3123255.3120567375,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 808241.4864864865,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.266666666666667,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3009325.9,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.4444444470164231
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.04362141502810211
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.1509028300747903
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.802257548817993
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 1.4864864864864864,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.5198070743246739,
+                "unit": "transactions/min"
+            }
+        ],
+        [
+            {
+                "name": "AvailabilityScalability",
+                "value": 0.0028614300170987893
+            },
+            {
+                "name": "AvailabilitySecurity",
+                "value": 0.5432208801788517
+            },
+            {
+                "name": "AverageConfirmationLatency",
+                "value": 3170465.8780487804,
+                "unit": "ms"
+            },
+            {
+                "name": "Consistency",
+                "value": 823543.3095238095,
+                "unit": "ms"
+            },
+            {
+                "name": "FaultTolerance",
+                "value": {
+                    "throughputDelta": {
+                        "value": 4.25,
+                        "unit": "transactions/min"
+                    },
+                    "confirmationLatencyDelta": {
+                        "value": 3553454.171875,
+                        "unit": "ms"
+                    }
+                }
+            },
+            {
+                "name": "GeographicalDiversity",
+                "value": 0.23965468371272253
+            },
+            {
+                "name": "GiniCoefficient",
+                "value": 0.3551829268292682
+            },
+            {
+                "name": "HerfindahlHirschmanIndex",
+                "value": 0.02661114416022207
+            },
+            {
+                "name": "NakamotoCoefficient",
+                "value": 6,
+                "unit": "validating nodes"
+            },
+            {
+                "name": "Reliability",
+                "value": 0.156962736174417
+            },
+            {
+                "name": "ShannonEntropy",
+                "value": 3.7580773192911736
+            },
+            {
+                "name": "StaleBlockRate",
+                "value": 0.9761904761904762,
+                "unit": "blocks/min"
+            },
+            {
+                "name": "Throughput",
+                "value": 1.716125915506959,
+                "unit": "transactions/min"
+            }
+        ]
+    ],
+    "averageSimulationRoundResult": [
+        {
+            "name": "AvailabilityScalability",
+            "value": 0.002367170153576398
+        },
+        {
+            "name": "AvailabilitySecurity",
+            "value": 0.5891537372176348
+        },
+        {
+            "name": "AverageConfirmationLatency",
+            "value": 3087338.402645114,
+            "unit": "ms"
+        },
+        {
+            "name": "Consistency",
+            "value": 900381.7738261424,
+            "unit": "ms"
+        },
+        {
+            "name": "FaultTolerance",
+            "value": {
+                "throughputDelta": {
+                    "value": 4.054967320261437,
+                    "unit": "transactions/min"
+                },
+                "confirmationLatencyDelta": {
+                    "value": 2665266.045313702,
+                    "unit": "ms"
+                }
+            }
+        },
+        {
+            "name": "GeographicalDiversity",
+            "value": 0.2396546837127226
+        },
+        {
+            "name": "GiniCoefficient",
+            "value": 0.46580026812333586
+        },
+        {
+            "name": "HerfindahlHirschmanIndex",
+            "value": 0.05591813793085025
+        },
+        {
+            "name": "NakamotoCoefficient",
+            "value": 6,
+            "unit": "validating nodes"
+        },
+        {
+            "name": "Reliability",
+            "value": 0.09746754598603741
+        },
+        {
+            "name": "ShannonEntropy",
+            "value": 3.81350897187073
+        },
+        {
+            "name": "StaleBlockRate",
+            "value": 1.278457077404627,
+            "unit": "blocks/min"
+        },
+        {
+            "name": "Throughput",
+            "value": 1.4223849511573103,
+            "unit": "transactions/min"
+        }
+    ]
+}

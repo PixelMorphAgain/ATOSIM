@@ -87,7 +87,7 @@ class ThreesimSimulationMonitor(
       transactionConfirmationDurations = calculateTransactionConfirmationDurations(),
       blockProposalTimeAndConfirmationTimePerConfirmedBlock = calculateBlockProposalTimeAndConfirmationTimePerConfirmedBlock(),
       meanTimeBetweenFailures = calculateMeanTimeBetweenFailures(finalSystemTime),
-      meanTimeToRepair = failureLog.calculateMeanFailureDuration(),
+      meanTimeToRepair = calculateMeanTimeToRepair(),
       numberOfStaleBlocks = calculateNumberOfStaleBlocks(),
       numberOfConfirmedBlocks = calculateNumberOfConfirmedBlocks(),
       tokensHeldPerNode = calculateTokensHeldPerNode(),
@@ -295,7 +295,16 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {
-    return observationTime.toDouble() / failureLog.getNumberOfFailures()
+    val numFailures = failureLog.getNumberOfFailures()
+    if (numFailures <= 0) {
+      // NOTE: For simplicity, if no failures occurred, we return the observation time as the mean time between failures.
+      return observationTime.toDouble()
+    }
+    return observationTime.toDouble() / numFailures
+  }
+
+  private fun calculateMeanTimeToRepair(): Double {
+    return failureLog.calculateMeanFailureDuration()
   }
 
   private fun calculateNumberOfGeographicalRegions(): Int {

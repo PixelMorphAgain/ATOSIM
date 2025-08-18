@@ -21,5 +21,5 @@ class NakamotoCoefficient(
   }
 
   override val name: String = NAME
-  override val unit: String? = null
+  override val unit: String = "validating nodes"
 }
