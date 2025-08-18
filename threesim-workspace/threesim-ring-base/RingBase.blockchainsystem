@@ -100,19 +100,20 @@
       </Links>
     </Topology>
   </Network>
-  <Specification id="_6b08cc8093a3404982f000eb2d80c42e" MeanBlockTime="60000.0" NumOfRequiredSecurityConfirmations="6" MaxBlockSize="1000000" BlockReward="6000.0"/>
+  <Specification id="_6b08cc8093a3404982f000eb2d80c42e" MeanBlockTime="600000.0" NumOfRequiredSecurityConfirmations="6" MaxBlockSize="1000000" BlockReward="6000.0"/>
   <TransactionsSpecification id="_c4b3bd093aef4273a0218d9f1a8233f3" MeanTransactionCreationInterval="100.0">
     <TransactionPropertiesSpecification id="_9d2880e0dcb94fc49b17db43cc2a743d">
-      <Values id="_92b7c38ef5474d95994a808422eb91ac" Size="250" Fee="0.01" Probability="0.2" Amount="0.1"/>
-      <Values id="_816eaf3d9c6e49d7bf4e4d8b50830bf5" Size="500" Fee="0.03" Probability="0.2" Amount="0.1"/>
-      <Values id="_7f1cec0544414d6c832338a8f6c53239" Size="500" Fee="0.03" Probability="0.2" Amount="1.0"/>
-      <Values id="_2d3f587581244ea8b2fdade31dc38e01" Size="1000" Fee="0.03" Probability="0.2" Amount="10.0"/>
-      <Values id="_1826e7db1fa84621a0d49279576e82e6" Size="1000" Fee="0.02" Probability="0.2" Amount="10.0"/>
+      <Values id="_92b7c38ef5474d95994a808422eb91ac" Size="250" Fee="0.01" Probability="0.3" Amount="0.1"/>
+      <Values id="_816eaf3d9c6e49d7bf4e4d8b50830bf5" Size="500" Fee="0.02" Probability="0.2" Amount="0.5"/>
+      <Values id="_7f1cec0544414d6c832338a8f6c53239" Size="500" Fee="0.03" Probability="0.1" Amount="1.0"/>
+      <Values id="_2d3f587581244ea8b2fdade31dc38e01" Size="750" Fee="0.03" Probability="0.2" Amount="2.0"/>
+      <Values id="_tb4SwHyGEfCBpvG5LJROhw" Size="750" Fee="0.04" Probability="0.1" Amount="1.0"/>
+      <Values id="_1826e7db1fa84621a0d49279576e82e6" Size="1000" Fee="0.04" Probability="0.1" Amount="2.0"/>
     </TransactionPropertiesSpecification>
   </TransactionsSpecification>
   <GeographicalRegionsSpecification id="_e8ce21b4c39d439f8255b9bea03fbc46">
-    <Regions id="_bae972c7b3304d9eb776579fa687b89f" RegionName="eu-west-2"/>
-    <Regions id="_28aaa1d799014a98aaf9261a0c51efab" RegionName="ap-southeast-2"/>
-    <Regions id="_2f5fe246d03a49dab9777834de6aa4b5" RegionName="ap-northeast-1"/>
+    <Regions id="_bae972c7b3304d9eb776579fa687b89f" RegionName="Europe"/>
+    <Regions id="_28aaa1d799014a98aaf9261a0c51efab" RegionName="North America"/>
+    <Regions id="_2f5fe246d03a49dab9777834de6aa4b5" RegionName="Asia"/>
   </GeographicalRegionsSpecification>
 </blockchainsystem:BlockchainSystem>

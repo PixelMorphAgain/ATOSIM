@@ -123,7 +123,7 @@
     <AllocationContexts id="_7d18d287db9b48aab871f3964dfb94d4" AssemblyContext="_7e571c3bd644460d9fd2a80efb75f154" ResourceContainer="_1967e5c8b67a449480837bd866234b70"/>
     <AllocationContexts id="_5cb0c893063e4d81b13b82fdba88d7f8" AssemblyContext="_ba0ae693b8c84ff689206a2c587a9de2" ResourceContainer="_1967e5c8b67a449480837bd866234b70"/>
     <NodeAllocationEnvironment id="_b40b76117037413590786f047c04ca68">
-      <ResourceContainers id="_1967e5c8b67a449480837bd866234b70" ResourcePower="80.0"/>
+      <ResourceContainers id="_1967e5c8b67a449480837bd866234b70" ResourcePower="100.0"/>
     </NodeAllocationEnvironment>
     <NodeSystem id="_d310f8bf91624e5a9b21d74a708b99db" MiningProcessAssembly="_ba0ae693b8c84ff689206a2c587a9de2" BlockValidatorAssembly="_7e571c3bd644460d9fd2a80efb75f154">
       <AssemblyContexts id="_7e571c3bd644460d9fd2a80efb75f154">
