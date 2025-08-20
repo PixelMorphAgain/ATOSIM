@@ -20,7 +20,7 @@ class ReliabilityCalculator(
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
     return Reliability(
-      exp(timespan.toDouble() / meanTimeBetweenFailures)
+      exp(-1.0 * timespan.toDouble() / meanTimeBetweenFailures)
     )
   }
 
