@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation
+package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.debug.core.ILaunchConfiguration
@@ -13,6 +13,7 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.network.connect
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.explicit.ExplicitNetworkBlockchainSystemFactory
 import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSerializers
 import org.palladiosimulator.blockchainsystems.threesim.config.ThreesimAttributes
+import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
 
 /**
  * Utility class for initialization tasks.

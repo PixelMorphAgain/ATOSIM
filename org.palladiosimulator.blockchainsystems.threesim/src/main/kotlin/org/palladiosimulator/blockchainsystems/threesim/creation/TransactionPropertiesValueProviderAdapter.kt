@@ -3,7 +3,7 @@ package org.palladiosimulator.blockchainsystems.threesim.creation
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.ValueProvider
 import org.palladiosimulator.blockchainsystems.core.utils.RandomValueProvider
 import java.util.random.RandomGenerator
-import org.palladiosimulator.blockchainsystems.bscm.blockchainsystem.TransactionPropertiesSpecification
+import org.palladiosimulator.blockchainsystems.bscm.transactions.TransactionPropertiesSpecification
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionProperties
 
 /**

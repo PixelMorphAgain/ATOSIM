@@ -1,15 +1,17 @@
-package org.palladiosimulator.blockchainsystems.threesim.simulation
+package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simulation
 import org.palladiosimulator.blockchainsystems.plugin.config.SimulationType
-import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
 import org.palladiosimulator.blockchainsystems.plugin.simulation.MonteCarloSimulationProgressMonitorAdapter
-import org.palladiosimulator.blockchainsystems.threesim.creation.InitializationUtils
+import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimMonteCarloSimulation
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSingleSimulation
 
 /**
- * Factory for creating instances of [Simulation] for the 3SIM blockchain simulator.
+ * Factory for creating instances of [org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simulation] for the 3SIM blockchain simulator.
  *
  * @author Davis Riedel
  */

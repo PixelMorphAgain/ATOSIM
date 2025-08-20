@@ -29,7 +29,5 @@ Require-Bundle: org.palladiosimulator.blockchainsystems.kotlin-deps,
  org.palladiosimulator.blockchainsystems.bscm,
  org.palladiosimulator.blockchainsystems.core,
  org.palladiosimulator.blockchainsystems.loggers,
- org.palladiosimulator.blockchainsystems.plugin,
  org.junit,
- junit-jupiter-api,
- org.eclipse.debug.core;bundle-version="3.20.100"
+ junit-jupiter-api

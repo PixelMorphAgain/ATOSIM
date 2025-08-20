@@ -5,7 +5,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScal
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
-import org.palladiosimulator.blockchainsystems.threesim.metrics.CensorshipResistance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
 import org.palladiosimulator.blockchainsystems.threesim.metrics.GeographicalDiversity
@@ -19,7 +18,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.Avai
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilitySecurityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.CensorshipResistanceCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ConsistencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.FaultToleranceCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.GeographicalDiversityCalculator

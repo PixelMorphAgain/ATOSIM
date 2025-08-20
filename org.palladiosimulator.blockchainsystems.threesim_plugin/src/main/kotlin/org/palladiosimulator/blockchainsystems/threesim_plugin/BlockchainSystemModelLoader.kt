@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.creation
+package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -28,6 +28,7 @@ class BlockchainSystemModelLoader {
       put("nodeenvironment", XMIResourceFactoryImpl())
       put("geographcalregions", XMIResourceFactoryImpl())
       put("linkallocation", XMIResourceFactoryImpl())
+      put("transactions", XMIResourceFactoryImpl())
     }
 
     // Obtain a new resource set

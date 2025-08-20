@@ -41,7 +41,6 @@ object ThreesimSerializers {
         subclass(AvailabilityScalability::class)
         subclass(AvailabilitySecurity::class)
         subclass(AverageConfirmationLatency::class)
-        subclass(CensorshipResistance::class)
         subclass(Consistency::class)
         subclass(FaultTolerance::class)
         subclass(GeographicalDiversity::class)
