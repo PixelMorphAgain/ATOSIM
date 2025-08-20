@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" uid="_38eec5985942475f993606c7d144098d" version="15.4.1.202403191723">
+  <semanticResources>RingBlockTime20s.p2pnetwork</semanticResources>
+  <semanticResources>RingBlockTime20s.nodeallocation</semanticResources>
+  <semanticResources>RingBlockTime20s.blockchainsystemcomponentrepository</semanticResources>
+  <semanticResources>RingBlockTime20s.linkallocation</semanticResources>
+  <semanticResources>RingBlockTime20s.geographicalregions</semanticResources>
+  <semanticResources>RingBlockTime20s.blockchainsystem</semanticResources>
+  <semanticResources>RingBlockTime20s.transactions</semanticResources>
+</viewpoint:DAnalysis>
