@@ -188,7 +188,7 @@
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkThroughputSpecification"/>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue">
-        <genFeatures documentation="Unit: Megabit per Second (Mbps)" createChild="false"
+        <genFeatures documentation="Unit: Bit per Second (bps)" createChild="false"
             ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Throughput"/>
         <genFeatures documentation="Unit: 0.0 - 1.0" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Probability"/>
         <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Duration"/>
@@ -203,7 +203,7 @@
         <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkLatencySpecification/Latency"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/StaticLinkThroughputSpecification">
-        <genFeatures documentation="Unit: Megabit per Second (Mbps)" createChild="false"
+        <genFeatures documentation="Unit: Bit per Second (bps)" createChild="false"
             ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkThroughputSpecification/Throughput"/>
       </genClasses>
     </nestedGenPackages>

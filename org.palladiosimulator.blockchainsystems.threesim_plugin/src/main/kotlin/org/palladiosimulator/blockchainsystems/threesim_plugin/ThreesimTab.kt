@@ -58,7 +58,7 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     failureThroughputThresholdField = TextField(
       group,
       "Failure Throughput Threshold:",
-      " trx/min",
+      " transactions/min",
       DoubleVerifier,
       ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
       ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT,
