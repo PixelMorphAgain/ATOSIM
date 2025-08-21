@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.StaleBlockRate
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
  * Calculates stale block rate
@@ -22,9 +24,19 @@ class StaleBlockRateCalculator(
     return StaleBlockRate(sb)
   }
 
-  companion object : OutputMetricAverageCalculator<StaleBlockRate> {
-    override fun calculateAverage(measurements: List<StaleBlockRate>): StaleBlockRate {
-      return StaleBlockRate(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<StaleBlockRate>() {
+    override fun getValue(metric: StaleBlockRate): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = StaleBlockRate.NAME,
+        average = result.average,
+        unit = StaleBlockRate.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

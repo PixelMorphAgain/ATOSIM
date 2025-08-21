@@ -1,10 +1,10 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
+import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultToleranceAverageOutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultToleranceValue
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculator
 import kotlin.math.abs
 
 /**
@@ -28,15 +28,11 @@ class FaultToleranceCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<FaultTolerance> {
-    override fun calculateAverage(measurements: List<FaultTolerance>): FaultTolerance {
-      val avgThroughputDelta = measurements.averageOf { it.value.throughputDelta.value }
-      val avgConfirmationLatencyDelta = measurements.averageOf { it.value.confirmationLatencyDelta.value }
-      return FaultTolerance(
-        FaultToleranceValue.of(
-          avgThroughputDelta,
-          avgConfirmationLatencyDelta
-        )
+  companion object {
+    fun calculateAverage(measurements: List<FaultTolerance>): FaultToleranceAverageOutputMetric {
+      return FaultToleranceAverageOutputMetric.of(
+        AverageCalculator.calculate(measurements.map { it.value.throughputDelta.value }),
+        AverageCalculator.calculate(measurements.map { it.value.confirmationLatencyDelta.value })
       )
     }
   }

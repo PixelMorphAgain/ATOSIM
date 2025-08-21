@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
  * Calculates availability regarding security
@@ -23,9 +25,19 @@ class AvailabilitySecurityCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<AvailabilitySecurity> {
-    override fun calculateAverage(measurements: List<AvailabilitySecurity>): AvailabilitySecurity {
-      return AvailabilitySecurity(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<AvailabilitySecurity>() {
+    override fun getValue(metric: AvailabilitySecurity): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = AvailabilitySecurity.NAME,
+        average = result.average,
+        unit = AvailabilitySecurity.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

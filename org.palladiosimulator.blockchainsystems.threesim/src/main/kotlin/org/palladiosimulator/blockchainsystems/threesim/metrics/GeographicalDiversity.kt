@@ -14,8 +14,9 @@ class GeographicalDiversity(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "GeographicalDiversity"
+    const val UNIT = "%"
   }
 
   override val name: String = NAME
-  override val unit: String? = "%"
+  override val unit: String? = UNIT
 }

@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
  * Calculates transaction throughput
@@ -23,9 +25,19 @@ class TransactionThroughputCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<TransactionThroughput> {
-    override fun calculateAverage(measurements: List<TransactionThroughput>): TransactionThroughput {
-      return TransactionThroughput(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<TransactionThroughput>() {
+    override fun getValue(metric: TransactionThroughput): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = TransactionThroughput.NAME,
+        average = result.average,
+        unit = TransactionThroughput.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

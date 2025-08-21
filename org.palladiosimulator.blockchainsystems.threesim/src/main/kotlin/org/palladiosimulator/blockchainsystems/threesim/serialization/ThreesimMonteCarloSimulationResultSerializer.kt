@@ -7,6 +7,8 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.serialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.serializer
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
@@ -20,7 +22,7 @@ object ThreesimMonteCarloSimulationResultSerializer : KSerializer<ThreesimMonteC
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ThreesimMonteCarloSimulationResult") {
     element("simulationType", serialDescriptor<String>())
     element("simulationRoundResults", serialDescriptor<List<OutputMetricsSet>>())
-    element("averageSimulationRoundResult", serialDescriptor<OutputMetricsSet>())
+    element("averageSimulationRoundResult", serialDescriptor<List<AverageOutputMetric>>())
   }
 
   override fun serialize(encoder: Encoder, value: ThreesimMonteCarloSimulationResult) {
@@ -35,8 +37,8 @@ object ThreesimMonteCarloSimulationResultSerializer : KSerializer<ThreesimMonteC
       encodeSerializableElement(
         descriptor,
         2,
-        OutputMetricsSetSerializer,
-        value.averageSimulationRoundResult.outputMetrics
+        ListSerializer(AverageOutputMetricSerializer),
+        value.averageSimulationRoundResult.results
       )
       endStructure(descriptor)
     }

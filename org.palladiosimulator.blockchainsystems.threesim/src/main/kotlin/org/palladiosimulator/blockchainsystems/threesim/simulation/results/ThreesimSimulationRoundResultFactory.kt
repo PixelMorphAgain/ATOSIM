@@ -47,7 +47,6 @@ class ThreesimSimulationRoundResultFactory(
         ).calculate(),
 
         AvailabilityScalabilityCalculator(
-          observationTime = finalSystemTime,
           numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
           numberOfTransactions = state.numberOfSubmittedTransactions
         ).calculate(),

@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Reliability
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.exp
 
 /**
@@ -24,9 +26,19 @@ class ReliabilityCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<Reliability> {
-    override fun calculateAverage(measurements: List<Reliability>): Reliability {
-      return Reliability(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<Reliability>() {
+    override fun getValue(metric: Reliability): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = Reliability.NAME,
+        average = result.average,
+        unit = Reliability.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

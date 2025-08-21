@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
  * Calculates average confirmation latency that occurred during a single simulation round.
@@ -24,10 +26,19 @@ class AverageConfirmationLatencyCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<AverageConfirmationLatency> {
-    override fun calculateAverage(measurements: List<AverageConfirmationLatency>): AverageConfirmationLatency {
-      val avgValue = measurements.averageOf { it.value }
-      return AverageConfirmationLatency(avgValue)
+  companion object : AverageOutputMetricCalculator<AverageConfirmationLatency>() {
+    override fun getValue(metric: AverageConfirmationLatency): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = AverageConfirmationLatency.NAME,
+        average = result.average,
+        unit = AverageConfirmationLatency.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

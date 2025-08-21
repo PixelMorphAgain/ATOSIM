@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.ShannonEntropy
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.log
 
 /**
@@ -28,9 +30,19 @@ class ShannonEntropyCalculator(
     return ShannonEntropy(result)
   }
 
-  companion object : OutputMetricAverageCalculator<ShannonEntropy> {
-    override fun calculateAverage(measurements: List<ShannonEntropy>): ShannonEntropy {
-      return ShannonEntropy(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<ShannonEntropy>() {
+    override fun getValue(metric: ShannonEntropy): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = ShannonEntropy.NAME,
+        average = result.average,
+        unit = ShannonEntropy.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

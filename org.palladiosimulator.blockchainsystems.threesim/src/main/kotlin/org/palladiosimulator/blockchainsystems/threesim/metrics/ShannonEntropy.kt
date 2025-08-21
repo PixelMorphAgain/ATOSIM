@@ -14,8 +14,9 @@ class ShannonEntropy(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "ShannonEntropy"
+    const val UNIT = "bits"
   }
 
   override val name: String = NAME
-  override val unit: String? = "bits"
+  override val unit: String? = UNIT
 }

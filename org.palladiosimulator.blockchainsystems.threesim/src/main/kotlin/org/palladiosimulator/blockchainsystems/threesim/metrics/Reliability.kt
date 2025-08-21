@@ -14,8 +14,9 @@ class Reliability(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "Reliability"
+    const val UNIT = "%"
   }
 
   override val name: String = NAME
-  override val unit: String? = "%"
+  override val unit: String? = UNIT
 }

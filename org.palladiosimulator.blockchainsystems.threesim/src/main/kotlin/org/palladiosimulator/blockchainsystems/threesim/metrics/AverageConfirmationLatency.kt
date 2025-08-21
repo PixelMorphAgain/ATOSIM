@@ -14,8 +14,9 @@ class AverageConfirmationLatency(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "AverageConfirmationLatency"
+    const val UNIT = "ms"
   }
 
   override val name: String = NAME
-  override val unit: String? = "ms"
+  override val unit: String? = UNIT
 }

@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
  * Calculates consistency
@@ -26,9 +28,20 @@ class ConsistencyCalculator(
     return Consistency(result)
   }
 
-  companion object : OutputMetricAverageCalculator<Consistency> {
-    override fun calculateAverage(measurements: List<Consistency>): Consistency {
-      return Consistency(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<Consistency>() {
+    override fun getValue(metric: Consistency): Double {
+      return metric.value
     }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = Consistency.NAME,
+        average = result.average,
+        unit = Consistency.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
+    }
+
   }
 }

@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.GiniCoefficient
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.abs
 
 /**
@@ -27,9 +29,18 @@ class GiniCoefficientCalculator(
     return GiniCoefficient(gini)
   }
 
-  companion object : OutputMetricAverageCalculator<GiniCoefficient> {
-    override fun calculateAverage(measurements: List<GiniCoefficient>): GiniCoefficient {
-      return GiniCoefficient(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<GiniCoefficient>() {
+    override fun getValue(metric: GiniCoefficient): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = GiniCoefficient.NAME,
+        average = result.average,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

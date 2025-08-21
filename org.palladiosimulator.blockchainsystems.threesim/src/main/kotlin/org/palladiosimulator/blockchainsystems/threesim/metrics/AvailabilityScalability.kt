@@ -6,19 +6,17 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 /**
  * Availability regarding Scalability
  *
- * @property observationTime the observed timespan for which the value was computed
- *
  * @author Davis Riedel
  */
 @Serializable
 data class AvailabilityScalability(
-  override val value: Double,
-  val observationTime: Long
+  override val value: Double
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "AvailabilityScalability"
+    const val UNIT = "%"
   }
 
   override val name: String = NAME
-  override val unit: String? = "%"
+  override val unit: String? = UNIT
 }

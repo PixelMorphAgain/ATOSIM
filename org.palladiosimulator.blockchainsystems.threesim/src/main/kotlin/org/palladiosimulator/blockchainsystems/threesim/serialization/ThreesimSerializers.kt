@@ -30,12 +30,18 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
 
 import kotlinx.serialization.modules.*
 import kotlinx.serialization.json.Json
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 
 
 object ThreesimSerializers {
   val json = Json {
     prettyPrint = true
     serializersModule = SerializersModule {
+      polymorphic(AverageOutputMetric::class) {
+        subclass(AverageOutputMetricImpl::class)
+        subclass(FaultToleranceAverageOutputMetric::class)
+      }
       polymorphic(OutputMetric::class) {
         subclass(AvailabilityScalability::class)
         subclass(AvailabilityScalability::class)

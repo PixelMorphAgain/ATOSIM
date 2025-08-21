@@ -1,12 +1,14 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.GeographicalDiversity
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.log
 import kotlin.math.pow
 import kotlin.math.sqrt
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates geographical diversity
@@ -84,9 +86,19 @@ class GeographicalDiversityCalculator(
     )
   }
 
-  companion object : OutputMetricAverageCalculator<GeographicalDiversity> {
-    override fun calculateAverage(measurements: List<GeographicalDiversity>): GeographicalDiversity {
-      return GeographicalDiversity(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<GeographicalDiversity>() {
+    override fun getValue(metric: GeographicalDiversity): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = GeographicalDiversity.NAME,
+        average = result.average,
+        unit = GeographicalDiversity.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }
