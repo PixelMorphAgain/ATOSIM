@@ -4,6 +4,9 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Mont
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.MonteCarloSimulationProgressMonitor
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.metrics.GeographicalDiversity
+import org.palladiosimulator.blockchainsystems.threesim.metrics.NakamotoCoefficient
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
 
@@ -30,6 +33,20 @@ class ThreesimMonteCarloSimulation(
   }
 
   override fun createSimulationResultFromRoundResults(results: List<ThreesimSimulationRoundResult>): ThreesimMonteCarloSimulationResult {
-    return ThreesimMonteCarloSimulationResult(results)
+    // Filter results that are not calculated probabilistically, but are the same for all rounds,
+    // because we do not need to calculate averages for them.
+    val generalResults = ThreesimSimulationRoundResult(results.first().outputMetrics.filter {
+      it is NakamotoCoefficient || it is GeographicalDiversity
+    }.toCollection(OutputMetricsSet()))
+    val roundResults = results.map {
+      ThreesimSimulationRoundResult(it.outputMetrics.filterNot {
+        it is NakamotoCoefficient || it is GeographicalDiversity
+      }.toCollection(OutputMetricsSet()))
+    }
+
+    return ThreesimMonteCarloSimulationResult(
+      generalResults,
+      roundResults
+    )
   }
 }

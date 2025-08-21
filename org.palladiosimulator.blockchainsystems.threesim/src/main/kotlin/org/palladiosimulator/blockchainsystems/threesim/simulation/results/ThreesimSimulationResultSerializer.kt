@@ -8,6 +8,11 @@ class ThreesimSimulationResultSerializer(
   private val jsonSerializer: Json,
 ) : SimulationResultSerializer {
   override fun serialize(result: SimulationResult): String {
-    return jsonSerializer.encodeToString(result)
+    // This ensures the "type" field is not output
+    return when (result) {
+      is ThreesimMonteCarloSimulationResult -> jsonSerializer.encodeToString(result)
+      is ThreesimSingleSimulationResult -> jsonSerializer.encodeToString(result)
+      else -> throw IllegalArgumentException("Unsupported simulation result type: ${result::class.simpleName}")
+    }
   }
 }

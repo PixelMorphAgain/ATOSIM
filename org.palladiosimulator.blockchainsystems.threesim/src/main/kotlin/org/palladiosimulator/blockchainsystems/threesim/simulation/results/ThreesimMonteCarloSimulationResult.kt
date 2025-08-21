@@ -11,6 +11,7 @@ import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimMo
  */
 @Serializable(with = ThreesimMonteCarloSimulationResultSerializer::class)
 data class ThreesimMonteCarloSimulationResult(
+  val generalResults: ThreesimSimulationRoundResult,
   val simulationRoundResults: List<ThreesimSimulationRoundResult>
 ) : MonteCarloSimulationResult {
   val averageSimulationRoundResult =
