@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 
-import { readdir, mkdir, copyFile } from "node:fs/promises";
+import { readdir, readFile, mkdir, copyFile } from "node:fs/promises";
 import path from "node:path";
 
 const [sourceDir, targetDir] = Bun.argv.slice(2);
@@ -14,8 +14,6 @@ try {
   const entries = await readdir(sourceDir, { withFileTypes: true });
   const folders = entries.filter(entry => entry.isDirectory()).map(entry => entry.name);
 
-  await mkdir(targetDir, { recursive: true });
-
   for (const folder of folders) {
     const folderPath = path.join(sourceDir, folder, "results");
     try {
@@ -24,7 +22,14 @@ try {
 
       for (const file of tsrFiles) {
         const sourcePath = path.join(folderPath, file);
-        const targetPath = path.join(targetDir, `${folder}_${file}`);
+
+        const json = await Bun.file(sourcePath).json();
+        const rounds = String(json.simulationParameters.numberOfMonteCarloRounds);
+
+        const roundsDir = path.join(targetDir, rounds);
+        await mkdir(roundsDir, { recursive: true });
+
+        const targetPath = path.join(targetDir, rounds, `${folder}_${file}`);
         await copyFile(sourcePath, targetPath);
       }
     } catch (_) {

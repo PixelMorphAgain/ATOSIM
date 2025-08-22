@@ -20,6 +20,10 @@ class TransactionThroughputCalculator(
   private val observationTime: Long,
 ) : OutputMetricCalculator<TransactionThroughput> {
   override fun calculate(): TransactionThroughput {
+    if (observationTime <= 0 || numberOfConfirmedTransactions <= 0) {
+      return TransactionThroughput(0.0)
+    }
+
     return TransactionThroughput(
       (numberOfConfirmedTransactions.toDouble() / observationTime.toDouble()) * 60 * 1000 // Convert ms to min
     )

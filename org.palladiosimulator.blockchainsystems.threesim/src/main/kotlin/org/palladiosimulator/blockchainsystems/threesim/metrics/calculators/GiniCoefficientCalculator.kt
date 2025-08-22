@@ -19,6 +19,10 @@ class GiniCoefficientCalculator(
   private val tokensHeldPerNode: List<Double>
 ) : OutputMetricCalculator<GiniCoefficient> {
   override fun calculate(): GiniCoefficient {
+    if (tokensHeldPerNode.isEmpty()) {
+      return GiniCoefficient(0.0)
+    }
+
     val range = (0 until tokensHeldPerNode.size)
     val sum = range.sumOf { i ->
       range.sumOf { j ->
@@ -26,6 +30,7 @@ class GiniCoefficientCalculator(
       }
     }
     val gini = sum / (2 * tokensHeldPerNode.size * tokensHeldPerNode.sum())
+   
     return GiniCoefficient(gini)
   }
 

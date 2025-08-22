@@ -21,6 +21,10 @@ class ReliabilityCalculator(
   private val meanTimeBetweenFailures: Double,
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
+    if (meanTimeBetweenFailures <= 0) {
+      return Reliability(0.0)
+    }
+
     return Reliability(
       exp(-1.0 * timespan.toDouble() / meanTimeBetweenFailures)
     )

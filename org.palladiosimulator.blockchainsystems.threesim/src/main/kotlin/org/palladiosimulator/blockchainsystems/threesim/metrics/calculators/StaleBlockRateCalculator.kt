@@ -20,8 +20,13 @@ class StaleBlockRateCalculator(
   private val numberOfConfirmedBlocks: Int
 ) : OutputMetricCalculator<StaleBlockRate> {
   override fun calculate(): StaleBlockRate {
-    val sb = numberOfStaleBlocks.toDouble() / numberOfConfirmedBlocks.toDouble()
-    return StaleBlockRate(sb)
+    if (numberOfConfirmedBlocks <= 0) {
+      return StaleBlockRate(0.0)
+    }
+
+    return StaleBlockRate(
+      numberOfStaleBlocks.toDouble() / numberOfConfirmedBlocks.toDouble()
+    )
   }
 
   companion object : AverageOutputMetricCalculator<StaleBlockRate>() {

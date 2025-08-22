@@ -20,6 +20,10 @@ class AvailabilityScalabilityCalculator(
   private val numberOfTransactions: Int
 ) : OutputMetricCalculator<AvailabilityScalability> {
   override fun calculate(): AvailabilityScalability {
+    if (numberOfTransactions <= 0) {
+      return AvailabilityScalability(0.0)
+    }
+   
     val availability = numberOfConfirmedTransactions.toDouble() / numberOfTransactions.toDouble()
     return AvailabilityScalability(availability)
   }

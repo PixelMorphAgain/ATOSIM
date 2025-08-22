@@ -18,9 +18,10 @@ class AverageConfirmationLatencyCalculator(
   private val confirmationLatencies: Collection<Long>
 ) : OutputMetricCalculator<AverageConfirmationLatency> {
   override fun calculate(): AverageConfirmationLatency {
-    require(confirmationLatencies.isNotEmpty()) {
-      "Cannot calculate average confirmation latency from an empty list of confirmation latencies."
+    if (confirmationLatencies.isEmpty()) {
+      return AverageConfirmationLatency(0.0)
     }
+
     return AverageConfirmationLatency(
       confirmationLatencies.sum().toDouble() / confirmationLatencies.size
     )

@@ -20,8 +20,13 @@ class AvailabilitySecurityCalculator(
   private val meanTimeToRepair: Double,
 ) : OutputMetricCalculator<AvailabilitySecurity> {
   override fun calculate(): AvailabilitySecurity {
+    val divisor = meanTimeBetweenFailures + meanTimeToRepair
+    if (divisor <= 0) {
+      return AvailabilitySecurity(0.0)
+    }
+
     return AvailabilitySecurity(
-      meanTimeBetweenFailures / (meanTimeBetweenFailures + meanTimeToRepair)
+      meanTimeBetweenFailures / divisor
     )
   }
 
