@@ -1,11 +1,15 @@
 package org.palladiosimulator.blockchainsystems.plugin.logging
 
+import org.eclipse.core.runtime.CoreException
+import org.eclipse.debug.core.ILaunchConfiguration
 import kotlinx.serialization.json.Json
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.loggers.TraceEventConsoleLogger
 import org.palladiosimulator.blockchainsystems.loggers.TraceEventFileLogger
 import org.palladiosimulator.blockchainsystems.loggers.TraceEventPostgresDbLogger
+import org.palladiosimulator.blockchainsystems.plugin.Attributes
+
 
 /**
  * Implementation of the [LogOutputProvider] interface.
@@ -64,5 +68,53 @@ class LogOutputProviderImpl(
       dbUsername,
       dbPassword
     )
+  }
+
+  companion object {
+    @Throws(CoreException::class)
+    fun fromLaunchConfiguration(
+      jsonSerializer: Json,
+      configuration: ILaunchConfiguration
+    ): LogOutputProviderImpl {
+      return LogOutputProviderImpl(
+        jsonSerializer = jsonSerializer,
+        useConsoleLogging = configuration.getAttribute(
+          Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE,
+          Attributes.Logging.IS_CONSOLE_LOGGING_ENABLED_ATTRIBUTE_DEFAULT
+        ),
+        useFileLogging = configuration.getAttribute(
+          Attributes.Logging.IS_FILE_LOGGING_ENABLED_ATTRIBUTE,
+          Attributes.Logging.IS_FILE_LOGGING_ENABLED_ATTRIBUTE_DEFAULT
+        ),
+        fileLoggingDirectoryPath = configuration.getAttribute(
+          Attributes.Logging.LOG_FILE_PATH_ATTRIBUTE,
+          Attributes.Logging.LOG_FILE_PATH_ATTRIBUTE_DEFAULT
+        ),
+        useDatabaseLogging = configuration.getAttribute(
+          Attributes.Logging.IS_DATABASE_LOGGING_ENABLED_ATTRIBUTE,
+          Attributes.Logging.IS_DATABASE_LOGGING_ENABLED_ATTRIBUTE_DEFAULT
+        ),
+        dbServer = configuration.getAttribute(
+          Attributes.Logging.DATABASE_SERVER_ATTRIBUTE,
+          Attributes.Logging.DATABASE_SERVER_ATTRIBUTE_DEFAULT
+        ),
+        dbPort = configuration.getAttribute(
+          Attributes.Logging.DATABASE_PORT_ATTRIBUTE,
+          Attributes.Logging.DATABASE_PORT_ATTRIBUTE_DEFAULT
+        ),
+        dbName = configuration.getAttribute(
+          Attributes.Logging.DATABASE_NAME_ATTRIBUTE,
+          Attributes.Logging.DATABASE_NAME_ATTRIBUTE_DEFAULT
+        ),
+        dbUsername = configuration.getAttribute(
+          Attributes.Logging.DATABASE_USERNAME_ATTRIBUTE,
+          Attributes.Logging.DATABASE_USERNAME_ATTRIBUTE_DEFAULT
+        ),
+        dbPassword = configuration.getAttribute(
+          Attributes.Logging.DATABASE_PASSWORD_ATTRIBUTE,
+          Attributes.Logging.DATABASE_PASSWORD_ATTRIBUTE_DEFAULT
+        )
+      )
+    }
   }
 }

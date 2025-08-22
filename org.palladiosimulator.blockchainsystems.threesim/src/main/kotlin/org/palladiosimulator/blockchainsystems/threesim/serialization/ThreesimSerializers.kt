@@ -27,17 +27,22 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
-
-import kotlinx.serialization.modules.*
-import kotlinx.serialization.json.Json
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
-
+import org.palladiosimulator.blockchainsystems.core.simulation.MonteCarloSimulationParameters
+import org.palladiosimulator.blockchainsystems.core.simulation.SingleSimulationParameters
+import kotlinx.serialization.modules.*
+import kotlinx.serialization.json.Json
 
 object ThreesimSerializers {
   val json = Json {
     prettyPrint = true
     serializersModule = SerializersModule {
+      polymorphic(SimulationParameters::class) {
+        subclass(SingleSimulationParameters::class)
+        subclass(MonteCarloSimulationParameters::class)
+      }
       polymorphic(AverageOutputMetric::class) {
         subclass(AverageOutputMetricImpl::class)
         subclass(FaultToleranceAverageOutputMetric::class)

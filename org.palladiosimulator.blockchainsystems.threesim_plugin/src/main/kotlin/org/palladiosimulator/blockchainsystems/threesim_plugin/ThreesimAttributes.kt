@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.threesim.config
+package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 object ThreesimAttributes {
   const val THROUGHPUT_MONITORING_INTERVAL: String = "ThroughputMonitoringInterval"

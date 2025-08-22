@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation
 
+import org.palladiosimulator.blockchainsystems.core.simulation.SingleSimulationParameters
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulation
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SingleSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.logoutputs.abstractions.LogOutputProvider
@@ -15,6 +16,7 @@ class ThreesimSingleSimulation(
   private val blockchainSystemFactory: ThreesimBlockchainSystemFactory,
   private val logOutputProvider: LogOutputProvider,
   private val maxAllowedBlockchainLength: Long,
+  private val simulationParameters: SingleSimulationParameters,
   private val threesimSimulationParameters: ThreesimSimulationParameters
 ) : SingleSimulation {
   override fun run(): SingleSimulationResult {
@@ -25,6 +27,10 @@ class ThreesimSingleSimulation(
       threesimSimulationParameters
     ).run();
 
-    return ThreesimSingleSimulationResult(result);
+    return ThreesimSingleSimulationResult(
+      simulationParameters,
+      threesimSimulationParameters,
+      result
+    );
   }
 }

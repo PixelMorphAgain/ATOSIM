@@ -8,9 +8,10 @@ import kotlinx.serialization.descriptors.serialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.serializer
+import org.palladiosimulator.blockchainsystems.core.simulation.MonteCarloSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
-
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 
 /**
@@ -20,8 +21,8 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
  */
 object ThreesimMonteCarloSimulationResultSerializer : KSerializer<ThreesimMonteCarloSimulationResult> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ThreesimMonteCarloSimulationResult") {
-    element("simulationType", serialDescriptor<String>())
-    element("numberOfRounds", serialDescriptor<Int>())
+    element("simulationParameters", serialDescriptor<MonteCarloSimulationParameters>())
+    element("threesimSimulationParameters", serialDescriptor<ThreesimSimulationParameters>())
     element("generalResults", serialDescriptor<OutputMetricsSet>())
     element("simulationRoundResults", serialDescriptor<List<OutputMetricsSet>>())
     element("averageSimulationRoundResult", serialDescriptor<List<AverageOutputMetric>>())
@@ -29,8 +30,18 @@ object ThreesimMonteCarloSimulationResultSerializer : KSerializer<ThreesimMonteC
 
   override fun serialize(encoder: Encoder, value: ThreesimMonteCarloSimulationResult) {
     with(encoder.beginStructure(descriptor)) {
-      encodeStringElement(descriptor, 0, value.simulationType)
-      encodeIntElement(descriptor, 1, value.simulationRoundResults.size)
+      encodeSerializableElement(
+        descriptor,
+        0,
+        serializer<MonteCarloSimulationParameters>(),
+        value.simulationParameters as MonteCarloSimulationParameters
+      )
+      encodeSerializableElement(
+        descriptor,
+        1,
+        serializer<ThreesimSimulationParameters>(),
+        value.threesimSimulationParameters
+      )
       encodeSerializableElement(
         descriptor,
         2,

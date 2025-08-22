@@ -1,10 +1,8 @@
 package org.palladiosimulator.blockchainsystems.plugin.simulation
 
 import org.eclipse.core.runtime.CoreException
-import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSerializer
-import org.palladiosimulator.blockchainsystems.plugin.config.Attributes
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.io.IOException
@@ -25,17 +23,11 @@ class SimulationResultsWriter(
   @Throws(CoreException::class)
   fun saveResultFile(
     result: SimulationResult,
-    configuration: ILaunchConfiguration
+    outDir: String
   ) {
-    val path: String = configuration.getAttribute(
-      Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
-      Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT
-    )
-
     val timestamp = getCurrentTimeFormatted()
-    val simType = result.simulationType.replace(" ", "_")
-    val fileName = "$timestamp-$simType.tsr.json"
-    val fullFilePath = Path.of(path, fileName).toString()
+    val fileName = "$timestamp.tsr.json"
+    val fullFilePath = Path.of(outDir, fileName).toString()
 
     val serializedResult = simulationResultSerializer.serialize(result)
 

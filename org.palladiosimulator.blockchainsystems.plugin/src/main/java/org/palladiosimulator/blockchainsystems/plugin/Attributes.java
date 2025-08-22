@@ -1,4 +1,4 @@
-package org.palladiosimulator.blockchainsystems.plugin.config;
+package org.palladiosimulator.blockchainsystems.plugin;
 
 /**
  * This class contains all attributes used in the plugin.
@@ -22,7 +22,7 @@ public final class Attributes {
     public static class SimulationType {
         public static final String SIMULATION_TYPE_ATTRIBUTE = "SimulationType";
         public static final String SIMULATION_TYPE_ATTRIBUTE_DEFAULT =
-                org.palladiosimulator.blockchainsystems.plugin.config.SimulationType.Single.toString();
+                org.palladiosimulator.blockchainsystems.core.simulation.SimulationType.Single.toString();
 
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS = "NumberOfMonteCarloSimulationRounds";
         public static final String NUMBER_OF_MONTE_CARLO_SIMULATION_ROUNDS_DEFAULT = "10000";

@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Group
 import org.palladiosimulator.blockchainsystems.plugin.ui.abstractions.TextField
 import org.palladiosimulator.blockchainsystems.plugin.utils.DoubleVerifier
 import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
-import org.palladiosimulator.blockchainsystems.threesim.config.ThreesimAttributes
+import org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimAttributes
 
 /**
  * Tab for configuring Threesim-specific simulation parameters.

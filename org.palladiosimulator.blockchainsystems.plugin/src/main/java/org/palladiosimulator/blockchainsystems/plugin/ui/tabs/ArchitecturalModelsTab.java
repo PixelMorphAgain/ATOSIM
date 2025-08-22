@@ -30,7 +30,7 @@ import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.palladiosimulator.blockchainsystems.plugin.resourcefiles.*;
 import org.palladiosimulator.blockchainsystems.plugin.utils.ValidationUtils;
-import org.palladiosimulator.blockchainsystems.plugin.config.Attributes;
+import org.palladiosimulator.blockchainsystems.plugin.Attributes;
 
 public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
 
