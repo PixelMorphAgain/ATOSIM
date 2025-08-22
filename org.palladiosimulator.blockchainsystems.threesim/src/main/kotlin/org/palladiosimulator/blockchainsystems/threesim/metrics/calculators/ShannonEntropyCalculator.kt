@@ -21,12 +21,19 @@ class ShannonEntropyCalculator(
   private val blocksProposedPerNode: Collection<Int>
 ) : OutputMetricCalculator<ShannonEntropy> {
   override fun calculate(): ShannonEntropy {
-    val totalNumOfBlocksProposed = blocksProposedPerNode.sum();
+    val totalNumOfBlocksProposed = blocksProposedPerNode.sum()
+    if (totalNumOfBlocksProposed == 0) {
+      return ShannonEntropy(0.0) // Avoid division by zero
+    }
+
     val sum = blocksProposedPerNode.sumOf {
+      if (it == 0) return@sumOf 0.0 // Avoid log(0)
       val b = it.toDouble() / totalNumOfBlocksProposed // Probability of block proposed by node i
       b * log(b, 2.0)
     }
+
     val result = -1 * k * sum
+
     return ShannonEntropy(result)
   }
 

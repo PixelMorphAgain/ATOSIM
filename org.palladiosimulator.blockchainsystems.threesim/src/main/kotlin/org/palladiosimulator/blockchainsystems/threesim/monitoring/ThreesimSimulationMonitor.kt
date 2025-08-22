@@ -14,6 +14,7 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
 import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
+import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
@@ -34,9 +35,15 @@ class ThreesimSimulationMonitor(
   private val failureThroughputThreshold: Double
 ) : SimulationMonitor {
 
+  private lateinit var nodes: MutableSet<BlockchainSystemNode>
+
+  private lateinit var geographicalRegions: GeographicalRegions
+
+  private var numberOfSubmittedTransactions: Int = 0
+
   private var blockReward: Double? = null
 
-  private val blocksProposedPerNode: MutableMap<String, Int> = mutableMapOf()
+  private lateinit var blocksProposedPerNode: CounterMap<String>
 
   private lateinit var includedBlocks: BlocksMap
   private lateinit var confirmedBlocks: BlocksMap
@@ -44,12 +51,6 @@ class ThreesimSimulationMonitor(
   private lateinit var forkedBlocks: BlocksMap
 
   private lateinit var confirmedBlocksSinceLastThroughputCheck: BlocksMap
-
-  private lateinit var nodes: MutableSet<BlockchainSystemNode>
-
-  private lateinit var geographicalRegions: GeographicalRegions
-
-  private var numberOfSubmittedTransactions: Int = 0
 
   private val failureLog = BlockchainSystemFailureLog()
 
@@ -64,6 +65,8 @@ class ThreesimSimulationMonitor(
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
     blockReward = blockchainSystem.blockReward
+
+    blocksProposedPerNode = CounterMap.create(nodes.map { it.id })
 
     includedBlocks = BlocksMap(calculateMajorityThreshold())
     confirmedBlocks = BlocksMap(calculateMajorityThreshold())
@@ -183,7 +186,7 @@ class ThreesimSimulationMonitor(
           forkedBlocks.addNodeToBlock(block, logOrigin.id, e.occurrenceTime)
         }
 
-        blocksProposedPerNode[logOrigin.id] = (blocksProposedPerNode[logOrigin.id] ?: 0) + 1
+        blocksProposedPerNode.increment(logOrigin.id)
       }
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {

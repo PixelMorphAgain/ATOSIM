@@ -8,6 +8,10 @@ package org.palladiosimulator.blockchainsystems.core.utils
 class CounterMap<T> {
   private val map: MutableMap<T, Int> = mutableMapOf()
 
+  fun initialize(keys: Collection<T>) {
+    keys.forEach { map[it] = 0 }
+  }
+
   @Synchronized
   fun increment(key: T) {
     map[key] = (map[key] ?: 0) + 1
@@ -46,4 +50,12 @@ class CounterMap<T> {
 
   val keys: Set<T>
     get() = map.keys
+
+  companion object {
+    fun <T> create(keys: Collection<T>): CounterMap<T> {
+      val counterMap = CounterMap<T>()
+      counterMap.initialize(keys)
+      return counterMap
+    }
+  }
 }

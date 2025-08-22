@@ -19,6 +19,11 @@ class ConsistencyCalculator(
 ) : OutputMetricCalculator<Consistency> {
   override fun calculate(): Consistency {
     val n = blockProposalTimeAndConfirmationTimePerConfirmedBlock.size
+
+    if (n == 0) {
+      return Consistency(0.0)
+    }
+
     val result = (1.0 / n) *
       blockProposalTimeAndConfirmationTimePerConfirmedBlock
         .sumOf { (blockProposalTime, blockConfirmationTime) ->

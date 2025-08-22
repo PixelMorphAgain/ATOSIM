@@ -23,9 +23,10 @@ class AvailabilityScalabilityCalculator(
     if (numberOfTransactions <= 0) {
       return AvailabilityScalability(0.0)
     }
-   
-    val availability = numberOfConfirmedTransactions.toDouble() / numberOfTransactions.toDouble()
-    return AvailabilityScalability(availability)
+
+    return AvailabilityScalability(
+      numberOfConfirmedTransactions.toDouble() / numberOfTransactions.toDouble()
+    )
   }
 
   companion object : AverageOutputMetricCalculator<AvailabilityScalability>() {
