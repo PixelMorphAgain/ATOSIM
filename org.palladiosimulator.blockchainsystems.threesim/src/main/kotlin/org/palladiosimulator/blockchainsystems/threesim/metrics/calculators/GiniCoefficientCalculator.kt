@@ -19,18 +19,21 @@ class GiniCoefficientCalculator(
   private val tokensHeldPerNode: List<Double>
 ) : OutputMetricCalculator<GiniCoefficient> {
   override fun calculate(): GiniCoefficient {
-    if (tokensHeldPerNode.isEmpty()) {
+    val n = tokensHeldPerNode.size
+    val totalOwnedTokens = tokensHeldPerNode.sum()
+
+    if (n == 0 || totalOwnedTokens == 0.0) {
       return GiniCoefficient(0.0)
     }
 
-    val range = (0 until tokensHeldPerNode.size)
+    val range = (0 until n)
     val sum = range.sumOf { i ->
       range.sumOf { j ->
         abs(tokensHeldPerNode[i] - tokensHeldPerNode[j])
       }
     }
-    val gini = sum / (2 * tokensHeldPerNode.size * tokensHeldPerNode.sum())
-   
+    val gini = sum / (2 * n * totalOwnedTokens)
+
     return GiniCoefficient(gini)
   }
 

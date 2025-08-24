@@ -1,0 +1,38 @@
+{
+    "Net": [
+        {
+            "value": 20,
+            "file": "threesim-net-block-time-20s_2025_08_22_21_26_29.tsr.json"
+        },
+        {
+            "value": 60,
+            "file": "threesim-net-block-time-1min_2025_08_22_21_27_28.tsr.json"
+        },
+        {
+            "value": 150,
+            "file": "threesim-net-block-time-2-5min_2025_08_22_21_29_16.tsr.json"
+        },
+        {
+            "value": 600,
+            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+        }
+    ],
+    "Ring": [
+        {
+            "value": 20,
+            "file": "threesim-ring-block-time-20s_2025_08_22_21_10_21.tsr.json"
+        },
+        {
+            "value": 60,
+            "file": "threesim-ring-block-time-1min_2025_08_22_21_17_54.tsr.json"
+        },
+        {
+            "value": 150,
+            "file": "threesim-ring-block-time-2-5min_2025_08_22_21_19_51.tsr.json"
+        },
+        {
+            "value": 600,
+            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+        }
+    ]
+}

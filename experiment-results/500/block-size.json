@@ -1,0 +1,62 @@
+{
+    "Net": [
+        {
+            "value": 75,
+            "file": "threesim-net-max-block-size-75kb_2025_08_23_22_08_56.tsr.json"
+        },
+        {
+            "value": 250,
+            "file": "threesim-net-max-block-size-250kb_2025_08_23_22_15_39.tsr.json"
+        },
+        {
+            "value": 500,
+            "file": "threesim-net-max-block-size-500kb_2025_08_24_11_00_15.tsr.json"
+        },
+        {
+            "value": 1000,
+            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+        },
+        {
+            "value": 2000,
+            "file": "threesim-net-max-block-size-2mb_2025_08_24_11_07_36.tsr.json"
+        },
+        {
+            "value": 4000,
+            "file": "threesim-net-max-block-size-4mb_2025_08_24_11_18_59.tsr.json"
+        },
+        {
+            "value": 8000,
+            "file": "threesim-net-max-block-size-8mb_2025_08_24_11_38_24.tsr.json"
+        }
+    ],
+    "Ring": [
+        {
+            "value": 75,
+            "file": "threesim-ring-max-block-size-75kb_2025_08_24_11_45_44.tsr.json"
+        },
+        {
+            "value": 250,
+            "file": "threesim-ring-max-block-size-250kb_2025_08_24_11_59_52.tsr.json"
+        },
+        {
+            "value": 500,
+            "file": "threesim-ring-max-block-size-500kb_2025_08_24_12_33_12.tsr.json"
+        },
+        {
+            "value": 1000,
+            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+        },
+        {
+            "value": 2000,
+            "file": "threesim-ring-max-block-size-2mb_2025_08_24_12_53_50.tsr.json"
+        },
+        {
+            "value": 4000,
+            "file": "threesim-ring-max-block-size-4mb_2025_08_24_12_59_58.tsr.json"
+        },
+        {
+            "value": 8000,
+            "file": "threesim-ring-max-block-size-8mb_2025_08_24_16_11_55.tsr.json"
+        }
+    ]
+}

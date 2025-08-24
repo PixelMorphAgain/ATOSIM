@@ -47,3 +47,32 @@ generate-launch-configs rounds blocks:
 
 gather-results:
     bun ./threesim-helper-scripts/gatherResults.ts ./threesim-workspace/ ./experiment-results
+
+get-chart-data path metric:
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult {{metric}} average
+
+get-chart-data-all path:
+    @just get-chart-data {{path}} AvailabilityScalability
+    @echo "AvailabilitySecurity"
+    @just get-chart-data {{path}} AvailabilitySecurity
+    @echo "AverageConfirmationLatency"
+    @just get-chart-data {{path}} AverageConfirmationLatency
+    @echo "Consistency"
+    @just get-chart-data {{path}} Consistency
+    @echo "GiniCoefficient"
+    @just get-chart-data {{path}} GiniCoefficient
+    @echo "HerfindahlHirschmanIndex"
+    @just get-chart-data {{path}} HerfindahlHirschmanIndex
+    @echo "Reliability"
+    @just get-chart-data {{path}} Reliability
+    @echo "ShannonEntropy"
+    @just get-chart-data {{path}} ShannonEntropy
+    @echo "StaleBlock"
+    @just get-chart-data {{path}} StaleBlockRate
+    @echo "Throughput"
+    @just get-chart-data {{path}} Throughput
+    @echo "FT ThroughputDelta"
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.throughputDelta.average
+    @echo "FT ConfirmationLatencyDelta"
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.confirmationLatencyDelta.average
+

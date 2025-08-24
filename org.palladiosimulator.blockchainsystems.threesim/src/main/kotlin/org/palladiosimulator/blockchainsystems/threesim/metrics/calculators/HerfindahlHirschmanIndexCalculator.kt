@@ -21,8 +21,14 @@ class HerfindahlHirschmanIndexCalculator(
   override fun calculate(): HerfindahlHirschmanIndex {
     val n = tokensHeldPerNode.size.toDouble() // number of validating nodes
     val total = tokensHeldPerNode.sum() // total amount of tokens held by all nodes
+
+    if (n == 0.0 || total == 0.0) {
+      return HerfindahlHirschmanIndex(0.0)
+    }
+
     val hhi = tokensHeldPerNode.sumOf { (it / total).pow(2) } // calculate HHI
     val hhiNorm = (hhi - 1 / n) / (1 - (1 / n)) // normalize HHI
+   
     return HerfindahlHirschmanIndex(hhiNorm)
   }
 

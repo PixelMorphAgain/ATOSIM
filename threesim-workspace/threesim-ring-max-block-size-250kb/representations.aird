@@ -7,4 +7,11 @@
   <semanticResources>.geographicalregions</semanticResources>
   <semanticResources>.blockchainsystem</semanticResources>
   <semanticResources>.transactions</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.blockchainsystem</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.p2pnetwork</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.nodeallocation</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.geographicalregions</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.blockchainsystemcomponentrepository</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.linkallocation</semanticResources>
+  <semanticResources>RingMaxBlockSize250KB.transactions</semanticResources>
 </viewpoint:DAnalysis>
