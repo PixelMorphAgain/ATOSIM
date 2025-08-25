@@ -48,31 +48,31 @@ generate-launch-configs rounds blocks:
 gather-results:
     bun ./threesim-helper-scripts/gatherResults.ts ./threesim-workspace/ ./experiment-results
 
-get-chart-data path metric:
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult {{metric}} average
+get-chart-data path metric key:
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult {{metric}} {{key}}
 
-get-chart-data-all path:
-    @just get-chart-data {{path}} AvailabilityScalability
+get-chart-data-all path key:
+    @just get-chart-data {{path}} AvailabilityScalability {{key}}
     @echo "AvailabilitySecurity"
-    @just get-chart-data {{path}} AvailabilitySecurity
+    @just get-chart-data {{path}} AvailabilitySecurity {{key}}
     @echo "AverageConfirmationLatency"
-    @just get-chart-data {{path}} AverageConfirmationLatency
+    @just get-chart-data {{path}} AverageConfirmationLatency {{key}}
     @echo "Consistency"
-    @just get-chart-data {{path}} Consistency
+    @just get-chart-data {{path}} Consistency {{key}}
     @echo "GiniCoefficient"
-    @just get-chart-data {{path}} GiniCoefficient
+    @just get-chart-data {{path}} GiniCoefficient {{key}}
     @echo "HerfindahlHirschmanIndex"
-    @just get-chart-data {{path}} HerfindahlHirschmanIndex
+    @just get-chart-data {{path}} HerfindahlHirschmanIndex {{key}}
     @echo "Reliability"
-    @just get-chart-data {{path}} Reliability
+    @just get-chart-data {{path}} Reliability {{key}}
     @echo "ShannonEntropy"
-    @just get-chart-data {{path}} ShannonEntropy
+    @just get-chart-data {{path}} ShannonEntropy {{key}}
     @echo "StaleBlock"
-    @just get-chart-data {{path}} StaleBlockRate
+    @just get-chart-data {{path}} StaleBlockRate {{key}}
     @echo "Throughput"
-    @just get-chart-data {{path}} Throughput
+    @just get-chart-data {{path}} Throughput {{key}}
     @echo "FT ThroughputDelta"
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.throughputDelta.average
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.throughputDelta.{{key}}
     @echo "FT ConfirmationLatencyDelta"
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.confirmationLatencyDelta.average
+    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.confirmationLatencyDelta.{{key}}
 

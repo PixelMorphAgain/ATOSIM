@@ -28,7 +28,7 @@ class HerfindahlHirschmanIndexCalculator(
 
     val hhi = tokensHeldPerNode.sumOf { (it / total).pow(2) } // calculate HHI
     val hhiNorm = (hhi - 1 / n) / (1 - (1 / n)) // normalize HHI
-   
+
     return HerfindahlHirschmanIndex(hhiNorm)
   }
 

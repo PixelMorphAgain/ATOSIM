@@ -1,0 +1,22 @@
+{
+    "Net": [
+        {
+            "value": "Base",
+            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+        },
+        {
+            "value": "LessDecentralized",
+            "file": "threesim-net-less-decentralized_2025_08_25_21_27_52.tsr.json"
+        }
+    ],
+    "Ring": [
+        {
+            "value": "Base",
+            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+        },
+        {
+            "value": "LessDecentralized",
+            "file": "threesim-ring-less-decentralized_2025_08_25_21_27_30.tsr.json"
+        }
+    ]
+}

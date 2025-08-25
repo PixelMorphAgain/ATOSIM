@@ -1,0 +1,22 @@
+{
+    "Net": [
+        {
+            "value": "Base",
+            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+        },
+        {
+            "value": "LessReqSecConfs",
+            "file": "threesim-net-less-required-confirmations_2025_08_25_21_27_49.tsr.json"
+        }
+    ],
+    "Ring": [
+        {
+            "value": "Base",
+            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+        },
+        {
+            "value": "LessReqSecConfs",
+            "file": "threesim-ring-less-required-confirmations_2025_08_25_21_27_29.tsr.json"
+        }
+    ]
+}
