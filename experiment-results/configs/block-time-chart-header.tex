@@ -1,0 +1,16 @@
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}
+  \begin{groupplot}[
+      group style={
+        group size=2 by 3,
+        horizontal sep=2cm,
+        vertical sep=2cm,
+      },
+      width=0.45\textwidth,
+      height=0.45\textwidth,
+      grid=major,
+      xlabel={$\bar{I}_B$},
+      x unit=\si{\second},
+      xtick={20,60,150,600}
+  ]

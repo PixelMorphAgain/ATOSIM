@@ -1,0 +1,16 @@
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+  \begin{groupplot}[
+      group style={
+        group size=2 by 3,
+        horizontal sep=2cm,
+        vertical sep=2cm,
+      },
+      width=0.45\textwidth,
+      height=0.4\textwidth,
+      grid=major,
+      symbolic x coords={TotalCrashes,Decreased,Base,Increased},
+      xtick=data,
+      xticklabels={C,D,B,I}
+  ]

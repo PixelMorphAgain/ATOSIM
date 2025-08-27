@@ -26,6 +26,8 @@ try {
 
     const outPath = path.join(targetDir, `${folder}-${rounds}r-${blocks}b.launch`);
 
+    const absSrcDir = path.resolve(sourceDir);
+
     const fileContent = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.palladiosimulator.blockchainsystems.threesim_plugin.PluginLaunchConfigurationType">
     <stringAttribute key="BlockchainSystemModelFilePath" value="platform:/resource/${folder}/${fileName}.blockchainsystem"/>
@@ -45,7 +47,7 @@ try {
     <stringAttribute key="ReliabilityObservationTimespan" value="60000"/>
     <stringAttribute key="RequiredNumberOfBlocksInAdvance" value="6"/>
     <stringAttribute key="ShannonEntropyK" value="1.0"/>
-    <stringAttribute key="SimulationResultFileDirectory" value="${sourceDir}${folder}/results"/>
+    <stringAttribute key="SimulationResultFileDirectory" value="${absSrcDir}/${folder}/results"/>
     <stringAttribute key="SimulationType" value="MonteCarlo"/>
     <stringAttribute key="ThroughputMonitoringInterval" value="60000"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>

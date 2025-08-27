@@ -91,7 +91,7 @@ class ThreesimTransactionSubmissionProcess(
 
   private fun logTrxSubmitted(trx: Transaction) {
     val event = TransactionSubmittedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       trx
     )
 

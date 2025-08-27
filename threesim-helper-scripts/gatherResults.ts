@@ -20,16 +20,15 @@ try {
       const files = await readdir(folderPath);
       const tsrFiles = files.filter(file => file.endsWith(".tsr.json"));
 
+      await mkdir(targetDir, { recursive: true });
+
       for (const file of tsrFiles) {
         const sourcePath = path.join(folderPath, file);
 
         const json = await Bun.file(sourcePath).json();
         const rounds = String(json.simulationParameters.numberOfMonteCarloRounds);
 
-        const roundsDir = path.join(targetDir, rounds);
-        await mkdir(roundsDir, { recursive: true });
-
-        const targetPath = path.join(targetDir, rounds, `${folder}_${file}`);
+        const targetPath = path.join(targetDir, `${folder}_${rounds}_${file}`);
         await copyFile(sourcePath, targetPath);
       }
     } catch (_) {

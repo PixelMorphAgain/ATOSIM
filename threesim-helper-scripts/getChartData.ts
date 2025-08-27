@@ -3,33 +3,59 @@
 import path from "node:path"
 import object from 'lodash/object';
 
-const [sourceFile] = Bun.argv.slice(2);
+const [sourceFile, headerFile, baseDir] = Bun.argv.slice(2);
 
-if (!sourceFile) {
-  console.error("Usage: bun getChartData.ts <source-file> <key1> <metric> <key2>");
+if (!sourceFile || !headerFile || !baseDir) {
+  console.error("Usage: bun getChartData.ts <source-file> <header-file> <base-dir>");
   process.exit(1);
 }
 
-const sourcePath = path.parse(sourceFile).dir
+const headerText = await Bun.file(headerFile).text();
+const footerText = `\\end{groupplot}
+
+  \\begin{axis}[
+    hide axis,
+    xmin=0, xmax=1,
+    ymin=0, ymax=1,
+    at={(current bounding box.south)},
+    anchor=north,
+    yshift=-0.5cm,
+    legend columns=2,
+    legend style={
+        draw=none,
+        fill=none,
+        legend cell align=left,
+        nodes={text width=2cm}
+    }
+]
+\\addlegendimage{Navy, line width=1pt, thick}
+\\addlegendentry{Net}
+
+\\addlegendimage{orange, line width=1pt, thick}
+\\addlegendentry{Ring}
+\\end{axis}
+\\end{tikzpicture}
+\\end{figure}`
+
 const index = await Bun.file(sourceFile).json();
 
-async function getPair(c: string, m: string, key: string = "average") {
+async function getPair(c: string, m: string, key: string = "average", resultsSetKey: string = "averageSimulationRoundResult") {
   let output = ""
   const a = index[c]
   for (const v of a) {
     const x = v.value
-    const filePath = path.join(sourcePath, v.file)
+    const filePath = path.join(baseDir, v.file)
     const results = await Bun.file(filePath).json()
-    const outputMetric = object.get(results, "averageSimulationRoundResult").find(it => it.name == m);
+    const outputMetric = object.get(results, resultsSetKey).find(it => it.name == m);
     const y = object.get(outputMetric, key);
     output += `(${x},${y})\n`
   }
   return output.trimEnd();
 }
 
-let output = ""
+let output = `${headerText}
 
-output += `\\nextgroupplot[
+\\nextgroupplot[
     ylabel={$A_{Sca}$},
     y unit=\\si{\\%}
   ]
@@ -100,6 +126,23 @@ ${await getPair("Ring", "Consistency")}
     };
 
     \\nextgroupplot[
+      ylabel={$GD$},
+      y unit=\\si{\\%}
+    ]
+    \\addplot[
+      color=Navy,
+      line width=1pt
+    ] coordinates {
+${await getPair("Net", "GeographicalDiversity", "value", "generalResults")}
+    };
+    \\addplot[
+      color=orange,
+      line width=1pt
+    ] coordinates {
+${await getPair("Ring", "GeographicalDiversity", "value", "generalResults")}
+    };
+
+    \\nextgroupplot[
       ylabel={$Gini$}
     ]
     \\addplot[
@@ -114,6 +157,10 @@ ${await getPair("Net", "GiniCoefficient")}
     ] coordinates {
 ${await getPair("Ring", "GiniCoefficient")}
     };
+
+${footerText}
+
+${headerText}
 
    \\nextgroupplot[
       ylabel={$HHI_{norm}$}
@@ -131,7 +178,22 @@ ${await getPair("Net", "HerfindahlHirschmanIndex")}
 ${await getPair("Ring", "HerfindahlHirschmanIndex")}
     };
 
-%%%%%%%%%%
+\\nextgroupplot[
+      ylabel={$NC$},
+      y unit={\\text{validating nodes}}
+    ]
+    \\addplot[
+      color=Navy,
+      line width=1pt
+    ] coordinates {
+${await getPair("Net", "NakamotoCoefficient", "value", "generalResults")}
+    };
+    \\addplot[
+      color=orange,
+      line width=1pt
+    ] coordinates {
+${await getPair("Ring", "NakamotoCoefficient", "value", "generalResults")}
+    };
 
 \\nextgroupplot[
       ylabel={$R$},
@@ -152,7 +214,7 @@ ${await getPair("Ring", "Reliability")}
 
     \\nextgroupplot[
       ylabel={$H$},
-      y unit=\\si{bits}
+      y unit={\\text{bits}}
     ]
     \\addplot[
       color=Navy,
@@ -201,6 +263,10 @@ ${await getPair("Net", "Throughput")}
 ${await getPair("Ring", "Throughput")}
     };
 
+${footerText}
+
+${headerText}
+
     \\nextgroupplot[
       ylabel={$FT_{\\Delta T_{trx}}$},
       y unit=\\si{transactions/\\minute}
@@ -235,5 +301,7 @@ ${await getPair("Net", "FaultTolerance", "average.confirmationLatencyDelta.avera
     ] coordinates {
 ${await getPair("Ring", "FaultTolerance", "average.confirmationLatencyDelta.average")}
     };
-`
+
+${footerText}
+`;
 console.log(output)

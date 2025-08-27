@@ -209,6 +209,8 @@ class ThreesimSimulationMonitor(
       }
 
       TransactionSubmittedTraceEvent.EVENT_TYPE -> {
+        val e = event as TransactionSubmittedTraceEvent
+        println(e.transaction)
         numberOfSubmittedTransactions++
       }
     }
@@ -240,12 +242,11 @@ class ThreesimSimulationMonitor(
     sinceLastThroughputCheck: Boolean = false
   ): Int {
     return getConfirmedValidBlocks(sinceLastThroughputCheck)
-      .flatMap { it.first.transactions }
-      .size
+      .sumOf { it.first.transactions.size }
   }
 
   private fun calculateNumberOfStaleBlocks(): Int {
-    return staleBlocks.getNumberOfValidBlocks()
+    return staleBlocks.getNumberOfBlocks()
   }
 
   private fun calculateBlocksProposedPerNode(): Collection<Int> {

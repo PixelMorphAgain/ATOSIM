@@ -16,16 +16,30 @@ try {
   console.log()
   const index = await Bun.file(sourceFile).json();
   const a = index[config];
+  const keys = ["averageSimulationRoundResult", "generalResults"]
   let i = 0;
   for (const v of a) {
     const x = v.value
     const filePath = path.join(sourcePath, v.file)
     const results = await Bun.file(filePath).json()
-    const outputMetrics = object.get(results, "averageSimulationRoundResult")
+
+    let outputMetrics = []
+    for (const k of keys) {
+      outputMetrics.push(...object.get(results, k))
+    }
 
     if (i === 0) {
-      const headers = outputMetrics.map(m => m.name).join(",");
-      console.log(`${name},${headers}`);
+      let headers = []
+      for (const o of outputMetrics) {
+        if (o.name === "FaultTolerance") {
+          headers.push("FT.TD")
+          headers.push("FT.CLD")
+        } else {
+          headers.push(o.name)
+        }
+      }
+      const headersStr = headers.join(",")
+      console.log(`${name},${headersStr}`);
     }
     i++
 
@@ -34,11 +48,14 @@ try {
       if (m.name === "FaultTolerance") {
         const y1 = object.get(m, "average.throughputDelta.average")
         const y2 = object.get(m, "average.confirmationLatencyDelta.average")
-        outputStr += `,(${y1};${y2})`
-        continue
+        outputStr += `,${y1},${y2}`
+      } else if (m.name === "GeographicalDiversity" || m.name === "NakamotoCoefficient") {
+        const y = object.get(m, "value");
+        outputStr += `,${y}`
+      } else {
+        const y = object.get(m, "average");
+        outputStr += `,${y}`
       }
-      const y = object.get(m, "average");
-      outputStr += `,${y}`
     }
     console.log(outputStr)
   }

@@ -1,0 +1,25 @@
+\begin{figure}[h!]
+  \centering
+\begin{tikzpicture}
+  \begin{groupplot}[
+      group style={
+        group size=2 by 3,
+        horizontal sep=2cm,
+        vertical sep=2cm,
+      },
+      width=0.45\textwidth,
+      height=0.4\textwidth,
+      grid=major,
+      xmode=log,
+      xtick={75,250,500,1000,2000,4000,8000},
+      xticklabels={
+            \num{75}\si{\kilo\byte},
+            \num{250}\si{\kilo\byte},
+            \num{500}\si{\kilo\byte},
+            \num{1}\si{\mega\byte},
+            \num{2}\si{\mega\byte},
+            \num{4}\si{\mega\byte},
+            \num{8}\si{\mega\byte}
+      },
+      xticklabel style={rotate=90,anchor=east}
+  ]

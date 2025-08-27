@@ -1,0 +1,30 @@
+{
+    "Net": [
+        {
+            "value": 10,
+            "file": "threesim-net-10sc_2025_08_26_21_47_10.tsr.json"
+        },
+        {
+            "value": 6,
+            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+        },
+        {
+            "value": 2,
+            "file": "threesim-net-2sc_2025_08_25_21_27_49.tsr.json"
+        }
+    ],
+    "Ring": [
+        {
+            "value": 10,
+            "file": "threesim-ring-10sc_2025_08_26_21_54_06.tsr.json"
+        },
+        {
+            "value": 6,
+            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+        },
+        {
+            "value": 2,
+            "file": "threesim-ring-2sc_2025_08_25_21_27_29.tsr.json"
+        }
+    ]
+}

@@ -46,33 +46,5 @@ generate-launch-configs rounds blocks:
     bun ./threesim-helper-scripts/generateLaunchConfigs.ts ./threesim-workspace/ ./threesim-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/ {{rounds}} {{blocks}}
 
 gather-results:
-    bun ./threesim-helper-scripts/gatherResults.ts ./threesim-workspace/ ./experiment-results
-
-get-chart-data path metric key:
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult {{metric}} {{key}}
-
-get-chart-data-all path key:
-    @just get-chart-data {{path}} AvailabilityScalability {{key}}
-    @echo "AvailabilitySecurity"
-    @just get-chart-data {{path}} AvailabilitySecurity {{key}}
-    @echo "AverageConfirmationLatency"
-    @just get-chart-data {{path}} AverageConfirmationLatency {{key}}
-    @echo "Consistency"
-    @just get-chart-data {{path}} Consistency {{key}}
-    @echo "GiniCoefficient"
-    @just get-chart-data {{path}} GiniCoefficient {{key}}
-    @echo "HerfindahlHirschmanIndex"
-    @just get-chart-data {{path}} HerfindahlHirschmanIndex {{key}}
-    @echo "Reliability"
-    @just get-chart-data {{path}} Reliability {{key}}
-    @echo "ShannonEntropy"
-    @just get-chart-data {{path}} ShannonEntropy {{key}}
-    @echo "StaleBlock"
-    @just get-chart-data {{path}} StaleBlockRate {{key}}
-    @echo "Throughput"
-    @just get-chart-data {{path}} Throughput {{key}}
-    @echo "FT ThroughputDelta"
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.throughputDelta.{{key}}
-    @echo "FT ConfirmationLatencyDelta"
-    bun ./threesim-helper-scripts/getChartData.ts {{path}} averageSimulationRoundResult FaultTolerance average.confirmationLatencyDelta.{{key}}
+    bun ./threesim-helper-scripts/gatherResults.ts ./threesim-workspace/ ./experiment-results/results
 
