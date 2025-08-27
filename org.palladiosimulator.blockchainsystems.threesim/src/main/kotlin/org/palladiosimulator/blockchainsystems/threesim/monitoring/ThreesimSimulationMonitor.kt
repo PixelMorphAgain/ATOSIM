@@ -68,12 +68,14 @@ class ThreesimSimulationMonitor(
 
     blocksProposedPerNode = CounterMap.create(nodes.map { it.id })
 
-    includedBlocks = BlocksMap(calculateMajorityThreshold())
-    confirmedBlocks = BlocksMap(calculateMajorityThreshold())
-    staleBlocks = BlocksMap(calculateMajorityThreshold())
-    forkedBlocks = BlocksMap(calculateMajorityThreshold())
+    val majorityThreshold = calculateMajorityThreshold()
 
-    confirmedBlocksSinceLastThroughputCheck = BlocksMap(calculateMajorityThreshold())
+    includedBlocks = BlocksMap(majorityThreshold)
+    confirmedBlocks = BlocksMap(majorityThreshold)
+    staleBlocks = BlocksMap(majorityThreshold)
+    forkedBlocks = BlocksMap(majorityThreshold)
+
+    confirmedBlocksSinceLastThroughputCheck = BlocksMap(majorityThreshold)
   }
 
   fun getFinalState(

@@ -18,6 +18,27 @@ interface TrxMemPool : Traceable {
   fun storeTransaction(transaction: Transaction)
 
   /**
+   * Stores multiple transactions in the mempool.
+   *
+   * @param transactions The transactions to store.
+   */
+  fun storeTransactions(transactions: Collection<Transaction>)
+
+  /**
+   * Removes a transaction from the mempool.
+   *
+   * @param transaction The transaction to remove.
+   */
+  fun removeTransaction(transaction: Transaction)
+
+  /**
+   * Removes multiple transactions from the mempool.
+   *
+   * @param transactions The transactions to remove.
+   */
+  fun removeTransactions(transactions: Collection<Transaction>)
+
+  /**
    * Gets a transaction with a given ID from the mempool.
    *
    * @param txId The ID of the transaction
