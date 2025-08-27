@@ -211,8 +211,6 @@ class ThreesimSimulationMonitor(
       }
 
       TransactionSubmittedTraceEvent.EVENT_TYPE -> {
-        val e = event as TransactionSubmittedTraceEvent
-        println(e.transaction)
         numberOfSubmittedTransactions++
       }
     }

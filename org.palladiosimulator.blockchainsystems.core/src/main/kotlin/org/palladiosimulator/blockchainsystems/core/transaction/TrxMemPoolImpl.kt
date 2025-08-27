@@ -21,7 +21,12 @@ class TrxMemPoolImpl(
   private val mempool = TreeSet<Transaction> { t1, t2 ->
     val firstRate = t1.fee / t1.size
     val secondRate = t2.fee / t2.size
-    secondRate.compareTo(firstRate) // Argument order is reversed to sort in descending order
+    val feeRate = secondRate.compareTo(firstRate) // Argument order is reversed to sort in descending order
+    if (feeRate == 0) {
+      t1.txId.compareTo(t2.txId) // If fee rates are equal, sort by transaction ID to avoid equality, else transactions with the same fee rate would be considered equal
+    } else {
+      feeRate
+    }
   };
 
   private fun logTransactionStoredEvent(transaction: Transaction) {
@@ -46,7 +51,7 @@ class TrxMemPoolImpl(
   }
 
   override fun storeTransaction(transaction: Transaction) {
-    mempool.add(transaction)
+    mempool.add(transaction) // not added!!!
     logTransactionStoredEvent(transaction)
   }
 
@@ -67,7 +72,7 @@ class TrxMemPoolImpl(
     return mempool.find { it.txId == txId }
   }
 
-  override fun getTransactionsSortedByFeeRate(): TreeSet<Transaction> {
-    return mempool
+  override fun getTransactionsSortedByFeeRate(): List<Transaction> {
+    return mempool.toList()
   }
 }

@@ -1,7 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.transaction.abstractions
 
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Traceable
-import java.util.TreeSet
 
 /**
  * This interface represents a transaction memory pool (mempool) that stores transactions
@@ -48,5 +47,5 @@ interface TrxMemPool : Traceable {
   /**
    * Get all transactions in the mempool sorted by their fee rate in descending order.
    */
-  fun getTransactionsSortedByFeeRate(): TreeSet<Transaction>
+  fun getTransactionsSortedByFeeRate(): List<Transaction>
 }
