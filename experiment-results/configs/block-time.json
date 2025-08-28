@@ -2,37 +2,37 @@
     "Net": [
         {
             "value": 20,
-            "file": "threesim-net-block-time-20s_2025_08_22_21_26_29.tsr.json"
+            "file": "threesim-net-block-time-20s_500_2025_08_28_11_04_07.tsr.json"
         },
         {
             "value": 60,
-            "file": "threesim-net-block-time-1min_2025_08_22_21_27_28.tsr.json"
+            "file": "threesim-net-block-time-1min_500_2025_08_28_11_05_46.tsr.json"
         },
         {
             "value": 150,
-            "file": "threesim-net-block-time-2-5min_2025_08_22_21_29_16.tsr.json"
+            "file": "threesim-net-block-time-2-5min_500_2025_08_28_11_09_03.tsr.json"
         },
         {
             "value": 600,
-            "file": "threesim-net-base_2025_08_22_21_35_08.tsr.json"
+            "file": "threesim-net-base_500_2025_08_28_10_51_27.tsr.json"
         }
     ],
     "Ring": [
         {
             "value": 20,
-            "file": "threesim-ring-block-time-20s_2025_08_22_21_10_21.tsr.json"
+            "file": "threesim-ring-block-time-20s_500_2025_08_28_11_04_20.tsr.json"
         },
         {
             "value": 60,
-            "file": "threesim-ring-block-time-1min_2025_08_22_21_17_54.tsr.json"
+            "file": "threesim-ring-block-time-1min_500_2025_08_28_11_14_04.tsr.json"
         },
         {
             "value": 150,
-            "file": "threesim-ring-block-time-2-5min_2025_08_22_21_19_51.tsr.json"
+            "file": "threesim-ring-block-time-2-5min_500_2025_08_28_11_11_36.tsr.json"
         },
         {
             "value": 600,
-            "file": "threesim-ring-base_2025_08_22_21_25_40.tsr.json"
+            "file": "threesim-ring-base_500_2025_08_28_10_54_16.tsr.json"
         }
     ]
 }
