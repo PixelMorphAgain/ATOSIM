@@ -41,10 +41,3 @@ build-feature feature: check-local-build-cache-exists
 # Run Eclipse with remote debugging enabled.
 debug:
     $ECLIPSE_EXECUTABLE -vmargs -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005
-
-generate-launch-configs rounds blocks:
-    bun ./threesim-helper-scripts/generateLaunchConfigs.ts ./threesim-workspace/ ./threesim-workspace/.metadata/.plugins/org.eclipse.debug.core/.launches/ {{rounds}} {{blocks}}
-
-gather-results:
-    bun ./threesim-helper-scripts/gatherResults.ts ./threesim-workspace/ ./experiment-results/results
-
