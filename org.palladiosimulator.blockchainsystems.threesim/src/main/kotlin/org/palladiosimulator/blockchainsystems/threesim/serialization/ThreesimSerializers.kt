@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.serialization
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.*
-import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThroughputMonitoringTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockTypeChangedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
@@ -51,7 +50,6 @@ object ThreesimSerializers {
         subclass(AvailabilityScalability::class)
         subclass(AvailabilityScalability::class)
         subclass(AvailabilitySecurity::class)
-        subclass(AverageConfirmationLatency::class)
         subclass(Consistency::class)
         subclass(FaultTolerance::class)
         subclass(GeographicalDiversity::class)
@@ -64,7 +62,6 @@ object ThreesimSerializers {
         subclass(TransactionThroughput::class)
       }
       polymorphic(TraceEvent::class) {
-        subclass(ThroughputMonitoringTraceEvent::class)
         subclass(TransactionSubmittedTraceEvent::class)
         subclass(TransactionStoredInMemPoolTraceEvent::class)
         subclass(TransactionSentTraceEvent::class)

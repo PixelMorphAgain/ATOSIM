@@ -51,10 +51,6 @@ class ThreesimSimulationRoundResultFactory(
           numberOfTransactions = state.numberOfSubmittedTransactions
         ).calculate(),
 
-        AverageConfirmationLatencyCalculator(
-          state.transactionConfirmationDurations
-        ).calculate(),
-
         TransactionThroughputCalculator(
           numberOfConfirmedTransactions = state.numberOfConfirmedTransactions,
           observationTime = finalSystemTime

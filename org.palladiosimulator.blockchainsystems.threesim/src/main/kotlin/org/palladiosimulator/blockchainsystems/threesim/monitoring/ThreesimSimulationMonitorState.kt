@@ -8,7 +8,6 @@ class ThreesimSimulationMonitorState(
   val numberOfNodesPerRegion: Collection<Int>,
   val numberOfSubmittedTransactions: Int,
   val numberOfConfirmedTransactions: Int,
-  val transactionConfirmationDurations: Collection<Long>,
   val tokensHeldPerNode: List<Double>,
   val blockProposalTimeAndConfirmationTimePerConfirmedBlock: Collection<Pair<Long, Long>>,
   val meanTimeBetweenFailures: Double,

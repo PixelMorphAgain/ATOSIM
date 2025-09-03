@@ -67,10 +67,6 @@ class ThreesimSimulationFactory(
     configuration: ILaunchConfiguration
   ): ThreesimSimulationParameters {
     return ThreesimSimulationParameters(
-      throughputMonitoringInterval = configuration.getAttribute(
-        ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL,
-        ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL_DEFAULT
-      ).toLong(), // ms
       failureThroughputThreshold = configuration.getAttribute(
         ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
         ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT

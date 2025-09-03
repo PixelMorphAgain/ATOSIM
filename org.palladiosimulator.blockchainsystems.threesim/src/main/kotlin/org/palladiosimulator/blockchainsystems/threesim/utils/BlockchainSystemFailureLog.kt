@@ -30,12 +30,11 @@ class BlockchainSystemFailureLog {
 
   fun calculateMeanFailureDuration(): Double {
     val durations = log.mapNotNull { it.duration }
-    if (durations.isEmpty()) return 0.0
+    if (durations.isEmpty()) return -1.0 // return -1 if no failures occurred
     return durations.average()
   }
 
   fun getNumberOfFailures(): Int {
     return log.size
   }
-
 }

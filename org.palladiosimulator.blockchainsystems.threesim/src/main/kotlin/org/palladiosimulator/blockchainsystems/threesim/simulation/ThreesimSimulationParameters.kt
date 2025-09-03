@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 class ThreesimSimulationParameters(
-  val throughputMonitoringInterval: Long, // ms
   val failureThroughputThreshold: Double, // trx / s
   val shannonEntropyK: Double, // 0.0..1.0
   val nakamotoCoefficientThreshold: Double, // 0.0 .. 100.0 %

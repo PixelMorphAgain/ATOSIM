@@ -1,9 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim_plugin
 
 object ThreesimAttributes {
-  const val THROUGHPUT_MONITORING_INTERVAL: String = "ThroughputMonitoringInterval"
-  const val THROUGHPUT_MONITORING_INTERVAL_DEFAULT: String = "60000" // in ms => one minute
-
   const val FAILURE_THROUGHPUT_THRESHOLD: String = "FailureThroughputThreshold"
   const val FAILURE_THROUGHPUT_THRESHOLD_DEFAULT: String = "1" // transactions per minute
 

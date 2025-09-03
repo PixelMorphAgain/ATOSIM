@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
-import org.palladiosimulator.blockchainsystems.threesim.metrics.AverageConfirmationLatency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
 import org.palladiosimulator.blockchainsystems.threesim.metrics.Consistency
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FaultTolerance
@@ -17,7 +16,6 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.StaleBlockRate
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilityScalabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AvailabilitySecurityCalculator
-import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AverageConfirmationLatencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ConsistencyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.FaultToleranceCalculator
@@ -55,7 +53,6 @@ class ThreesimAverageSimulationRoundResult private constructor(
             when (it.key) {
               AvailabilityScalability.NAME -> AvailabilityScalabilityCalculator.calculateAverage(it.value as List<AvailabilityScalability>)
               AvailabilitySecurity.NAME -> AvailabilitySecurityCalculator.calculateAverage(it.value as List<AvailabilitySecurity>)
-              AverageConfirmationLatency.NAME -> AverageConfirmationLatencyCalculator.calculateAverage(it.value as List<AverageConfirmationLatency>)
               Consistency.NAME -> ConsistencyCalculator.calculateAverage(it.value as List<Consistency>)
               FaultTolerance.NAME -> FaultToleranceCalculator.calculateAverage(it.value as List<FaultTolerance>)
               GeographicalDiversity.NAME -> GeographicalDiversityCalculator.calculateAverage(it.value as List<GeographicalDiversity>)
