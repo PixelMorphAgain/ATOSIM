@@ -5,6 +5,4 @@ package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
  *
  * @author Davis Riedel
  */
-interface SimulationResult {
-  val simulationType: String
-}
+interface SimulationResult

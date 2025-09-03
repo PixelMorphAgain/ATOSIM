@@ -3,7 +3,6 @@ package org.palladiosimulator.blockchainsystems.threesim.serialization
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.TraceEvent
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.*
-import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThroughputMonitoringTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockAppendedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.blockchain.BlockTypeChangedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
@@ -27,21 +26,30 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationRoundResult
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
-
+import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationParameters
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
+import org.palladiosimulator.blockchainsystems.core.simulation.MonteCarloSimulationParameters
+import org.palladiosimulator.blockchainsystems.core.simulation.SingleSimulationParameters
 import kotlinx.serialization.modules.*
 import kotlinx.serialization.json.Json
-
 
 object ThreesimSerializers {
   val json = Json {
     prettyPrint = true
     serializersModule = SerializersModule {
+      polymorphic(SimulationParameters::class) {
+        subclass(SingleSimulationParameters::class)
+        subclass(MonteCarloSimulationParameters::class)
+      }
+      polymorphic(AverageOutputMetric::class) {
+        subclass(AverageOutputMetricImpl::class)
+        subclass(FaultToleranceAverageOutputMetric::class)
+      }
       polymorphic(OutputMetric::class) {
         subclass(AvailabilityScalability::class)
         subclass(AvailabilityScalability::class)
         subclass(AvailabilitySecurity::class)
-        subclass(AverageConfirmationLatency::class)
-        subclass(CensorshipResistance::class)
         subclass(Consistency::class)
         subclass(FaultTolerance::class)
         subclass(GeographicalDiversity::class)
@@ -54,7 +62,6 @@ object ThreesimSerializers {
         subclass(TransactionThroughput::class)
       }
       polymorphic(TraceEvent::class) {
-        subclass(ThroughputMonitoringTraceEvent::class)
         subclass(TransactionSubmittedTraceEvent::class)
         subclass(TransactionStoredInMemPoolTraceEvent::class)
         subclass(TransactionSentTraceEvent::class)

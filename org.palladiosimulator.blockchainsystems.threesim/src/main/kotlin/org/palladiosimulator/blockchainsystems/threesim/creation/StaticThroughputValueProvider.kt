@@ -6,7 +6,7 @@ import org.palladiosimulator.blockchainsystems.core.common.abstractions.Simulati
 /**
  * A static value provider for throughput that returns a fixed value.
  *
- * @property throughput The fixed throughput value to be returned, in Megabits per second (Mbps).
+ * @property throughput The fixed throughput value to be returned, in Bit per second (bps).
  *
  * @author Davis Riedel
  */

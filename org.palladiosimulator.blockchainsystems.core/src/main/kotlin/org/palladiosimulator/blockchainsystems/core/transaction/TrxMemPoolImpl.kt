@@ -16,21 +16,31 @@ class TrxMemPoolImpl(
 ) : BlockchainNodeObject(), TrxMemPool {
 
   /*
-   * Stores transactions sorted by their fee rate in descending order.
+   * Mempool that stores transactions sorted by their fee rate in descending order.
    */
-  private val transactions = TreeSet<Transaction> { t1, t2 ->
+  private val mempool = TreeSet<Transaction> { t1, t2 ->
     val firstRate = t1.fee / t1.size
     val secondRate = t2.fee / t2.size
-    secondRate.compareTo(firstRate) // Argument order is reversed to sort in descending order
+    val feeRate = secondRate.compareTo(firstRate) // Argument order is reversed to sort in descending order
+    if (feeRate == 0) {
+      t1.txId.compareTo(t2.txId) // If fee rates are equal, sort by transaction ID to avoid equality, else transactions with the same fee rate would be considered equal
+    } else {
+      feeRate
+    }
   };
 
   private fun logTransactionStoredEvent(transaction: Transaction) {
-    if (!traceEventLogger.isEventTypeEnabled(TransactionStoredInMemPoolTraceEvent.EVENT_TYPE)) {
-      return
-    }
-
     val event = TransactionStoredInMemPoolTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
+      transaction
+    )
+
+    traceEventLogger.logEvent(event)
+  }
+
+  private fun logTransactionRemovedEvent(transaction: Transaction) {
+    val event = TransactionRemovedFromMemPoolTraceEvent(
+      simulationContext.systemClock.currentTime,
       transaction
     )
 
@@ -41,15 +51,28 @@ class TrxMemPoolImpl(
   }
 
   override fun storeTransaction(transaction: Transaction) {
-    transactions.add(transaction)
+    mempool.add(transaction) // not added!!!
     logTransactionStoredEvent(transaction)
   }
 
-  override fun getTransactionById(txId: String): Transaction? {
-    return transactions.find { it.txId == txId }
+  override fun storeTransactions(transactions: Collection<Transaction>) {
+    transactions.forEach { storeTransaction(it) }
   }
 
-  override fun getTransactionsSortedByFeeRate(): TreeSet<Transaction> {
-    return transactions
+  override fun removeTransaction(transaction: Transaction) {
+    mempool.remove(transaction)
+    logTransactionRemovedEvent(transaction)
+  }
+
+  override fun removeTransactions(transactions: Collection<Transaction>) {
+    transactions.forEach { removeTransaction(it) }
+  }
+
+  override fun getTransactionById(txId: String): Transaction? {
+    return mempool.find { it.txId == txId }
+  }
+
+  override fun getTransactionsSortedByFeeRate(): List<Transaction> {
+    return mempool.toList()
   }
 }

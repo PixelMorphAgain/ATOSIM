@@ -231,4 +231,32 @@
       </editor>
    </extension>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated bscm -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.blockchainsystems.bscm.transactions.presentation.TransactionsModelWizardID"
+            name="%_UI_TransactionsModelWizard_label"
+            class="org.palladiosimulator.blockchainsystems.bscm.transactions.presentation.TransactionsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/TransactionsModelFile.gif">
+         <description>%_UI_TransactionsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated bscm -->
+      <editor
+            id="org.palladiosimulator.blockchainsystems.bscm.transactions.presentation.TransactionsEditorID"
+            name="%_UI_TransactionsEditor_label"
+            icon="icons/full/obj16/TransactionsModelFile.gif"
+            extensions="transactions"
+            class="org.palladiosimulator.blockchainsystems.bscm.transactions.presentation.TransactionsEditor"
+            contributorClass="org.palladiosimulator.blockchainsystems.bscm.transactions.presentation.TransactionsActionBarContributor">
+      </editor>
+   </extension>
+
 </plugin>

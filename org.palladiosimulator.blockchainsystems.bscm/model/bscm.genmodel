@@ -129,29 +129,16 @@
     <nestedGenPackages prefix="Blockchainsystem" basePackage="org.palladiosimulator.blockchainsystems.bscm"
         disposableProviderFactory="true" ecorePackage="bscm.ecore#//blockchainsystem">
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/BlockchainSystem">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Network"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Network"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/Specification"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/TransactionsSpecification"/>
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/GeographicalRegionsSpecification"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/TransactionsSpecification"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/BlockchainSystem/GeographicalRegionsSpecification"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//blockchainsystem/BlockchainSystemSpecification">
         <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MeanBlockTime"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/NumOfRequiredSecurityConfirmations"/>
         <genFeatures documentation="Unit: Byte" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/MaxBlockSize"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/BlockchainSystemSpecification/BlockReward"/>
-      </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//blockchainsystem/TransactionsSpecification">
-        <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionsSpecification/MeanTransactionCreationInterval"/>
-        <genFeatures children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/TransactionsSpecification/TransactionPropertiesSpecification"/>
-      </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//blockchainsystem/TransactionPropertiesSpecification">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//blockchainsystem/TransactionPropertiesSpecification/Values"/>
-      </genClasses>
-      <genClasses ecoreClass="bscm.ecore#//blockchainsystem/TransactionPropertiesSpecificationValue">
-        <genFeatures documentation="Unit: Byte" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionPropertiesSpecificationValue/Size"/>
-        <genFeatures documentation="Unit: Cryptocurrency" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionPropertiesSpecificationValue/Fee"/>
-        <genFeatures documentation="Unit: 0.0 - 1.0" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionPropertiesSpecificationValue/Probability"/>
-        <genFeatures documentation="Unit: Cryptocurrency" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//blockchainsystem/TransactionPropertiesSpecificationValue/Amount"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Nodeenvironment" basePackage="org.palladiosimulator.blockchainsystems.bscm"
@@ -160,7 +147,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//nodeenvironment/NodeEnvironment/ResourceContainers"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//nodeenvironment/NodeResourceContainer">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
+        <genFeatures documentation="Unit: MH/s" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Geographicalregions" disposableProviderFactory="true"
@@ -188,7 +175,7 @@
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkThroughputSpecification"/>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue">
-        <genFeatures documentation="Unit: Megabit per Second (Mbps)" createChild="false"
+        <genFeatures documentation="Unit: Bit per Second (bps)" createChild="false"
             ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Throughput"/>
         <genFeatures documentation="Unit: 0.0 - 1.0" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Probability"/>
         <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/DynamicLinkThroughputSpecificationValue/Duration"/>
@@ -203,8 +190,23 @@
         <genFeatures documentation="Unit: ms" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkLatencySpecification/Latency"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//linkallocation/StaticLinkThroughputSpecification">
-        <genFeatures documentation="Unit: Megabit per Second (Mbps)" createChild="false"
+        <genFeatures documentation="Unit: Bit per Second (bps)" createChild="false"
             ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkThroughputSpecification/Throughput"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Transactions" disposableProviderFactory="true" ecorePackage="bscm.ecore#//transactions">
+      <genClasses ecoreClass="bscm.ecore#//transactions/TransactionsSpecification">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionsSpecification/MeanTransactionCreationInterval"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//transactions/TransactionsSpecification/TransactionPropertiesSpecification"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//transactions/TransactionPropertiesSpecification">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//transactions/TransactionPropertiesSpecification/Values"/>
+      </genClasses>
+      <genClasses ecoreClass="bscm.ecore#//transactions/TransactionPropertiesSpecificationValue">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionPropertiesSpecificationValue/Size"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionPropertiesSpecificationValue/Fee"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionPropertiesSpecificationValue/Probability"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionPropertiesSpecificationValue/Amount"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

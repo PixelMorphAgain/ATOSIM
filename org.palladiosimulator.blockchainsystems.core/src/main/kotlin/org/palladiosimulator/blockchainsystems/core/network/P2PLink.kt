@@ -73,9 +73,9 @@ class P2PLink(
   }
 
   private fun handleMessageSentEvent(event: MessageSentEvent) {
-    val mbps = throughputValueProvider.getValue() // in Megabits per second (Mbps)
+    val bps = throughputValueProvider.getValue() // in bits per second
 
-    val event = if (mbps <= 0) {
+    val event = if (bps <= 0) {
       // Link failed, raise message dropped event
       MessageDroppedEvent(
         event.message,
@@ -90,7 +90,7 @@ class P2PLink(
       val latency = latencyValueProvider.getValue()
       val messageSize = event.message.content.getSize().toLong()
 
-      val bpms = mbps * 1_000_000.0 / 8 // Convert Mbps to bytes per millisecond
+      val bpms = bps.toDouble() / 8000 // Convert bit per second to bytes per millisecond
       val transmissionDuration = (latency + messageSize / bpms).roundToLong()
 
       MessageReceivedEvent(

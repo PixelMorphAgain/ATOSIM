@@ -33,12 +33,20 @@ class BlocksMap(
     }
   }
 
+  fun isBlockValid(blockHash: String): Boolean {
+    return (blocks[blockHash]?.second?.size ?: 0) >= threshold
+  }
+
+  fun getNumberOfBlocks(): Int {
+    return blocks.size
+  }
+
   fun getNumberOfValidBlocks(): Int {
     return blocks.count { it.value.second.size >= threshold }
   }
 
-  fun isBlockValid(blockHash: String): Boolean {
-    return (blocks[blockHash]?.second?.size ?: 0) >= threshold
+  fun getBlocks(): List<Pair<Block, Long>> {
+    return blocks.map { Pair(it.value.first, timestamps[it.key]!!) }
   }
 
   fun getValidBlocks(): List<Pair<Block, Long>> {

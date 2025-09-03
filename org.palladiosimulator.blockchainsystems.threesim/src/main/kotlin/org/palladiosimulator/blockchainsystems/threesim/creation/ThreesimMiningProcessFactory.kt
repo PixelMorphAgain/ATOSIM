@@ -1,11 +1,9 @@
 package org.palladiosimulator.blockchainsystems.threesim.creation
 
-import org.palladiosimulator.blockchainsystems.bscm.blockchainsystemComponentRepository.MiningProcessComponent
 import org.palladiosimulator.blockchainsystems.core.mining.MiningProcessImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcess
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.MiningProcessFactory
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.ResourcePowerCalculator
-import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
 import java.util.random.RandomGenerator
 
 
@@ -16,16 +14,12 @@ import java.util.random.RandomGenerator
  */
 class ThreesimMiningProcessFactory(
   private val meanBlockTime: Double,
-  private val resourcePowerCalculator: ResourcePowerCalculator,
-  private val nodeAllocationResolver: NodeAllocationResolver
+  private val resourcePowerCalculator: ResourcePowerCalculator
 ) : MiningProcessFactory {
   override fun createMiningProcess(nodeId: String): MiningProcess {
-    val nodeResourcePower = nodeAllocationResolver
-      .getNodeAllocation(nodeId)
-      ?.allocationContexts
-      ?.filter { it.assemblyContext.encapsulatedComponent is MiningProcessComponent }
-      ?.sumOf { it.resourceContainer.resourcePower }
-      ?: throw IllegalArgumentException("No resource power found for node with ID: $nodeId")
+    // Node resource power in MH/s
+    val nodeResourcePower = resourcePowerCalculator.getResourcePowerOfNode(nodeId)
+      ?: throw IllegalArgumentException("Node with ID $nodeId does not have a defined resource power.")
 
     val nodeResourcePowerShare = nodeResourcePower / resourcePowerCalculator.calculateGlobalResourcePower()
 

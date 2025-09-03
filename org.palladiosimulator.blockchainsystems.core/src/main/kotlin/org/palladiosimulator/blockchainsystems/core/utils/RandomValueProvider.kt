@@ -27,7 +27,7 @@ class RandomValueProvider<T> private constructor(
     var index = 0
 
     var currentLowerBorder = 0.0
-    var currentUpperBorder: Double = items.get(0)!!.selectionValueBorder
+    var currentUpperBorder = items.get(0)!!.selectionValueBorder
 
     while (!isInRange(selectionValue, currentLowerBorder, currentUpperBorder) && indexIsInValidRange(index)) {
       currentLowerBorder = currentUpperBorder
@@ -52,25 +52,20 @@ class RandomValueProvider<T> private constructor(
     fun <T> create(randomValues: Map<T, Double>, generator: RandomGenerator): RandomValueProvider<T> {
       require(randomValues.values.isNotEmpty()) { "The provided probabilities map must not be empty." }
 
-      val randomValuesSum = randomValues.values.sum()
+      val probabilitiesSum = randomValues.values.sum()
 
       // May not be greater than 1, but if it is not exactly one it can be tolerated
       // -> Last value gets the gap as an additional probability
-      require(!(randomValuesSum > 1.0)) { "The sum of the provided probabilities is greater than one." }
+      require(probabilitiesSum <= 1.0) { "The sum of the provided probabilities is greater than one." }
 
-      val deviation = 1.0 - randomValuesSum
-      require(!(deviation > RANDOM_VALUES_SUM_MAX_DEVIATION)) { "The sum of the provided probabilities deviates more than allowed deviation maximum (0.005)." }
+      val deviation = 1.0 - probabilitiesSum
+      require(deviation < RANDOM_VALUES_SUM_MAX_DEVIATION) { "The sum of the provided probabilities deviates more than allowed deviation maximum (0.005)." }
 
-      val items: TreeMap<Int, RandomValueProviderItem<T>> = TreeMap<Int, RandomValueProviderItem<T>>()
-
-
-      var index = 0
-      var currentSelectionValueSum = 0.0
-
-      for (entry in randomValues.entries) {
-        currentSelectionValueSum += entry.value
-        items.put(index, RandomValueProviderItem<T>(currentSelectionValueSum, entry.key))
-        index++
+      val items = TreeMap<Int, RandomValueProviderItem<T>>()
+      randomValues.entries.foldIndexed(0.0) { index, acc, entry ->
+        val newSum = acc + entry.value
+        items[index] = RandomValueProviderItem(newSum, entry.key)
+        newSum
       }
 
       return RandomValueProvider(items, generator)

@@ -55,6 +55,9 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     // Select transactions to include in the block
     val selectedTrxsResult = context.transactionSelectionProcess.selectTransactionsForBlock(context)
 
+    // Remove the selected transactions from the mempool
+    context.trxMemPool.removeTransactions(selectedTrxsResult.transactions)
+
     // Create a new block with the selected transactions
     return context.blockFactory.createBlock(
       UUID.randomUUID().toString(),

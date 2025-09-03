@@ -7,8 +7,11 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.serialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-
+import kotlinx.serialization.serializer
+import org.palladiosimulator.blockchainsystems.core.simulation.MonteCarloSimulationParameters
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimMonteCarloSimulationResult
 
 /**
@@ -18,25 +21,44 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
  */
 object ThreesimMonteCarloSimulationResultSerializer : KSerializer<ThreesimMonteCarloSimulationResult> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ThreesimMonteCarloSimulationResult") {
-    element("simulationType", serialDescriptor<String>())
+    element("simulationParameters", serialDescriptor<MonteCarloSimulationParameters>())
+    element("threesimSimulationParameters", serialDescriptor<ThreesimSimulationParameters>())
+    element("generalResults", serialDescriptor<OutputMetricsSet>())
     element("simulationRoundResults", serialDescriptor<List<OutputMetricsSet>>())
-    element("averageSimulationRoundResult", serialDescriptor<OutputMetricsSet>())
+    element("averageSimulationRoundResult", serialDescriptor<List<AverageOutputMetric>>())
   }
 
   override fun serialize(encoder: Encoder, value: ThreesimMonteCarloSimulationResult) {
     with(encoder.beginStructure(descriptor)) {
-      encodeStringElement(descriptor, 0, value.simulationType)
+      encodeSerializableElement(
+        descriptor,
+        0,
+        serializer<MonteCarloSimulationParameters>(),
+        value.simulationParameters as MonteCarloSimulationParameters
+      )
       encodeSerializableElement(
         descriptor,
         1,
-        ListSerializer(OutputMetricsSetSerializer),
-        value.simulationRoundResults.map { it.outputMetrics }
+        serializer<ThreesimSimulationParameters>(),
+        value.threesimSimulationParameters
       )
       encodeSerializableElement(
         descriptor,
         2,
         OutputMetricsSetSerializer,
-        value.averageSimulationRoundResult.outputMetrics
+        value.generalResults.outputMetrics
+      )
+      encodeSerializableElement(
+        descriptor,
+        3,
+        ListSerializer(OutputMetricsSetSerializer),
+        value.simulationRoundResults.map { it.outputMetrics }
+      )
+      encodeSerializableElement(
+        descriptor,
+        4,
+        ListSerializer(AverageOutputMetricSerializer),
+        value.averageSimulationRoundResult.results
       )
       endStructure(descriptor)
     }

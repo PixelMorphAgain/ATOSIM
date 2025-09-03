@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Group
 import org.palladiosimulator.blockchainsystems.plugin.ui.abstractions.TextField
 import org.palladiosimulator.blockchainsystems.plugin.utils.DoubleVerifier
 import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
-import org.palladiosimulator.blockchainsystems.threesim.config.ThreesimAttributes
+import org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimAttributes
 
 /**
  * Tab for configuring Threesim-specific simulation parameters.
@@ -30,7 +30,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
 
   private var isInitialized = false
 
-  private lateinit var throughputMonitoringIntervalField: TextField
   private lateinit var failureThroughputThresholdField: TextField
   private lateinit var shannonEntropyKField: TextField
   private lateinit var nakamotoCoefficientThresholdField: TextField
@@ -45,20 +44,10 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     GridLayoutFactory.swtDefaults().numColumns(3).spacing(0, 10).applyTo(group)
     group.layoutData = GridData(SWT.FILL, SWT.BEGINNING, true, false)
 
-    throughputMonitoringIntervalField = TextField(
-      group,
-      "Throughput Monitoring Interval:",
-      " ms",
-      LongVerifier,
-      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL,
-      ThreesimAttributes.THROUGHPUT_MONITORING_INTERVAL_DEFAULT,
-      isValueValid = { it.toLongOrNull()?.let { it >= MIN_THROUGHPUT_MONITORING_INTERVAL } ?: false }
-    )
-
     failureThroughputThresholdField = TextField(
       group,
       "Failure Throughput Threshold:",
-      " trx/min",
+      " transactions/min",
       DoubleVerifier,
       ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
       ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT,
@@ -110,7 +99,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   override fun initializeFrom(configuration: ILaunchConfiguration) {
     if (!isInitialized) return
 
-    throughputMonitoringIntervalField.initializeFrom(configuration)
     failureThroughputThresholdField.initializeFrom(configuration)
     shannonEntropyKField.initializeFrom(configuration)
     nakamotoCoefficientThresholdField.initializeFrom(configuration)
@@ -120,7 +108,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
     if (!isInitialized) return
 
-    throughputMonitoringIntervalField.performApply(configuration)
     failureThroughputThresholdField.performApply(configuration)
     shannonEntropyKField.performApply(configuration)
     nakamotoCoefficientThresholdField.performApply(configuration)
@@ -130,7 +117,6 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   override fun setDefaults(configuration: ILaunchConfigurationWorkingCopy) {
     if (!isInitialized) return
 
-    throughputMonitoringIntervalField.setDefaults(configuration)
     failureThroughputThresholdField.setDefaults(configuration)
     shannonEntropyKField.setDefaults(configuration)
     nakamotoCoefficientThresholdField.setDefaults(configuration)
@@ -145,8 +131,7 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   override fun isValid(launchConfig: ILaunchConfiguration): Boolean {
     if (!isInitialized) return false
 
-    return throughputMonitoringIntervalField.isValid() &&
-      failureThroughputThresholdField.isValid() &&
+    return failureThroughputThresholdField.isValid() &&
       shannonEntropyKField.isValid() &&
       nakamotoCoefficientThresholdField.isValid() &&
       reliabilityObservationTimespanField.isValid()

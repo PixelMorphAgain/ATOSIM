@@ -14,24 +14,28 @@ check-local-build-cache-exists:
       exit 1
     fi
 
-populate-local-build-cache:
+clean-local-build-cache:
     rm -rf .build-cache/local-cache-repo/
+
+populate-local-build-cache:
     mkdir -p .build-cache/local-cache-repo/
     cp -a releng/org.palladiosimulator.blockchainsystems.updatesite/target/repository/. .build-cache/local-cache-repo/
 
 clean:
     mvn clean -P '{{ MVN_ARGS }}'
-    rm -rf .build-cache/local-cache-repo/
+    just clean-local-build-cache
 
 verify:
     mvn verify -P '{{ MVN_ARGS }}'
 
 build:
+    just clean-local-build-cache
     mvn install -P '{{ MVN_ARGS }}'
     just populate-local-build-cache
 
 build-feature feature: check-local-build-cache-exists
     mvn install -P '{{ MVN_ARGS }},!build-all,build-{{ feature }}-feature'
+    just clean-local-build-cache # Ensure the old local cache is only cleaned after build finished.
     just populate-local-build-cache
 
 # Run Eclipse with remote debugging enabled.

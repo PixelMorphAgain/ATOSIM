@@ -1,5 +1,10 @@
 package org.palladiosimulator.blockchainsystems.core.simulation.abstractions
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
+
 /**
  * Represents a Monte-Carlo simulation with several rounds.
  * This class serves as a base for more specific simulations.
@@ -22,10 +27,16 @@ abstract class MonteCarloSimulation<R : SimulationRoundResult>(
     progressMonitor.onSimulationStarted(numberOfRounds)
 
     // Run the simulation rounds and collect results
-    val results = (1..numberOfRounds).map { i ->
-      val result = performSimulationRound()
-      progressMonitor.onSimulationRoundFinished()
-      result
+    val results = runBlocking {
+      coroutineScope {
+        (0 until numberOfRounds).map {
+          async {
+            val result = performSimulationRound()
+            progressMonitor.onSimulationRoundFinished()
+            result
+          }
+        }.awaitAll()
+      }
     }
 
     progressMonitor.onSimulationFinished()

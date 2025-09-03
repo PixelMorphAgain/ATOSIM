@@ -7,6 +7,7 @@ import org.eclipse.core.runtime.Status
 import org.eclipse.core.runtime.jobs.Job
 import org.eclipse.debug.core.ILaunchConfiguration
 import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.SimulationResultSerializer
+import org.palladiosimulator.blockchainsystems.plugin.Attributes
 import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.SimulationFactory
 
 /**
@@ -19,8 +20,8 @@ import org.palladiosimulator.blockchainsystems.plugin.simulation.abstractions.Si
  */
 class SimulationJob(
   private val configuration: ILaunchConfiguration,
-  private val simulationFactory: SimulationFactory,
   jobName: String,
+  private val simulationFactory: SimulationFactory,
   private val simulationResultSerializer: SimulationResultSerializer
 ) : Job(jobName) {
   override fun run(progressMonitor: IProgressMonitor): IStatus {
@@ -29,7 +30,13 @@ class SimulationJob(
     val result = simulation.run()
 
     try {
-      SimulationResultsWriter(simulationResultSerializer).saveResultFile(result, configuration)
+      SimulationResultsWriter(simulationResultSerializer).saveResultFile(
+        result,
+        configuration.getAttribute(
+          Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
+          Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT
+        )
+      )
     } catch (e: CoreException) {
       e.printStackTrace()
       return Status.OK_STATUS

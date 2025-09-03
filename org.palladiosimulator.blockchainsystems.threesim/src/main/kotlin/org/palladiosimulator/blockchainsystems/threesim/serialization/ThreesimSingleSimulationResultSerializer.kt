@@ -6,8 +6,10 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.descriptors.serialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-
+import kotlinx.serialization.serializer
+import org.palladiosimulator.blockchainsystems.core.simulation.SingleSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSingleSimulationResult
 
 /**
@@ -17,16 +19,28 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.results.Three
  */
 object ThreesimSingleSimulationResultSerializer : KSerializer<ThreesimSingleSimulationResult> {
   override val descriptor: SerialDescriptor = buildClassSerialDescriptor("ThreesimSingleSimulationResult") {
-    element("simulationType", serialDescriptor<String>())
+    element("simulationParameters", serialDescriptor<SingleSimulationParameters>())
+    element("threesimSimulationParameters", serialDescriptor<ThreesimSimulationParameters>())
     element("simulationRoundResult", serialDescriptor<OutputMetricsSet>())
   }
 
   override fun serialize(encoder: Encoder, value: ThreesimSingleSimulationResult) {
     with(encoder.beginStructure(descriptor)) {
-      encodeStringElement(descriptor, 0, value.simulationType)
+      encodeSerializableElement(
+        descriptor,
+        0,
+        serializer<SingleSimulationParameters>(),
+        value.simulationParameters as SingleSimulationParameters
+      )
       encodeSerializableElement(
         descriptor,
         1,
+        serializer<ThreesimSimulationParameters>(),
+        value.threesimSimulationParameters
+      )
+      encodeSerializableElement(
+        descriptor,
+        2,
         OutputMetricsSetSerializer,
         value.simulationRoundResult.outputMetrics
       )

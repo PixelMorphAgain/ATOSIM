@@ -24,7 +24,7 @@ class ThroughputValueProviderAdapter(
     ): ThroughputValueProviderAdapter {
       val valuesToProbabilitiesMapping = dynamicLinkThroughputSpecification.values.associate {
         LinkThroughput(
-          it.throughput, // in Mbps
+          it.throughput, // in bps
           it.duration
         ) to it.probability
       }

@@ -16,8 +16,9 @@ class TransactionThroughput(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "Throughput"
+    const val UNIT = "transactions/min"
   }
 
   override val name: String = NAME
-  override val unit: String? = "transactions/min"
+  override val unit: String? = UNIT
 }

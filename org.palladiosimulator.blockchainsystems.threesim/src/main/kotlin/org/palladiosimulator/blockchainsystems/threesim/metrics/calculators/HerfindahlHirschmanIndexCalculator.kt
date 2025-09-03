@@ -1,10 +1,12 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.HerfindahlHirschmanIndex
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.pow
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
 
 /**
  * Calculates the Normalized Herfindahl-Hirschman-Index (HHI_norm)
@@ -19,14 +21,29 @@ class HerfindahlHirschmanIndexCalculator(
   override fun calculate(): HerfindahlHirschmanIndex {
     val n = tokensHeldPerNode.size.toDouble() // number of validating nodes
     val total = tokensHeldPerNode.sum() // total amount of tokens held by all nodes
+
+    if (n == 0.0 || total == 0.0) {
+      return HerfindahlHirschmanIndex(0.0)
+    }
+
     val hhi = tokensHeldPerNode.sumOf { (it / total).pow(2) } // calculate HHI
     val hhiNorm = (hhi - 1 / n) / (1 - (1 / n)) // normalize HHI
+
     return HerfindahlHirschmanIndex(hhiNorm)
   }
 
-  companion object : OutputMetricAverageCalculator<HerfindahlHirschmanIndex> {
-    override fun calculateAverage(measurements: List<HerfindahlHirschmanIndex>): HerfindahlHirschmanIndex {
-      return HerfindahlHirschmanIndex(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<HerfindahlHirschmanIndex>() {
+    override fun getValue(metric: HerfindahlHirschmanIndex): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = HerfindahlHirschmanIndex.NAME,
+        average = result.average,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }

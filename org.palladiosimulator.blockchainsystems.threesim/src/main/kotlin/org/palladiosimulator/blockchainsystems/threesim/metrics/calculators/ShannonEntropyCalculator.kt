@@ -1,9 +1,11 @@
 package org.palladiosimulator.blockchainsystems.threesim.metrics.calculators
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.ShannonEntropy
-import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricAverageCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetric
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.AverageOutputMetricImpl
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetricCalculator
-import org.palladiosimulator.blockchainsystems.threesim.utils.averageOf
+import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 import kotlin.math.log
 
 /**
@@ -19,18 +21,35 @@ class ShannonEntropyCalculator(
   private val blocksProposedPerNode: Collection<Int>
 ) : OutputMetricCalculator<ShannonEntropy> {
   override fun calculate(): ShannonEntropy {
-    val totalNumOfBlocksProposed = blocksProposedPerNode.sum();
+    val totalNumOfBlocksProposed = blocksProposedPerNode.sum()
+    if (totalNumOfBlocksProposed == 0) {
+      return ShannonEntropy(0.0) // Avoid division by zero
+    }
+
     val sum = blocksProposedPerNode.sumOf {
+      if (it == 0) return@sumOf 0.0 // Avoid log(0)
       val b = it.toDouble() / totalNumOfBlocksProposed // Probability of block proposed by node i
       b * log(b, 2.0)
     }
+
     val result = -1 * k * sum
+
     return ShannonEntropy(result)
   }
 
-  companion object : OutputMetricAverageCalculator<ShannonEntropy> {
-    override fun calculateAverage(measurements: List<ShannonEntropy>): ShannonEntropy {
-      return ShannonEntropy(measurements.averageOf { it.value })
+  companion object : AverageOutputMetricCalculator<ShannonEntropy>() {
+    override fun getValue(metric: ShannonEntropy): Double {
+      return metric.value
+    }
+
+    override fun createResult(result: AverageCalculatorResult): AverageOutputMetric {
+      return AverageOutputMetricImpl(
+        name = ShannonEntropy.NAME,
+        average = result.average,
+        unit = ShannonEntropy.UNIT,
+        standardDeviation = result.standardDeviation,
+        coefficientOfVariation = result.coefficientOfVariation
+      )
     }
   }
 }
