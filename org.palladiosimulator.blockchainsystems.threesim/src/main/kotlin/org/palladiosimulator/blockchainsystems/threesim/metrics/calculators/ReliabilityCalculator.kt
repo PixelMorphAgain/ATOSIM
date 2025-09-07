@@ -11,13 +11,13 @@ import kotlin.math.exp
 /**
  * Calculates reliability of a blockchain system within the given quantifying timespan.
  *
- * @property timespan the timespan over which the reliability is calculated
- * @property meanTimeBetweenFailures average time until a failure occurs
+ * @property timespan the timespan over which the reliability is calculated, in hours
+ * @property meanTimeBetweenFailures average time until a failure occurs, in milliseconds
  *
  * @author Davis Riedel
  */
 class ReliabilityCalculator(
-  private val timespan: Long,
+  private val timespan: Double,
   private val meanTimeBetweenFailures: Double,
 ) : OutputMetricCalculator<Reliability> {
   override fun calculate(): Reliability {
@@ -25,10 +25,14 @@ class ReliabilityCalculator(
       return Reliability(0.0)
     }
 
-    if (meanTimeBetweenFailures == 0.0) throw IllegalStateException("Mean time between failures must not be zero when calculating reliability.")
+    if (meanTimeBetweenFailures == 0.0) {
+      throw IllegalStateException("Mean time between failures must not be zero when calculating reliability.")
+    }
+
+    val timespanInMs = timespan * 3_600_000.0 // convert hours to milliseconds
 
     return Reliability(
-      exp(-1.0 * timespan.toDouble() / meanTimeBetweenFailures)
+      exp(-1.0 * timespanInMs / meanTimeBetweenFailures)
     )
   }
 

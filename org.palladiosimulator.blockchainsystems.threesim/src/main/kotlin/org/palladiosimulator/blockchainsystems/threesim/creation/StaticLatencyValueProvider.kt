@@ -3,6 +3,13 @@ package org.palladiosimulator.blockchainsystems.threesim.creation
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationContext
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.SimulationLifecycleAwareValueProvider
 
+/**
+ * A value provider for latency that returns a fixed value.
+ *
+ * @property latency The fixed latency value to be returned, in milliseconds (ms).
+ *
+ * @author Davis Riedel
+ */
 class StaticLatencyValueProvider(
   private val latency: Long
 ) : SimulationLifecycleAwareValueProvider<Long> {

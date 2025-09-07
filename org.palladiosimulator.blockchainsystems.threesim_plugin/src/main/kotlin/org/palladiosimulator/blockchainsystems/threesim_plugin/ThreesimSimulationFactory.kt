@@ -82,7 +82,7 @@ class ThreesimSimulationFactory(
       reliabilityObservationTimespan = configuration.getAttribute(
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
-      ).toLong() // ms
+      ).toDouble() // hours
     )
   }
 

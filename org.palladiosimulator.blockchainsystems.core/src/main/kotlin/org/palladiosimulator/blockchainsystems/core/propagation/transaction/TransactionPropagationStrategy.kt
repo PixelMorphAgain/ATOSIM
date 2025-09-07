@@ -18,7 +18,6 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   override val GET_DATA_MESSAGE_KEY: String = "TRX_GET_DATA"
   override val ELEMENT_MESSAGE_KEY: String = "TRX_MSG"
 
-  // TODO: Set appropriate sizes for transaction messages
   private val MESSAGE_HEADER_BYTE_SIZE = 24
   private val INV_MESSAGE_BYTE_SIZE = 20
   private val GET_DATA_MESSAGE_BYTE_SIZE = 20

@@ -25,7 +25,6 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     transaction: Transaction,
     context: BlockchainSystemNodeContext
   ) {
-    // TODO: Shall we validate the transaction here?
     context.trxMemPool.storeTransaction(transaction)
     context.transactionPropagationStrategy.distribute(transaction)
   }
@@ -33,13 +32,17 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
   override fun onBlockValidated(block: Block, isValid: Boolean, context: BlockchainSystemNodeContext) {
     if (!isValid) return
 
+    // Remove transactions included in the block from the mempool
+    context.trxMemPool.removeTransactions(block.transactions)
+
+    // Append the block to the blockchain
     val hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context)
     if (hasNewLongestChain) {
       context.miningProcess.restartMining()
     }
 
-    context.blockPropagationStrategy
-      .distribute(block) // TODO: Blocks are distributed too often (Problem from SM-SIM)
+    // Propagate the valid block to peers
+    context.blockPropagationStrategy.distribute(block)
   }
 
   override fun onBlockMined(block: Block, context: BlockchainSystemNodeContext) {

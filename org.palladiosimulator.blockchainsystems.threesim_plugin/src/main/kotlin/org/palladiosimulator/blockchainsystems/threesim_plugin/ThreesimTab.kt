@@ -20,12 +20,11 @@ import org.palladiosimulator.blockchainsystems.threesim_plugin.ThreesimAttribute
  */
 class ThreesimTab : AbstractLaunchConfigurationTab() {
   companion object {
-    private const val MIN_RELIABILITY_OBSERVATION_TIMESPAN = 1L
+    private const val MIN_RELIABILITY_OBSERVATION_TIMESPAN = 0.0
     private const val MIN_NAKAMOTO_COEFFICIENT_THRESHOLD = 0.0
     private const val MAX_NAKAMOTO_COEFFICIENT_THRESHOLD = 100.0
     private const val MIN_SHANNON_ENTROPY_K = 0.0
     private const val MIN_FAILURE_THROUGHPUT_THRESHOLD = 0.0
-    private const val MIN_THROUGHPUT_MONITORING_INTERVAL = 1L
   }
 
   private var isInitialized = false
@@ -81,11 +80,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     reliabilityObservationTimespanField = TextField(
       group,
       "Reliability Observation Timespan:",
-      " ms",
-      LongVerifier,
+      " hours",
+      DoubleVerifier,
       ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
       ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT,
-      isValueValid = { it.toLongOrNull()?.let { it >= MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
+      isValueValid = { it.toDoubleOrNull()?.let { it > MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
 
     control = root

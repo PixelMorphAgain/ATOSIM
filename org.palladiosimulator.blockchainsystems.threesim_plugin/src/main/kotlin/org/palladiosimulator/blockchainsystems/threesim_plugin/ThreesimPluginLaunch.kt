@@ -25,14 +25,15 @@ class ThreesimPluginLaunch : PluginLaunch() {
   ) {
     val simulationParameters = getSimulationParametersFromLaunchConfiguration(configuration)
 
-    val jobName = when (simulationParameters.simulationType) {
-      SimulationType.Single -> "Single Simulation"
-      SimulationType.MonteCarlo -> "Monte Carlo Simulation"
+    val configurationName = configuration.name
+    val simulationTypeName = when (simulationParameters.simulationType) {
+      SimulationType.Single -> "Single"
+      SimulationType.MonteCarlo -> "Monte-Carlo"
     }
 
     val job = SimulationJob(
       configuration = configuration,
-      jobName = "3SIM $jobName Job",
+      jobName = "3SIM $simulationTypeName Simulation: $configurationName",
       simulationFactory = ThreesimSimulationFactory(simulationParameters),
       simulationResultSerializer = ThreesimSimulationResultSerializer(ThreesimSerializers.json)
     )

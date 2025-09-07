@@ -57,7 +57,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    val hash = message.getContent() as String
+    val hash = message.content as String
     context?.blockchain?.getBlock(hash)?.let { block ->
       networkInterface?.send(createElementMessage(block), senderNetworkEndpoint)
       logBlockSent(block, senderNetworkEndpoint)
@@ -68,7 +68,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    val block = message.getContent() as Block
+    val block = message.content as Block
 
     logBlockReceived(block, senderNetworkEndpoint)
 
@@ -97,7 +97,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
 
   private fun logBlockSent(block: Block, receiverNetworkEndpoint: P2PNetworkEndpoint) {
     val event = BlockSentTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       block,
       receiverNetworkEndpoint
     )
@@ -106,7 +106,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
 
   private fun logBlockReceived(block: Block, senderNetworkEndpoint: P2PNetworkEndpoint) {
     val event = BlockReceivedTraceEvent(
-      simulationContext.getSystemClock().getCurrentTime(),
+      simulationContext.systemClock.currentTime,
       block,
       senderNetworkEndpoint
     )

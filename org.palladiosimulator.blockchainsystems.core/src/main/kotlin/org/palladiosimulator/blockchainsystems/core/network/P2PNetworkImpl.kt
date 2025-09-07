@@ -47,16 +47,9 @@ class P2PNetworkImpl internal constructor(
     receivingNetworkInterface: NodeP2PNetworkInterface,
     content: Message
   ) {
-    val link = networkGraph.getEdge(sendingNetworkInterface as P2PNode, receivingNetworkInterface as P2PNode)
-
-    if (link == null) {
-      val neighbors = getNeighbors(sendingNetworkInterface)
-      val neighborIds = neighbors.joinToString(", ") { it.endpointId }
-      // TODO: Raise message dropped event
-      return
-    }
-
-    link.send(content)
+    networkGraph
+      .getEdge(sendingNetworkInterface as P2PNode, receivingNetworkInterface as P2PNode)
+      .send(content)
   }
 
   override fun getNeighbors(networkInterface: NodeP2PNetworkInterface): MutableSet<P2PNetworkEndpoint> {

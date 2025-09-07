@@ -1,6 +1,6 @@
 package org.palladiosimulator.blockchainsystems.plugin.utils;
 
-// TODO: Needed in Java code, not in Kotlin code. Maybe replace completely with Kotlin code in the future.
+// NOTE: Needed in Java code, not in Kotlin code. Maybe replace completely with Kotlin code in the future.
 public final class ValidationUtils {
 
     public static final long MINIMUM_PORT = 1;
