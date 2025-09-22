@@ -41,3 +41,7 @@ build-feature feature: check-local-build-cache-exists
 # Run Eclipse with remote debugging enabled.
 debug:
     $ECLIPSE_EXECUTABLE -vmargs -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005
+
+serve-updatesite:
+    sfz -a -b 100.123.232.93 -p 5000 ./releng/org.palladiosimulator.blockchainsystems.updatesite/target/repository/
+

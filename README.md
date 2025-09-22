@@ -45,7 +45,7 @@ Make sure the following prerequisites are installed:
   simulators.
 - `org.palladiosimulator.blockchainsystems.bscm`: Ecore-based metamodel for the 3SIM blockchain simulator.
 - `org.palladiosimulator.blockchainsystems.loggers`: Loggers to log trace events of the blockchain simulation to console, file, or database.
-- `org.palladiosimulator.blockchainsystems.kotlin-deps`: Provides the kotlin-stdlib and kotlinx.serialization libraries as OSGi bundles.
+- `org.palladiosimulator.blockchainsystems.kotlin-deps`: Provides the kotlin-stdlib, kotlinx.serialization and kotlinx.coroutines libraries as OSGi bundles.
 - `releng`
   - `org.palladiosimulator.blockchainsystems.target_platform`: Target platform definition for the 3SIM Eclipse plugin. The target platform file is automatically merged with the Palladio target platform, and thus currently empty.
   - `org.palladiosimulator.blockchainsystems.updatesite`: Builds an update site that can be used to install the 3SIM Eclipse plugin.
