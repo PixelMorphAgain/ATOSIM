@@ -269,4 +269,6 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="Amount" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
     </eClassifiers>
   </eSubpackages>
+  <eSubpackages name="attackmodel" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/AttackModel/1.0"
+      nsPrefix="attackmodel"/>
 </ecore:EPackage>

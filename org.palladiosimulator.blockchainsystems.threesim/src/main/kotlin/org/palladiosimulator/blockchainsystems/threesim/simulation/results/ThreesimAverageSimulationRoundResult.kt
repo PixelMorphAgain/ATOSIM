@@ -1,6 +1,5 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
-import kotlinx.serialization.Serializable
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
@@ -26,14 +25,12 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.Naka
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ReliabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ShannonEntropyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.StaleBlockRateCalculator
-import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimAverageSimulationRoundResultSerializer
 
 /**
  * Average result of several simulation rounds of 3SIM.
  *
  * @author Davis Riedel
  */
-@Serializable(with = ThreesimAverageSimulationRoundResultSerializer::class)
 class ThreesimAverageSimulationRoundResult private constructor(
   val results: List<AverageOutputMetric>
 ) {

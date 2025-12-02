@@ -14,6 +14,10 @@ import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 abstract class AbstractJsonLogger(
   private val jsonSerializer: Json,
 ) : TraceEventLogOutput {
+  override abstract fun onTraceEventOccurred(
+    traceEvent: TraceEvent,
+    logOrigin: TraceEventLogOrigin
+  )
 
   // Only id and name are relevant for serialization.
   @Serializable
