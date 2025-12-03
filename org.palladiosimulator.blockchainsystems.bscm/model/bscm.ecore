@@ -270,5 +270,119 @@
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="attackmodel" nsURI="http://palladiosimulator.org/BlockchainSystemComponentModel/AttackModel/1.0"
-      nsPrefix="attackmodel"/>
+      nsPrefix="attackmodel">
+    <eClassifiers xsi:type="ecore:EClass" name="Attack" abstract="true" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="requiredHashPower" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="dependsOnNetworkDelay"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="baselineSuccessProbability"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+          eType="#//attackmodel/AttackParameter" containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AttackScenario" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attack" lowerBound="1"
+          eType="#//attackmodel/Attack" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="attackers" upperBound="-1"
+          eType="#//attackmodel/AttackerNode" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="blockchainSystem" lowerBound="1"
+          eType="#//blockchainsystem/BlockchainSystem"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="result" eType="#//attackmodel/AttackResult"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AttackerNode" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="powerShare" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="linkedNodeSystem" eType="#//nodesystem/BlockchainSystemNodeSystem"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AttackResult" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="success" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="duration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedBlocks" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="successProbabilityObserved"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="avgForkRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="staleBlockRate" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleSpendCount" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="timeToTakeover" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="forkDepthDistribution"
+          upperBound="-1" eType="#//attackmodel/ForkDepthEntry" containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="attackerRevenueRatio"
+          eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EDouble"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="AttackParameter" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ForkDepthEntry" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="depth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="RaceAttack" eSuperTypes="#//attackmodel/Attack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="propagationAdvantage"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="transactionADelay" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="transactionBAcceleration"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="feeDifferenceThreshold"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="zeroConfAcceptanceRisk"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="observedDoubleSpends"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="avgPropagationAdvMs"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="FinneyAttack" eSuperTypes="#//attackmodel/Attack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfPreminedBlocks"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="withholdTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="merchantAcceptsZeroConf"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="doubleSpendSuccessCount"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="observedTimeToReleaseMs"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong" derived="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="SelfishMiningAttack" eSuperTypes="#//attackmodel/Attack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="privateChainLeadTarget"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="withholdProbability"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="publishOnCatchup" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expectedForksPerHour"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+          derived="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="monitoredNodes" upperBound="-1"
+          eType="#//attackmodel/AttackerNode"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="StubbornMiningAttack" abstract="true"
+        eSuperTypes="#//attackmodel/Attack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="leadThreshold" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="abandonThreshold" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="EqualForkStubbornAttack" eSuperTypes="#//attackmodel/StubbornMiningAttack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="tieResolutionBias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="LeadStubbornAttack" eSuperTypes="#//attackmodel/StubbornMiningAttack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="minLeadToPublish" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="TrailStubbornAttack" eSuperTypes="#//attackmodel/StubbornMiningAttack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="continueOnTrail" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="MajorityAttack" eSuperTypes="#//attackmodel/Attack">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="hashPowerShare" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="expectedTakeoverTime"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetConfirmationsToBreak"
+          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="colludingPools" upperBound="-1"
+          eType="#//attackmodel/AttackerNode"/>
+    </eClassifiers>
+  </eSubpackages>
 </ecore:EPackage>
