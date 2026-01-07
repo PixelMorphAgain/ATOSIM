@@ -48,6 +48,7 @@ class ThreesimSimulationMonitor(
   private lateinit var forkedBlocks: BlocksMap
 
   private val failureLog = BlockchainSystemFailureLog()
+  private val blockRewardMonitor = BlockRewardMonitor()
 
   private val throughputsDuringFailure: MutableList<Double> = mutableListOf()
   private val confirmationLatenciesDuringFailure: MutableList<Long> = mutableListOf()
@@ -141,6 +142,7 @@ class ThreesimSimulationMonitor(
 
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
+          recordBlockReward(e.appendedBlock)
         }
       }
 
@@ -304,4 +306,15 @@ class ThreesimSimulationMonitor(
       confirmationLatenciesWithoutFailure.average()
     }
   }
+
+  fun recordBlockReward(block: Block) {
+    blockRewardMonitor.recordBlock(block)
+  }
+
+  fun getTotalBlockRewards(): Int =
+    blockRewardMonitor.totalRewards
+
+  fun getBlockRewardsForNode(nodeId: String): Int =
+    blockRewardMonitor.getRewardsForNode(nodeId)
+
 }
