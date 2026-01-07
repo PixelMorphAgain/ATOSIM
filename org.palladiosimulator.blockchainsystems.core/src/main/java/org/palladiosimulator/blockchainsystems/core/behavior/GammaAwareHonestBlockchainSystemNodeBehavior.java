@@ -102,25 +102,7 @@ public class GammaAwareHonestBlockchainSystemNodeBehavior
     public String onPreviousBlockSelection(
             BlockchainSystemNodeContext context
     ) {
-        List<Block> heads =
-                context.getBlockchain().getLastBlocksOfLongestChains().stream().toList();
-
-        if (heads.size() == 1) {
-            return heads.get(0).getHash();
-        }
-
-        List<Block> attackerHeads =
-                heads.stream()
-                        .filter(b -> attackerNodeIds.contains(b.getOriginId()))
-                        .toList();
-
-        if (!attackerHeads.isEmpty() && random.nextDouble() < gamma) {
-            return attackerHeads.get(
-                    random.nextInt(attackerHeads.size())
-            ).getHash();
-        }
-
-        return heads.get(random.nextInt(heads.size())).getHash();
+        return new HonestBlockchainSystemNodeBehavior().onPreviousBlockSelection(context);
     }
 
     @Override

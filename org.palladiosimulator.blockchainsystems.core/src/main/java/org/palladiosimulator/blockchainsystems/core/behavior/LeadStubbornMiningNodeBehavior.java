@@ -22,6 +22,7 @@ public class LeadStubbornMiningNodeBehavior extends BlockchainNodeObject
         implements BlockchainSystemNodeBehavior {
 
     private final List<Block> privateChain = new ArrayList<>();
+    private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
     private int lead = 0;
 
     @Override
@@ -114,10 +115,7 @@ public class LeadStubbornMiningNodeBehavior extends BlockchainNodeObject
             return privateChain.get(privateChain.size() - 1).getHash();
         }
 
-        var heads =
-                context.getBlockchain().getLastBlocksOfLongestChains().stream().toList();
-
-        return heads.get((int) (Math.random() * heads.size())).getHash();
+        return honest.onPreviousBlockSelection(context);
     }
 
     private void publishOnePrivateBlock(BlockchainSystemNodeContext context) {

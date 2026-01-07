@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.behavior;
 
+import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
@@ -14,6 +15,8 @@ import java.util.UUID;
 public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
     private final double alpha;   // attacker hash power share
+    private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
+
 
     private final List<Block> privateChain = new ArrayList<>();
     private int lead = 0;
@@ -101,6 +104,7 @@ public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements B
         );
     }
 
+    @NotNull
     @Override
     public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
         // Mine on private chain if it exists
@@ -108,13 +112,8 @@ public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements B
             return privateChain.get(privateChain.size() - 1).getHash();
         }
 
-        // Otherwise choose a public tip RANDOMLY
-        var heads =
-                context.getBlockchain().getLastBlocksOfLongestChains().stream().toList();
-
-        return heads.get(
-                (int) (Math.random() * heads.size())
-        ).getHash();
+        // behave honestly
+        return honest.onPreviousBlockSelection(context);
     }
 
     private void publishOnePrivateBlock(BlockchainSystemNodeContext context) {

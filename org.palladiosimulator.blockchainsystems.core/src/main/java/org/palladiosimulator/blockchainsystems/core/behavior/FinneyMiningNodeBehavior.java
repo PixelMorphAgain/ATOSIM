@@ -9,6 +9,7 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 
 public class FinneyMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
     private Block privateBlock = null;
+    private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
     private boolean hasReleased = false;
 
     @Override
@@ -104,13 +105,7 @@ public class FinneyMiningNodeBehavior extends BlockchainNodeObject implements Bl
         if (privateBlock != null && !hasReleased) {
             return privateBlock.getHash();
         }
-
-        var heads =
-                context.getBlockchain().getLastBlocksOfLongestChains().stream().toList();
-
-        return heads.get(
-                (int) (Math.random() * heads.size())
-        ).getHash();
+        return honest.onPreviousBlockSelection(context);
     }
 
 
