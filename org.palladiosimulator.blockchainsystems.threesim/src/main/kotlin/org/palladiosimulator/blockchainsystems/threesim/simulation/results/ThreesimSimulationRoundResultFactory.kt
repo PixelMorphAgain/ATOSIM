@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
+import org.palladiosimulator.blockchainsystems.threesim.metrics.AttackerRevenueShare
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.*
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
@@ -16,8 +17,14 @@ class ThreesimSimulationRoundResultFactory(
   private val finalSystemTime: Long
 ) {
   fun createSimulationRoundResult(): ThreesimSimulationRoundResult {
-
     val state = monitor.getFinalState(finalSystemTime)
+    val attackerRewards = threesimSimulationParameters.attackerNodeIds.sumOf { monitor.getBlockRewardsForNode(it) }
+    val totalRewards = monitor.getTotalBlockRewards()
+    val attackerRevenueShareValue = if (totalRewards == 0) {
+      0.0
+    } else {
+      attackerRewards.toDouble() / totalRewards.toDouble() * 100.0
+    }
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
@@ -80,7 +87,9 @@ class ThreesimSimulationRoundResultFactory(
         StaleBlockRateCalculator(
           numberOfStaleBlocks = state.numberOfStaleBlocks,
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
-        ).calculate()
+        ).calculate(),
+
+        AttackerRevenueShare(attackerRevenueShareValue)
       )
     )
   }
