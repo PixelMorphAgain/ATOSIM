@@ -25,7 +25,7 @@ class ThreesimSimulationRound(
     LongestChainExceededMaxLengthCondition(
       maxAllowedBlockchainLength
     ),
-    threesimSimulationParameters.failureThroughputThreshold
+    threesimSimulationParameters.failureThroughputThreshold, threesimSimulationParameters
   )
 ) {
 

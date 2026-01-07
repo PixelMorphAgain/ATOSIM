@@ -16,6 +16,8 @@ import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
+import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
 
@@ -29,7 +31,8 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
  */
 class ThreesimSimulationMonitor(
   private val maxBlockchainLengthCondition: LongestChainExceededMaxLengthCondition,
-  private val failureThroughputThreshold: Double
+  private val failureThroughputThreshold: Double,
+  private val simulationParameters: ThreesimSimulationParameters
 ) : SimulationMonitor {
 
   private lateinit var nodes: MutableSet<BlockchainSystemNode>
@@ -39,6 +42,8 @@ class ThreesimSimulationMonitor(
   private var numberOfSubmittedTransactions: Int = 0
 
   private var blockReward: Double? = null
+
+  private var finneyAttackSucceeded: Boolean = false
 
   private lateinit var blocksProposedPerNode: CounterMap<String>
 
@@ -143,6 +148,9 @@ class ThreesimSimulationMonitor(
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
           recordBlockReward(e.appendedBlock)
+          if (simulationParameters.attackType == AttackType.FINNEY && simulationParameters.attackerNodeIds.contains(e.appendedBlock.originId)) {
+            finneyAttackSucceeded = true
+          }
         }
       }
 
@@ -156,6 +164,10 @@ class ThreesimSimulationMonitor(
 
         if (e.newBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
+          recordBlockReward(e.block)
+          if (simulationParameters.attackType == AttackType.FINNEY && simulationParameters.attackerNodeIds.contains(e.block.originId)) {
+            finneyAttackSucceeded = true
+          }
         }
       }
 
@@ -317,4 +329,5 @@ class ThreesimSimulationMonitor(
   fun getBlockRewardsForNode(nodeId: String): Int =
     blockRewardMonitor.getRewardsForNode(nodeId)
 
+  fun hasFinneyAttackSucceeded(): Boolean = finneyAttackSucceeded
 }

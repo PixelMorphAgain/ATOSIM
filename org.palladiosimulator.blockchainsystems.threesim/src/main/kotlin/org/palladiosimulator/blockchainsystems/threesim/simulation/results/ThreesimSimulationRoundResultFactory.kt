@@ -1,6 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AttackerRevenueShare
+import org.palladiosimulator.blockchainsystems.threesim.metrics.FinneyAttackSuccess
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.*
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
@@ -20,6 +21,7 @@ class ThreesimSimulationRoundResultFactory(
     val state = monitor.getFinalState(finalSystemTime)
     val attackerRewards = threesimSimulationParameters.attackerNodeIds.sumOf { monitor.getBlockRewardsForNode(it) }
     val totalRewards = monitor.getTotalBlockRewards()
+    val finneyAttackSuccess = monitor.hasFinneyAttackSucceeded()
     val attackerRevenueShareValue = if (totalRewards == 0) {
       0.0
     } else {
@@ -89,7 +91,8 @@ class ThreesimSimulationRoundResultFactory(
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
         ).calculate(),
 
-        AttackerRevenueShare(attackerRevenueShareValue)
+        AttackerRevenueShare(attackerRevenueShareValue),
+        FinneyAttackSuccess(finneyAttackSuccess)
       )
     )
   }
