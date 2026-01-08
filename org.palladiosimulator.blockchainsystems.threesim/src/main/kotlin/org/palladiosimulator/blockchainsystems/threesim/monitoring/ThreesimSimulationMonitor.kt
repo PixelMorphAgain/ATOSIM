@@ -44,6 +44,8 @@ class ThreesimSimulationMonitor(
   private var blockReward: Double? = null
 
   private var finneyAttackSucceeded: Boolean = false
+  private var finneyCandidateMinedTime: Long? = null
+  private var finneyCandidateBlockHash: String? = null
 
   private lateinit var blocksProposedPerNode: CounterMap<String>
 
@@ -129,6 +131,15 @@ class ThreesimSimulationMonitor(
         val e = event as BlockMinedTraceEvent
         val block = e.block
 
+        // Finney implementation: record privately mined block
+        // finney premined exactly one block
+        // block is mined before release, honest mining does not withhold blocks
+        // --> first attacker-mined block is the Finney block
+        if (finneyCandidateBlockHash == null && block.originId == "node-0") { //attacker
+          finneyCandidateBlockHash = block.hash
+          finneyCandidateMinedTime = e.occurrenceTime
+        }
+
         if (BlockUtils.isBlockForked(block)) {
           forkedBlocks.addNodeToBlock(block, logOrigin.id, e.occurrenceTime)
         }
@@ -148,7 +159,10 @@ class ThreesimSimulationMonitor(
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
           recordBlockReward(e.appendedBlock)
-          if (simulationParameters.attackType == AttackType.FINNEY && simulationParameters.attackerNodeIds.contains(e.appendedBlock.originId)) {
+          if (simulationParameters.attackType == AttackType.FINNEY &&
+            e.appendedBlock.hash == finneyCandidateBlockHash &&
+            finneyCandidateMinedTime != null &&
+            e.occurrenceTime > finneyCandidateMinedTime!!) {
             finneyAttackSucceeded = true
           }
         }
@@ -165,7 +179,10 @@ class ThreesimSimulationMonitor(
         if (e.newBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
           recordBlockReward(e.block)
-          if (simulationParameters.attackType == AttackType.FINNEY && simulationParameters.attackerNodeIds.contains(e.block.originId)) {
+          if (simulationParameters.attackType == AttackType.FINNEY &&
+            e.block.hash == finneyCandidateBlockHash &&
+            finneyCandidateMinedTime != null &&
+            e.occurrenceTime > finneyCandidateMinedTime!!) {
             finneyAttackSucceeded = true
           }
         }
