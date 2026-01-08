@@ -47,6 +47,11 @@ class ThreesimSimulationMonitor(
   private var finneyCandidateMinedTime: Long? = null
   private var finneyCandidateBlockHash: String? = null
 
+  private var raceAttackSucceeded: Boolean = false
+  // fork tracking by parent hash (previousHash)
+  private val confirmedByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
+  private val staleByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
+
   private lateinit var blocksProposedPerNode: CounterMap<String>
 
   private lateinit var includedBlocks: BlocksMap
@@ -154,6 +159,10 @@ class ThreesimSimulationMonitor(
 
         addBlock(e.appendedBlockType, e.appendedBlock, nodeId, e.occurrenceTime)
 
+        if (e.appendedBlockType == BlockType.ConfirmedBlock || e.appendedBlockType == BlockType.StaleBlock) {
+          updateRaceOutcomeIfRelevant(e.appendedBlock, e.appendedBlockType)
+        }
+
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
 
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
@@ -175,6 +184,10 @@ class ThreesimSimulationMonitor(
 
         removeBlock(e.oldBlockType, e.block.hash, nodeId)
         addBlock(e.newBlockType, e.block, nodeId, e.occurrenceTime)
+
+        if (e.newBlockType == BlockType.ConfirmedBlock || e.newBlockType == BlockType.StaleBlock) {
+          updateRaceOutcomeIfRelevant(e.block, e.newBlockType)
+        }
 
         if (e.newBlockType == BlockType.ConfirmedBlock) {
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
@@ -336,6 +349,46 @@ class ThreesimSimulationMonitor(
     }
   }
 
+  private fun updateRaceOutcomeIfRelevant(block: Block, newType: BlockType) {
+    if (raceAttackSucceeded) return
+    if (simulationParameters.attackType != AttackType.RACE) return
+
+    val prevHash = block.previousHash ?: return  // genesis has no race
+    val attacker = isAttacker(block.originId)
+
+    when (newType) {
+      BlockType.ConfirmedBlock -> {
+        if (attacker) {
+          addTo(confirmedByPrevHash, prevHash, block.hash)
+        }
+      }
+      BlockType.StaleBlock -> {
+        if (!attacker) {
+          addTo(staleByPrevHash, prevHash, block.hash)
+        }
+      }
+      else -> return
+    }
+
+    // Success condition: same parent has both (attacker-confirmed) and (honest-stale)
+    val hasAttackerConfirmed = confirmedByPrevHash[prevHash]?.isNotEmpty() == true
+    val hasHonestStale = staleByPrevHash[prevHash]?.isNotEmpty() == true
+
+    if (hasAttackerConfirmed && hasHonestStale) {
+      raceAttackSucceeded = true
+    }
+  }
+
+
+  private fun isAttacker(originId: String?): Boolean {
+    return originId != null && simulationParameters.attackerNodeIds.contains(originId)
+  }
+
+  private fun addTo(map: MutableMap<String, MutableSet<String>>, prevHash: String, blockHash: String) {
+    map.getOrPut(prevHash) { mutableSetOf() }.add(blockHash)
+  }
+
+
   fun recordBlockReward(block: Block) {
     blockRewardMonitor.recordBlock(block)
   }
@@ -347,4 +400,6 @@ class ThreesimSimulationMonitor(
     blockRewardMonitor.getRewardsForNode(nodeId)
 
   fun hasFinneyAttackSucceeded(): Boolean = finneyAttackSucceeded
+
+  fun hasRaceAttackSucceeded(): Boolean = raceAttackSucceeded
 }

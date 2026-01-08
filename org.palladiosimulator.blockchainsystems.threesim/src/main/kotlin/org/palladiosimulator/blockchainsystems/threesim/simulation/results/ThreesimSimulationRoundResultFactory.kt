@@ -2,6 +2,7 @@ package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AttackerRevenueShare
 import org.palladiosimulator.blockchainsystems.threesim.metrics.FinneyAttackSuccess
+import org.palladiosimulator.blockchainsystems.threesim.metrics.RaceAttackSuccess
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.*
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.OutputMetricsSet
@@ -92,7 +93,8 @@ class ThreesimSimulationRoundResultFactory(
         ).calculate(),
 
         AttackerRevenueShare(attackerRevenueShareValue),
-        FinneyAttackSuccess(finneyAttackSuccess)
+        FinneyAttackSuccess(monitor.hasFinneyAttackSucceeded()),
+        RaceAttackSuccess(monitor.hasRaceAttackSucceeded())
       )
     )
   }
