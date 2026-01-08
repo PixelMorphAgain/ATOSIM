@@ -19,7 +19,7 @@ class ThreesimSimulationRound(
   private val maxAllowedBlockchainLength: Long,
   private val threesimSimulationParameters: ThreesimSimulationParameters,
 ) : SimulationRound<ThreesimSimulationMonitor, ThreesimSimulationRoundResult>(
-  blockchainSystemFactory.createBlockchainSystem(),
+  blockchainSystemFactory.createBlockchainSystem(threesimSimulationParameters),
   logOutputs,
   monitor = ThreesimSimulationMonitor(
     LongestChainExceededMaxLengthCondition(

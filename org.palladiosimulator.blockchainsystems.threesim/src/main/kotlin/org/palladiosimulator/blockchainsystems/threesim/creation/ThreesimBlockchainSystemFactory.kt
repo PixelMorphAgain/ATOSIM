@@ -21,6 +21,7 @@ import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransac
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
 import java.util.UUID
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 
 /**
  * Factory for creating a generic [BlockchainSystem]
@@ -36,7 +37,7 @@ abstract class ThreesimBlockchainSystemFactory(
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
   protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
 
-  fun createBlockchainSystem(): BlockchainSystem {
+  fun createBlockchainSystem(simulationParameters: ThreesimSimulationParameters): BlockchainSystem {
     val networkFactory = createP2PNetworkFactory()
 
     val networkCreationResult = networkFactory.createP2PNetwork()
@@ -56,7 +57,8 @@ abstract class ThreesimBlockchainSystemFactory(
       nodeAllocationResolver,
       resourcePowerCalculator,
       blockFactory,
-      geographicalRegionsResolver
+      geographicalRegionsResolver,
+      simulationParameters
     )
 
     return createBlockchainSystemInstance(
@@ -114,7 +116,8 @@ abstract class ThreesimBlockchainSystemFactory(
     nodeAllocationResolver: NodeAllocationResolver,
     resourcePowerCalculator: ResourcePowerCalculator,
     blockFactory: BlockFactory,
-    geographicalRegionsResolver: ThreesimGeographicalRegionsResolver
+    geographicalRegionsResolver: ThreesimGeographicalRegionsResolver,
+    simulationParameters: ThreesimSimulationParameters
   ): BlockchainSystemNodeFactory {
     val blockchainFactory = BlockchainFactoryImpl(
       designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
@@ -131,7 +134,7 @@ abstract class ThreesimBlockchainSystemFactory(
       maxBlockSize = designBlockchainSystem.specification.maxBlockSize // in byte
     )
     val blockValidatorFactory = ThreesimBlockValidatorFactory(nodeAllocationResolver)
-    val behaviorFactory = ThreesimBlockchainSystemNodeBehaviorFactory()
+    val behaviorFactory = ThreesimBlockchainSystemNodeBehaviorFactory(simulationParameters)
     val tagProvider = ThreesimBlockchainSystemNodeTagProvider()
 
     return BlockchainSystemNodeFactory(

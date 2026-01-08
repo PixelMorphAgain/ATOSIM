@@ -14,15 +14,15 @@ import java.util.UUID;
 
 public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
-    private final double alpha;   // attacker hash power share
+    private final double gamma;   // attacker hash power share
     private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
 
 
     private final List<Block> privateChain = new ArrayList<>();
     private int lead = 0;
 
-    public SelfishMiningNodeBehavior(double alpha) {
-        this.alpha = alpha;
+    public SelfishMiningNodeBehavior(double gamma) {
+        this.gamma = gamma;
     }
 
     @Override
