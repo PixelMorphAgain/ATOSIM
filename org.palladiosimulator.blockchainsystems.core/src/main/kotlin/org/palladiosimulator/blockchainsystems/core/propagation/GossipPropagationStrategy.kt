@@ -42,11 +42,11 @@ abstract class GossipPropagationStrategy<E : Propagatable> : BlockchainNodeObjec
   }
 
 
-  override fun distribute(element: E) {
+  open override fun distribute(element: E) {
     networkInterface?.multicast(createInvMessage(element))
   }
 
-  override fun distribute(element: E, neighborEndpoints: MutableSet<P2PNetworkEndpoint>) {
+  open override fun distribute(element: E, neighborEndpoints: MutableSet<P2PNetworkEndpoint>) {
     neighborEndpoints.forEach {
       networkInterface?.send(createInvMessage(element), it)
     }

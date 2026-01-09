@@ -24,5 +24,9 @@ class ThreesimSimulationParameters(
   val attackerHashPower: Double = 0.0, //0.0 .. 1.0
 
   //Gamma parameter for selfish/stubborn mining
-  val gamma: Double = 0.0 // 0.0 .. 1.0
+  val gamma: Double = 0.0, // 0.0 .. 1.0
+
+  // Race attack timing
+  val deltaA: Long = 0L, //victim tx delay in ms
+  val deltaB: Long = 0L // attacker tx acceleration in ms
 )
