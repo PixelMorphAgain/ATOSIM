@@ -49,15 +49,20 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
           HonestBlockchainSystemNodeBehavior()
       }
     }
-
     // Honest nodes
-    return if (simulationParameters.attackType == AttackType.SELFISH_MINING) {
-      GammaAwareHonestBlockchainSystemNodeBehavior(
-        simulationParameters.attackerNodeIds,
-        simulationParameters.gamma
-      )
-    } else {
-      HonestBlockchainSystemNodeBehavior()
+    return when (simulationParameters.attackType) {
+      AttackType.SELFISH_MINING,
+      AttackType.LEAD_STUBBORN_MINING,
+      AttackType.EQUAL_FORK_STUBBORN_MINING,
+      AttackType.TRAIL_STUBBORN_MINING ->
+        GammaAwareHonestBlockchainSystemNodeBehavior(
+          simulationParameters.attackerNodeIds,
+          simulationParameters.gamma
+        )
+
+      else ->
+        HonestBlockchainSystemNodeBehavior()
     }
+
   }
 }
