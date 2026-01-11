@@ -21,6 +21,9 @@ import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransac
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
 import java.util.UUID
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
+import org.palladiosimulator.blockchainsystems.core.propagation.transaction.RaceAwareTransactionPropagationStrategy
+import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionPropagationStrategy
+import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 
 /**
@@ -123,7 +126,18 @@ abstract class ThreesimBlockchainSystemFactory(
       designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
     )
     val blockPropagationStrategyFactory = BlockPropagationStrategyFactoryImpl()
-    val transactionPropagationStrategyFactory = TransactionPropagationStrategyFactoryImpl()
+    val transactionPropagationStrategyFactory =
+      TransactionPropagationStrategyFactoryImpl {
+        if (simulationParameters.attackType == AttackType.RACE) {
+          RaceAwareTransactionPropagationStrategy(
+            simulationParameters.attackerNodeIds,
+            simulationParameters.deltaA,
+            simulationParameters.deltaB
+          )
+        } else {
+          TransactionPropagationStrategy()
+        }
+      }
     val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()
     val trxMemPoolFactory = TrxMemPoolFactoryImpl()
     val miningProcessFactory = ThreesimMiningProcessFactory(

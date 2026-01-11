@@ -64,11 +64,10 @@ class RaceAwareTransactionPropagationStrategy(
     }
 
     private fun computeRaceDelay(trx: Transaction): Long {
-        val sender = trx.senderId
-        val isAttackerTx = attackerNodeIds.contains(sender)
+        val isAttackerTx = attackerNodeIds.contains(trx.senderId)
 
         return if (isAttackerTx) {
-            (-deltaB).coerceAtLeast(0L)
+            (deltaA - deltaB).coerceAtLeast(0L)
         } else {
             deltaA.coerceAtLeast(0L)
         }

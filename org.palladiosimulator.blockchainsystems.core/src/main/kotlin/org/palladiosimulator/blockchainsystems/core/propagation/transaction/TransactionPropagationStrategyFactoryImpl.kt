@@ -4,8 +4,10 @@ import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrat
 import org.palladiosimulator.blockchainsystems.core.propagation.PropagationStrategyFactory
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 
-class TransactionPropagationStrategyFactoryImpl : PropagationStrategyFactory<Transaction> {
+class TransactionPropagationStrategyFactoryImpl(
+  private val strategySupplier: () -> PropagationStrategy<Transaction>
+) : PropagationStrategyFactory<Transaction> {
   override fun createPropagationStrategy(): PropagationStrategy<Transaction> {
-    return TransactionPropagationStrategy()
+    return strategySupplier()
   }
 }
