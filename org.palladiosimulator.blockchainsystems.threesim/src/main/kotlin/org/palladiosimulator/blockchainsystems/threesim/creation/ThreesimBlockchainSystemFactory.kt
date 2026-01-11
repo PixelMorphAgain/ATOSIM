@@ -47,7 +47,20 @@ abstract class ThreesimBlockchainSystemFactory(
 
     // Create information provider based on the generated network
     val nodeAllocationResolver = getNodeAllocationResolver(networkCreationResult)
-    val resourcePowerCalculator = getResourcePowerCalculator(networkCreationResult)
+    val baseResourcePowerCalculator = getResourcePowerCalculator(networkCreationResult)
+    val resourcePowerCalculator =
+      if (
+        simulationParameters.attackerNodeIds.isNotEmpty() &&
+        simulationParameters.attackerHashPower > 0.0
+      ) {
+        AttackAwareResourcePowerCalculator(
+          delegate = baseResourcePowerCalculator,
+          attackerNodeIds = simulationParameters.attackerNodeIds,
+          attackerHashPower = simulationParameters.attackerHashPower
+        )
+      } else {
+        baseResourcePowerCalculator
+      }
     val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
       designBlockchainSystem.geographicalRegionsSpecification,
       nodeAllocationResolver
