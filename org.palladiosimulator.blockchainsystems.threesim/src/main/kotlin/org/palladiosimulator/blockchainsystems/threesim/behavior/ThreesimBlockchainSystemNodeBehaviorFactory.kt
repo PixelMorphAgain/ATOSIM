@@ -28,41 +28,41 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
     val isAttacker = simulationParameters.attackerNodeIds.contains(nodeId)
 
     if (isAttacker) {
-      return when (simulationParameters.attackType) {
+      when (simulationParameters.attackType) {
         AttackType.SELFISH_MINING ->
-          SelfishMiningNodeBehavior(simulationParameters.gamma)
+          return SelfishMiningNodeBehavior(simulationParameters.gamma) as BlockchainSystemNodeBehavior
 
         AttackType.LEAD_STUBBORN_MINING ->
-          LeadStubbornMiningNodeBehavior()
+          return LeadStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
 
         AttackType.EQUAL_FORK_STUBBORN_MINING ->
-          EqualForkStubbornMiningNodeBehavior()
+          return EqualForkStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
 
         AttackType.TRAIL_STUBBORN_MINING ->
-          TrailStubbornMiningNodeBehavior()
+          return TrailStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
 
         AttackType.FINNEY ->
-          FinneyMiningNodeBehavior()
+          return FinneyMiningNodeBehavior() as BlockchainSystemNodeBehavior
 
-        // NONE, RACE, MAJORITY
         else ->
-          HonestBlockchainSystemNodeBehavior()
+          return HonestBlockchainSystemNodeBehavior()
       }
     }
+
     // Honest nodes
-    return when (simulationParameters.attackType) {
+    when (simulationParameters.attackType) {
       AttackType.SELFISH_MINING,
       AttackType.LEAD_STUBBORN_MINING,
       AttackType.EQUAL_FORK_STUBBORN_MINING,
       AttackType.TRAIL_STUBBORN_MINING ->
-        GammaAwareHonestBlockchainSystemNodeBehavior(
+        return GammaAwareHonestBlockchainSystemNodeBehavior(
           simulationParameters.attackerNodeIds,
           simulationParameters.gamma
         )
 
       else ->
-        HonestBlockchainSystemNodeBehavior()
+        return HonestBlockchainSystemNodeBehavior()
     }
-
   }
+
 }
