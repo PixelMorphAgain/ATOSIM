@@ -42,8 +42,13 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
     private Button _blockchainSystemFileFromFilesystemSelectionButton;
     private Button _blockchainSystemFileFromWorkspaceSelectionButton;
 
+    private Text _attackModelFilePathText;
+    private Button _attackModelFileFromFilesystemSelectionButton;
+    private Button _attackModelFileFromWorkspaceSelectionButton;
+
     private Text _simulationResultsDirectoryPath;
     private Button _simulationResultsDirectoryPathFromFilesystemSelectionButton;
+
 
     @Override
     public void createControl(Composite parent) {
@@ -133,6 +138,54 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
 
         });
 
+        Group attackModelGroup = new Group(parent, SWT.NONE);
+        attackModelGroup.setText("Attack Model File (optional)");
+        attackModelGroup.setLayout(new GridLayout(3, false));
+        attackModelGroup.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
+        _attackModelFilePathText = new Text(attackModelGroup, SWT.BORDER);
+        _attackModelFilePathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        _attackModelFilePathText.addModifyListener(e -> updateLaunchConfigurationDialog());
+
+        _attackModelFileFromFilesystemSelectionButton = new Button(attackModelGroup, SWT.PUSH);
+        _attackModelFileFromFilesystemSelectionButton.setText("From Filesystem");
+        _attackModelFileFromFilesystemSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        _attackModelFileFromFilesystemSelectionButton.addListener(SWT.Selection, e -> {
+            FileDialog d = new FileDialog(_parent.getShell());
+            String selected = d.open();
+            _attackModelFilePathText.setText(selected != null ? selected : "");
+            updateLaunchConfigurationDialog();
+        });
+
+        _attackModelFileFromWorkspaceSelectionButton = new Button(attackModelGroup, SWT.PUSH);
+        _attackModelFileFromWorkspaceSelectionButton.setText("From Workspace");
+        _attackModelFileFromWorkspaceSelectionButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false));
+        _attackModelFileFromWorkspaceSelectionButton.addListener(SWT.Selection, e -> {
+            ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
+                    _parent.getShell(),
+                    new WorkbenchLabelProvider(),
+                    new BaseWorkbenchContentProvider()
+            );
+
+            dialog.setTitle("Select Attack Model File");
+            dialog.setMessage("Select attack model from the workspace:");
+            String[] fileExtensions = new String[] {"attackmodel"};
+            dialog.addFilter(new FileExtensionFilter(fileExtensions));
+
+            IWorkspaceRoot workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
+            dialog.setInput(workspaceRoot);
+
+            if (dialog.open() == Window.OK) {
+                Object[] result = dialog.getResult();
+                if (result != null && result.length > 0) {
+                    IResource selectedResource = (IResource) result[0];
+                    String platformPath = ECLIPSE_PLATFORM_URI_PREFIX + selectedResource.getFullPath();
+                    _attackModelFilePathText.setText(platformPath);
+                }
+            }
+            updateLaunchConfigurationDialog();
+        });
+
 
         Group simulationResultDirectoryGroup = new Group(parent, SWT.NONE);
         simulationResultDirectoryGroup.setText("Simulation Results Directory");
@@ -198,11 +251,17 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
                     configuration.getAttribute(
                             Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
                             Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT));
+            _attackModelFilePathText.setText(
+                    configuration.getAttribute(
+                            Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE,
+                            Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT));
         } catch (CoreException e) {
             _topologyFilePathText.setText(
                     Attributes.ArchitecturalModels.BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
             _simulationResultsDirectoryPath.setText(
                     Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
+            _attackModelFilePathText.setText(
+                    Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
         }
     }
 
@@ -214,6 +273,9 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
         configuration.setAttribute(
                 Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
                 _simulationResultsDirectoryPath.getText());
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE,
+                _attackModelFilePathText.getText());
     }
 
     @Override
@@ -224,6 +286,9 @@ public class ArchitecturalModelsTab extends AbstractLaunchConfigurationTab {
         configuration.setAttribute(
                 Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY,
                 Attributes.ArchitecturalModels.SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT);
+        configuration.setAttribute(
+                Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE,
+                Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT);
     }
 
     @Override

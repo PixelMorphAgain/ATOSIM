@@ -15,8 +15,12 @@ public final class Attributes {
         public static final String BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE = "BlockchainSystemModelFilePath";
         public static final String BLOCKCHAIN_SYSTEM_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT = "";
 
+        public static final String ATTACK_MODEL_FILE_PATH_ATTRIBUTE = "AttackModelFilePath";
+        public static final String ATTACK_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT = "";
+
         public static final String SIMULATION_RESULT_FILE_DIRECTORY = "SimulationResultFileDirectory";
         public static final String SIMULATION_RESULT_FILE_DIRECTORY_DEFAULT = "";
+
     }
 
     public static class SimulationType {
