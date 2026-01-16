@@ -19,6 +19,7 @@ import org.palladiosimulator.blockchainsystems.threesim.serialization.ThreesimSe
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimMonteCarloSimulation
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSingleSimulation
+import org.palladiosimulator.blockchainsystems.plugin.Attributes
 
 /**
  * Factory for creating instances of [Simulation] for the 3SIM blockchain simulator.
@@ -66,25 +67,53 @@ class ThreesimSimulationFactory(
   private fun getThreesimSimulationParametersFromLaunchConfiguration(
     configuration: ILaunchConfiguration
   ): ThreesimSimulationParameters {
-    return ThreesimSimulationParameters(
+
+    val baseParams = ThreesimSimulationParameters(
       failureThroughputThreshold = configuration.getAttribute(
         ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
         ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD_DEFAULT
-      ).toDouble(), // trx / s
+      ).toDouble(),
       shannonEntropyK = configuration.getAttribute(
         ThreesimAttributes.SHANNON_ENTROPY_K,
         ThreesimAttributes.SHANNON_ENTROPY_K_DEFAULT
-      ).toDouble(), // 0.0..1.0
+      ).toDouble(),
       nakamotoCoefficientThreshold = configuration.getAttribute(
         ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD,
         ThreesimAttributes.NAKAMOTO_COEFFICIENT_THRESHOLD_DEFAULT
-      ).toDouble(), // 0.0 .. 100.0 %
+      ).toDouble(),
       reliabilityObservationTimespan = configuration.getAttribute(
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
-      ).toDouble() // hours
+      ).toDouble()
+    )
+
+    //  NEW: read attack model path
+    val attackModelPath =
+      configuration.getAttribute(
+        Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE,
+        Attributes.ArchitecturalModels.ATTACK_MODEL_FILE_PATH_ATTRIBUTE_DEFAULT
+      )
+
+    // No attack model → honest simulation
+    if (attackModelPath.isBlank()) {
+      return baseParams
+    }
+
+    // Load BOTH models together
+    val loader = BlockchainSystemModelLoader()
+    val loadedModels =
+      loader.load(simulationParameters.blockchainSystemModelFilePath, attackModelPath)
+
+    val attackScenario = loadedModels.attackScenario ?: return baseParams
+
+    //  Map attackmodel → runtime parameters
+    return AttackModelMapper.applyAttackScenario(
+      baseParams,
+      loadedModels.blockchainSystem,
+      attackScenario
     )
   }
+
 
   private fun createBlockchainSystemFactory(): ThreesimBlockchainSystemFactory {
     val designModelLoader = BlockchainSystemModelLoader()
