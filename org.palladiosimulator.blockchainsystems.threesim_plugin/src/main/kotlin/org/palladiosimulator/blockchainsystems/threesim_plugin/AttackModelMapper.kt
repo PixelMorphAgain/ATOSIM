@@ -40,7 +40,7 @@ object AttackModelMapper {
             attackType = attackType,
             attackerNodeIds = attackerNodeIds,
             attackerHashPower = attackerHashPower,
-            gamma = base.gamma, // still from launch config / default
+            gamma = scenario.attack.gamma, // still from launch config / default
             deltaA = deltaA,
             deltaB = deltaB
         )
