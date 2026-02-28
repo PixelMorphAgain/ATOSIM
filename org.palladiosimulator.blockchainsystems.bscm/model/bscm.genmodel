@@ -7,7 +7,7 @@
     modelPluginID="org.palladiosimulator.blockchainsystems.bscm" modelName="Bscm"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="17.0" copyrightFields="false"
-    usedGenPackages="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel#//units platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction"
+    usedGenPackages="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel#//units"
     importOrganizing="true">
   <foreignModel>bscm.ecore</foreignModel>
   <testsDirectory xsi:nil="true"/>
@@ -150,8 +150,8 @@
         <genFeatures documentation="Unit: MH/s" createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//nodeenvironment/NodeResourceContainer/ResourcePower"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Geographicalregions" disposableProviderFactory="true"
-        ecorePackage="bscm.ecore#//geographicalregions">
+    <nestedGenPackages prefix="Geographicalregions" basePackage="org.palladiosimulator.blockchainsystems.bscm"
+        disposableProviderFactory="true" ecorePackage="bscm.ecore#//geographicalregions">
       <genClasses ecoreClass="bscm.ecore#//geographicalregions/GeographicalRegionsSpecification">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//geographicalregions/GeographicalRegionsSpecification/Regions"/>
       </genClasses>
@@ -159,7 +159,8 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//geographicalregions/GeographicalRegion/RegionName"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Linkallocation" disposableProviderFactory="true" ecorePackage="bscm.ecore#//linkallocation">
+    <nestedGenPackages prefix="Linkallocation" basePackage="org.palladiosimulator.blockchainsystems.bscm"
+        disposableProviderFactory="true" ecorePackage="bscm.ecore#//linkallocation">
       <genClasses ecoreClass="bscm.ecore#//linkallocation/LinkAllocationRepository">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//linkallocation/LinkAllocationRepository/LinkAllocations"/>
       </genClasses>
@@ -194,7 +195,8 @@
             ecoreFeature="ecore:EAttribute bscm.ecore#//linkallocation/StaticLinkThroughputSpecification/Throughput"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Transactions" disposableProviderFactory="true" ecorePackage="bscm.ecore#//transactions">
+    <nestedGenPackages prefix="Transactions" basePackage="org.palladiosimulator.blockchainsystems.bscm"
+        disposableProviderFactory="true" ecorePackage="bscm.ecore#//transactions">
       <genClasses ecoreClass="bscm.ecore#//transactions/TransactionsSpecification">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionsSpecification/MeanTransactionCreationInterval"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//transactions/TransactionsSpecification/TransactionPropertiesSpecification"/>
@@ -209,13 +211,15 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//transactions/TransactionPropertiesSpecificationValue/Amount"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="Attackmodel" disposableProviderFactory="true" ecorePackage="bscm.ecore#//attackmodel">
+    <nestedGenPackages prefix="Attackmodel" basePackage="org.palladiosimulator.blockchainsystems.bscm"
+        disposableProviderFactory="true" ecorePackage="bscm.ecore#//attackmodel">
       <genClasses image="false" ecoreClass="bscm.ecore#//attackmodel/Attack">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//attackmodel/Attack/type"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//attackmodel/Attack/requiredHashPower"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//attackmodel/Attack/dependsOnNetworkDelay"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//attackmodel/Attack/baselineSuccessProbability"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//attackmodel/Attack/parameters"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bscm.ecore#//attackmodel/Attack/gamma"/>
       </genClasses>
       <genClasses ecoreClass="bscm.ecore#//attackmodel/AttackScenario">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bscm.ecore#//attackmodel/AttackScenario/attack"/>
