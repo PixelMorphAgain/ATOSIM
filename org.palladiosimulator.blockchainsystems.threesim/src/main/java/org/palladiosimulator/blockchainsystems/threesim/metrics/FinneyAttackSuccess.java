@@ -4,15 +4,15 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric;
 
-public class FinneyAttackSuccess implements OutputMetric<Boolean> {
+public class FinneyAttackSuccess implements OutputMetric<Integer> {
     private final boolean value;
 
     public FinneyAttackSuccess(boolean value) {
         this.value = value;
     }
     @Override
-    public Boolean getValue() {
-        return value;
+    public Integer getValue() {
+        return value ? 1 : 0;
     }
 
     @Override
