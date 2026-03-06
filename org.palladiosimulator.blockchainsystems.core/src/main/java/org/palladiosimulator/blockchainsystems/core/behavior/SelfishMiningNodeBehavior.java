@@ -14,16 +14,14 @@ import java.util.UUID;
 
 public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
-    private final double gamma;   // attacker hash power share
-    private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
+    static {
+        System.out.println("### SELFISH MINING CLASS LOADED ###");
+    }
 
+    private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
 
     private final List<Block> privateChain = new ArrayList<>();
     private int lead = 0;
-
-    public SelfishMiningNodeBehavior(double gamma) {
-        this.gamma = gamma;
-    }
 
     @Override
     public void onNodeInitialized(BlockchainSystemNodeContext context) {
@@ -63,22 +61,28 @@ public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements B
         // Selfish Mining release rules
         if (lead == 0) {
             // Behave honestly
-            context.getBlockPropagationStrategy().distribute(block);
+            return;
         } else if (lead == 1) {
             // publish one block to create a tie
             publishOnePrivateBlock(context);
             privateChain.clear();
             lead = 0;
-        } else {
-            // lead >= 2 -> publish one block, keep advantage
-            publishOnePrivateBlock(context);
-            lead--;
+            return;
+        } if (lead == 2) {
+            // lead >= 2 -> publish entire private chain to secure win
+            publishAllPrivateBlocks(context);
+            privateChain.clear();
+            lead = 0;
+            return;
         }
+        publishOnePrivateBlock(context);
+        lead--;
     }
 
     @Override
     public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
         // attacker mined a block, withhold
+        System.out.println("ATTACKER MINED BLOCK " + block.getHash());
         privateChain.add(block);
         lead++;
         // DO NOT append or propagate here
@@ -90,9 +94,9 @@ public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements B
                 context.getTransactionSelectionProcess()
                         .selectTransactionsForBlock(context);
 
-        context.getTrxMemPool().removeTransactions(
-                selection.getTransactions()
-        );
+       // context.getTrxMemPool().removeTransactions(
+        //        selection.getTransactions()
+      //  );
 
         return context.getBlockFactory().createBlock(
                 UUID.randomUUID().toString(),
@@ -132,6 +136,12 @@ public class SelfishMiningNodeBehavior extends BlockchainNodeObject implements B
 
         // MUST propagate published block
         context.getBlockPropagationStrategy().distribute(publish);
+    }
+
+    private void publishAllPrivateBlocks(BlockchainSystemNodeContext context) {
+        while (!privateChain.isEmpty()) {
+            publishOnePrivateBlock(context);
+        }
     }
 
     @Override

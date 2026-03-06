@@ -4,37 +4,37 @@ import org.palladiosimulator.blockchainsystems.core.simulation.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.tracing.TraceEventLogOutput
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThreesimBlockchainSystemFactory
+import org.palladiosimulator.blockchainsystems.threesim.creation.BlockchainSystemWithParameters
 import org.palladiosimulator.blockchainsystems.threesim.monitoring.ThreesimSimulationMonitor
-import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResult
-import org.palladiosimulator.blockchainsystems.threesim.simulation.results.ThreesimSimulationRoundResultFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.results.*
 
-/**
- * Single simulation round of 3SIM.
- *
- * @author Davis Riedel
- */
 class ThreesimSimulationRound(
-  private val blockchainSystemFactory: ThreesimBlockchainSystemFactory,
+  blockchainSystemFactory: ThreesimBlockchainSystemFactory,
   logOutputs: Set<TraceEventLogOutput>,
-  private val maxAllowedBlockchainLength: Long,
-  private val threesimSimulationParameters: ThreesimSimulationParameters,
-) : SimulationRound<ThreesimSimulationMonitor, ThreesimSimulationRoundResult>(
-  blockchainSystemFactory.createBlockchainSystem(threesimSimulationParameters),
+  maxAllowedBlockchainLength: Long,
+  originalParameters: ThreesimSimulationParameters,
+
+  //  IMPORTANT: build the blockchain system ONCE and reuse it
+  private val result: BlockchainSystemWithParameters =
+    blockchainSystemFactory.createBlockchainSystem(originalParameters),
+
+  ) : SimulationRound<ThreesimSimulationMonitor, ThreesimSimulationRoundResult>(
+  result.system,
   logOutputs,
   monitor = ThreesimSimulationMonitor(
-    LongestChainExceededMaxLengthCondition(
-      maxAllowedBlockchainLength
-    ),
-    threesimSimulationParameters.failureThroughputThreshold, threesimSimulationParameters
+    LongestChainExceededMaxLengthCondition(maxAllowedBlockchainLength),
+    originalParameters.failureThroughputThreshold,
+    result.effectiveParameters
   )
 ) {
 
+  private val effectiveParameters = result.effectiveParameters
+
   override fun createSimulationRoundResult(finalSystemTime: Long): ThreesimSimulationRoundResult {
     return ThreesimSimulationRoundResultFactory(
-      threesimSimulationParameters,
+      effectiveParameters,
       monitor,
       finalSystemTime
     ).createSimulationRoundResult()
   }
-
 }

@@ -36,7 +36,7 @@ class RaceAwareTransactionPropagationStrategy(
         return MessageImpl(element, ELEMENT_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + element.size)
     }
 
-    // ✅ KEY: override distribute to insert race timing
+    // KEY: override distribute to insert race timing
     override fun distribute(element: Transaction) {
         val delay = computeRaceDelay(element)
         val message = createInvMessage(element)

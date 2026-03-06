@@ -29,6 +29,8 @@ class ThreesimSimulationRoundResultFactory(
       attackerRewards.toDouble() / totalRewards.toDouble() * 100.0
     }
 
+    println("RESULT FACTORY attacker IDs = ${threesimSimulationParameters.attackerNodeIds}")
+
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
 

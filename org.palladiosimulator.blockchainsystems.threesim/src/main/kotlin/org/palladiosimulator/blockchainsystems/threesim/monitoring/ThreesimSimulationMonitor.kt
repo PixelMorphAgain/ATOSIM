@@ -20,6 +20,7 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
+import kotlin.math.log
 
 /**
  * Monitor for the 3SIM simulation.
@@ -140,7 +141,7 @@ class ThreesimSimulationMonitor(
         // finney premined exactly one block
         // block is mined before release, honest mining does not withhold blocks
         // --> first attacker-mined block is the Finney block
-        if (finneyCandidateBlockHash == null && block.originId == "node-0") { //attacker
+        if (finneyCandidateBlockHash == null && isAttacker(block.originId)) { //attacker
           finneyCandidateBlockHash = block.hash
           finneyCandidateMinedTime = e.occurrenceTime
         }
@@ -166,6 +167,7 @@ class ThreesimSimulationMonitor(
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
 
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
+          println("CONFIRMED (Appended) block by originId=${e.appendedBlock.originId}")
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
           recordBlockReward(e.appendedBlock)
           if (simulationParameters.attackType == AttackType.FINNEY &&
@@ -190,6 +192,7 @@ class ThreesimSimulationMonitor(
         }
 
         if (e.newBlockType == BlockType.ConfirmedBlock) {
+          println("CONFIRMED (TypeChanged) block by originId=${e.block.originId}")
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
           recordBlockReward(e.block)
           if (simulationParameters.attackType == AttackType.FINNEY &&
@@ -243,7 +246,7 @@ class ThreesimSimulationMonitor(
       confirmationLatenciesWithoutFailure.add(confirmationLatency)
     }
 
-    lastThroughputCheckTimestamp = observationTime
+    lastThroughputCheckTimestamp = occurrenceTime
   }
 
   private fun calculateMajorityThreshold(): Int {
@@ -390,7 +393,8 @@ class ThreesimSimulationMonitor(
 
 
   fun recordBlockReward(block: Block) {
-    blockRewardMonitor.recordBlock(block)
+    println("Reward Counted for originId = ${block.originId}")
+    blockRewardMonitor.recordBlockReward(block)
   }
 
   fun getTotalBlockRewards(): Int =

@@ -25,12 +25,22 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
 ) : BlockchainSystemNodeBehaviorFactory {
 
   override fun create(nodeId: String): BlockchainSystemNodeBehavior {
+    println("========== NODE BEHAVIOR FACTORY ==========")
+    println("Runtime nodeId = $nodeId")
+    println("Attacker IDs   = ${simulationParameters.attackerNodeIds}")
+    println("AttackType     = ${simulationParameters.attackType}")
+
     val isAttacker = simulationParameters.attackerNodeIds.contains(nodeId)
+    println("NodeId=$nodeId | isAttacker=$isAttacker")
+
+    if (isAttacker) {
+      println(">>> ATTACKER NODE ACTIVATED <<<")
+    }
 
     if (isAttacker) {
       when (simulationParameters.attackType) {
         AttackType.SELFISH_MINING ->
-          return SelfishMiningNodeBehavior(simulationParameters.gamma) as BlockchainSystemNodeBehavior
+          return SelfishMiningNodeBehavior() as BlockchainSystemNodeBehavior
 
         AttackType.LEAD_STUBBORN_MINING ->
           return LeadStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior

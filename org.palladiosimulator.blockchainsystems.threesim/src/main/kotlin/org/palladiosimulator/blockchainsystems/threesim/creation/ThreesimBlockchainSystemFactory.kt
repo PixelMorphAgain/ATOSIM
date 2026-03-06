@@ -12,78 +12,97 @@ import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNodeFactory
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.*
 import org.palladiosimulator.blockchainsystems.core.transaction.TrxMemPoolFactoryImpl
-import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeBehaviorFactory
-import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransactionSelectionProcessFactory
+import org.palladiosimulator.blockchainsystems.threesim.behavior.*
 import org.palladiosimulator.blockchainsystems.threesim.creation.geography.ThreesimGeographicalRegionsResolver
-import java.util.random.RandomGenerator
-import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimBlockchainSystemNodeTagProvider
-import org.palladiosimulator.blockchainsystems.threesim.behavior.ThreesimTransactionSubmissionProcess
 import org.palladiosimulator.blockchainsystems.threesim.creation.abstractions.NodeAllocationResolver
-import java.util.UUID
+import org.palladiosimulator.blockchainsystems.threesim.simulation.*
 import org.palladiosimulator.blockchainsystems.bscm.p2pnetwork.NetworkTopology
-import org.palladiosimulator.blockchainsystems.core.propagation.transaction.RaceAwareTransactionPropagationStrategy
-import org.palladiosimulator.blockchainsystems.core.propagation.transaction.TransactionPropagationStrategy
-import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
-import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
+import org.palladiosimulator.blockchainsystems.core.propagation.transaction.*
+import java.util.UUID
+import java.util.random.RandomGenerator
+import org.eclipse.emf.ecore.util.EcoreUtil
 
-/**
- * Factory for creating a generic [BlockchainSystem]
- *
- * @author Davis Riedel
- */
 abstract class ThreesimBlockchainSystemFactory(
   protected val designBlockchainSystem: DesignBlockchainSystem,
   protected val networkTopology: NetworkTopology,
 ) {
-  protected abstract fun createP2PNetworkFactory(): P2PNetworkFactory
 
+  protected abstract fun createP2PNetworkFactory(): P2PNetworkFactory
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
   protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
 
-  fun createBlockchainSystem(simulationParameters: ThreesimSimulationParameters): BlockchainSystem {
-    val networkFactory = createP2PNetworkFactory()
+  fun createBlockchainSystem(
+    simulationParameters: ThreesimSimulationParameters
+  ): BlockchainSystemWithParameters {
 
+    val networkFactory = createP2PNetworkFactory()
     val networkCreationResult = networkFactory.createP2PNetwork()
 
-    // Create information provider based on the generated network
     val nodeAllocationResolver = getNodeAllocationResolver(networkCreationResult)
-    val baseResourcePowerCalculator = getResourcePowerCalculator(networkCreationResult)
+
+    // 🔥 Translate attacker IDs ONCE here
+    val runtimeAttackerNodeIds: Set<String> =
+      networkCreationResult.createdNetwork.nodes
+        .map { it.endpointId }
+        .filter { runtimeNodeId ->
+          val alloc = nodeAllocationResolver.getNodeAllocation(runtimeNodeId)
+          val nodeSystemId = alloc?.nodeSystem?.let { EcoreUtil.getID(it) }
+          nodeSystemId != null &&
+                  simulationParameters.attackerNodeIds.contains(nodeSystemId)
+        }
+        .toSet()
+
+    val effectiveParameters = ThreesimSimulationParameters(
+      failureThroughputThreshold = simulationParameters.failureThroughputThreshold,
+      shannonEntropyK = simulationParameters.shannonEntropyK,
+      nakamotoCoefficientThreshold = simulationParameters.nakamotoCoefficientThreshold,
+      reliabilityObservationTimespan = simulationParameters.reliabilityObservationTimespan,
+      attackType = simulationParameters.attackType,
+      attackerNodeIds = runtimeAttackerNodeIds,
+      attackerHashPower = simulationParameters.attackerHashPower,
+      gamma = simulationParameters.gamma,
+      deltaA = simulationParameters.deltaA,
+      deltaB = simulationParameters.deltaB
+    )
+
+    val baseResourcePowerCalculator =
+      getResourcePowerCalculator(networkCreationResult)
+
     val resourcePowerCalculator =
-      if (
-        simulationParameters.attackerNodeIds.isNotEmpty() &&
-        simulationParameters.attackerHashPower > 0.0
-      ) {
+      if (effectiveParameters.attackerNodeIds.isNotEmpty() &&
+        effectiveParameters.attackerHashPower > 0.0) {
         AttackAwareResourcePowerCalculator(
           delegate = baseResourcePowerCalculator,
-          attackerNodeIds = simulationParameters.attackerNodeIds,
-          attackerHashPower = simulationParameters.attackerHashPower
+          attackerNodeIds = effectiveParameters.attackerNodeIds,
+          attackerHashPower = effectiveParameters.attackerHashPower
         )
-      } else {
-        baseResourcePowerCalculator
-      }
-    val geographicalRegionsResolver = ThreesimGeographicalRegionsResolver(
-      designBlockchainSystem.geographicalRegionsSpecification,
-      nodeAllocationResolver
-    );
+      } else baseResourcePowerCalculator
 
-    // Create factories based on information providers and metamodel
-    val blockFactory: BlockFactory = createBlockFactory()
+    val geographicalRegionsResolver =
+      ThreesimGeographicalRegionsResolver(
+        designBlockchainSystem.geographicalRegionsSpecification,
+        nodeAllocationResolver
+      )
+
+    val blockFactory: BlockFactory = BlockFactoryImpl()
 
     val nodeFactory = createBlockchainSystemNodeFactory(
       nodeAllocationResolver,
       resourcePowerCalculator,
       blockFactory,
       geographicalRegionsResolver,
-      simulationParameters
+      effectiveParameters
     )
 
-    return createBlockchainSystemInstance(
+    val system = createBlockchainSystemInstance(
       networkCreationResult.createdNetwork,
       blockFactory,
       nodeFactory,
       geographicalRegionsResolver,
       designBlockchainSystem.specification.blockReward
     )
+
+    return BlockchainSystemWithParameters(system, effectiveParameters)
   }
 
   private fun createBlockchainSystemInstance(
@@ -93,6 +112,7 @@ abstract class ThreesimBlockchainSystemFactory(
     geographicalRegionsResolver: GeographicalRegionsResolver,
     blockReward: Double
   ): BlockchainSystem {
+
     val blockchainSystemId = UUID.randomUUID().toString()
     val blockchainSystemName = "BlockchainSystem_" + blockchainSystemId.substring(0, 8)
 
@@ -105,15 +125,16 @@ abstract class ThreesimBlockchainSystemFactory(
     val trxPropSpec = designBlockchainSystem.transactionsSpecification.transactionPropertiesSpecification
     val meanTrxCreationInterval = designBlockchainSystem.transactionsSpecification.meanTransactionCreationInterval
 
-    val transactionSubmissionProcess = ThreesimTransactionSubmissionProcess(
-      blockchainSystemId,
-      blockchainSystemName,
-      meanTrxCreationInterval,
-      TransactionPropertiesValueProviderAdapter.create(
-        trxPropSpec,
-        RandomGenerator.of("Random")
+    val transactionSubmissionProcess =
+      ThreesimTransactionSubmissionProcess(
+        blockchainSystemId,
+        blockchainSystemName,
+        meanTrxCreationInterval,
+        TransactionPropertiesValueProviderAdapter.create(
+          trxPropSpec,
+          RandomGenerator.of("Random")
+        )
       )
-    )
 
     val geographicalRegions = geographicalRegionsResolver.resolveGeographicalRegions()
 
@@ -133,55 +154,44 @@ abstract class ThreesimBlockchainSystemFactory(
     resourcePowerCalculator: ResourcePowerCalculator,
     blockFactory: BlockFactory,
     geographicalRegionsResolver: ThreesimGeographicalRegionsResolver,
-    simulationParameters: ThreesimSimulationParameters
+    effectiveParameters: ThreesimSimulationParameters
   ): BlockchainSystemNodeFactory {
-    val blockchainFactory = BlockchainFactoryImpl(
-      designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
-    )
-    val blockPropagationStrategyFactory = BlockPropagationStrategyFactoryImpl()
+
+    val blockchainFactory =
+      BlockchainFactoryImpl(
+        designBlockchainSystem.specification.numOfRequiredSecurityConfirmations
+      )
+
     val transactionPropagationStrategyFactory =
       TransactionPropagationStrategyFactoryImpl {
-        if (simulationParameters.attackType == AttackType.RACE) {
+        if (effectiveParameters.attackType == AttackType.RACE) {
           RaceAwareTransactionPropagationStrategy(
-            simulationParameters.attackerNodeIds,
-            simulationParameters.deltaA,
-            simulationParameters.deltaB
+            effectiveParameters.attackerNodeIds,
+            effectiveParameters.deltaA,
+            effectiveParameters.deltaB
           )
-        } else {
-          TransactionPropagationStrategy()
-        }
+        } else TransactionPropagationStrategy()
       }
-    val orphanBlockPoolFactory = OrphanBlockPoolFactoryImpl()
-    val trxMemPoolFactory = TrxMemPoolFactoryImpl()
-    val miningProcessFactory = ThreesimMiningProcessFactory(
-      designBlockchainSystem.specification.meanBlockTime,
-      resourcePowerCalculator
-    )
-    val transactionSelectionProcessFactory = ThreesimTransactionSelectionProcessFactory(
-      maxBlockSize = designBlockchainSystem.specification.maxBlockSize // in byte
-    )
-    val blockValidatorFactory = ThreesimBlockValidatorFactory(nodeAllocationResolver)
-    val behaviorFactory = ThreesimBlockchainSystemNodeBehaviorFactory(simulationParameters)
-    val tagProvider = ThreesimBlockchainSystemNodeTagProvider()
 
     return BlockchainSystemNodeFactory(
       blockFactory,
       blockchainFactory,
-      miningProcessFactory,
-      transactionSelectionProcessFactory,
-      blockValidatorFactory,
-      blockPropagationStrategyFactory,
+      ThreesimMiningProcessFactory(
+        designBlockchainSystem.specification.meanBlockTime,
+        resourcePowerCalculator
+      ),
+      ThreesimTransactionSelectionProcessFactory(
+        designBlockchainSystem.specification.maxBlockSize
+      ),
+      ThreesimBlockValidatorFactory(nodeAllocationResolver),
+      BlockPropagationStrategyFactoryImpl(),
       transactionPropagationStrategyFactory,
-      trxMemPoolFactory,
-      orphanBlockPoolFactory,
-      behaviorFactory,
+      TrxMemPoolFactoryImpl(),
+      OrphanBlockPoolFactoryImpl(),
+      ThreesimBlockchainSystemNodeBehaviorFactory(effectiveParameters),
       geographicalRegionsResolver,
       resourcePowerCalculator,
-      tagProvider
+      ThreesimBlockchainSystemNodeTagProvider()
     )
-  }
-
-  private fun createBlockFactory(): BlockFactoryImpl {
-    return BlockFactoryImpl()
   }
 }
