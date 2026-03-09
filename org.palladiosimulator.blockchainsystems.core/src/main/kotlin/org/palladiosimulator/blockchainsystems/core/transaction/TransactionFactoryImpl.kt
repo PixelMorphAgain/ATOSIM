@@ -11,6 +11,7 @@ class TransactionFactoryImpl(
     size: Int,
     creationTime: Long,
     senderId: String,
+    originNodeId: String,
     recipientId: String,
     amount: Double,
     fee: Double
@@ -20,9 +21,10 @@ class TransactionFactoryImpl(
       size,
       creationTime,
       senderId,
+      originNodeId,
       recipientId,
       amount,
-      fee
+      fee,
     )
   }
 }

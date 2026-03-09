@@ -22,12 +22,12 @@ class ThreesimSimulationRoundResultFactory(
     val state = monitor.getFinalState(finalSystemTime)
     val attackerRewards = threesimSimulationParameters.attackerNodeIds.sumOf { monitor.getBlockRewardsForNode(it) }
     val totalRewards = monitor.getTotalBlockRewards()
-    val finneyAttackSuccess = monitor.hasFinneyAttackSucceeded()
     val attackerRevenueShareValue = if (totalRewards == 0) {
       0.0
     } else {
       attackerRewards.toDouble() / totalRewards.toDouble() * 100.0
     }
+    val lambdaH = (1.0 - threesimSimulationParameters.attackerHashPower) / threesimSimulationParameters.blockInterval
 
     println("RESULT FACTORY attacker IDs = ${threesimSimulationParameters.attackerNodeIds}")
 
@@ -96,7 +96,21 @@ class ThreesimSimulationRoundResultFactory(
 
         AttackerRevenueShare(attackerRevenueShareValue),
         FinneyAttackSuccess(monitor.hasFinneyAttackSucceeded()),
-        RaceAttackSuccess(monitor.hasRaceAttackSucceeded())
+        RaceAttackSuccess(monitor.hasRaceAttackSucceeded()),
+
+        DoubleSpendSuccessProbabilityCalculator(
+          attackerHashPower = threesimSimulationParameters.attackerHashPower,
+          confirmationDepth = threesimSimulationParameters.confirmationDepth
+        ).calculate(),
+
+        AttackSuccessTimeCalculator(
+          monitor.getAttackSuccessTime()
+        ).calculate(),
+
+        ForkProbabilityCalculator(
+          lambdaH = lambdaH,
+          delta = threesimSimulationParameters.propagationDelay
+        ).calculate()
       )
     )
   }

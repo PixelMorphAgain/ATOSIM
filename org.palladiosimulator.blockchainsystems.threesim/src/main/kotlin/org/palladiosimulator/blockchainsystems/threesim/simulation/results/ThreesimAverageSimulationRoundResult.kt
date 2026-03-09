@@ -1,5 +1,6 @@
 package org.palladiosimulator.blockchainsystems.threesim.simulation.results
 
+import org.palladiosimulator.blockchainsystems.threesim.metrics.AttackSuccessTime
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilityScalability
 import org.palladiosimulator.blockchainsystems.threesim.metrics.AvailabilitySecurity
 import org.palladiosimulator.blockchainsystems.threesim.metrics.TransactionThroughput
@@ -25,6 +26,18 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.Naka
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ReliabilityCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ShannonEntropyCalculator
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.StaleBlockRateCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.AttackerRevenueShare
+import org.palladiosimulator.blockchainsystems.threesim.metrics.DoubleSpendSuccessProbability
+import org.palladiosimulator.blockchainsystems.threesim.metrics.FinneyAttackSuccess
+import org.palladiosimulator.blockchainsystems.threesim.metrics.ForkProbability
+import org.palladiosimulator.blockchainsystems.threesim.metrics.RaceAttackSuccess
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AttackSuccessTimeCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.AttackerRevenueShareCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.DoubleSpendSuccessProbabilityCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.FinneyAttackSuccessCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.ForkProbabilityCalculator
+import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.RaceAttackSuccessCalculator
+import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
 
 /**
  * Average result of several simulation rounds of 3SIM.
@@ -60,6 +73,12 @@ class ThreesimAverageSimulationRoundResult private constructor(
               ShannonEntropy.NAME -> ShannonEntropyCalculator.calculateAverage(it.value as List<ShannonEntropy>)
               StaleBlockRate.NAME -> StaleBlockRateCalculator.calculateAverage(it.value as List<StaleBlockRate>)
               TransactionThroughput.NAME -> TransactionThroughputCalculator.calculateAverage(it.value as List<TransactionThroughput>)
+              AttackerRevenueShare.NAME -> AttackerRevenueShareCalculator.calculateAverage(it.value as List<AttackerRevenueShare>)
+              FinneyAttackSuccess.NAME -> FinneyAttackSuccessCalculator.calculateAverage(it.value as List<FinneyAttackSuccess>)
+              RaceAttackSuccess.NAME -> RaceAttackSuccessCalculator.calculateAverage(it.value as List<RaceAttackSuccess>)
+              ForkProbability.NAME -> ForkProbabilityCalculator.calculateAverage(it.value as List<ForkProbability>)
+              DoubleSpendSuccessProbability.NAME -> DoubleSpendSuccessProbabilityCalculator.calculateAverage(it.value as List<DoubleSpendSuccessProbability>)
+              AttackSuccessTime.NAME -> AttackSuccessTimeCalculator.calculateAverage(it.value as List<AttackSuccessTime>)
               else -> null
             }
           })

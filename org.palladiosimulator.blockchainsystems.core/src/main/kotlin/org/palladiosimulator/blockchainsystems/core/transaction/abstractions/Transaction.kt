@@ -24,6 +24,11 @@ interface Transaction : Propagatable {
   val senderId: String
 
   /**
+   * The ID of the blockchain node that originally injected the transaction into the network.
+   */
+  val originNodeId: String
+
+  /**
    * The ID of the recipient of the transaction.
    */
   val recipientId: String

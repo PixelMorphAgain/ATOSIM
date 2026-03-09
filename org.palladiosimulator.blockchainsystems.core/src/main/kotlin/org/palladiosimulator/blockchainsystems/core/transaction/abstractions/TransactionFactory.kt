@@ -20,6 +20,7 @@ interface TransactionFactory {
     size: Int,
     creationTime: Long,
     senderId: String,
+    originNodeId: String,
     recipientId: String,
     amount: Double,
     fee: Double

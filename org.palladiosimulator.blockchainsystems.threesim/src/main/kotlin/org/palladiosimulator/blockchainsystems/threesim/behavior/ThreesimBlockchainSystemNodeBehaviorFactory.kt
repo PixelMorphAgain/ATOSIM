@@ -25,10 +25,17 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
 ) : BlockchainSystemNodeBehaviorFactory {
 
   override fun create(nodeId: String): BlockchainSystemNodeBehavior {
+    println("CLASS LOADED FROM:")
+    println(ThreesimBlockchainSystemNodeBehaviorFactory::class.java.protectionDomain.codeSource.location)
+
     println("========== NODE BEHAVIOR FACTORY ==========")
     println("Runtime nodeId = $nodeId")
     println("Attacker IDs   = ${simulationParameters.attackerNodeIds}")
     println("AttackType     = ${simulationParameters.attackType}")
+    println("ATTACK TYPE VALUE = ${simulationParameters.attackType}")
+    println("ATTACKER IDS = ${simulationParameters.attackerNodeIds}")
+    println("HASH POWER = ${simulationParameters.attackerHashPower}")
+    println("GAMMA = ${simulationParameters.gamma}")
 
     val isAttacker = simulationParameters.attackerNodeIds.contains(nodeId)
     println("NodeId=$nodeId | isAttacker=$isAttacker")
@@ -40,19 +47,19 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
     if (isAttacker) {
       when (simulationParameters.attackType) {
         AttackType.SELFISH_MINING ->
-          return SelfishMiningNodeBehavior() as BlockchainSystemNodeBehavior
+          return SelfishMiningNodeBehavior()
 
         AttackType.LEAD_STUBBORN_MINING ->
-          return LeadStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
+          return LeadStubbornMiningNodeBehavior()
 
         AttackType.EQUAL_FORK_STUBBORN_MINING ->
-          return EqualForkStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
+          return EqualForkStubbornMiningNodeBehavior()
 
         AttackType.TRAIL_STUBBORN_MINING ->
-          return TrailStubbornMiningNodeBehavior() as BlockchainSystemNodeBehavior
+          return TrailStubbornMiningNodeBehavior()
 
         AttackType.FINNEY ->
-          return FinneyMiningNodeBehavior() as BlockchainSystemNodeBehavior
+          return FinneyMiningNodeBehavior()
 
         else ->
           return HonestBlockchainSystemNodeBehavior()

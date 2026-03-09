@@ -69,7 +69,10 @@ class ThreesimSimulationMonitor(
   private val throughputsWithoutFailure: MutableList<Double> = mutableListOf()
   private val confirmationLatenciesWithoutFailure: MutableList<Long> = mutableListOf()
 
+  private val blockPropagationDelays = mutableListOf<Long>()
+
   private var lastThroughputCheckTimestamp: Long = 0
+  private var attackSuccessTime: Long? = null
 
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
@@ -161,13 +164,12 @@ class ThreesimSimulationMonitor(
         addBlock(e.appendedBlockType, e.appendedBlock, nodeId, e.occurrenceTime)
 
         if (e.appendedBlockType == BlockType.ConfirmedBlock || e.appendedBlockType == BlockType.StaleBlock) {
-          updateRaceOutcomeIfRelevant(e.appendedBlock, e.appendedBlockType)
+          updateRaceOutcomeIfRelevant(e.appendedBlock, e.appendedBlockType, e.occurrenceTime)
         }
 
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
 
         if (e.appendedBlockType == BlockType.ConfirmedBlock) {
-          println("CONFIRMED (Appended) block by originId=${e.appendedBlock.originId}")
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
           recordBlockReward(e.appendedBlock)
           if (simulationParameters.attackType == AttackType.FINNEY &&
@@ -188,11 +190,10 @@ class ThreesimSimulationMonitor(
         addBlock(e.newBlockType, e.block, nodeId, e.occurrenceTime)
 
         if (e.newBlockType == BlockType.ConfirmedBlock || e.newBlockType == BlockType.StaleBlock) {
-          updateRaceOutcomeIfRelevant(e.block, e.newBlockType)
+          updateRaceOutcomeIfRelevant(e.block, e.newBlockType, e.occurrenceTime)
         }
 
         if (e.newBlockType == BlockType.ConfirmedBlock) {
-          println("CONFIRMED (TypeChanged) block by originId=${e.block.originId}")
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
           recordBlockReward(e.block)
           if (simulationParameters.attackType == AttackType.FINNEY &&
@@ -308,7 +309,7 @@ class ThreesimSimulationMonitor(
 
   private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {
     val numFailures = failureLog.getNumberOfFailures()
-    if (numFailures <= 0) return -1.0 // Indicate that no failures occurred
+    if (numFailures <= 0) return Double.POSITIVE_INFINITY // Indicate that no failures occurred
     return observationTime.toDouble() / numFailures
   }
 
@@ -352,7 +353,7 @@ class ThreesimSimulationMonitor(
     }
   }
 
-  private fun updateRaceOutcomeIfRelevant(block: Block, newType: BlockType) {
+  private fun updateRaceOutcomeIfRelevant(block: Block, newType: BlockType, occurrenceTime: Long) {
     if (raceAttackSucceeded) return
     if (simulationParameters.attackType != AttackType.RACE) return
 
@@ -379,6 +380,9 @@ class ThreesimSimulationMonitor(
 
     if (hasAttackerConfirmed && hasHonestStale) {
       raceAttackSucceeded = true
+      if (attackSuccessTime == null) {
+        attackSuccessTime = occurrenceTime
+      }
     }
   }
 
@@ -393,7 +397,6 @@ class ThreesimSimulationMonitor(
 
 
   fun recordBlockReward(block: Block) {
-    println("Reward Counted for originId = ${block.originId}")
     blockRewardMonitor.recordBlockReward(block)
   }
 
@@ -406,4 +409,6 @@ class ThreesimSimulationMonitor(
   fun hasFinneyAttackSucceeded(): Boolean = finneyAttackSucceeded
 
   fun hasRaceAttackSucceeded(): Boolean = raceAttackSucceeded
+
+  fun getAttackSuccessTime(): Long? = attackSuccessTime
 }

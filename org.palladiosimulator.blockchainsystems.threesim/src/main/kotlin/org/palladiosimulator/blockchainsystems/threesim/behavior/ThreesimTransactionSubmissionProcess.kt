@@ -85,6 +85,7 @@ class ThreesimTransactionSubmissionProcess(
       fee = trxProps.fee,
       creationTime = creationTime,
       senderId = senderId,
+      originNodeId = this.id,
       recipientId = recipientId
     )
   }

@@ -3,7 +3,11 @@ package org.palladiosimulator.blockchainsystems.threesim.metrics;
 import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric;
 
+import java.util.List;
+
 public class RaceAttackSuccess implements OutputMetric<Integer> {
+
+    public static final String NAME = "Race Attack Success";
 
     private final boolean succeeded;
 
@@ -17,8 +21,9 @@ public class RaceAttackSuccess implements OutputMetric<Integer> {
     }
 
     @Override
-    public @NotNull String getName() {
-        return "Race Attack Success";
+    @NotNull
+    public String getName() {
+        return NAME;
     }
 
     @Override

@@ -48,7 +48,6 @@ object ThreesimSerializers {
       }
       polymorphic(OutputMetric::class) {
         subclass(AvailabilityScalability::class)
-        subclass(AvailabilityScalability::class)
         subclass(AvailabilitySecurity::class)
         subclass(Consistency::class)
         subclass(FaultTolerance::class)
@@ -60,6 +59,14 @@ object ThreesimSerializers {
         subclass(ShannonEntropy::class)
         subclass(StaleBlockRate::class)
         subclass(TransactionThroughput::class)
+
+        // attack / new metrics
+        subclass(AttackerRevenueShare::class)
+        subclass(FinneyAttackSuccess::class)
+        subclass(RaceAttackSuccess::class)
+        subclass(ForkProbability::class)
+        subclass(DoubleSpendSuccessProbability::class)
+        subclass(AttackSuccessTime::class)
       }
       polymorphic(TraceEvent::class) {
         subclass(TransactionSubmittedTraceEvent::class)

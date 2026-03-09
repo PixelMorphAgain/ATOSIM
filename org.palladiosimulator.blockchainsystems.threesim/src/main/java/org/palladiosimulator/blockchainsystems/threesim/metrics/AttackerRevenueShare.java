@@ -5,6 +5,10 @@ import org.jetbrains.annotations.Nullable;
 import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.OutputMetric;
 
 public class AttackerRevenueShare implements OutputMetric<Double> {
+
+    public static final String NAME = "Attacker Revenue Share";
+    public static final String UNIT = "%";
+
     private final double value;
 
     public AttackerRevenueShare(double value) {
@@ -19,12 +23,12 @@ public class AttackerRevenueShare implements OutputMetric<Double> {
     @Override
     @NotNull
     public String getName() {
-        return "Attacker Revenue Share";
+        return NAME;
     }
 
     @Override
     @Nullable
     public String getUnit() {
-        return "%";
+        return UNIT;
     }
 }

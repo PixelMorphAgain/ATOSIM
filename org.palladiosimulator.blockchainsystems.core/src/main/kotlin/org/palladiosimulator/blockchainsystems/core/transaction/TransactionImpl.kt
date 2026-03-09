@@ -22,6 +22,7 @@ class TransactionImpl(
   override val size: Int,
   override val creationTime: Long,
   override val senderId: String,
+  override val originNodeId: String,
   override val recipientId: String,
   override val amount: Double,
   override val fee: Double
