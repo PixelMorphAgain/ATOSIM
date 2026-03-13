@@ -10,6 +10,7 @@ import org.palladiosimulator.blockchainsystems.core.network.P2PNetworkImpl
 import org.palladiosimulator.blockchainsystems.core.network.P2PNode
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkCreationResult
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 
 /**
  * Factory for creating a P2P network based on an explicit network topology from the metamodel.
@@ -20,7 +21,8 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.network.Abstrac
  */
 class ExplicitTopologyP2PNetworkFactory(
   private val topology: ExplicitNetworkTopology,
-) : AbstractThreesimP2PNetworkFactory() {
+  simulationParameters: ThreesimSimulationParameters
+) : AbstractThreesimP2PNetworkFactory(simulationParameters) {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val networkGraph: Graph<P2PNode, P2PLink> = SimpleDirectedGraph(P2PLink::class.java)
 

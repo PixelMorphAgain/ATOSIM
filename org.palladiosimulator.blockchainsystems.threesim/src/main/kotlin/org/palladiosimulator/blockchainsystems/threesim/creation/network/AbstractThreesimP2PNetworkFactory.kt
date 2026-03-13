@@ -12,6 +12,7 @@ import org.palladiosimulator.blockchainsystems.threesim.creation.LatencyValuePro
 import org.palladiosimulator.blockchainsystems.threesim.creation.StaticLatencyValueProvider
 import org.palladiosimulator.blockchainsystems.threesim.creation.StaticThroughputValueProvider
 import org.palladiosimulator.blockchainsystems.threesim.creation.ThroughputValueProviderAdapter
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import java.util.random.RandomGenerator
 
 /**
@@ -19,11 +20,18 @@ import java.util.random.RandomGenerator
  *
  * @author Davis Riedel
  */
-abstract class AbstractThreesimP2PNetworkFactory() : P2PNetworkFactory {
+abstract class AbstractThreesimP2PNetworkFactory(
+  protected val simulationParameters: ThreesimSimulationParameters
+) : P2PNetworkFactory {
 
   protected fun createLatencyValueProvider(
     latencySpecification: LinkLatencySpecification
   ): SimulationLifecycleAwareValueProvider<Long> {
+    if (simulationParameters.propagationDelay > 0) {
+      return StaticLatencyValueProvider(
+        (simulationParameters.propagationDelay * 1000.0).toLong()
+      )
+    }
     return when (latencySpecification) {
       is StaticLinkLatencySpecification -> {
         StaticLatencyValueProvider(latencySpecification.latency)
@@ -47,6 +55,12 @@ abstract class AbstractThreesimP2PNetworkFactory() : P2PNetworkFactory {
   protected fun createThroughputValueProvider(
     throughputSpecification: LinkThroughputSpecification
   ): SimulationLifecycleAwareValueProvider<Long> {
+    if (simulationParameters.networkBandwidth > 0.0) {
+      val throughputBitsPerSecond =
+        (simulationParameters.networkBandwidth * 1_000_000.0).toLong()
+
+      return StaticThroughputValueProvider(throughputBitsPerSecond)
+    }
     return when (throughputSpecification) {
       is StaticLinkThroughputSpecification -> {
         StaticThroughputValueProvider(throughputSpecification.throughput)

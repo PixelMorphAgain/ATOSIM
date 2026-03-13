@@ -20,7 +20,7 @@ class ExplicitNetworkBlockchainSystemFactory(
 ) : ThreesimBlockchainSystemFactory(designBlockchainSystem, explicitTopology) {
 
   override fun createP2PNetworkFactory(): P2PNetworkFactory {
-    return ExplicitTopologyP2PNetworkFactory(networkTopology as ExplicitNetworkTopology)
+    return ExplicitTopologyP2PNetworkFactory(networkTopology as ExplicitNetworkTopology, simulationParameters)
   }
 
   override fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver {

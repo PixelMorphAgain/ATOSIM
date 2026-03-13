@@ -33,6 +33,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   private lateinit var shannonEntropyKField: TextField
   private lateinit var nakamotoCoefficientThresholdField: TextField
   private lateinit var reliabilityObservationTimespanField: TextField
+  private lateinit var blockIntervalField: TextField
+  private lateinit var propagationDelayField: TextField
+  private lateinit var nodeDegreeField: TextField
+  private lateinit var maxBlockSizeField: TextField
+  private lateinit var networkBandwidthField: TextField
 
   override fun createControl(parent: Composite) {
     val root = Composite(parent, SWT.BORDER)
@@ -87,12 +92,62 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       isValueValid = { it.toDoubleOrNull()?.let { it > MIN_RELIABILITY_OBSERVATION_TIMESPAN } ?: false }
     )
 
+    blockIntervalField = TextField(
+      group,
+      "Block Interval:",
+      " seconds",
+      DoubleVerifier,
+      ThreesimAttributes.BLOCK_INTERVAL,
+      ThreesimAttributes.BLOCK_INTERVAL_DEFAULT,
+      isValueValid = { it.toDoubleOrNull()?.let { it > 0 } ?: false }
+    )
+
+    propagationDelayField = TextField(
+      group,
+      "Propagation Delay:",
+      " ms",
+      DoubleVerifier,
+      ThreesimAttributes.PROPAGATION_DELAY,
+      ThreesimAttributes.PROPAGATION_DELAY_DEFAULT,
+      isValueValid = { it.toDoubleOrNull()?.let { it >= 0 } ?: false }
+    )
+
+    nodeDegreeField = TextField(
+      group,
+      "Node Degree:",
+      "",
+      LongVerifier,
+      ThreesimAttributes.NODE_DEGREE,
+      ThreesimAttributes.NODE_DEGREE_DEFAULT,
+      isValueValid = { it.toLongOrNull()?.let { it > 0 } ?: false }
+    )
+
+    maxBlockSizeField = TextField(
+      group,
+      "Max Block Size:",
+      " bytes",
+      LongVerifier,
+      ThreesimAttributes.MAX_BLOCK_SIZE,
+      ThreesimAttributes.MAX_BLOCK_SIZE_DEFAULT,
+      isValueValid = { it.toLongOrNull()?.let { it > 0 } ?: false }
+    )
+
+    networkBandwidthField = TextField(
+      group,
+      "Network Bandwidth:",
+      " bytes/s",
+      DoubleVerifier,
+      ThreesimAttributes.NETWORK_BANDWIDTH,
+      ThreesimAttributes.NETWORK_BANDWIDTH_DEFAULT,
+      isValueValid = { it.toDoubleOrNull()?.let { it > 0 } ?: false }
+    )
+
     control = root
     isInitialized = true
   }
 
   override fun getName(): String {
-    return "3SIM Parameters"
+    return "ATO-SIM Parameters"
   }
 
   override fun initializeFrom(configuration: ILaunchConfiguration) {
@@ -102,6 +157,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     shannonEntropyKField.initializeFrom(configuration)
     nakamotoCoefficientThresholdField.initializeFrom(configuration)
     reliabilityObservationTimespanField.initializeFrom(configuration)
+    blockIntervalField.initializeFrom(configuration)
+    propagationDelayField.initializeFrom(configuration)
+    nodeDegreeField.initializeFrom(configuration)
+    maxBlockSizeField.initializeFrom(configuration)
+    networkBandwidthField.initializeFrom(configuration)
   }
 
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
@@ -111,6 +171,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     shannonEntropyKField.performApply(configuration)
     nakamotoCoefficientThresholdField.performApply(configuration)
     reliabilityObservationTimespanField.performApply(configuration)
+    blockIntervalField.performApply(configuration)
+    propagationDelayField.performApply(configuration)
+    nodeDegreeField.performApply(configuration)
+    maxBlockSizeField.performApply(configuration)
+    networkBandwidthField.performApply(configuration)
   }
 
   override fun setDefaults(configuration: ILaunchConfigurationWorkingCopy) {
@@ -120,6 +185,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     shannonEntropyKField.setDefaults(configuration)
     nakamotoCoefficientThresholdField.setDefaults(configuration)
     reliabilityObservationTimespanField.setDefaults(configuration)
+    blockIntervalField.setDefaults(configuration)
+    propagationDelayField.setDefaults(configuration)
+    nodeDegreeField.setDefaults(configuration)
+    maxBlockSizeField.setDefaults(configuration)
+    networkBandwidthField.setDefaults(configuration)
   }
 
   override fun activated(workingCopy: ILaunchConfigurationWorkingCopy) {
@@ -133,6 +203,11 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     return failureThroughputThresholdField.isValid() &&
       shannonEntropyKField.isValid() &&
       nakamotoCoefficientThresholdField.isValid() &&
-      reliabilityObservationTimespanField.isValid()
+      reliabilityObservationTimespanField.isValid() &&
+            blockIntervalField.isValid() &&
+            propagationDelayField.isValid() &&
+            nodeDegreeField.isValid() &&
+            maxBlockSizeField.isValid() &&
+            networkBandwidthField.isValid()
   }
 }

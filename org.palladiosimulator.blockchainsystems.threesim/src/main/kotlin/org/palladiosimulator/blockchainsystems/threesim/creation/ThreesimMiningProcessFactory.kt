@@ -24,9 +24,10 @@ class ThreesimMiningProcessFactory(
     val nodeResourcePowerShare = nodeResourcePower / resourcePowerCalculator.calculateGlobalResourcePower()
 
     val nodeAverageBlockArrivalTime = meanBlockTime / nodeResourcePowerShare
+    val nodeAverageBlockArrivalTimeMilli = nodeAverageBlockArrivalTime * 1000
 
     return MiningProcessImpl(
-      nodeAverageBlockArrivalTime,
+      nodeAverageBlockArrivalTimeMilli,
       RandomGenerator.of("Random")
     )
   }

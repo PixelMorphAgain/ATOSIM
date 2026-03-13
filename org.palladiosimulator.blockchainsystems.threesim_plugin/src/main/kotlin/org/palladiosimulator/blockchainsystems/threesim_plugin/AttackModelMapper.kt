@@ -40,9 +40,17 @@ object AttackModelMapper {
             attackType = attackType,
             attackerNodeIds = attackerNodeIds,
             attackerHashPower = attackerHashPower,
-            gamma = scenario.attack.gamma, // still from launch config / default
+            gamma = scenario.attack.gamma,
             deltaA = deltaA,
-            deltaB = deltaB
+            deltaB = deltaB,
+
+            confirmationDepth = base.confirmationDepth,
+
+            blockInterval = base.blockInterval,
+            propagationDelay = base.propagationDelay,
+            nodeDegree = base.nodeDegree,
+            maxBlockSize = base.maxBlockSize,
+            networkBandwidth = base.networkBandwidth
         )
     }
 

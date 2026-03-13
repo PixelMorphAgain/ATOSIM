@@ -12,4 +12,19 @@ object ThreesimAttributes {
 
   const val RELIABILITY_OBSERVATION_TIMESPAN: String = "ReliabilityObservationTimespan"
   const val RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT: String = "24.0" // in h => 24 hours, one day
+
+  const val BLOCK_INTERVAL = "BlockInterval"
+  const val BLOCK_INTERVAL_DEFAULT = "600.0"
+
+  const val PROPAGATION_DELAY = "PropagationDelay"
+  const val PROPAGATION_DELAY_DEFAULT = "0.0"
+
+  const val NODE_DEGREE = "NodeDegree"
+  const val NODE_DEGREE_DEFAULT = "8"
+
+  const val MAX_BLOCK_SIZE = "MaxBlockSize"
+  const val MAX_BLOCK_SIZE_DEFAULT = "1000000"
+
+  const val NETWORK_BANDWIDTH = "NetworkBandwidth"
+  const val NETWORK_BANDWIDTH_DEFAULT = "100.0"
 }

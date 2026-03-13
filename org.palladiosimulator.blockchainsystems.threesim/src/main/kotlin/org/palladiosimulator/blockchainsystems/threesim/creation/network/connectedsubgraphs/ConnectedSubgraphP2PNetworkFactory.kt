@@ -10,6 +10,7 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetwo
 import java.util.UUID
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
 import org.palladiosimulator.blockchainsystems.threesim.creation.network.AbstractThreesimP2PNetworkFactory
+import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEdge
 
 /**
@@ -18,8 +19,9 @@ import org.palladiosimulator.blockchainsystems.threesim.utils.addBidirectionalEd
  * @author Yannik Sproll, Davis Riedel
  */
 class ConnectedSubgraphP2PNetworkFactory(
-  private val topology: ConnectedSubgraphsNetworkTopology
-) : AbstractThreesimP2PNetworkFactory() {
+  private val topology: ConnectedSubgraphsNetworkTopology,
+  simulationParameters: ThreesimSimulationParameters
+) : AbstractThreesimP2PNetworkFactory(simulationParameters) {
   override fun createP2PNetwork(): P2PNetworkCreationResult {
     val nodeIdToNodeTemplateIdMapping = HashMap<String, String>()
 
@@ -59,7 +61,10 @@ class ConnectedSubgraphP2PNetworkFactory(
       // Add vertices of subgraph
       subgraphNodes.forEach { node ->
         networkGraph.addVertex(node)
-        initialDegrees.put(node, subgraphSpec.connectivity)
+        val degree =
+          if (simulationParameters.nodeDegree > 0) simulationParameters.nodeDegree
+        else subgraphSpec.connectivity
+        initialDegrees.put(node, degree)
       }
 
       // Get link allocation for subgraph internal links

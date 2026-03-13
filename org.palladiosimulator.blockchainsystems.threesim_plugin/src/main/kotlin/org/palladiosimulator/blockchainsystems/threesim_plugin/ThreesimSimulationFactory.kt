@@ -84,6 +84,26 @@ class ThreesimSimulationFactory(
       reliabilityObservationTimespan = configuration.getAttribute(
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
+      ).toDouble(),
+      blockInterval = configuration.getAttribute(
+        ThreesimAttributes.BLOCK_INTERVAL,
+        ThreesimAttributes.BLOCK_INTERVAL_DEFAULT
+      ).toDouble(),
+      propagationDelay = configuration.getAttribute(
+        ThreesimAttributes.PROPAGATION_DELAY,
+        ThreesimAttributes.PROPAGATION_DELAY_DEFAULT
+      ).toDouble(),
+      nodeDegree = configuration.getAttribute(
+        ThreesimAttributes.NODE_DEGREE,
+        ThreesimAttributes.NODE_DEGREE_DEFAULT
+      ).toInt(),
+      maxBlockSize = configuration.getAttribute(
+        ThreesimAttributes.MAX_BLOCK_SIZE,
+        ThreesimAttributes.MAX_BLOCK_SIZE_DEFAULT
+      ).toInt(),
+      networkBandwidth = configuration.getAttribute(
+        ThreesimAttributes.NETWORK_BANDWIDTH,
+        ThreesimAttributes.NETWORK_BANDWIDTH_DEFAULT
       ).toDouble()
     )
 

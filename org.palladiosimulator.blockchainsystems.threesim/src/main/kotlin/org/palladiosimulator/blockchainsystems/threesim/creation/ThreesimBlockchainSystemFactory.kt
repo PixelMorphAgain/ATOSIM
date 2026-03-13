@@ -26,7 +26,7 @@ abstract class ThreesimBlockchainSystemFactory(
   protected val designBlockchainSystem: DesignBlockchainSystem,
   protected val networkTopology: NetworkTopology,
 ) {
-
+  protected lateinit var simulationParameters: ThreesimSimulationParameters
   protected abstract fun createP2PNetworkFactory(): P2PNetworkFactory
   protected abstract fun getNodeAllocationResolver(networkCreationResult: P2PNetworkCreationResult): NodeAllocationResolver
   protected abstract fun getResourcePowerCalculator(networkCreationResult: P2PNetworkCreationResult): ResourcePowerCalculator
@@ -34,6 +34,7 @@ abstract class ThreesimBlockchainSystemFactory(
   fun createBlockchainSystem(
     simulationParameters: ThreesimSimulationParameters
   ): BlockchainSystemWithParameters {
+    this.simulationParameters = simulationParameters
 
     val networkFactory = createP2PNetworkFactory()
     val networkCreationResult = networkFactory.createP2PNetwork()
@@ -62,7 +63,13 @@ abstract class ThreesimBlockchainSystemFactory(
       attackerHashPower = simulationParameters.attackerHashPower,
       gamma = simulationParameters.gamma,
       deltaA = simulationParameters.deltaA,
-      deltaB = simulationParameters.deltaB
+      deltaB = simulationParameters.deltaB,
+      confirmationDepth = simulationParameters.confirmationDepth,
+      blockInterval = simulationParameters.blockInterval,
+      propagationDelay = simulationParameters.propagationDelay,
+      nodeDegree = simulationParameters.nodeDegree,
+      maxBlockSize = simulationParameters.maxBlockSize,
+      networkBandwidth = simulationParameters.networkBandwidth
     )
 
     val baseResourcePowerCalculator =
@@ -177,11 +184,11 @@ abstract class ThreesimBlockchainSystemFactory(
       blockFactory,
       blockchainFactory,
       ThreesimMiningProcessFactory(
-        designBlockchainSystem.specification.meanBlockTime,
+        effectiveParameters.blockInterval,
         resourcePowerCalculator
       ),
       ThreesimTransactionSelectionProcessFactory(
-        designBlockchainSystem.specification.maxBlockSize
+        effectiveParameters.maxBlockSize
       ),
       ThreesimBlockValidatorFactory(nodeAllocationResolver),
       BlockPropagationStrategyFactoryImpl(),

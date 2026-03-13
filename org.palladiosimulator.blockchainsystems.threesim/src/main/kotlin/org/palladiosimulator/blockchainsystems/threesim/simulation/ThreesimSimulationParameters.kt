@@ -29,17 +29,10 @@ class ThreesimSimulationParameters(
   // Race attack timing
   val deltaA: Long = 0L, //victim tx delay in ms
   val deltaB: Long = 0L, // attacker tx acceleration in ms
-  val confirmationDepth: Int = 6,
-  val blockInterval: Double = 600.0,
-  val propagationDelay: Double = 0.0
-
-  /*/ new parameters
-  val nodeDegree: Int = 8,
-  val networkBandwidth: Double = 100.0,
-  val maxBlockSize: Double = 1.0,
-
-  val blockWithholdingTime: Long = 0L,
-  val preminedBlock: Boolean = false
-
-   */
+  val confirmationDepth: Int = 6, // double spend parameter
+  val blockInterval: Double = 6000.0, // milliseconds
+  val propagationDelay: Double = 0.0, //milliseconds
+  val nodeDegree: Int = 8, // number of neighbors per node
+  val maxBlockSize: Int = 1_000_000, // bytes
+  val networkBandwidth: Double = 100.0 // mbps
 )
