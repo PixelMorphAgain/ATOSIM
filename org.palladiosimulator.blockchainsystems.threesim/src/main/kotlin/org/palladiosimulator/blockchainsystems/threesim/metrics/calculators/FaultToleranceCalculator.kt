@@ -19,7 +19,7 @@ class FaultToleranceCalculator(
   private val averageConfirmationLatencyWithFailures: Double,
 ) : OutputMetricCalculator<FaultTolerance> {
   override fun calculate(): FaultTolerance {
-    if (averageThroughputWithFailures == -1.0 || averageConfirmationLatencyWithFailures == -1.0) { // no failures occurred
+    if (averageThroughputWithFailures == -1.0 || averageConfirmationLatencyWithFailures == -1.0 || averageConfirmationLatencyWithoutFailures == -1.0 || averageThroughputWithoutFailures == -1.0) { // no failures occurred
       return FaultTolerance(
         FaultToleranceValue.of(0.0, 0.0)
       )

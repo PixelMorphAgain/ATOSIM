@@ -7,12 +7,6 @@ import org.palladiosimulator.blockchainsystems.core.propagation.MessageImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 
-/**
- * Propagation strategy for blocks in a blockchain system.
- * This strategy handles the propagation of blocks through the network using a gossip protocol.
- *
- * @author Davis Riedel
- */
 class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
   override val INV_MESSAGE_KEY: String = "BLOCK_INV"
   override val GET_DATA_MESSAGE_KEY: String = "BLOCK_GET_DATA"
@@ -22,6 +16,7 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
   private val INV_MESSAGE_BYTE_SIZE = 20
   private val GET_DATA_MESSAGE_BYTE_SIZE = 20
 
+  private val requestedBlockIds: MutableSet<String> = mutableSetOf()
 
   override fun createInvMessage(element: Block): Message {
     return MessageImpl(element.hash, INV_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + INV_MESSAGE_BYTE_SIZE)
@@ -35,22 +30,29 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     return MessageImpl(element, ELEMENT_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + element.size)
   }
 
-
   override fun handleInvMessageReceived(
     message: Message,
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    context?.blockchain?.let { blockchain ->
-      val hash = message.content as String
-      if (blockchain.hasBlockWithHash(hash)) {
-        // Block already exists, no need to request it
-        return
-      }
-      networkInterface?.send(
-        createGetDataMessage(hash),
-        senderNetworkEndpoint
-      )
+    val hash = message.content as String
+    val nodeContext = context ?: return
+
+    if (
+      nodeContext.blockchain.hasBlockWithHash(hash) ||
+      nodeContext.orphanBlockPool.hasBlockWithHash(hash)
+    ) {
+      requestedBlockIds.remove(hash)
+      return
     }
+
+    if (!requestedBlockIds.add(hash)) {
+      return
+    }
+
+    networkInterface?.send(
+      createGetDataMessage(hash),
+      senderNetworkEndpoint
+    )
   }
 
   override fun handleGetDataMessageReceived(
@@ -69,9 +71,31 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     senderNetworkEndpoint: P2PNetworkEndpoint
   ) {
     val block = message.content as Block
+    val nodeContext = context ?: return
+
+    requestedBlockIds.remove(block.hash)
+
+    if (
+      nodeContext.blockchain.hasBlockWithHash(block.hash) ||
+      nodeContext.orphanBlockPool.hasBlockWithHash(block.hash)
+    ) {
+      return
+    }
+
+    val previousHash = block.previousHash
+    if (
+      previousHash != null &&
+      !nodeContext.blockchain.hasBlockWithHash(previousHash) &&
+      !nodeContext.orphanBlockPool.hasBlockWithHash(previousHash) &&
+      requestedBlockIds.add(previousHash)
+    ) {
+      networkInterface?.send(
+        createGetDataMessage(previousHash),
+        senderNetworkEndpoint
+      )
+    }
 
     logBlockReceived(block, senderNetworkEndpoint)
-
     notifyBlockReceived(block)
   }
 
@@ -79,7 +103,9 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     message: Message,
     recipientNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+    if (networkInterface == null) {
+      throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+    }
 
     val event = MessageDroppedTraceEvent(
       message,
@@ -89,7 +115,6 @@ class BlockPropagationStrategy : GossipPropagationStrategy<Block>() {
     )
     traceEventLogger.logEvent(event)
   }
-
 
   private fun notifyBlockReceived(block: Block) {
     onReceivedCallback?.invoke(block)

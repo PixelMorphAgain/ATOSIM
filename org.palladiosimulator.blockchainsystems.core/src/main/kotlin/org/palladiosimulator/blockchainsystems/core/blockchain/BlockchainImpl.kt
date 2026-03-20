@@ -46,30 +46,79 @@ class BlockchainImpl(
 
 
   override fun appendBlock(block: Block): BlockAppendingResult {
-    if (hasBlockWithHash(block.hash)) {
+    val alreadyKnown = hasBlockWithHash(block.hash)
+
+    println(
+      "APPEND ENTER " +
+              "chain=${System.identityHashCode(this)} " +
+              "hash=${block.hash} " +
+              "prev=${block.previousHash} " +
+              "alreadyKnown=$alreadyKnown"
+    )
+
+    if (alreadyKnown) {
+      println(
+        "APPEND EXIT " +
+                "chain=${System.identityHashCode(this)} " +
+                "hash=${block.hash} " +
+                "result=AlreadyAppended"
+      )
       return BlockAppendingResult.createBlockAlreadyAppendedResult()
     }
 
     blockchainElementsMap[block.previousHash]?.let { previousBlockchainElement ->
-
-      // Check if there is a block in the blockchain that has the blocks previous hash as its hash
       val newBlockchainElementPosition = previousBlockchainElement.position + 1
 
       if (this.length < newBlockchainElementPosition) {
-        // Appended to one of the longest branches -> branch is now the single longest branch
         appendIncludedBlock(block, previousBlockchainElement, newBlockchainElementPosition)
+
+        println(
+          "APPEND EXIT " +
+                  "chain=${System.identityHashCode(this)} " +
+                  "hash=${block.hash} " +
+                  "result=Appended " +
+                  "blockType=${BlockType.IncludedBlock} " +
+                  "newPosition=$newBlockchainElementPosition " +
+                  "length=${this.length}"
+        )
         return BlockAppendingResult.createBlockAppendedResult(BlockType.IncludedBlock)
+
       } else if (this.length == newBlockchainElementPosition) {
-        // Part of a branch that is now equally long as longest branch -> Potential fork
         appendForkingBlock(block, previousBlockchainElement, newBlockchainElementPosition)
+
+        println(
+          "APPEND EXIT " +
+                  "chain=${System.identityHashCode(this)} " +
+                  "hash=${block.hash} " +
+                  "result=Appended " +
+                  "blockType=${BlockType.ForkingBlock} " +
+                  "newPosition=$newBlockchainElementPosition " +
+                  "length=${this.length}"
+        )
         return BlockAppendingResult.createBlockAppendedResult(BlockType.ForkingBlock)
+
       } else {
         appendStaleBlock(block, previousBlockchainElement, newBlockchainElementPosition)
+
+        println(
+          "APPEND EXIT " +
+                  "chain=${System.identityHashCode(this)} " +
+                  "hash=${block.hash} " +
+                  "result=Appended " +
+                  "blockType=${BlockType.StaleBlock} " +
+                  "newPosition=$newBlockchainElementPosition " +
+                  "length=${this.length}"
+        )
         return BlockAppendingResult.createBlockAppendedResult(BlockType.StaleBlock)
       }
     }
 
-    // There is no block in the blockchain that has the block's previous hash as its hash -> block is an orphan block
+    println(
+      "APPEND EXIT " +
+              "chain=${System.identityHashCode(this)} " +
+              "hash=${block.hash} " +
+              "result=Orphan"
+    )
     return BlockAppendingResult.createBlockNoAppendedBecauseOrphanBlockResult()
   }
 

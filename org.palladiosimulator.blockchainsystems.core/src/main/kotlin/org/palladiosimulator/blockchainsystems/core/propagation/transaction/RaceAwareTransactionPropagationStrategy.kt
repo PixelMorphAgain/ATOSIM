@@ -24,6 +24,8 @@ class RaceAwareTransactionPropagationStrategy(
 
     private val EVENT_TYPE_DELAYED_GOSSIP = "RACE_DELAYED_TRX_GOSSIP"
 
+    private val requestedTransactionIds: MutableSet<String> = mutableSetOf()
+
     override fun createInvMessage(element: Transaction): Message {
         return MessageImpl(element.txId, INV_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + INV_MESSAGE_BYTE_SIZE)
     }
@@ -86,13 +88,27 @@ class RaceAwareTransactionPropagationStrategy(
         traceEventLogger.logEvent(event)
     }
 
-    override fun handleInvMessageReceived(message: Message, senderNetworkEndpoint: P2PNetworkEndpoint) {
+    override fun handleInvMessageReceived(
+        message: Message,
+        senderNetworkEndpoint: P2PNetworkEndpoint
+    ) {
         val txId = message.content as String
 
-        context?.trxMemPool?.let {
-            val trx = it.getTransactionById(txId)
-            if (trx != null) return
-            networkInterface?.send(createGetDataMessage(txId), senderNetworkEndpoint)
+        context?.trxMemPool?.let { memPool ->
+            val trx = memPool.getTransactionById(txId)
+            if (trx != null) {
+                requestedTransactionIds.remove(txId)
+                return
+            }
+
+            if (!requestedTransactionIds.add(txId)) {
+                return
+            }
+
+            networkInterface?.send(
+                createGetDataMessage(txId),
+                senderNetworkEndpoint
+            )
         }
     }
 
@@ -109,6 +125,7 @@ class RaceAwareTransactionPropagationStrategy(
 
     override fun handleElementMessageReceived(message: Message, senderNetworkEndpoint: P2PNetworkEndpoint) {
         val trx = message.content as Transaction
+        requestedTransactionIds.remove(trx.txId)
         logTrxReceived(trx, senderNetworkEndpoint)
         onReceivedCallback?.invoke(trx)
     }

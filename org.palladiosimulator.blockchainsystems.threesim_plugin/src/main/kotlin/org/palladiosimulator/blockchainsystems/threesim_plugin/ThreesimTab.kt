@@ -95,7 +95,7 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     blockIntervalField = TextField(
       group,
       "Block Interval:",
-      " seconds",
+      " ms",
       DoubleVerifier,
       ThreesimAttributes.BLOCK_INTERVAL,
       ThreesimAttributes.BLOCK_INTERVAL_DEFAULT,

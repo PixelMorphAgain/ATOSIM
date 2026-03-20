@@ -4,7 +4,7 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 import kotlinx.serialization.Serializable
 
 /**
- * Stale block rate
+ * Stale block rate = stale blocks / confirmed blocks
  *
  * @author Davis Riedel
  */
@@ -14,7 +14,7 @@ class StaleBlockRate(
 ) : OutputMetric<Double> {
   companion object {
     const val NAME = "StaleBlockRate"
-    const val UNIT = "blocks/min"
+    const val UNIT = "ratio"
   }
 
   override val name: String = NAME

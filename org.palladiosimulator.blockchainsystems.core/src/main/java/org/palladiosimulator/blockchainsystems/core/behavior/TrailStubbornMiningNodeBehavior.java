@@ -1,9 +1,6 @@
 package org.palladiosimulator.blockchainsystems.core.behavior;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
+import org.jetbrains.annotations.NotNull;
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.Block;
 import org.palladiosimulator.blockchainsystems.core.common.BlockchainNodeObject;
 import org.palladiosimulator.blockchainsystems.core.common.abstractions.Event;
@@ -11,100 +8,129 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext;
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction;
 
-/**
- * Trail-Stubborn Mining behavior.
- *
- * Difference to Lead-Stubborn Mining:
- * - When lead == 0 and an honest block appears, the attacker does NOT
- *   immediately give up if a private block exists.
- * - Instead, the attacker publishes one private block to attempt recovery
- *   and create a competing fork.
- */
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-public class TrailStubbornMiningNodeBehavior
-        extends BlockchainNodeObject
+/**
+ * Stronger Trail-Stubborn Mining behavior with explicit trailing-contest state.
+ *
+ * Main idea:
+ * - the attacker prefers to stay behind the public branch longer than EqualForkStubborn
+ *   and reacts more reluctantly than SelfishMining
+ * - with only a small hidden advantage, it keeps mining privately instead of immediately
+ *   releasing to match public progress
+ * - with larger hidden advantage, it reveals blocks gradually to keep the contest alive
+ *   without dumping the whole branch
+ *
+ * State:
+ * - privateChain: attacker-mined blocks that are still hidden / unpublished
+ * - inTrailingContest: true when the attacker is currently responding to public progress
+ *   with controlled delayed publication
+ * - publishedInCurrentContest: number of attacker blocks already revealed in the current contest
+ *
+ * Notes:
+ * - Transactions are removed only after INCLUDED or FORKING outcomes.
+ */
+public class TrailStubbornMiningNodeBehavior extends BlockchainNodeObject
         implements BlockchainSystemNodeBehavior {
 
-    private final List<Block> privateChain = new ArrayList<>();
     private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
-    private int lead = 0;
+
+    /**
+     * Hidden attacker blocks that have been mined but not yet published.
+     * Index 0 is the next hidden block that would be revealed first.
+     */
+    private final List<Block> privateChain = new ArrayList<>();
+
+    /**
+     * True when the attacker is currently in a trailing public contest.
+     */
+    private boolean inTrailingContest = false;
+
+    /**
+     * Number of attacker blocks already revealed in the current contest.
+     * This is separate from the number of still-hidden blocks.
+     */
+    private int publishedInCurrentContest = 0;
 
     @Override
     public void onNodeInitialized(BlockchainSystemNodeContext context) {
-        privateChain.clear();
-        lead = 0;
+        resetPrivateState();
         context.getMiningProcess().startMining();
     }
 
     @Override
-    public void onTransactionReceived(
-            Transaction transaction,
-            BlockchainSystemNodeContext context
-    ) {
+    public void onTransactionReceived(Transaction transaction, BlockchainSystemNodeContext context) {
         context.getTrxMemPool().storeTransaction(transaction);
         context.getTransactionPropagationStrategy().distribute(transaction);
     }
 
     @Override
     public void onBlockReceived(Block block, BlockchainSystemNodeContext context) {
+        if (context.getBlockchain().hasBlockWithHash(block.getHash())
+                || context.getOrphanBlockPool().hasBlockWithHash(block.getHash())) {
+            return;
+        }
+
         context.getBlockValidator().validateBlock(block);
     }
 
     @Override
-    public void onBlockValidated(
-            Block block,
-            boolean isValid,
-            BlockchainSystemNodeContext context
-    ) {
-        if (!isValid) return;
-
-        context.getTrxMemPool().removeTransactions(block.getTransactions());
-
-        boolean newLongest =
-                BehaviorUtils.INSTANCE.appendBlockToBlockchain(block, context);
-
-        if (newLongest) {
-            context.getMiningProcess().restartMining();
+    public void onBlockValidated(Block block, boolean isValid, BlockchainSystemNodeContext context) {
+        if (!isValid) {
+            return;
         }
 
-        // ---- TRAIL-STUBBORN RELEASE RULES ----
-        if (lead == 0) {
-            if (!privateChain.isEmpty()) {
-                // DIFFERENCE to Lead-Stubborn:
-                // try to recover by creating a competing fork
-                publishOnePrivateBlock(context);
-            } else {
-                // no private blocks → honest behavior
-                context.getBlockPropagationStrategy().distribute(block);
+        if (inTrailingContest) {
+            handleBlockWhileInTrailingContest(block, context);
+            return;
+        }
+
+        int hiddenLead = hiddenLead();
+
+        // No hidden advantage -> behave honestly.
+        if (hiddenLead == 0) {
+            adoptPublicBlockAndAbandonPrivateState(block, context);
+            return;
+        }
+
+        // Trail-stubborn behavior:
+        // with exactly one hidden block, keep trailing and do not reveal yet.
+        if (hiddenLead == 1) {
+            return;
+        }
+
+        // With exactly two hidden blocks, reveal one to begin a delayed contest,
+        // but keep one block hidden rather than trying to match aggressively.
+        if (hiddenLead == 2) {
+            boolean published = publishOneHiddenBlock(context);
+            if (published) {
+                inTrailingContest = true;
+                publishedInCurrentContest = 1;
             }
+            return;
         }
-        else if (lead == 1) {
-            // same as Lead-Stubborn: keep mining privately
-        }
-        else {
-            // lead >= 2 → publish one block to stay ahead
-            publishOnePrivateBlock(context);
-            lead--;
+
+        // With more than two hidden blocks, reveal one and keep the rest hidden.
+        boolean published = publishOneHiddenBlock(context);
+        if (published) {
+            inTrailingContest = true;
+            publishedInCurrentContest++;
         }
     }
 
     @Override
     public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
         privateChain.add(block);
-        lead++;
+
+        // Trail-stubborn is intentionally reluctant to dump the whole hidden branch.
+        // Even during contest, mining a block does not automatically trigger publish-all.
     }
 
     @Override
-    public Block onCreatingBlock(
-            long blockMinedAt,
-            String previousBlockHash,
-            BlockchainSystemNodeContext context
-    ) {
-        var selection =
-                context.getTransactionSelectionProcess()
-                        .selectTransactionsForBlock(context);
-
-        context.getTrxMemPool().removeTransactions(selection.getTransactions());
+    public Block onCreatingBlock(long blockMinedAt, String previousBlockHash, BlockchainSystemNodeContext context) {
+        var selection = context.getTransactionSelectionProcess().selectTransactionsForBlock(context);
 
         return context.getBlockFactory().createBlock(
                 UUID.randomUUID().toString(),
@@ -116,33 +142,98 @@ public class TrailStubbornMiningNodeBehavior
         );
     }
 
+    @NotNull
     @Override
-    public String onPreviousBlockSelection(
-            BlockchainSystemNodeContext context
-    ) {
+    public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
         if (!privateChain.isEmpty()) {
             return privateChain.get(privateChain.size() - 1).getHash();
         }
+
         return honest.onPreviousBlockSelection(context);
     }
 
-    private void publishOnePrivateBlock(BlockchainSystemNodeContext context) {
-        if (privateChain.isEmpty()) return;
+    /**
+     * Trailing-contest handler.
+     *
+     * Interpretation:
+     * - if more than one hidden block remains, reveal one block and keep trailing
+     * - if exactly one hidden block remains, keep it hidden and continue trailing
+     * - if no hidden blocks remain, abandon the private strategy and adopt public progress
+     */
+    private void handleBlockWhileInTrailingContest(Block block, BlockchainSystemNodeContext context) {
+        int hiddenLead = hiddenLead();
 
-        Block publish = privateChain.remove(0);
-
-        boolean newLongest =
-                BehaviorUtils.INSTANCE.appendBlockToBlockchain(publish, context);
-
-        if (newLongest) {
-            context.getMiningProcess().restartMining();
+        if (hiddenLead > 1) {
+            boolean published = publishOneHiddenBlock(context);
+            if (published) {
+                publishedInCurrentContest++;
+            }
+            return;
         }
 
-        context.getBlockPropagationStrategy().distribute(publish);
+        if (hiddenLead == 1) {
+            // Preserve the final hidden block and continue trailing.
+            return;
+        }
+
+        adoptPublicBlockAndAbandonPrivateState(block, context);
+    }
+
+    /**
+     * Append a public block and fully abandon the no-longer-viable private state.
+     */
+    private void adoptPublicBlockAndAbandonPrivateState(Block block, BlockchainSystemNodeContext context) {
+        AppendOutcome outcome = BehaviorUtils.INSTANCE.appendBlockToBlockchainDetailed(block, context);
+
+        if (outcome == AppendOutcome.INCLUDED || outcome == AppendOutcome.FORKING) {
+            context.getTrxMemPool().removeTransactions(block.getTransactions());
+            context.getMiningProcess().restartMining();
+            context.getBlockPropagationStrategy().distribute(block);
+            resetPrivateState();
+        }
+    }
+
+    /**
+     * Publish the oldest hidden attacker block.
+     *
+     * @return true iff the block was meaningfully appended and removed from hidden state
+     */
+    private boolean publishOneHiddenBlock(BlockchainSystemNodeContext context) {
+        if (privateChain.isEmpty()) {
+            return false;
+        }
+
+        Block publish = privateChain.get(0);
+
+        AppendOutcome outcome = BehaviorUtils.INSTANCE.appendBlockToBlockchainDetailed(publish, context);
+
+        if (outcome == AppendOutcome.INCLUDED || outcome == AppendOutcome.FORKING) {
+            privateChain.remove(0);
+            context.getTrxMemPool().removeTransactions(publish.getTransactions());
+            context.getMiningProcess().restartMining();
+            context.getBlockPropagationStrategy().distribute(publish);
+            return true;
+        }
+
+        return false;
+    }
+
+    private int hiddenLead() {
+        return privateChain.size();
+    }
+
+    private void clearContestStateOnly() {
+        inTrailingContest = false;
+        publishedInCurrentContest = 0;
+    }
+
+    private void resetPrivateState() {
+        privateChain.clear();
+        clearContestStateOnly();
     }
 
     @Override
     public void dispatchEvent(Event event) {
-        // not used
+        // no-op
     }
 }

@@ -1,18 +1,12 @@
 package org.palladiosimulator.blockchainsystems.core.propagation.transaction
 
+import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.propagation.GossipPropagationStrategy
 import org.palladiosimulator.blockchainsystems.core.propagation.MessageImpl
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.Message
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.P2PNetworkEndpoint
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
-import org.palladiosimulator.blockchainsystems.core.network.MessageDroppedTraceEvent
 
-/**
- * Propagation strategy for transactions in a blockchain system.
- * This strategy handles the propagation of transactions through the network using a gossip protocol.
- *
- * @author Davis Riedel
- */
 class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() {
   override val INV_MESSAGE_KEY: String = "TRX_INV"
   override val GET_DATA_MESSAGE_KEY: String = "TRX_GET_DATA"
@@ -22,6 +16,7 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   private val INV_MESSAGE_BYTE_SIZE = 20
   private val GET_DATA_MESSAGE_BYTE_SIZE = 20
 
+  private val requestedTransactionIds: MutableSet<String> = mutableSetOf()
 
   override fun createInvMessage(element: Transaction): Message {
     return MessageImpl(element.txId, INV_MESSAGE_KEY, MESSAGE_HEADER_BYTE_SIZE + INV_MESSAGE_BYTE_SIZE)
@@ -39,13 +34,15 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
     message: Message,
     recipientNetworkEndpoint: P2PNetworkEndpoint
   ) {
-    if (networkInterface == null) throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+    if (networkInterface == null) {
+      throw IllegalStateException("Network interface is not set for BlockPropagationStrategy.")
+    }
 
     val event = MessageDroppedTraceEvent(
       message,
       simulationContext.systemClock.currentTime,
       recipientNetworkEndpoint,
-      networkInterface!! // save because checked above
+      networkInterface!!
     )
     traceEventLogger.logEvent(event)
   }
@@ -56,10 +53,14 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   ) {
     val txId = message.content as String
 
-    context?.trxMemPool?.let {
-      val trx = it.getTransactionById(txId)
+    context?.trxMemPool?.let { memPool ->
+      val trx = memPool.getTransactionById(txId)
       if (trx != null) {
-        // Transaction already exists in the mempool, no need to request it
+        requestedTransactionIds.remove(txId)
+        return
+      }
+
+      if (!requestedTransactionIds.add(txId)) {
         return
       }
 
@@ -90,11 +91,11 @@ class TransactionPropagationStrategy : GossipPropagationStrategy<Transaction>() 
   ) {
     val trx = message.content as Transaction
 
-    logTrxReceived(trx, senderNetworkEndpoint)
+    requestedTransactionIds.remove(trx.txId)
 
+    logTrxReceived(trx, senderNetworkEndpoint)
     notifyTrxReceived(trx)
   }
-
 
   private fun notifyTrxReceived(transaction: Transaction) {
     onReceivedCallback?.invoke(transaction)

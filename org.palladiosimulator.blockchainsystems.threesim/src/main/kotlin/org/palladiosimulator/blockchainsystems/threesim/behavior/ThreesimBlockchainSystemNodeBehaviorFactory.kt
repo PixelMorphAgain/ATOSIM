@@ -5,6 +5,7 @@ import org.palladiosimulator.blockchainsystems.core.behavior.FinneyMiningNodeBeh
 import org.palladiosimulator.blockchainsystems.core.behavior.GammaAwareHonestBlockchainSystemNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.HonestBlockchainSystemNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.LeadStubbornMiningNodeBehavior
+import org.palladiosimulator.blockchainsystems.core.behavior.RaceMiningNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.SelfishMiningNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.TrailStubbornMiningNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeBehavior
@@ -25,27 +26,17 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
 ) : BlockchainSystemNodeBehaviorFactory {
 
   override fun create(nodeId: String): BlockchainSystemNodeBehavior {
-    println("CLASS LOADED FROM:")
-    println(ThreesimBlockchainSystemNodeBehaviorFactory::class.java.protectionDomain.codeSource.location)
-
-    println("========== NODE BEHAVIOR FACTORY ==========")
-    println("Runtime nodeId = $nodeId")
-    println("Attacker IDs   = ${simulationParameters.attackerNodeIds}")
-    println("AttackType     = ${simulationParameters.attackType}")
-    println("ATTACK TYPE VALUE = ${simulationParameters.attackType}")
-    println("ATTACKER IDS = ${simulationParameters.attackerNodeIds}")
-    println("HASH POWER = ${simulationParameters.attackerHashPower}")
-    println("GAMMA = ${simulationParameters.gamma}")
-
     val isAttacker = simulationParameters.attackerNodeIds.contains(nodeId)
-    println("NodeId=$nodeId | isAttacker=$isAttacker")
-
-    if (isAttacker) {
-      println(">>> ATTACKER NODE ACTIVATED <<<")
-    }
 
     if (isAttacker) {
       when (simulationParameters.attackType) {
+
+        AttackType.RACE ->
+          return RaceMiningNodeBehavior()
+
+        AttackType.MAJORITY ->
+          return HonestBlockchainSystemNodeBehavior()
+
         AttackType.SELFISH_MINING ->
           return SelfishMiningNodeBehavior()
 
@@ -71,7 +62,9 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
       AttackType.SELFISH_MINING,
       AttackType.LEAD_STUBBORN_MINING,
       AttackType.EQUAL_FORK_STUBBORN_MINING,
-      AttackType.TRAIL_STUBBORN_MINING ->
+      AttackType.TRAIL_STUBBORN_MINING,
+      AttackType.RACE,
+      AttackType.MAJORITY ->
         return GammaAwareHonestBlockchainSystemNodeBehavior(
           simulationParameters.attackerNodeIds,
           simulationParameters.gamma

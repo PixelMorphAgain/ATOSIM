@@ -22,14 +22,7 @@ class ThreesimSimulationRoundResultFactory(
     val state = monitor.getFinalState(finalSystemTime)
     val attackerRewards = threesimSimulationParameters.attackerNodeIds.sumOf { monitor.getBlockRewardsForNode(it) }
     val totalRewards = monitor.getTotalBlockRewards()
-    val attackerRevenueShareValue = if (totalRewards == 0) {
-      0.0
-    } else {
-      attackerRewards.toDouble() / totalRewards.toDouble() * 100.0
-    }
     val lambdaH = (1.0 - threesimSimulationParameters.attackerHashPower) / threesimSimulationParameters.blockInterval
-
-    println("RESULT FACTORY attacker IDs = ${threesimSimulationParameters.attackerNodeIds}")
 
     return ThreesimSimulationRoundResult(
       outputMetrics = OutputMetricsSet.from(
@@ -77,6 +70,7 @@ class ThreesimSimulationRoundResultFactory(
           blockProposalTimeAndConfirmationTimePerConfirmedBlock = state.blockProposalTimeAndConfirmationTimePerConfirmedBlock
         ).calculate(),
 
+
         FaultToleranceCalculator(
           averageThroughputWithoutFailures = state.averageThroughputDuringNormalOperation,
           averageThroughputWithFailures = state.averageThroughputDuringFailure,
@@ -94,7 +88,11 @@ class ThreesimSimulationRoundResultFactory(
           numberOfConfirmedBlocks = state.numberOfConfirmedBlocks
         ).calculate(),
 
-        AttackerRevenueShare(attackerRevenueShareValue),
+        AttackerRevenueShareCalculator(
+          attackerRewards = attackerRewards.toDouble(),
+          totalRewards = totalRewards.toDouble()
+        ).calculate(),
+
         FinneyAttackSuccess(monitor.hasFinneyAttackSucceeded()),
         RaceAttackSuccess(monitor.hasRaceAttackSucceeded()),
 

@@ -8,12 +8,13 @@ import org.palladiosimulator.blockchainsystems.threesim.metrics.abstractions.Out
 import org.palladiosimulator.blockchainsystems.threesim.metrics.utils.AverageCalculatorResult
 
 /**
- * Calculates stale block rate
+ * Calculates stale block ratio as :
+ * stale blocks / confirmed blocks
  *
  * @property numberOfStaleBlocks number of stale blocks
  * @property numberOfConfirmedBlocks number of confirmed blocks
  *
- * @author Davis Riedel
+ * @author Davis Riedel, Darren Hendarmin
  */
 class StaleBlockRateCalculator(
   private val numberOfStaleBlocks: Int,

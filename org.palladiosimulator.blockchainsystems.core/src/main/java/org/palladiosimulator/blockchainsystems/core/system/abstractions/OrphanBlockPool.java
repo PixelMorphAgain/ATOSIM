@@ -28,4 +28,10 @@ public interface OrphanBlockPool extends Traceable {
      * @param block the block to store in the orphan block pool
      */
     void storeBlock(Block block);
+
+    boolean hasBlockWithHash(String hash);
+
+    Set<Block> takeBlocksByPreviousBlockHash(String previousBlockHash);
+
+    void removeBlock(String hash);
 }

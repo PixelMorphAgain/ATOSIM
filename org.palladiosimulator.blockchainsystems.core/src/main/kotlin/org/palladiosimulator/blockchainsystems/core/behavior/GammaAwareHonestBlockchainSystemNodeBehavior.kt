@@ -9,12 +9,6 @@ import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Tra
 import java.util.*
 import kotlin.random.Random
 
-/**
- * Honest mining behavior with gamma-based fork tie-breaking.
- *
- * When multiple longest chains exist, the miner follows
- * the attacker's branch with probability gamma.
- */
 class GammaAwareHonestBlockchainSystemNodeBehavior(
     private val attackerNodeIds: Set<String>,
     private val gamma: Double
@@ -35,6 +29,13 @@ class GammaAwareHonestBlockchainSystemNodeBehavior(
     }
 
     override fun onBlockReceived(block: Block, context: BlockchainSystemNodeContext) {
+        if (
+            context.blockchain.hasBlockWithHash(block.hash) ||
+            context.orphanBlockPool.hasBlockWithHash(block.hash)
+        ) {
+            return
+        }
+
         context.blockValidator.validateBlock(block)
     }
 
@@ -45,21 +46,36 @@ class GammaAwareHonestBlockchainSystemNodeBehavior(
     ) {
         if (!isValid) return
 
-        context.trxMemPool.removeTransactions(block.transactions)
+        when (BehaviorUtils.appendBlockToBlockchainDetailed(block, context)) {
+            AppendOutcome.INCLUDED,
+            AppendOutcome.FORKING -> {
+                context.trxMemPool.removeTransactions(block.transactions)
+                context.miningProcess.restartMining()
+                context.blockPropagationStrategy.distribute(block)
+            }
 
-        val hasNewLongestChain =
-            BehaviorUtils.appendBlockToBlockchain(block, context)
-
-        if (hasNewLongestChain) {
-            context.miningProcess.restartMining()
+            AppendOutcome.STALE,
+            AppendOutcome.ALREADY_APPENDED,
+            AppendOutcome.ORPHAN,
+            AppendOutcome.NOT_APPENDED -> {
+            }
         }
-
-        context.blockPropagationStrategy.distribute(block)
     }
 
     override fun onBlockMined(block: Block, context: BlockchainSystemNodeContext) {
-        BehaviorUtils.appendBlockToBlockchain(block, context)
-        context.blockPropagationStrategy.distribute(block)
+        when (BehaviorUtils.appendBlockToBlockchainDetailed(block, context)) {
+            AppendOutcome.INCLUDED,
+            AppendOutcome.FORKING -> {
+                context.trxMemPool.removeTransactions(block.transactions)
+                context.blockPropagationStrategy.distribute(block)
+            }
+
+            AppendOutcome.STALE,
+            AppendOutcome.ALREADY_APPENDED,
+            AppendOutcome.ORPHAN,
+            AppendOutcome.NOT_APPENDED -> {
+            }
+        }
     }
 
     override fun onCreatingBlock(
@@ -69,8 +85,6 @@ class GammaAwareHonestBlockchainSystemNodeBehavior(
     ): Block {
         val selected = context.transactionSelectionProcess
             .selectTransactionsForBlock(context)
-
-        context.trxMemPool.removeTransactions(selected.transactions)
 
         return context.blockFactory.createBlock(
             UUID.randomUUID().toString(),
@@ -85,7 +99,6 @@ class GammaAwareHonestBlockchainSystemNodeBehavior(
     override fun onPreviousBlockSelection(context: BlockchainSystemNodeContext): String {
         val tips = context.blockchain.getLastBlocksOfLongestChains()
 
-        // No fork → honest behavior
         if (tips.size <= 1) {
             return tips.first().hash
         }
@@ -93,7 +106,6 @@ class GammaAwareHonestBlockchainSystemNodeBehavior(
         val attackerTips = tips.filter { it.originId in attackerNodeIds }
         val honestTips = tips.filter { it.originId !in attackerNodeIds }
 
-        // Preserve honest semantics if fork isn't attacker vs honest
         if (attackerTips.isEmpty() || honestTips.isEmpty()) {
             return tips.first().hash
         }

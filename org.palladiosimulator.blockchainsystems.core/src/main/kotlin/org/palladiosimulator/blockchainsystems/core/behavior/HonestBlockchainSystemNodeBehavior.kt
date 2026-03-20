@@ -8,16 +8,18 @@ import org.palladiosimulator.blockchainsystems.core.system.abstractions.Blockcha
 import org.palladiosimulator.blockchainsystems.core.transaction.abstractions.Transaction
 import java.util.*
 
-/**
- * This behavior represents a node in the blockchain system that behaves honestly.
- *
- * @author Yannik Sproll
- */
 class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSystemNodeBehavior {
   override fun onBlockReceived(
     block: Block,
     context: BlockchainSystemNodeContext
   ) {
+    if (
+      context.blockchain.hasBlockWithHash(block.hash) ||
+      context.orphanBlockPool.hasBlockWithHash(block.hash)
+    ) {
+      return
+    }
+
     context.blockValidator.validateBlock(block)
   }
 
@@ -32,22 +34,36 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
   override fun onBlockValidated(block: Block, isValid: Boolean, context: BlockchainSystemNodeContext) {
     if (!isValid) return
 
-    // Remove transactions included in the block from the mempool
-    context.trxMemPool.removeTransactions(block.transactions)
+    when (BehaviorUtils.appendBlockToBlockchainDetailed(block, context)) {
+      AppendOutcome.INCLUDED,
+      AppendOutcome.FORKING -> {
+        context.trxMemPool.removeTransactions(block.transactions)
+        context.miningProcess.restartMining()
+        context.blockPropagationStrategy.distribute(block)
+      }
 
-    // Append the block to the blockchain
-    val hasNewLongestChain = BehaviorUtils.appendBlockToBlockchain(block, context)
-    if (hasNewLongestChain) {
-      context.miningProcess.restartMining()
+      AppendOutcome.STALE,
+      AppendOutcome.ALREADY_APPENDED,
+      AppendOutcome.ORPHAN,
+      AppendOutcome.NOT_APPENDED -> {
+      }
     }
-
-    // Propagate the valid block to peers
-    context.blockPropagationStrategy.distribute(block)
   }
 
   override fun onBlockMined(block: Block, context: BlockchainSystemNodeContext) {
-    BehaviorUtils.appendBlockToBlockchain(block, context)
-    context.blockPropagationStrategy.distribute(block)
+    when (BehaviorUtils.appendBlockToBlockchainDetailed(block, context)) {
+      AppendOutcome.INCLUDED,
+      AppendOutcome.FORKING -> {
+        context.trxMemPool.removeTransactions(block.transactions)
+        context.blockPropagationStrategy.distribute(block)
+      }
+
+      AppendOutcome.STALE,
+      AppendOutcome.ALREADY_APPENDED,
+      AppendOutcome.ORPHAN,
+      AppendOutcome.NOT_APPENDED -> {
+      }
+    }
   }
 
   override fun onCreatingBlock(
@@ -55,13 +71,8 @@ class HonestBlockchainSystemNodeBehavior : BlockchainNodeObject(), BlockchainSys
     previousBlockHash: String,
     context: BlockchainSystemNodeContext
   ): Block {
-    // Select transactions to include in the block
     val selectedTrxsResult = context.transactionSelectionProcess.selectTransactionsForBlock(context)
 
-    // Remove the selected transactions from the mempool
-    context.trxMemPool.removeTransactions(selectedTrxsResult.transactions)
-
-    // Create a new block with the selected transactions
     return context.blockFactory.createBlock(
       UUID.randomUUID().toString(),
       previousBlockHash,

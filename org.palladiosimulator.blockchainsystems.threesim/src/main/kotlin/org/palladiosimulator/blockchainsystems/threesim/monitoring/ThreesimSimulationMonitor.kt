@@ -12,15 +12,14 @@ import org.palladiosimulator.blockchainsystems.core.monitoring.abstractions.Simu
 import org.palladiosimulator.blockchainsystems.core.simulation.termination.LongestChainExceededMaxLengthCondition
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystem
 import org.palladiosimulator.blockchainsystems.core.system.BlockchainSystemNode
-import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.core.transaction.TransactionSubmittedTraceEvent
 import org.palladiosimulator.blockchainsystems.core.utils.CounterMap
+import org.palladiosimulator.blockchainsystems.threesim.behavior.BlockUtils
 import org.palladiosimulator.blockchainsystems.threesim.metrics.calculators.TransactionThroughputCalculator
 import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlockchainSystemFailureLog
 import org.palladiosimulator.blockchainsystems.threesim.utils.BlocksMap
-import kotlin.math.log
 
 /**
  * Monitor for the 3SIM simulation.
@@ -49,6 +48,7 @@ class ThreesimSimulationMonitor(
   private var finneyCandidateBlockHash: String? = null
 
   private var raceAttackSucceeded: Boolean = false
+
   // fork tracking by parent hash (previousHash)
   private val confirmedByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
   private val staleByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
@@ -74,6 +74,16 @@ class ThreesimSimulationMonitor(
   private var lastThroughputCheckTimestamp: Long = 0
   private var attackSuccessTime: Long? = null
 
+  // for debug
+  private var lastTerminationDebugConfirmedBlocks: Int? = null
+  private var lastTerminationDebugRaceAttackSucceeded: Boolean? = null
+  private var lastTerminationDebugReachedDepth: Boolean? = null
+
+  // Deduplicate monitor-side accounting so the same confirmed block hash does not
+  // contribute throughput / reward multiple times across multiple node-local events.
+  private val throughputAccountedConfirmedBlockHashes: MutableSet<String> = mutableSetOf()
+  private val rewardAccountedConfirmedBlockHashes: MutableSet<String> = mutableSetOf()
+
   override fun initialize(blockchainSystem: BlockchainSystem) {
     nodes = blockchainSystem.nodes
     geographicalRegions = blockchainSystem.geographicalRegions
@@ -91,6 +101,20 @@ class ThreesimSimulationMonitor(
   fun getFinalState(
     finalSystemTime: Long,
   ): ThreesimSimulationMonitorState {
+    println("===== MONITOR FINAL STATE DEBUG =====")
+    println("submittedTransactions=$numberOfSubmittedTransactions")
+    println("confirmedTransactions=${calculateNumberOfConfirmedTransactions()}")
+    println("confirmedBlocks=${calculateNumberOfConfirmedBlocks()}")
+    println("staleBlocks=${calculateNumberOfStaleBlocks()}")
+    println("avgThroughputWithoutFailure=${calculateAverageThroughputWithoutFailure()}")
+    println("avgThroughputDuringFailure=${calculateAverageThroughputDuringFailure()}")
+    println("avgLatencyWithoutFailure=${calculateAverageConfirmationLatencyWithoutFailure()}")
+    println("avgLatencyDuringFailure=${calculateAverageConfirmationLatencyDuringFailure()}")
+    println("raceAttackSucceeded=$raceAttackSucceeded")
+    println("attackSuccessTime=$attackSuccessTime")
+    println("totalRewards=${getTotalBlockRewards()}")
+    println("attackerRewards=${simulationParameters.attackerNodeIds.sumOf { getBlockRewardsForNode(it) }}")
+
     return ThreesimSimulationMonitorState(
       numberOfNodes = nodes.size,
       hashPowerPerNode = calculateHashPowerPerNode(),
@@ -135,7 +159,6 @@ class ThreesimSimulationMonitor(
     logOrigin: TraceEventLogOrigin
   ) {
     when (event.eventType) {
-
       BlockMinedTraceEvent.EVENT_TYPE -> {
         val e = event as BlockMinedTraceEvent
         val block = e.block
@@ -144,7 +167,7 @@ class ThreesimSimulationMonitor(
         // finney premined exactly one block
         // block is mined before release, honest mining does not withhold blocks
         // --> first attacker-mined block is the Finney block
-        if (finneyCandidateBlockHash == null && isAttacker(block.originId)) { //attacker
+        if (finneyCandidateBlockHash == null && isAttacker(block.originId)) {
           finneyCandidateBlockHash = block.hash
           finneyCandidateMinedTime = e.occurrenceTime
         }
@@ -158,7 +181,6 @@ class ThreesimSimulationMonitor(
 
       BlockAppendedTraceEvent.EVENT_TYPE -> {
         val e = event as BlockAppendedTraceEvent
-
         val nodeId = logOrigin.id
 
         addBlock(e.appendedBlockType, e.appendedBlock, nodeId, e.occurrenceTime)
@@ -169,21 +191,33 @@ class ThreesimSimulationMonitor(
 
         maxBlockchainLengthCondition.onBlockAppended(e.blockPosition)
 
-        if (e.appendedBlockType == BlockType.ConfirmedBlock) {
+        if (
+          e.appendedBlockType == BlockType.ConfirmedBlock &&
+          throughputAccountedConfirmedBlockHashes.add(e.appendedBlock.hash)
+        ) {
           monitorThroughputForNewlyConfirmedBlock(e.appendedBlock, e.occurrenceTime)
+        }
+
+        if (
+          e.appendedBlockType == BlockType.ConfirmedBlock &&
+          rewardAccountedConfirmedBlockHashes.add(e.appendedBlock.hash)
+        ) {
           recordBlockReward(e.appendedBlock)
-          if (simulationParameters.attackType == AttackType.FINNEY &&
-            e.appendedBlock.hash == finneyCandidateBlockHash &&
-            finneyCandidateMinedTime != null &&
-            e.occurrenceTime > finneyCandidateMinedTime!!) {
-            finneyAttackSucceeded = true
-          }
+        }
+
+        if (
+          e.appendedBlockType == BlockType.ConfirmedBlock &&
+          simulationParameters.attackType == AttackType.FINNEY &&
+          e.appendedBlock.hash == finneyCandidateBlockHash &&
+          finneyCandidateMinedTime != null &&
+          e.occurrenceTime > finneyCandidateMinedTime!!
+        ) {
+          finneyAttackSucceeded = true
         }
       }
 
       BlockTypeChangedTraceEvent.EVENT_TYPE -> {
         val e = event as BlockTypeChangedTraceEvent
-
         val nodeId = logOrigin.id
 
         removeBlock(e.oldBlockType, e.block.hash, nodeId)
@@ -193,15 +227,28 @@ class ThreesimSimulationMonitor(
           updateRaceOutcomeIfRelevant(e.block, e.newBlockType, e.occurrenceTime)
         }
 
-        if (e.newBlockType == BlockType.ConfirmedBlock) {
+        if (
+          e.newBlockType == BlockType.ConfirmedBlock &&
+          throughputAccountedConfirmedBlockHashes.add(e.block.hash)
+        ) {
           monitorThroughputForNewlyConfirmedBlock(e.block, e.occurrenceTime)
+        }
+
+        if (
+          e.newBlockType == BlockType.ConfirmedBlock &&
+          rewardAccountedConfirmedBlockHashes.add(e.block.hash)
+        ) {
           recordBlockReward(e.block)
-          if (simulationParameters.attackType == AttackType.FINNEY &&
-            e.block.hash == finneyCandidateBlockHash &&
-            finneyCandidateMinedTime != null &&
-            e.occurrenceTime > finneyCandidateMinedTime!!) {
-            finneyAttackSucceeded = true
-          }
+        }
+
+        if (
+          e.newBlockType == BlockType.ConfirmedBlock &&
+          simulationParameters.attackType == AttackType.FINNEY &&
+          e.block.hash == finneyCandidateBlockHash &&
+          finneyCandidateMinedTime != null &&
+          e.occurrenceTime > finneyCandidateMinedTime!!
+        ) {
+          finneyAttackSucceeded = true
         }
       }
 
@@ -212,33 +259,65 @@ class ThreesimSimulationMonitor(
   }
 
   override fun shouldTerminate(): Boolean {
-    return maxBlockchainLengthCondition.hasLengthExceeded()
+    val maxExceeded = maxBlockchainLengthCondition.hasLengthExceeded()
+
+    if (maxExceeded) {
+      println("TERM maxExceeded")
+      return true
+    }
+
+    if (simulationParameters.attackType == AttackType.RACE) {
+      val confirmedBlocks = calculateNumberOfConfirmedBlocks()
+      val reachedDepth = confirmedBlocks >= simulationParameters.confirmationDepth
+
+      if (
+        lastTerminationDebugConfirmedBlocks != confirmedBlocks ||
+        lastTerminationDebugRaceAttackSucceeded != raceAttackSucceeded ||
+        lastTerminationDebugReachedDepth != reachedDepth
+      ) {
+        println(
+          "TERM c=$confirmedBlocks/${simulationParameters.confirmationDepth} " +
+                  "race=$raceAttackSucceeded depth=$reachedDepth"
+        )
+
+        lastTerminationDebugConfirmedBlocks = confirmedBlocks
+        lastTerminationDebugRaceAttackSucceeded = raceAttackSucceeded
+        lastTerminationDebugReachedDepth = reachedDepth
+      }
+
+      if (reachedDepth) {
+        return true
+      }
+    }
+
+    return false
   }
 
   private fun monitorThroughputForNewlyConfirmedBlock(confirmedBlock: Block, occurrenceTime: Long) {
+    if (lastThroughputCheckTimestamp == 0L) {
+      lastThroughputCheckTimestamp = occurrenceTime
+      return
+    }
+
     val observationTime = occurrenceTime - lastThroughputCheckTimestamp
 
     val throughput = TransactionThroughputCalculator(
       numberOfConfirmedTransactions = confirmedBlock.transactions.size,
       observationTime = observationTime
-    ).calculate().value // in transactions per minute
+    ).calculate().value
 
-    val confirmationLatency = occurrenceTime - confirmedBlock.blockMinedTimestamp // in ms
+    val confirmationLatency = occurrenceTime - confirmedBlock.blockMinedTimestamp
 
     if (failureLog.isFailureOngoing()) {
       if (throughput > failureThroughputThreshold) {
-        // Failure ended
         failureLog.failureEnded(occurrenceTime)
       }
     } else {
-      // Failure not ongoing, check if it started
       if (throughput <= failureThroughputThreshold) {
-        // Failure started
         failureLog.failureStarted(occurrenceTime)
       }
     }
 
-    // Track the throughput and confirmation latency during the failure or without failure
     if (failureLog.isFailureOngoing()) {
       throughputsDuringFailure.add(throughput)
       confirmationLatenciesDuringFailure.add(confirmationLatency)
@@ -264,7 +343,7 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateNumberOfStaleBlocks(): Int {
-    return staleBlocks.getNumberOfBlocks()
+    return staleBlocks.getNumberOfValidBlocks()
   }
 
   private fun calculateBlocksProposedPerNode(): Collection<Int> {
@@ -287,29 +366,22 @@ class ThreesimSimulationMonitor(
   }
 
   private fun calculateTokensHeldPerNode(): List<Double> {
-    // lateinit not possible for primitive types, so use a nullable type and manually check that it was initialized
     val blockReward = this.blockReward ?: throw IllegalStateException("Block reward is not set")
 
     val blocks = confirmedBlocks.getValidBlocks()
-      .filter { it.first.originId != null } // Filter out genesis block
+      .filter { it.first.originId != null }
       .groupBy { it.first.originId }
 
-    // NOTE: cannot do a grouping on blocks, because then nodes that did not propose any blocks would be excluded
     return nodes.map { node ->
       blocks[node.id]?.fold(0.0) { acc, block ->
-        // Calculate the total tokens held by each node, based on the blocks they created
-        // Each block contributes its reward and the sum of transaction fees
         acc + blockReward + block.first.transactions.sumOf { it.fee }
-      } ?: 0.0 // If no blocks were proposed, the node holds 0 tokens
+      } ?: 0.0
     }
-
-    // NOTE: The fee does not need to be deducted anywhere, because miners do not send transactions between each other,
-    // rather, 3SIM creates random transactions sent from anonymous users to the miners.
   }
 
   private fun calculateMeanTimeBetweenFailures(observationTime: Long): Double {
     val numFailures = failureLog.getNumberOfFailures()
-    if (numFailures <= 0) return Double.POSITIVE_INFINITY // Indicate that no failures occurred
+    if (numFailures <= 0) return Double.POSITIVE_INFINITY
     return observationTime.toDouble() / numFailures
   }
 
@@ -357,7 +429,7 @@ class ThreesimSimulationMonitor(
     if (raceAttackSucceeded) return
     if (simulationParameters.attackType != AttackType.RACE) return
 
-    val prevHash = block.previousHash ?: return  // genesis has no race
+    val prevHash = block.previousHash ?: return
     val attacker = isAttacker(block.originId)
 
     when (newType) {
@@ -366,26 +438,40 @@ class ThreesimSimulationMonitor(
           addTo(confirmedByPrevHash, prevHash, block.hash)
         }
       }
+
       BlockType.StaleBlock -> {
         if (!attacker) {
           addTo(staleByPrevHash, prevHash, block.hash)
         }
       }
+
       else -> return
     }
 
-    // Success condition: same parent has both (attacker-confirmed) and (honest-stale)
-    val hasAttackerConfirmed = confirmedByPrevHash[prevHash]?.isNotEmpty() == true
-    val hasHonestStale = staleByPrevHash[prevHash]?.isNotEmpty() == true
+    val attackerConfirmed = confirmedByPrevHash[prevHash].orEmpty()
+    val honestStale = staleByPrevHash[prevHash].orEmpty()
 
-    if (hasAttackerConfirmed && hasHonestStale) {
+    val hasSiblingConflict =
+      attackerConfirmed.isNotEmpty() &&
+              honestStale.isNotEmpty() &&
+              attackerConfirmed.any { attackerHash ->
+                honestStale.any { honestHash -> honestHash != attackerHash }
+              }
+
+    if (hasSiblingConflict) {
+      println(
+        "RACE DEBUG prevHash=$prevHash " +
+                "attackerConfirmed=$attackerConfirmed " +
+                "honestStale=$honestStale " +
+                "occurrenceTime=$occurrenceTime"
+      )
+
       raceAttackSucceeded = true
       if (attackSuccessTime == null) {
         attackSuccessTime = occurrenceTime
       }
     }
   }
-
 
   private fun isAttacker(originId: String?): Boolean {
     return originId != null && simulationParameters.attackerNodeIds.contains(originId)
@@ -394,7 +480,6 @@ class ThreesimSimulationMonitor(
   private fun addTo(map: MutableMap<String, MutableSet<String>>, prevHash: String, blockHash: String) {
     map.getOrPut(prevHash) { mutableSetOf() }.add(blockHash)
   }
-
 
   fun recordBlockReward(block: Block) {
     blockRewardMonitor.recordBlockReward(block)

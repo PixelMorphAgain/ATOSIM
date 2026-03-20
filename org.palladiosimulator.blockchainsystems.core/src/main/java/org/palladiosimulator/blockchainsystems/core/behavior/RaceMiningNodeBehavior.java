@@ -13,41 +13,43 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Stronger Equal-Fork Stubborn Mining behavior with explicit contest-state tracking.
+ * Race-attack behavior with explicit arming, trigger, contest, and reset states.
  *
  * Main idea:
- * - if the attacker has no hidden advantage, behave honestly
- * - if the attacker has hidden blocks and honest progress appears, reveal just enough
- *   to keep parity with the public branch instead of aggressively dumping everything
- * - once in an equal-fork contest, continue releasing one block at a time while hidden
- *   inventory remains, trying to sustain the parity contest
+ * - the attacker first mines a private conflicting block and withholds it (armed state)
+ * - when an honest sibling on the same parent appears, the attacker releases its hidden block
+ *   to trigger a public race
+ * - if the attacker mines again during the contest, it releases the remaining hidden blocks
+ *   aggressively to strengthen its branch
+ * - if honest public progress moves away from the contested parent and the attacker has no
+ *   remaining hidden advantage, the attacker abandons the attempt and adopts the public view
  *
- * State:
- * - privateChain: attacker-mined blocks that are still hidden / unpublished
- * - inEqualForkContest: true when the attacker has already revealed blocks to maintain
- *   parity with the public branch
- * - publishedInCurrentContest: number of attacker blocks revealed in the current contest
- *
- * Notes:
- * - It intentionally removes transactions only after INCLUDED or FORKING outcomes.
+ * This gives the race attack real strategic depth instead of modeling it as honest mining plus
+ * only transaction-gossip timing manipulation.
  */
-public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
+public class RaceMiningNodeBehavior extends BlockchainNodeObject implements BlockchainSystemNodeBehavior {
 
     private final HonestBlockchainSystemNodeBehavior honest = new HonestBlockchainSystemNodeBehavior();
 
     /**
      * Hidden attacker blocks that have been mined but not yet published.
-     * Index 0 is the next hidden block to reveal.
+     * Index 0 is the next block that would be revealed first.
      */
     private final List<Block> privateChain = new ArrayList<>();
 
     /**
-     * True when the attacker is currently engaged in an equal-fork public contest.
+     * True once the attacker has revealed a competing block and is in an active public race.
      */
-    private boolean inEqualForkContest = false;
+    private boolean inContestState = false;
 
     /**
-     * Number of attacker blocks already revealed in the current equal-fork contest.
+     * Parent hash of the contested sibling set.
+     * Example: if attacker and honest blocks both build on X, then contestedParentHash = X.
+     */
+    private String contestedParentHash = null;
+
+    /**
+     * Number of attacker blocks already revealed in the current contest.
      */
     private int publishedInCurrentContest = 0;
 
@@ -79,36 +81,42 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
             return;
         }
 
-        if (inEqualForkContest) {
-            handleBlockWhileInEqualForkContest(block, context);
+        if (inContestState) {
+            handleBlockWhileInContest(block, context);
             return;
         }
 
-        int hiddenLead = hiddenLead();
-
-        // No hidden branch -> behave honestly.
-        if (hiddenLead == 0) {
-            adoptPublicBlockAndAbandonPrivateState(block, context);
+        // No private attack is currently armed -> behave publicly/honestly.
+        if (privateChain.isEmpty()) {
+            adoptPublicBlock(block, context);
             return;
         }
 
-        // Equal-fork behavior:
-        // whenever honest progress arrives and we have hidden blocks,
-        // reveal exactly one block to try to match public progress.
-        boolean published = publishOneHiddenBlock(context);
-        if (published) {
-            inEqualForkContest = true;
-            publishedInCurrentContest = 1;
+        // The armed attack is triggered when an honest sibling on the same parent appears.
+        if (isTriggeringSibling(block)) {
+            boolean published = publishOneHiddenBlock(context);
+            if (published) {
+                inContestState = true;
+                contestedParentHash = block.getPreviousHash();
+                publishedInCurrentContest = 1;
+            }
+            return;
         }
+
+        // Public progress on some other path invalidates the currently armed race attempt.
+        // The attacker abandons and resynchronizes with the public chain.
+        adoptPublicBlockAndAbandonPrivateState(block, context);
     }
 
     @Override
     public void onBlockMined(Block block, BlockchainSystemNodeContext context) {
         privateChain.add(block);
 
-        // In equal-fork stubborn mining, mining during an active contest does not immediately
-        // imply dumping the whole hidden branch. The attacker prefers to keep controlled parity.
-        // So we do not auto-publish-all here.
+        // If the attacker mines during an active race, strengthen the attacker branch immediately.
+        if (inContestState) {
+            publishAllHiddenBlocks(context);
+            clearContestStateOnly();
+        }
     }
 
     @Override
@@ -128,6 +136,7 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
     @NotNull
     @Override
     public String onPreviousBlockSelection(BlockchainSystemNodeContext context) {
+        // While the attack is armed or the race is ongoing, keep extending the newest hidden attacker tip.
         if (!privateChain.isEmpty()) {
             return privateChain.get(privateChain.size() - 1).getHash();
         }
@@ -136,17 +145,16 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
     }
 
     /**
-     * In an equal-fork contest, keep revealing one block at a time while hidden inventory exists,
-     * attempting to preserve parity with the public branch.
+     * Contest-state handler.
      *
-     * If no hidden blocks remain, the contest is treated as lost locally and the public block is adopted.
+     * Policy:
+     * - if the attacker still has hidden blocks left, reveal them to push the attacker branch harder
+     * - if no hidden blocks remain, treat the contest as locally lost and adopt honest public progress
      */
-    private void handleBlockWhileInEqualForkContest(Block block, BlockchainSystemNodeContext context) {
+    private void handleBlockWhileInContest(Block block, BlockchainSystemNodeContext context) {
         if (hiddenLead() > 0) {
-            boolean published = publishOneHiddenBlock(context);
-            if (published) {
-                publishedInCurrentContest++;
-            }
+            publishAllHiddenBlocks(context);
+            clearContestStateOnly();
             return;
         }
 
@@ -154,7 +162,29 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
     }
 
     /**
-     * Append a public block and fully abandon any no-longer-viable private strategy state.
+     * Trigger condition for a race contest:
+     * - the attacker already has a hidden block
+     * - the public network now reveals another block on the same parent
+     */
+    private boolean isTriggeringSibling(Block block) {
+        if (privateChain.isEmpty()) {
+            return false;
+        }
+
+        Block firstPrivate = privateChain.get(0);
+        String privateParentHash = firstPrivate.getPreviousHash();
+        String publicParentHash = block.getPreviousHash();
+
+        if (privateParentHash == null || publicParentHash == null) {
+            return false;
+        }
+
+        return privateParentHash.equals(publicParentHash)
+                && !firstPrivate.getHash().equals(block.getHash());
+    }
+
+    /**
+     * Append a public block and abandon the current private race attempt.
      */
     private void adoptPublicBlockAndAbandonPrivateState(Block block, BlockchainSystemNodeContext context) {
         AppendOutcome outcome = BehaviorUtils.INSTANCE.appendBlockToBlockchainDetailed(block, context);
@@ -164,6 +194,20 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
             context.getMiningProcess().restartMining();
             context.getBlockPropagationStrategy().distribute(block);
             resetPrivateState();
+        }
+    }
+
+    /**
+     * Append a public block without touching private race state.
+     * Used only when no race attempt is currently armed.
+     */
+    private void adoptPublicBlock(Block block, BlockchainSystemNodeContext context) {
+        AppendOutcome outcome = BehaviorUtils.INSTANCE.appendBlockToBlockchainDetailed(block, context);
+
+        if (outcome == AppendOutcome.INCLUDED || outcome == AppendOutcome.FORKING) {
+            context.getTrxMemPool().removeTransactions(block.getTransactions());
+            context.getMiningProcess().restartMining();
+            context.getBlockPropagationStrategy().distribute(block);
         }
     }
 
@@ -178,7 +222,6 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
         }
 
         Block publish = privateChain.get(0);
-
         AppendOutcome outcome = BehaviorUtils.INSTANCE.appendBlockToBlockchainDetailed(publish, context);
 
         if (outcome == AppendOutcome.INCLUDED || outcome == AppendOutcome.FORKING) {
@@ -192,12 +235,27 @@ public class EqualForkStubbornMiningNodeBehavior extends BlockchainNodeObject im
         return false;
     }
 
+    /**
+     * Publish all remaining hidden attacker blocks in order.
+     */
+    private void publishAllHiddenBlocks(BlockchainSystemNodeContext context) {
+        while (!privateChain.isEmpty()) {
+            int sizeBefore = privateChain.size();
+            boolean published = publishOneHiddenBlock(context);
+
+            if (!published || privateChain.size() == sizeBefore) {
+                break;
+            }
+        }
+    }
+
     private int hiddenLead() {
         return privateChain.size();
     }
 
     private void clearContestStateOnly() {
-        inEqualForkContest = false;
+        inContestState = false;
+        contestedParentHash = null;
         publishedInCurrentContest = 0;
     }
 

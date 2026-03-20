@@ -12,7 +12,7 @@ import org.palladiosimulator.blockchainsystems.loggers.abstractions.AbstractJson
  */
 class TraceEventConsoleLogger(jsonSerializer: Json) : AbstractJsonLogger(jsonSerializer) {
   override fun onTraceEventOccurred(traceEvent: TraceEvent, logOrigin: TraceEventLogOrigin) {
-    println(getEventFormat(traceEvent, logOrigin))
+    //println(getEventFormat(traceEvent, logOrigin))
   }
 
   override fun initialize() {}

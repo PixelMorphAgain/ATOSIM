@@ -5,48 +5,91 @@ import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockAppe
 import org.palladiosimulator.blockchainsystems.core.block.abstractions.BlockType
 import org.palladiosimulator.blockchainsystems.core.system.abstractions.BlockchainSystemNodeContext
 
-/**
- * The `BehaviorUtils` class provides common behavior methods used by behavior implementations.
- *
- * @author Yannik Sproll, Davis Riedel
- */
+enum class AppendOutcome {
+  INCLUDED,
+  FORKING,
+  STALE,
+  ORPHAN,
+  ALREADY_APPENDED,
+  NOT_APPENDED
+}
+
 object BehaviorUtils {
-  /**
-   * Appends the specified block to the blockchain, if possible.
-   * If there is no matching previous block, the block is stored in the orphan block pool.
-   * If there are descending blocks to the current block, these blocks are also appended to the blockchain.
-   * The method returns a value that indicates if the blockchain has a new longest branch.
-   *
-   * @param block   the block to add to the blockchain
-   * @param context the context of a blockchain system node
-   * @return true if the blockchain has a new longest branch, false otherwise
-   */
   fun appendBlockToBlockchain(block: Block, context: BlockchainSystemNodeContext): Boolean {
+    return when (appendBlockToBlockchainDetailed(block, context)) {
+      AppendOutcome.INCLUDED,
+      AppendOutcome.FORKING -> true
+      else -> false
+    }
+  }
+
+  fun appendBlockToBlockchainDetailed(
+    block: Block,
+    context: BlockchainSystemNodeContext
+  ): AppendOutcome {
+    return appendBlockToBlockchainInternal(block, context, mutableSetOf())
+  }
+
+  private fun appendBlockToBlockchainInternal(
+    block: Block,
+    context: BlockchainSystemNodeContext,
+    visited: MutableSet<String>
+  ): AppendOutcome {
+    if (block.hash in visited) return AppendOutcome.ALREADY_APPENDED
+    visited.add(block.hash)
+
     val blockAppendingResult = context.blockchain.appendBlock(block)
 
-    when (blockAppendingResult.type) {
+    if (
+      blockAppendingResult.type == BlockAppendingResultType.AlreadyAppended ||
+      blockAppendingResult.type == BlockAppendingResultType.NotAppendedBecauseOrphanBlock
+    ) {
+      println(
+        "APPEND DEBUG " +
+                "node=${context.id} " +
+                "chain=${System.identityHashCode(context.blockchain)} " +
+                "hash=${block.hash} " +
+                "prev=${block.previousHash} " +
+                "type=${blockAppendingResult.type} " +
+                "blockType=${blockAppendingResult.blockType}"
+      )
+    }
+
+    return when (blockAppendingResult.type) {
       BlockAppendingResultType.Appended -> {
-        val appendedBlockType = blockAppendingResult.blockType
-
-        val orphanBlocks = context.orphanBlockPool
-          .getBlocksByPreviousBlockHash(block.hash)
-
-        var hasNewLongestBranch = (appendedBlockType == BlockType.IncludedBlock)
-
+        val orphanBlocks = context.orphanBlockPool.takeBlocksByPreviousBlockHash(block.hash)
         orphanBlocks.forEach { orphanBlock ->
-          val hasNewLongestBranchInner = appendBlockToBlockchain(orphanBlock, context)
-          if (!hasNewLongestBranch) hasNewLongestBranch = hasNewLongestBranchInner
+          when (appendBlockToBlockchainInternal(orphanBlock, context, visited)) {
+            AppendOutcome.INCLUDED,
+            AppendOutcome.FORKING -> {
+              context.blockPropagationStrategy.distribute(orphanBlock)
+            }
+
+            AppendOutcome.STALE,
+            AppendOutcome.ORPHAN,
+            AppendOutcome.ALREADY_APPENDED,
+            AppendOutcome.NOT_APPENDED -> {
+            }
+          }
         }
 
-        return appendedBlockType == BlockType.IncludedBlock
+        when (blockAppendingResult.blockType) {
+          BlockType.IncludedBlock -> AppendOutcome.INCLUDED
+          BlockType.ForkingBlock -> AppendOutcome.FORKING
+          BlockType.StaleBlock -> AppendOutcome.STALE
+          else -> AppendOutcome.NOT_APPENDED
+        }
       }
 
       BlockAppendingResultType.NotAppendedBecauseOrphanBlock -> {
         context.orphanBlockPool.storeBlock(block)
-        return false
+        AppendOutcome.ORPHAN
       }
 
-      else -> return false
+      BlockAppendingResultType.AlreadyAppended -> AppendOutcome.ALREADY_APPENDED
+      else -> AppendOutcome.NOT_APPENDED
     }
   }
+
+
 }
