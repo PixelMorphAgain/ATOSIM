@@ -53,6 +53,14 @@ class ThreesimSimulationMonitor(
   private val confirmedByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
   private val staleByPrevHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
 
+  // confirmed child index for descendant-depth tracking on the attacker's winning race branch
+  private val confirmedChildrenByParentHash: MutableMap<String, MutableSet<String>> = mutableMapOf()
+
+  // two-stage race outcome tracking
+  private var raceWinningPrevHash: String? = null
+  private var raceWinningAttackerBlockHash: String? = null
+  private var raceProvisionalSuccessTime: Long? = null
+
   private lateinit var blocksProposedPerNode: CounterMap<String>
 
   private lateinit var includedBlocks: BlocksMap
@@ -429,48 +437,87 @@ class ThreesimSimulationMonitor(
     if (raceAttackSucceeded) return
     if (simulationParameters.attackType != AttackType.RACE) return
 
-    val prevHash = block.previousHash ?: return
+    val blockHash = block.hash
+    val prevHash = block.previousHash
     val attacker = isAttacker(block.originId)
 
     when (newType) {
       BlockType.ConfirmedBlock -> {
-        if (attacker) {
-          addTo(confirmedByPrevHash, prevHash, block.hash)
+        if (prevHash != null) {
+          addTo(confirmedChildrenByParentHash, prevHash, blockHash)
+        }
+
+        if (attacker && prevHash != null) {
+          addTo(confirmedByPrevHash, prevHash, blockHash)
         }
       }
 
       BlockType.StaleBlock -> {
-        if (!attacker) {
-          addTo(staleByPrevHash, prevHash, block.hash)
+        if (!attacker && prevHash != null) {
+          addTo(staleByPrevHash, prevHash, blockHash)
         }
       }
 
       else -> return
     }
 
-    val attackerConfirmed = confirmedByPrevHash[prevHash].orEmpty()
-    val honestStale = staleByPrevHash[prevHash].orEmpty()
+    // Stage 1: detect provisional race win
+    if (raceWinningAttackerBlockHash == null && prevHash != null) {
+      val attackerConfirmed = confirmedByPrevHash[prevHash].orEmpty()
+      val honestStale = staleByPrevHash[prevHash].orEmpty()
 
-    val hasSiblingConflict =
-      attackerConfirmed.isNotEmpty() &&
-              honestStale.isNotEmpty() &&
-              attackerConfirmed.any { attackerHash ->
-                honestStale.any { honestHash -> honestHash != attackerHash }
-              }
+      val winningAttackerHash =
+        attackerConfirmed.firstOrNull { attackerHash ->
+          honestStale.any { honestHash -> honestHash != attackerHash }
+        }
 
-    if (hasSiblingConflict) {
-      println(
-        "RACE DEBUG prevHash=$prevHash " +
-                "attackerConfirmed=$attackerConfirmed " +
-                "honestStale=$honestStale " +
-                "occurrenceTime=$occurrenceTime"
-      )
+      if (winningAttackerHash != null) {
+        raceWinningPrevHash = prevHash
+        raceWinningAttackerBlockHash = winningAttackerHash
+        raceProvisionalSuccessTime = occurrenceTime
 
-      raceAttackSucceeded = true
-      if (attackSuccessTime == null) {
-        attackSuccessTime = occurrenceTime
+        println(
+          "RACE DEBUG provisional win prevHash=$prevHash " +
+                  "winningAttackerBlock=$winningAttackerHash " +
+                  "attackerConfirmed=$attackerConfirmed " +
+                  "honestStale=$honestStale " +
+                  "occurrenceTime=$occurrenceTime"
+        )
       }
     }
+
+    // Stage 2: finalize only after enough confirmed descendants on that attacker branch
+    val winningHash = raceWinningAttackerBlockHash ?: return
+    val confirmationsOnWinningBranch = countConfirmedDepthFrom(winningHash)
+
+    if (confirmationsOnWinningBranch >= simulationParameters.confirmationDepth) {
+      raceAttackSucceeded = true
+
+      if (attackSuccessTime == null) {
+        attackSuccessTime = raceProvisionalSuccessTime ?: occurrenceTime
+      }
+
+      println(
+        "RACE DEBUG final success winningAttackerBlock=$winningHash " +
+                "depth=$confirmationsOnWinningBranch/${simulationParameters.confirmationDepth} " +
+                "attackSuccessTime=$attackSuccessTime " +
+                "occurrenceTime=$occurrenceTime"
+      )
+    }
+  }
+
+  private fun countConfirmedDepthFrom(rootHash: String): Int {
+    var depth = 1
+    var current = rootHash
+
+    while (true) {
+      val children = confirmedChildrenByParentHash[current].orEmpty()
+      val next = children.firstOrNull() ?: break
+      depth++
+      current = next
+    }
+
+    return depth
   }
 
   private fun isAttacker(originId: String?): Boolean {
