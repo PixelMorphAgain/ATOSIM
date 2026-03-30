@@ -20,6 +20,7 @@ import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimMonte
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSimulationParameters
 import org.palladiosimulator.blockchainsystems.threesim.simulation.ThreesimSingleSimulation
 import org.palladiosimulator.blockchainsystems.plugin.Attributes
+import org.palladiosimulator.blockchainsystems.threesim.simulation.AttackType
 
 /**
  * Factory for creating instances of [Simulation] for the 3SIM blockchain simulator.
@@ -68,6 +69,21 @@ class ThreesimSimulationFactory(
     configuration: ILaunchConfiguration
   ): ThreesimSimulationParameters {
 
+    val combinedAttackMode = configuration.getAttribute(
+      ThreesimAttributes.COMBINED_ATTACK_MODE,
+      ThreesimAttributes.COMBINED_ATTACK_MODE_DEFAULT
+    )
+
+    val combinedAttackEnabled =
+      combinedAttackMode != ThreesimAttributes.COMBINED_ATTACK_MODE_NONE
+
+    val secondaryAttackType =
+      when (combinedAttackMode) {
+        ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_RACE -> AttackType.RACE
+        ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_FINNEY -> AttackType.FINNEY
+        else -> AttackType.NONE
+      }
+
     val baseParams = ThreesimSimulationParameters(
       failureThroughputThreshold = configuration.getAttribute(
         ThreesimAttributes.FAILURE_THROUGHPUT_THRESHOLD,
@@ -85,6 +101,20 @@ class ThreesimSimulationFactory(
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN,
         ThreesimAttributes.RELIABILITY_OBSERVATION_TIMESPAN_DEFAULT
       ).toDouble(),
+
+      attackType = AttackType.NONE,
+      combinedAttackEnabled = combinedAttackEnabled,
+      secondaryAttackType = secondaryAttackType,
+
+      deltaA = configuration.getAttribute(
+        ThreesimAttributes.TRANSACTION_A_DELAY,
+        ThreesimAttributes.TRANSACTION_A_DELAY_DEFAULT
+      ).toLong(),
+      deltaB = configuration.getAttribute(
+        ThreesimAttributes.TRANSACTION_B_ACCELERATION,
+        ThreesimAttributes.TRANSACTION_B_ACCELERATION_DEFAULT
+      ).toLong(),
+
       blockInterval = configuration.getAttribute(
         ThreesimAttributes.BLOCK_INTERVAL,
         ThreesimAttributes.BLOCK_INTERVAL_DEFAULT

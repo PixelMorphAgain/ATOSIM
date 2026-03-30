@@ -16,6 +16,8 @@ class ThreesimSimulationParameters(
 
   //Attack Parameters
   val attackType: AttackType = AttackType.NONE,
+  val combinedAttackEnabled: Boolean = false,
+  val secondaryAttackType: AttackType = AttackType.NONE,
 
   //ID of attacker nodes
   val attackerNodeIds: Set<String> = emptySet<String>(),
@@ -34,5 +36,5 @@ class ThreesimSimulationParameters(
   val propagationDelay: Double = 0.0, //milliseconds
   val nodeDegree: Int = 8, // number of neighbors per node
   val maxBlockSize: Int = 1_000_000, // bytes
-  val networkBandwidth: Double = 100.0 // mbps
+  val networkBandwidth: Double = 100.0// mbps
 )

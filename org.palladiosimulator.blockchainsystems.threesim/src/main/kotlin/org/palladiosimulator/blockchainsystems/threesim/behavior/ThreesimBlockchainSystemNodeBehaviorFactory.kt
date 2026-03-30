@@ -1,5 +1,7 @@
 package org.palladiosimulator.blockchainsystems.threesim.behavior
 
+import org.palladiosimulator.blockchainsystems.core.behavior.CombinedSelfishFinneyNodeBehavior
+import org.palladiosimulator.blockchainsystems.core.behavior.CombinedSelfishRaceNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.EqualForkStubbornMiningNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.FinneyMiningNodeBehavior
 import org.palladiosimulator.blockchainsystems.core.behavior.GammaAwareHonestBlockchainSystemNodeBehavior
@@ -52,6 +54,12 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
         AttackType.FINNEY ->
           return FinneyMiningNodeBehavior()
 
+        AttackType.COMBINED_SELFISH_RACE ->
+          return CombinedSelfishRaceNodeBehavior()
+
+        AttackType.COMBINED_SELFISH_FINNEY ->
+          return CombinedSelfishFinneyNodeBehavior()
+
         else ->
           return HonestBlockchainSystemNodeBehavior()
       }
@@ -64,6 +72,8 @@ class ThreesimBlockchainSystemNodeBehaviorFactory(
       AttackType.EQUAL_FORK_STUBBORN_MINING,
       AttackType.TRAIL_STUBBORN_MINING,
       AttackType.RACE,
+      AttackType.COMBINED_SELFISH_RACE,
+      AttackType.COMBINED_SELFISH_FINNEY,
       AttackType.MAJORITY ->
         return GammaAwareHonestBlockchainSystemNodeBehavior(
           simulationParameters.attackerNodeIds,

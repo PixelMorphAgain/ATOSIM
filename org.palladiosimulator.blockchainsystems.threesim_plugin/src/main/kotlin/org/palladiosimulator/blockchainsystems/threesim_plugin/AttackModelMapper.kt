@@ -14,7 +14,31 @@ object AttackModelMapper {
     ): ThreesimSimulationParameters {
 
         val attackType = mapAttackType(scenario.attack)
+        val finalAttackType =
+            when {
+                base.combinedAttackEnabled &&
+                        attackType == AttackType.SELFISH_MINING &&
+                        base.secondaryAttackType == AttackType.RACE ->
+                    AttackType.COMBINED_SELFISH_RACE
 
+                base.combinedAttackEnabled &&
+                        attackType == AttackType.SELFISH_MINING &&
+                        base.secondaryAttackType == AttackType.FINNEY ->
+                    AttackType.COMBINED_SELFISH_FINNEY
+
+                else -> attackType
+            }
+
+        val combinedAttackEnabled =
+            finalAttackType == AttackType.COMBINED_SELFISH_RACE ||
+                    finalAttackType == AttackType.COMBINED_SELFISH_FINNEY
+
+        val secondaryAttackType =
+            when (finalAttackType) {
+                AttackType.COMBINED_SELFISH_RACE -> AttackType.RACE
+                AttackType.COMBINED_SELFISH_FINNEY -> AttackType.FINNEY
+                else -> AttackType.NONE
+            }
         val attackerNodeIds = scenario.attackers
             .mapNotNull { it.linkedNodeSystem?.id }
             .toSet()
@@ -26,6 +50,11 @@ object AttackModelMapper {
             if (scenario.attack is RaceAttack) {
                 val ra = scenario.attack as RaceAttack
                 ra.transactionADelay to ra.transactionBAcceleration
+            } else if (
+                finalAttackType == AttackType.COMBINED_SELFISH_RACE ||
+                base.secondaryAttackType == AttackType.RACE
+            ) {
+                base.deltaA to base.deltaB
             } else {
                 0L to 0L
             }
@@ -37,7 +66,10 @@ object AttackModelMapper {
             nakamotoCoefficientThreshold = base.nakamotoCoefficientThreshold,
             reliabilityObservationTimespan = base.reliabilityObservationTimespan,
 
-            attackType = attackType,
+            attackType = finalAttackType,
+            combinedAttackEnabled = combinedAttackEnabled,
+            secondaryAttackType = secondaryAttackType,
+
             attackerNodeIds = attackerNodeIds,
             attackerHashPower = attackerHashPower,
             gamma = scenario.attack.gamma,

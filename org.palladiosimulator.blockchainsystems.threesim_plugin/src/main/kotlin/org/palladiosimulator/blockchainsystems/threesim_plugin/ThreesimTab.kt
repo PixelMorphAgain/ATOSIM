@@ -8,6 +8,8 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.layout.GridData
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Group
+import org.eclipse.swt.widgets.Combo
+import org.eclipse.swt.widgets.Label
 import org.palladiosimulator.blockchainsystems.plugin.ui.abstractions.TextField
 import org.palladiosimulator.blockchainsystems.plugin.utils.DoubleVerifier
 import org.palladiosimulator.blockchainsystems.plugin.utils.LongVerifier
@@ -38,6 +40,9 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
   private lateinit var nodeDegreeField: TextField
   private lateinit var maxBlockSizeField: TextField
   private lateinit var networkBandwidthField: TextField
+  private lateinit var transactionADelayField: TextField
+  private lateinit var transactionBAccelerationField: TextField
+  private lateinit var combinedAttackModeCombo: Combo
 
   override fun createControl(parent: Composite) {
     val root = Composite(parent, SWT.BORDER)
@@ -141,6 +146,44 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
       ThreesimAttributes.NETWORK_BANDWIDTH_DEFAULT,
       isValueValid = { it.toDoubleOrNull()?.let { it > 0 } ?: false }
     )
+    transactionADelayField = TextField(
+      group,
+      "Transaction A Delay:",
+      " ms",
+      LongVerifier,
+      ThreesimAttributes.TRANSACTION_A_DELAY,
+      ThreesimAttributes.TRANSACTION_A_DELAY_DEFAULT,
+      isValueValid = { it.toLongOrNull()?.let { it >= 0 } ?: false }
+    )
+
+    transactionBAccelerationField = TextField(
+      group,
+      "Transaction B Acceleration:",
+      " ms",
+      LongVerifier,
+      ThreesimAttributes.TRANSACTION_B_ACCELERATION,
+      ThreesimAttributes.TRANSACTION_B_ACCELERATION_DEFAULT,
+      isValueValid = { it.toLongOrNull()?.let { it >= 0 } ?: false }
+    )
+
+    val combinedAttackLabel = Label(group, SWT.NONE)
+    combinedAttackLabel.text = "Combined Attack Mode:"
+
+    combinedAttackModeCombo = Combo(group, SWT.DROP_DOWN or SWT.READ_ONLY)
+    combinedAttackModeCombo.setItems(
+      "None",
+      "Selfish + Race",
+      "Selfish + Finney"
+    )
+    combinedAttackModeCombo.select(0)
+    combinedAttackModeCombo.layoutData = GridData(SWT.FILL, SWT.CENTER, true, false)
+
+    val combinedAttackUnitLabel = Label(group, SWT.NONE)
+    combinedAttackUnitLabel.text = ""
+
+    combinedAttackModeCombo.addModifyListener {
+      updateLaunchConfigurationDialog()
+    }
 
     control = root
     isInitialized = true
@@ -162,6 +205,18 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     nodeDegreeField.initializeFrom(configuration)
     maxBlockSizeField.initializeFrom(configuration)
     networkBandwidthField.initializeFrom(configuration)
+    transactionADelayField.initializeFrom(configuration)
+    transactionBAccelerationField.initializeFrom(configuration)
+    when (
+      configuration.getAttribute(
+        ThreesimAttributes.COMBINED_ATTACK_MODE,
+        ThreesimAttributes.COMBINED_ATTACK_MODE_DEFAULT
+      )
+    ) {
+      ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_RACE -> combinedAttackModeCombo.select(1)
+      ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_FINNEY -> combinedAttackModeCombo.select(2)
+      else -> combinedAttackModeCombo.select(0)
+    }
   }
 
   override fun performApply(configuration: ILaunchConfigurationWorkingCopy) {
@@ -176,6 +231,16 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     nodeDegreeField.performApply(configuration)
     maxBlockSizeField.performApply(configuration)
     networkBandwidthField.performApply(configuration)
+    transactionADelayField.performApply(configuration)
+    transactionBAccelerationField.performApply(configuration)
+
+    val combinedMode = when (combinedAttackModeCombo.selectionIndex) {
+      1 -> ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_RACE
+      2 -> ThreesimAttributes.COMBINED_ATTACK_MODE_SELFISH_FINNEY
+      else -> ThreesimAttributes.COMBINED_ATTACK_MODE_NONE
+    }
+
+    configuration.setAttribute(ThreesimAttributes.COMBINED_ATTACK_MODE, combinedMode)
   }
 
   override fun setDefaults(configuration: ILaunchConfigurationWorkingCopy) {
@@ -190,6 +255,12 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
     nodeDegreeField.setDefaults(configuration)
     maxBlockSizeField.setDefaults(configuration)
     networkBandwidthField.setDefaults(configuration)
+    transactionADelayField.setDefaults(configuration)
+    transactionBAccelerationField.setDefaults(configuration)
+    configuration.setAttribute(
+      ThreesimAttributes.COMBINED_ATTACK_MODE,
+      ThreesimAttributes.COMBINED_ATTACK_MODE_DEFAULT
+    )
   }
 
   override fun activated(workingCopy: ILaunchConfigurationWorkingCopy) {
@@ -208,6 +279,7 @@ class ThreesimTab : AbstractLaunchConfigurationTab() {
             propagationDelayField.isValid() &&
             nodeDegreeField.isValid() &&
             maxBlockSizeField.isValid() &&
-            networkBandwidthField.isValid()
+            networkBandwidthField.isValid() && transactionADelayField.isValid() &&
+            transactionBAccelerationField.isValid()
   }
 }

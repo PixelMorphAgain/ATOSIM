@@ -27,4 +27,17 @@ object ThreesimAttributes {
 
   const val NETWORK_BANDWIDTH = "NetworkBandwidth"
   const val NETWORK_BANDWIDTH_DEFAULT = "100.0"
+
+  const val COMBINED_ATTACK_MODE = "CombinedAttackMode"
+  const val COMBINED_ATTACK_MODE_DEFAULT = "NONE"
+
+  const val COMBINED_ATTACK_MODE_NONE = "NONE"
+  const val COMBINED_ATTACK_MODE_SELFISH_RACE = "SELFISH_RACE"
+  const val COMBINED_ATTACK_MODE_SELFISH_FINNEY = "SELFISH_FINNEY"
+
+  const val TRANSACTION_A_DELAY = "TransactionADelay"
+  const val TRANSACTION_A_DELAY_DEFAULT = "0"
+
+  const val TRANSACTION_B_ACCELERATION = "TransactionBAcceleration"
+  const val TRANSACTION_B_ACCELERATION_DEFAULT = "0"
 }
